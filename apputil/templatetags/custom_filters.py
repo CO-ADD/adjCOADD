@@ -2,7 +2,7 @@ from django import template
 import re
 from dorganism.models import OrgBatch_Stock
 from dcell.models import CellBatch_Stock
-from adjcoadd.constants import LinkList
+from adjcoadd.constants import URL_LINKS
 
 register = template.Library()
 
@@ -35,10 +35,10 @@ def to_int(value):
 
 @register.filter
 def get_linkname(value, arg1=None, arg2=None):
-    if value in LinkList.keys():        
+    if value in URL_LINKS.keys():        
         arg1_str = str(arg1) if arg1 else ''
         arg2_str = str(arg1) if arg2 else ''
-        return LinkList[value].replace('{VALUE1}', arg1_str).replace('{VALUE2}', arg2_str)
+        return URL_LINKS[value].replace('{VALUE1}', arg1_str).replace('{VALUE2}', arg2_str)
     else:
         return None
 

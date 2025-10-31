@@ -37,11 +37,11 @@ class Taxonomy(AuditModel):
     }
 
     LIST_VIEW_FIELDS = {
-        'organism_name':{'Organism Name': {'urlname': LinkList['taxonomny']}},  
+        'organism_name':{'Organism Name': {'urlname': URL_LINKS['taxonomny']}},  
         'tax_rank':'Rank',
         'org_class':'Class',
         'division':'Division', 
-        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
+        'tax_id':{'Tax-ID': {'tax_id':URL_LINKS['tax_id']}},
         'code':'Code', 
         'lineage':'Lineage', 
     }
@@ -105,7 +105,7 @@ class Organism(AuditModel):
 #=================================================================================================
     LIST_VIEW_FIELDS = {
 #        'organism_name':{"VerboseName":'Organism Name','Updatable':False}
-        'organism_id':{'Organism ID': {'organism_id':LinkList['organism_id']}}, 
+        'organism_id':{'Organism ID': {'organism_id':URL_LINKS['organism_id']}}, 
         'organism_name':'Organism Name',
         'pub_id':'Pub ID',
         'strain_ids':'Strain IDs',
@@ -119,7 +119,7 @@ class Organism(AuditModel):
         'gen_property':'Genotype', 
 #        'strain_origin':'Origin',
         'reference': "Reference",
-#        'tax_id':{'Tax-ID': {'tax_id':LinkList['tax_id']}},
+#        'tax_id':{'Tax-ID': {'tax_id':URL_LINKS['tax_id']}},
     }
 
     CARDS_FIELDS= {
@@ -485,9 +485,9 @@ class OrgBatch_Stock(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS={
-        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
-        #"orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList['organism_id']}},
+        #"orgbatch_id.organism_id.organism_name":{'Organism ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS['organism_id']}},
         "stock_type":"Stock Type",
         "n_created":"#Created",
         "n_left":"#Left",

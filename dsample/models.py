@@ -33,7 +33,7 @@ class Project(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        "project_id":{'Project ID': {'project_id':LinkList['project_id']}},
+        "project_id":{'Project ID': {'project_id':URL_LINKS['project_id']}},
         "group_id.group_code":"Group",
         "group_id.country.name":"Country",
         "project_type":"Type",

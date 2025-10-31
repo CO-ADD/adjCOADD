@@ -10,7 +10,7 @@ from dchem.models import Chem_Structure
 from dplate.models import TestWell
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
 from applib.bio.bio_data import DR_Range, conv_Conc, split_DR, format_DR, DR_GeoMean
-from adjcoadd.constants import COMPOUND_SEP
+from adjcoadd.constants import COMPOUND_SEP, DR_CLASSES
 
 import logging
 logger = logging.getLogger(__name__)
@@ -515,7 +515,7 @@ def sum_cmpbatch_dr(CmpBatchLst,upload=False,overwrite=False, appuser='J.Zuegg')
     return(OutNumbers,OutDict)
 
 # --------------------------------------------------------------------------------------
-def sum_structure_dr(StructureID,upload=False,overwrite=False, appuser='J.Zuegg',AssayData=['MIC','CC50','HC50']):
+def sum_structure_dr(StructureID,upload=False,overwrite=False, appuser='J.Zuegg',AssayData=DR_CLASSES):
 # --------------------------------------------------------------------------------------
     OutNumbers = {'Processed':0,'New':0, 'Uploaded':0,'Empty':0}
     OutDict = []

@@ -45,7 +45,7 @@ def main(prgArgs,djDir):
     from applib.bio.doseresponse import DoseResponse,process_testplate_doseresponse
     from applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
-    from adjcoadd.constants import COMPOUND_SEP
+    from adjcoadd.constants import DR_CLASSES
 
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")
@@ -57,8 +57,7 @@ def main(prgArgs,djDir):
 
    # TestPlate XLSX -------------------------------------------------------------
     if prgArgs.table == 'TestPlateDoseresponse':
-
-        DR_TYPES = ['MIC','CC50','HC50']
+        
         lst_TestPlates = []
         OutNumbers = {'Processed Plates':0,'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0}
         Verbose = 0
@@ -68,12 +67,12 @@ def main(prgArgs,djDir):
             Verbose = 1
  
         elif prgArgs.runid:
-            qryTP = TestPlate.objects.filter(run_id = prgArgs.runid,result_type__in=DR_TYPES).values('plate_id')
+            qryTP = TestPlate.objects.filter(run_id = prgArgs.runid,result_type__in=DR_CLASSES).values('plate_id')
             lst_TestPlates = [q['plate_id'] for q in qryTP]
             logger.info(f" [{prgArgs.table}] {prgArgs.runid} : {len(lst_TestPlates)}")
 
         elif prgArgs.new:
-            qryTP = TestPlate.objects.filter(n_doseresponses__lt = 0,result_type__in=DR_TYPES).values('plate_id')
+            qryTP = TestPlate.objects.filter(n_doseresponses__lt = 0,result_type__in=DR_CLASSES).values('plate_id')
             lst_TestPlates = [q['plate_id'] for q in qryTP]
             logger.info(f" [{prgArgs.table}] NEW : {len(lst_TestPlates)}")
 

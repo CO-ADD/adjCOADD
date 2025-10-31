@@ -29,7 +29,7 @@ class Drug(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        "drug_id":{"Drug ID": {"drug_id": LinkList["drug_id"] } },
+        "drug_id":{"Drug ID": {"drug_id": URL_LINKS["drug_id"] } },
         "drug_name":"Drug Name",
         "drug_othernames":"Other Names",
         "drug_codes":"Drug Codes",
@@ -223,7 +223,7 @@ class Breakpoint(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-       'drug_id.drug_name':{'Drug Name': {'drug_id.drug_id':LinkList["drug_id"]}},
+       'drug_id.drug_name':{'Drug Name': {'drug_id.drug_id':URL_LINKS["drug_id"]}},
         'bp_comb':'bp_comb', 
         'org_name':'org_name', 
         'org_rank':'org_rank', 
@@ -400,7 +400,7 @@ class VITEK_Card(AuditModel):
 #     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "orgbatch_id.batch_id":"Batch",
         #"orgbatch_id":"Orgbatch",
         "card_barcode":"Barcode",
@@ -472,10 +472,10 @@ class VITEK_AST(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        "card_barcode.orgbatch_id.organism_id.organism_id":{'Organism ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "card_barcode.orgbatch_id.organism_id.organism_id":{'Organism ID': {'card_barcode.orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "card_barcode.orgbatch_id.batch_id":"Batch",
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism Name",
-        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
+        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':URL_LINKS['drug_id']}},
         "drug_id.drug_codes":"Codes",
         "mic":"MIC",
         "bp_profile":"BP",
@@ -555,7 +555,7 @@ class VITEK_ID(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        "card_barcode.orgbatch_id.organism_id.organism_id":{'Org ID': {'card_barcode.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "card_barcode.orgbatch_id.organism_id.organism_id":{'Org ID': {'card_barcode.orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "card_barcode.orgbatch_id.batch_id":"Batch",
         "card_barcode.orgbatch_id.organism_id.organism_name":"Organism",
         "id_organism":"Identification",
@@ -623,10 +623,10 @@ class MIC_COADD(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.organism_id.organism_id":{'Organism ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "orgbatch_id.batch_id":"Batch",
         "orgbatch_id.organism_id.organism_name":"Organism Name",
-        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
+        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':URL_LINKS['drug_id']}},
         "bp_profile":"Break Point",
         #"mic_type":"Type",
         "mic":"MIC",
@@ -733,9 +733,9 @@ class MIC_Pub(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS   = {   
-        "organism_id.organism_id":{'Organism ID': {'organism_id.organism_id':LinkList['organism_id']}}, 
+        "organism_id.organism_id":{'Organism ID': {'organism_id.organism_id':URL_LINKS['organism_id']}}, 
         "organism_id.organism_name":"Organism",
-        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':LinkList['drug_id']}},
+        "drug_id.drug_name":{'Drug Name': {'drug_id.drug_id':URL_LINKS['drug_id']}},
         "bp_profile":"BP",
         "mic":"MIC",
         "zone_diameter": "Zone",

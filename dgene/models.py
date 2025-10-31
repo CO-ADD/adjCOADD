@@ -23,12 +23,12 @@ from dscreen.models import Screen_Run
 class Genome_Sequence(AuditModel):
 #-------------------------------------------------------------------------------------------------
     LIST_VIEW_FIELDS = {
-        #'seq_id':{"Seq ID":{"seq_id": LinkList["seq_id"]},}, 
+        #'seq_id':{"Seq ID":{"seq_id": URL_LINKS["seq_id"]},}, 
         'seq_id':"Seq ID", 
         'seq_type':'Type',  
         'seq_method':'Method',  
         'seq_name':'SeqName',  
-        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         'run_id':'Run ID',
         'source':'Source',
@@ -142,7 +142,7 @@ class ID_Pub(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS   = {
-        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         "id_type":"ID Type",
         "id_method":"ID Method",
@@ -213,7 +213,7 @@ class ID_Sequence(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS   = {
-        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         "seq_id.run_id":'Run ID',
@@ -295,7 +295,7 @@ class WGS_FastQC(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS   = {
-        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq":"Seq",
         "seq_id":"SeqID",
@@ -377,7 +377,7 @@ class WGS_CheckM(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS   = {
-        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         #"seq_id.run_id":'Run ID',
@@ -483,7 +483,7 @@ class Gene(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
+        #"gene_id":{"Gene Name":{"gene_id": URL_LINKS["gene_id"]},},
         "gene_id":"Gene ID",
         "gene_code":"Gene Code",
         "gene_note":"Gene Note",
@@ -604,11 +604,11 @@ class AMR_Genotype(AuditModel):
 #=================================================================================================
 
     LIST_VIEW_FIELDS = {
-        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':LinkList["organism_id"]}},
+        "seq_id.orgbatch_id.orgbatch_id":{'OrgBatch ID': {'seq_id.orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         "seq_id.run_id":'Run ID',
-        #"gene_id":{"Gene Name":{"gene_id": LinkList["gene_id"]},},
+        #"gene_id":{"Gene Name":{"gene_id": URL_LINKS["gene_id"]},},
         "gene_id.gene_code":"Gene Code",
         "gene_id.gene_type":"Gene Type",
         "gene_id.amr_class":"AMR Class",

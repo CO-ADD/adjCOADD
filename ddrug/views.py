@@ -16,7 +16,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render
 from django.conf import settings
 
-from adjcoadd.constants import LinkList
+from adjcoadd.constants import URL_LINKS
 from applib.django.base.views import Base_CreateView, Base_UpdateView, Filtered_ListView
 
 from apputil.utils.api_class import API_ListView
@@ -106,7 +106,7 @@ def detailDrug(req, pk):
     form=Drug_form(instance=object_,)
     context["object"]=object_
     context["form"]=form
-    context["Links"]=LinkList
+    context["Links"]=URL_LINKS
 
     #context['mol_img_url'] = settings.MOL_IMG_URL
     # try:

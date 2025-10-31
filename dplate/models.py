@@ -363,7 +363,7 @@ class TestPlate(Plate):
 #=================================================================================================
 
     LIST_VIEW_FIELDS = {
-        #"plate_id":{'Plate ID': {'plate_id':LinkList['testplate_id']}},
+        #"plate_id":{'Plate ID': {'plate_id':URL_LINKS['testplate_id']}},
         "plate_id":"Plate ID",
         "run_id":"Run ID",
         "assay_id":"Assay ID",

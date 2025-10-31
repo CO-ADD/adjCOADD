@@ -38,7 +38,7 @@ class Screen_Run(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     LIST_VIEW_FIELDS = {
-        "run_id":{'Run ID': {'run_id':LinkList['screenrun_id']}},
+        "run_id":{'Run ID': {'run_id':URL_LINKS['screenrun_id']}},
         "run_type":"Run Type",
         "assay_note":"Assay",
         "run_status":"Status",
