@@ -162,7 +162,7 @@ def Upload_Motherplates_Process(Request, DirName, FileList, RunID=None, upload=F
     return(valLog)
 
 def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None, 
-                                 upload=False, apply_mp=False, overwrite=False, appuser=None):
+                                 upload=False, apply_mp=False, only_dr=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single File:
@@ -202,8 +202,13 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
             if valLog.if_noerrors():
                 _MPS = {}
                 for _tpid in lstTP:
+                    # Only if new Layout applied
+                    calc_inhibition = False
+                    
+                    # Only if new Inhibtion, or requested by 'only_dr'
+                    calc_doserepsonse = only_dr
+                    
                     _tp = lstTP[_tpid]['plate']
-                    _new = lstTP[_tpid]['plate']
                     validStatus = True
 
                     validDict = _tp.validate_model(WellData=False, verbose = 0)
@@ -212,9 +217,12 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
                         for c in validDict:
                             print(f" [Upload_TestPlateList] validDict: {c} ")
 
+                    # Apply MotherPlates and Layout
+                    #------------------------------- 
                     if apply_mp:
                         # Apply MP -> Add Compounds
                         if hasattr(_tp,'motherplate_ids'):
+                            print(f" [Upload_TestPlateList] Apply MP: {_tpid} {_tp.motherplate_ids} ")
                             _tp.clear_cmpbatch_data()
                             mp_ids = getattr(_tp,'motherplate_ids')
                             for mp in mp_ids:
@@ -222,16 +230,19 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
                                     if mp not in _MPS:
                                         _MPS[mp] = MasterPlate.get(mp,WellData=True)
                                     add_mother_to_testplate(_MPS[mp],_tp)
-                            
                             _tp.update_n('n_samples')
+                            
+                            # Needs to re-calculate Inhibition, ZFactor
+                            calc_inhibition = True
                         else:
                             validStatus = False
-                            valLog.add_error("No MIssing MotherPlates",_tp.plate_id,"No MotherPlate_IDs","Correct TestPlateList")
-
-
-                        # Analyze Testplate -> Inhibition
+                            valLog.add_error("Missing MotherPlates",_tp.plate_id,"No MotherPlate_IDs","Correct TestPlateList")
+                            
+                    # Analyze Testplate -> Inhibition
+                    #---------------------------------
+                    if calc_inhibition:
                         if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
-                            #print(f"{_tp.plate_id} {_tp.n_wells} {_tp.control_layout}")
+                            print(f" [Upload_TestPlateList] Calc Inhibition: {_tpid} {_tp.n_wells} {_tp.n_reads} {_tp.control_layout}")
 
                             if _tp.apply_layout() > 0:
                                 _tp.calc_inhibition()
@@ -242,12 +253,12 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
 
                                 if str(_tp.plate_quality) == 'Valid':
                                     logNumbers['Valid Plates'] += 1
-
                                     if _tp.result_type in DR_CLASSES:
-                                        _dr_list = process_testplate_doseresponse(_tp)                                
-                                        logNumbers['Processed AssayData'] += len(_dr_list)
-                                        for _dr in _dr_list:
-                                            logNumbers[f'{_dr.dr_type} AssayData'] += 1
+                                        calc_doserepsonse = True
+                                        # _dr_list = process_testplate_doseresponse(_tp)                                
+                                        # logNumbers['Processed AssayData'] += len(_dr_list)
+                                        # for _dr in _dr_list:
+                                        #     logNumbers[f'{_dr.dr_type} AssayData'] += 1
                                     elif _tp.result_type == 'Inhibition':
                                             logNumbers[f'Inhibition AssayData'] += _tp.n_inhibitions
 
@@ -255,12 +266,24 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
                                     logNumbers['Rejected Plates'] += 1
                                 else:
                                     logNumbers['Failed Plates'] += 1
-
- 
                         else:
                             validStatus = False
                             valLog.add_error("Calc Error",_tp.plate_id,"Either no Wells, Readout or Layout","Correct TestPlateList")
 
+
+                    # Calculate Doseresponse
+                    #-----------------------
+                    if calc_doserepsonse:
+                        if _tp.result_type in DR_CLASSES:
+                            print(f" [Upload_TestPlateList] Calc DR: {_tpid} {_tp.result_type} ")
+                            _dr_list = process_testplate_doseresponse(_tp)                                
+                            logNumbers['Processed AssayData'] += len(_dr_list)
+                            for _dr in _dr_list:
+                                logNumbers[f'{_dr.dr_type} AssayData'] += 1
+
+
+                    # Upload TestPlates and AssayData
+                    #--------------------------------
                     if upload and validStatus:
                         print(f" [Upload_TestPlateList] Updating: {_tpid} {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
                         _tp.save()

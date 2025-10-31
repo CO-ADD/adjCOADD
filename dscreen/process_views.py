@@ -53,11 +53,9 @@ class PlatePrep_SelectForm(SelectSingleFile_StepForm):
         #_help_text += ' {% static '
         #_help_text += f"'{DOC_TEMPLATES['hc_plateprep']}'"
         
-        print(_help_text)
         self.fields['multi_files'].help_text = mark_safe(_help_text)
 
         #<a href="{% static 'django-pdf/generator/static/pdfs/nowy.pdf' %}">{{ file }}</a>
-
 
 # --------------------------------------------------------------------------------------------------
 class Readout_SelectForm(SelectSingleFile_StepForm):
@@ -149,8 +147,9 @@ class Load_Motherplates_ProcessView(Process_View):
 
 # --------------------------------------------------------------------------------------------------
 class TestPlate_UploadForm(forms.Form):
-    apply_mp = forms.BooleanField(initial=False, required=False, help_text="Fill Testplates with Compounds and Layout")
-    upload = forms.BooleanField(initial=False, required=False, help_text="Upload Data")
+    apply_mp = forms.BooleanField(initial=False, required=False, help_text="Fill Testplates with Compounds, Layout and Assays")
+#    only_dr = forms.BooleanField(initial=False, required=False, help_text="Recalculate only Doseresponse (after change of PlateQuality)")
+    upload = forms.BooleanField(initial=False, required=False, help_text="Upload Testplates and Doseresponse to Database")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -159,9 +158,8 @@ class TestPlate_UploadForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['apply_mp'].label = "Apply Motherplates/Layout"
-        self.fields['upload'].label = "Upload Data to Database"
-        #self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
-        #self.fields['apply_mp'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        # self.fields['only_dr'].label = "Only Doseresponse"
+        self.fields['upload'].label = "Upload Data"
 
 
 # --------------------------------------------------------------------------------------------------
@@ -190,20 +188,22 @@ class Load_TestplateList_ProcessView(Process_View):
     #    ('finalize','') 
     # ]
     def file_process_handler(self, request, *args, **kwargs):    
-        print(" [Add_TestplateList_ProcessView.file_process_handler]")
+        #print(" [Add_TestplateList_ProcessView.file_process_handler]")
 
         self.upload = False
         self.apply_mp = False
+        # self.only_dr = False
                 
         # Set Form Data        
         form_data=kwargs.get('form_data', None)
         if 'upload' in form_data:
             self.upload = form_data['upload']
-        if 'apply_mp' in form_data:
-            self.apply_mp = form_data['apply_mp']
+        # if 'only_dr' in form_data:
+        #     self.only_dr = form_data['only_dr']
 
         valLog=Upload_TestplateList_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
-                                           upload=self.upload, apply_mp=self.apply_mp, appuser=request.user) 
+                                           upload=self.upload, apply_mp=self.apply_mp, 
+                                           appuser=request.user) 
  
         return(valLog)
 
