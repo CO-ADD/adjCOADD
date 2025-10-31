@@ -42,7 +42,7 @@ def main(prgArgs,djDir):
     from dsample.models import Compound_Batch
     from dcell.models import Cell, Cell_Batch
     from applib.plate.multimode_reader import multimodereader_xls
-    from applib.bio.doseresponse import DoseResponse,process_testplate
+    from applib.bio.doseresponse import DoseResponse,process_testplate_doseresponse
     from applib.data.set_fielddata import set_model_from_dict
     from dscreen.models import Screen_Run
     from adjcoadd.constants import COMPOUND_SEP
@@ -78,11 +78,13 @@ def main(prgArgs,djDir):
             logger.info(f" [{prgArgs.table}] NEW : {len(lst_TestPlates)}")
 
         if len(lst_TestPlates) > 0:
-            for tp in tqdm(lst_TestPlates, desc='Testplates'):
+            for tpid in tqdm(lst_TestPlates, desc='Testplates'):
                 if Verbose>0:
                     logger.info(" ")
                 OutNumbers['Processed Plates'] += 1
-                process_testplate(tp,upload=prgArgs.upload, overwrite=prgArgs.overwrite, verbose=Verbose)
+                djTP = TestPlate.get(tpid,WellData=True)
+                if djTP:
+                    process_testplate_doseresponse(djTP,upload=prgArgs.upload, overwrite=prgArgs.overwrite, verbose=Verbose)
             logger.info(f"[TestPlates]: {OutNumbers['Valid Plates']} Valid,   {OutNumbers['Rejected Plates']} Rejected, {OutNumbers['Failed Plates']} Failed of {OutNumbers['Processed Plates']} Plates")
 
     

@@ -26,6 +26,7 @@ def update_screenrun_summary(djRun):
     #djRun.n_projects = 
     djRun.n_motherplates = MasterPlate.objects.filter(run_id=djRun.run_id).count()
     djRun.n_testplates = TestPlate.objects.filter(run_id=djRun.run_id).count()
+    djRun.n_testplates_valid = TestPlate.objects.filter(run_id=djRun.run_id, plate_quality='Valid').count()
     djRun.n_assays = TestPlate.objects.filter(run_id = djRun.run_id
                                             ).values('assay_id').distinct().count()
     djRun.n_inhibitions = TestWell.objects.filter(plate_id__result_type='Inhibition', 
@@ -62,8 +63,10 @@ def update_screenrun_summary(djRun):
             djRun.process_status = 2
         if djRun.n_compounds > 0: 
             djRun.process_status = 3
-        if djRun.n_inhibitions > 0: 
+        if djRun.n_testplates_valid > 0: 
             djRun.process_status = 4
+        if (djRun.n_inhibitions + djRun.n_mic + djRun.n_cc50 + djRun.n_hc50 + djRun.n_synmic) > 0: 
+            djRun.process_status = 10
             
     elif str(djRun.run_type) in ['SEQ']:
         if djRun.n_seq > 0:

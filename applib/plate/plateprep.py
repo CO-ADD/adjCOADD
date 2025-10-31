@@ -156,6 +156,7 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)
 
+    apply_mp = kwargs.get('apply_mp',None)
 
     logNumbers = {'Processed Assays':0,'New Assays':0, 'Uploaded Assays':0,
                     'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
@@ -248,7 +249,7 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
             for idx,row in _prepSheets['TestPlateList'].iterrows():
                 logNumbers['Processed Plates'] += 1
                 validStatus = True
-                djTP = TestPlate.get(row['testplate_id'],WellData=False)
+                djTP = TestPlate.get(row['testplate_id'],WellData=apply_mp)
                 if djTP is None:
                     valLog.add_error(f"MissingTestPlate", row['testplate_id'],'Testplate not found','Upload ReadOuts or Check TestPlate_ID')
                     logNumbers['New Plates'] += 1
@@ -263,6 +264,6 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
                     
                     TestPlateDict[row['testplate_id']] = {'plate':djTP}
 
-            valLog.add_info('TestPlates',f'Listed: {logNumbers["Processed Plates"]}','','Select Upload')
+            valLog.add_info('TestPlates',f'Listed: {logNumbers["Processed Plates"]}','Testplate listed',)
 
     return TestPlateDict,AssayDict

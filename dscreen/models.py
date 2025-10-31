@@ -53,6 +53,7 @@ class Screen_Run(AuditModel):
         "n_compounds":"#Cmpds",     
         "n_motherplates":"#MP",     
         "n_testplates":"#TP",     
+        "n_testplates_valid": "#TP Valid",
         "n_assays":"#Ass",     
         "n_inhibitions":"#Inhib",     
         "n_mic":"#MIC",     
@@ -70,7 +71,7 @@ class Screen_Run(AuditModel):
     VIEW_GROUPS = [
         ['run_type','run_status','run_name','run_project','run_date'],
         ['run_conditions','assay_note','run_issues','process_status'],
-        ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_qc','n_seq'],
+        ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_testplates_valid','n_qc','n_seq'],
         ['screen_date','n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic',]
     ]
 
@@ -91,7 +92,7 @@ class Screen_Run(AuditModel):
 
     # -- Calculated Fields - No View/Update ------------------------------------------
     CALCULATED_FIELDS = ['n_compounds','n_qc','n_structure',
-                         'n_motherplates','n_testplates','n_assays',
+                         'n_motherplates','n_testplates','n_testplates_valid','n_assays',
                          'n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic',
                          'n_seq',
                          'screen_date',
@@ -104,6 +105,7 @@ class Screen_Run(AuditModel):
     n_structure = models.IntegerField(default=0, verbose_name = "#Struc")
     n_motherplates = models.IntegerField(default=0, verbose_name = "#MP")
     n_testplates = models.IntegerField(default=0, verbose_name = "#TP")
+    n_testplates_valid = models.IntegerField(default=0, verbose_name = "#TP Valid")
     n_assays = models.IntegerField(default=0, verbose_name = "#Assays")
     n_inhibitions = models.IntegerField(default=0, verbose_name = "#Inhib")
     n_mic = models.IntegerField(default=0, verbose_name = "#MIC")
@@ -126,6 +128,8 @@ class Screen_Run(AuditModel):
             models.Index(name="run_nas_idx", fields=['n_assays']),
             models.Index(name="run_nmp_idx", fields=['n_motherplates']),
             models.Index(name="run_ntp_idx", fields=['n_testplates']),
+            models.Index(name="run_nvtp_idx", fields=['n_testplates_valid']),
+            models.Index(name="run_ninh_idx", fields=['n_inhibitions']),
             models.Index(name="run_pst_idx", fields=['process_status']),
         ]
 

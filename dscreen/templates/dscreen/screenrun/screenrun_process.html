@@ -29,7 +29,7 @@
   </button>
 {% endcomment %}
 
-  <button type="button" class="btn btn-outline-success {% if process_status < 4 %}disabled {% endif %}"> 
+  <button type="button" class="btn btn-outline-success {% if process_status < 9 %}disabled {% endif %}"> 
     <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Generate Report</a>
   </button>
 </div>

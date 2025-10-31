@@ -37,14 +37,8 @@ from applib.process.process_forms import SelectSingleFile_StepForm, Finalize_Ste
 #from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
 
-class Readout_SelectForm(SelectSingleFile_StepForm):
 # --------------------------------------------------------------------------------------------------
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['multi_files'].label = 'Xlsx file from Tecan/BioTek readers'
-
 class PlatePrep_SelectForm(SelectSingleFile_StepForm):
-# --------------------------------------------------------------------------------------------------
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['multi_files'].label = 'PlatePrep Workbook'
@@ -64,21 +58,12 @@ class PlatePrep_SelectForm(SelectSingleFile_StepForm):
 
         #<a href="{% static 'django-pdf/generator/static/pdfs/nowy.pdf' %}">{{ file }}</a>
 
-class TestPlate_UploadForm(forms.Form):
+
 # --------------------------------------------------------------------------------------------------
-    upload = forms.BooleanField(initial=False, required=False, help_text="Upload Data")
-    apply_mp = forms.BooleanField(initial=False, required=False, help_text="Fill Testplates with Compounds and Layout")
-
+class Readout_SelectForm(SelectSingleFile_StepForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['upload'].label = "Upload Data to Database"
-        #self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
-        self.fields['apply_mp'].label = "Apply Motherplates/Layout"
-        #self.fields['apply_mp'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        self.fields['multi_files'].label = 'Xlsx file from Tecan/BioTek readers'
 
 
 # --------------------------------------------------------------------------------------------------
@@ -142,7 +127,9 @@ class Load_Motherplates_ProcessView(Process_View):
 
     def file_process_handler(self, request, *args, **kwargs):    
         print(" [Add_Motherplate.file_process_handler]")
-        form_data=kwargs.get('form_data', None)
+
+        self.upload = False
+        self.overwrite = False
         
         # Set Form Data        
         form_data=kwargs.get('form_data', None)
@@ -159,6 +146,23 @@ class Load_Motherplates_ProcessView(Process_View):
     # Customize Function to update after upload:
     def file_process_finalizer(self, request, pk):
         Summary_ScreenRun_Process(request, pk)
+
+# --------------------------------------------------------------------------------------------------
+class TestPlate_UploadForm(forms.Form):
+    apply_mp = forms.BooleanField(initial=False, required=False, help_text="Fill Testplates with Compounds and Layout")
+    upload = forms.BooleanField(initial=False, required=False, help_text="Upload Data")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['apply_mp'].label = "Apply Motherplates/Layout"
+        self.fields['upload'].label = "Upload Data to Database"
+        #self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+        #self.fields['apply_mp'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+
 
 # --------------------------------------------------------------------------------------------------
 class Load_TestplateList_ProcessView(Process_View):
@@ -187,17 +191,19 @@ class Load_TestplateList_ProcessView(Process_View):
     # ]
     def file_process_handler(self, request, *args, **kwargs):    
         print(" [Add_TestplateList_ProcessView.file_process_handler]")
-        form_data=kwargs.get('form_data', None)
-        
+
+        self.upload = False
+        self.apply_mp = False
+                
         # Set Form Data        
         form_data=kwargs.get('form_data', None)
         if 'upload' in form_data:
             self.upload = form_data['upload']
-        if 'overwrite' in form_data:
-            self.overwrite = form_data['overwrite']
+        if 'apply_mp' in form_data:
+            self.apply_mp = form_data['apply_mp']
 
         valLog=Upload_TestplateList_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
-                                           upload=self.upload, overwrite=self.overwrite, appuser=request.user) 
+                                           upload=self.upload, apply_mp=self.apply_mp, appuser=request.user) 
  
         return(valLog)
 

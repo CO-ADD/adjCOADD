@@ -172,7 +172,7 @@ class DoseResponse():
         
         ass_key = str(self.testplate.result_type)
         if 'MIC' == ass_key:
-            
+            self.dr_type = ass_key
             self.assaydata_status = 'Exists'
             self.assaydata = AssayData_MIC.get(self.testplate.plate_id,self.testwell_id)
             if self.assaydata is None:
@@ -182,7 +182,7 @@ class DoseResponse():
                 logger.info(f" [DoseResponse] {ass_key} ({self.testplate.plate_id}{self.testwell_id}) [{self.assaydata_status}]")
 
         if 'CC50' == ass_key:
-            
+            self.dr_type = ass_key
             self.assaydata_status = 'Exists'
             self.assaydata = AssayData_CC50.get(self.testplate.plate_id,self.testwell_id)
             if self.assaydata is None:
@@ -192,7 +192,7 @@ class DoseResponse():
                 logger.info(f" [DoseResponse] {ass_key} ({self.testplate.plate_id}{self.testwell_id}) [{self.assaydata_status}]")
 
         if 'HC50' == ass_key:
-            
+            self.dr_type = ass_key
             self.assaydata_status = 'Exists'
             self.assaydata = AssayData_HC50.get(self.testplate.plate_id,self.testwell_id)
             if self.assaydata is None:
@@ -555,10 +555,10 @@ class DoseResponse_Plot():
 
         
 # Process TestPlate -------------------------------------------------------------
-def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
-    djTP = TestPlate.get(PlateID,WellData=True)
+def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
+    DR_Lst = []
+    #djTP = TestPlate.get(PlateID,WellData=True)
     if djTP:
-        
         if str(djTP.result_type) in ['MIC','CC50','HC50']:
             if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
                 djTP.n_doseresponses = 0
@@ -585,6 +585,7 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
                             if upload:
                                 djDR.save_assaydata(overwrite=overwrite)
                             #print(repr(djDR))
+                            DR_Lst.append(djDR)
 
                 if upload:
                     djTP.save()
@@ -594,3 +595,4 @@ def process_testplate(PlateID,upload=False,overwrite=False,verbose=0):
             else:
                 logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
 
+    return(DR_Lst)

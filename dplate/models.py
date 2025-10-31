@@ -726,7 +726,7 @@ class TestPlate(Plate):
 
     #--------------------------------------------------------------
     def calc_inhibition(self,verbose=0) -> int:
-        _n_inhibition = 0
+        _nInhibs = 0
         if self.n_reads > 0:
             posReadOuts = self.get_readouts('is_poscontrol')
             pos_median = np.median(posReadOuts)
@@ -761,9 +761,9 @@ class TestPlate(Plate):
             
             for w in self.wells:
                 self.wells[w].calc_inhibition(self.poscontrol_stats, self.negcontrol_stats,verbose=verbose)
-                _n_inhibition += 1
+                _nInhibs += 1
 
-            self.n_inhibitions = _n_inhibition
+            self.n_inhibitions = _nInhibs
 
             self.plate_qc = self.zfactor
             if self.test_issues:
@@ -794,7 +794,7 @@ class TestPlate(Plate):
         else:
             logger.warning(f"[Calc Inhibition] Plates has NO ReadOuts ")
 
-        return(_n_inhibition)
+        return(_nInhibs)
 
     # -------------------------------------------------------
     def plot_heatmap(self,Property,outDir,propLegend=True):
