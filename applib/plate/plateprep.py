@@ -213,7 +213,7 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
             if logNumbers['New Assays'] > 0:
                 valLog.add_warning('Missing Assays',f'New: {logNumbers["New Assays"]}','Assays not registered', 'Update online Assays')
             if settings.DEBUG:
-                print(f" [read_TestPlateList_Prepsheet_XLS] Assays: {logNumbers["Processed Assays"]} {logNumbers["New Assays"]} {logNumbers["Uploaded Assays"]}")
+                print(f'' [read_TestPlateList_Prepsheet_XLS] Assays: {logNumbers["Processed Assays"]} {logNumbers["New Assays"]} {logNumbers["Uploaded Assays"]}')
 
             # logger.info(f"[Assays]: {logNumbers['New Assays']} new assays (of {logNumbers['Processed Assays']}) ")
             # logger.info(f"[Assays]: New assays uploaded {logNumbers['Uploaded Assays']} [Upload: {prgArgs.upload}]")
