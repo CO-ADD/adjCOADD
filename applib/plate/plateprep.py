@@ -268,6 +268,6 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
 
             valLog.add_info('TestPlates',f'Listed: {logNumbers["Processed Plates"]}','Testplate listed',)
             if settings.DEBUG:
-                print(f" [read_TestPlateList_Prepsheet_XLS] TestPlates: {logNumbers["Processed Plates"]} {logNumbers["New Plates"]} {logNumbers["Uploaded Plates"]}")
+                print(f' [read_TestPlateList_Prepsheet_XLS] TestPlates: {logNumbers["Processed Plates"]} {logNumbers["New Plates"]} {logNumbers["Uploaded Plates"]}')
 
     return TestPlateDict,AssayDict
