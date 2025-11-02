@@ -37,7 +37,7 @@ DEVELOPMENT='Work'
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
-    VERSION = '1.5.0272 Development'
+    VERSION = 'Dev 1.5.3'
     DEBUG = True
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
