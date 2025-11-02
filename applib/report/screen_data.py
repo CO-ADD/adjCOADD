@@ -149,15 +149,15 @@ class Report_Screening():
     # --------------------------------------------------------------------------------------
         logger.info(f" [Report] RunID: {RunID_Lst} ")
         #print(f" [Report] RunID: {RunID_Lst} ")
-        self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+        self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                 run_id__in = RunID_Lst,
                                 testplate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_MIC)
-        self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+        self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                 run_id__in = RunID_Lst,
                                 testplate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_CC50)
-        self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+        self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                 run_id__in = RunID_Lst,
                                 testplate_id__plate_quality = 'Valid'                                            
                                 ).values_list(*self.COL_HC50)
@@ -205,15 +205,15 @@ class Report_Screening():
             #print(f" [list_cmpbatch_ids] {len(self.list_cmpbatch_ids)}")
             if Include_Combination:
                 # Include any Combinations - SLOW
-                self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                         cmpbatch_lst__overlap=self.list_cmpbatch_ids,
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values_list(*self.COL_MIC)
-                self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                         cmpbatch_lst__overlap=self.list_cmpbatch_ids,
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values_list(*self.COL_CC50)
-                self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                         cmpbatch_lst__overlap=self.list_cmpbatch_ids,
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values_list(*self.COL_HC50)
@@ -224,15 +224,15 @@ class Report_Screening():
                                         ).values_list(*self.COL_TW)
             else:
                 # Only single compounds
-                self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                self.qryMIC = AssayData_MIC.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                         cmpbatch_id__in=self.list_cmpbatch_ids,
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values_list(*self.COL_MIC)
-                self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                self.qryCC50 = AssayData_CC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                         cmpbatch_id__in=self.list_cmpbatch_ids,
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values_list(*self.COL_CC50)
-                self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality__contains = 'Retest'),
+                self.qryHC50 = AssayData_HC50.objects.filter(Q(data_quality = 'Valid') | Q(data_quality = 'Retest'),
                                         cmpbatch_id__in=self.list_cmpbatch_ids,
                                         testplate_id__plate_quality = 'Valid'                                            
                                         ).values_list(*self.COL_HC50)
