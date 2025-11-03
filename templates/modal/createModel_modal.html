@@ -1,0 +1,53 @@
+<!-- 
+  Model Create Form used for all Create / Update via Modal.
+  
+  For new models: add new models name into if conditions:
+    e.g. if title == 'Create Organism' or title == 'Create <New Model name>'
+-->
+<div class="modal-content card-bg">
+  <div class="modal-header">
+    <h5 class="modal-title">{{title}}</h5>
+        <!-- For SubModels in Main Model Detail View [OrgBatch,OrgCulture] -->
+        {% if title == 'Create Batch' or title == 'Create Culture' %}
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                onclick="window.location.reload(true);"></button>
+        {% else %}
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        {% endif %}
+  </div>
+
+  <div class="modal-body">
+    {% if title == 'Create Organism' or title == 'Create Cell'%}
+      <!-- Include the Organism Name Search  [Organism,Cell] -->
+      {% include 'utils/search_organism.html' %}
+    {% endif %}
+    <hr>
+ 
+    <form method="POST" class="post-form" action="{{urlname}}" id="{{form_id}}">
+      {% csrf_token %}
+      {% if title == 'Create Organism' or title == 'Create Cell' %}
+        <!-- Include the Organism Name  -->
+        <input type="text" id="taxo-name" name="search_organism" hidden />
+      {% endif %}
+
+      <!-- Default Creat Model Form Template  -->
+      {% include 'utils/django_form_lgtable.html' %}
+      <hr>
+
+      <div class="d-flex justify-content-center align-center">
+        {% include 'utils/miscellaneous/save_btn.html' %}
+
+        {% if title == 'Create Batch' or title == 'Create Culture' %}
+          <!-- Relocated Cancel Button  -->
+          {% include 'utils/miscellaneous/cancel_btn_reloc.html' %}
+        {% else %}
+          <!-- Normal Cancel Button -->
+          {% include 'utils/miscellaneous/cancel_btn.html' %}
+        <!--  -->
+        {% endif %}
+      </div>
+    </form>
+
+
+  </div>
+</div>

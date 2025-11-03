@@ -1,7 +1,7 @@
 <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
   {% if title == "Organism" or title == "Drug" or title == "Gene" or title == "Taxonomy" or title == "Cell" or title == "ScreenRun" %}
-    <div class="d-flex flex-column p-0">
-    
+
+    <div class="d-flex flex-column p-0">  
       <!-- Update Object-->
       {% include 'utils/miscellaneous/update_btn.html' with model_name=model_name%}
     </div>
@@ -18,8 +18,6 @@
       {% endif %}
     </div>
 
-    
-  
   {% elif title == 'Antibiogram' %}
     <div class="d-flex flex-column p-0">z
       <a

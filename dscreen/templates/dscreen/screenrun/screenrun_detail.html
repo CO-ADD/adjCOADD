@@ -4,13 +4,16 @@
 {% block content%}
 <div class="d-flex vh-100">
 
+    
+{% comment %}     
     <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
         <div class="d-flex flex-column p-0">          
             {% include 'utils/miscellaneous/update_btn.html' with model_name=model_name %}
         </div>
     </div>
-
+ {% endcomment %}
     <div class="w-100">
+        {% include 'grid/base/btn_left_navbar.html' with title="ScreenRun" %}
 
         <!-- Screening Run -->
         <div class="accordion bg-transparent" id="run-detail">
