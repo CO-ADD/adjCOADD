@@ -1,0 +1,17 @@
+<div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+  <div class="d-flex flex-column p-0">
+
+    <!-- Filter Show Switch -->
+    <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="Filter">
+      <i class="bi bi-funnel fs-5"></i>
+    </a>
+
+    <!-- Table View {list_url} -->
+    <a href="{% if list_url %} {% url list_url %} {% else %} # {% endif %}" 
+      class="{% if list_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Table View">
+      <i class="{% if list_url %} fa-solid fa-table-list fs-5 {% else %} fa-solid fa-table-list fs-5 text-muted{% endif %}"></i></a>
+
+  </div>  
+</div>
