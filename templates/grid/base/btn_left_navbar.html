@@ -1,5 +1,5 @@
 <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
-  {% if title == "Organism" or title == "Drug" or title == "Gene" or title == "Taxonomy" or title == "Cell" %}
+  {% if title == "Organism" or title == "Drug" or title == "Gene" or title == "Taxonomy" or title == "Cell" or title == "ScreenRun" %}
 
     <div class="d-flex flex-column p-0">  
       <!-- Update Object-->
@@ -7,13 +7,13 @@
     </div>
     <div class="d-flex flex-column p-0">
       {% if title == "Organism" %}
-      <!-- Update Object-->
+      <!-- Update Organism-->
         {% include 'dorganism/organism/organism_d.html' %}
       {% endif %}
     </div>
     <div class="d-flex flex-column p-0">
       {% if title == "Cell" %}
-      <!-- Update Object-->
+      <!-- Update Cell-->
         {% include 'dcell/cell/cell_d.html' %}
       {% endif %}
     </div>
