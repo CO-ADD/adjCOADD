@@ -1,0 +1,39 @@
+<!-- 
+  Model Create Form used for all Create / Update via Modal.
+    create_model, urlname, form_id  
+-->
+<div class="modal fade" id="create{{create_model}}_modal" tabindex="-1" aria-labelledby="createModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="createModalLabel"> New {{create_model}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body"> 
+        <form method="POST" class="post-form" action="{{urlname}}" id="{{form_id}}">
+          {% csrf_token %}
+
+          <!-- Default Create Model Form Template  -->
+          <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+            {% for field in form.visible_fields%}
+              <div class="col django-form-table">
+                <label>{{field.label}}</label>
+                <p>{{field | safe}}</p>
+                <span class="badge bg-info text-light">{{field.help_text}}</span>
+                <span class="badge bg-info text-danger">{{field.errors}}</span>
+              </div>
+            {% endfor %}
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        {% include 'utils/miscellaneous/save_btn.html' %}
+        {% include 'utils/miscellaneous/cancel_btn.html' %}
+      </div>
+
+    </div>
+  </div>
+</div>

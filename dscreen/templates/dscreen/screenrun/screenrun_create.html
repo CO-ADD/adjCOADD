@@ -1,4 +1,3 @@
-<div class="modal-dialog modal-lg">
   {% url 'screenrun_create' as createurl %}
-  {% include 'modal/createModel_modal.html' with title='Create ScreenRun' urlname=createurl %}
-</div>
+  {% include 'modal/createModel_modalform.html' with create_model='ScreenRun' urlname=createurl form_id='Create ScreenRun' %}
+  

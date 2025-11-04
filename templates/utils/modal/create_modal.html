@@ -41,6 +41,7 @@
     ><i class="{% if create_object %} bi bi-file-earmark-plus {% else %} bi bi-file-earmark-plus text-muted {% endif %}" ></i>
   </a>
 {% endif %}
+
 <div
   id="{{create_objectModal}}"
   class="modal fade"
@@ -48,6 +49,7 @@
   data-bs-backdrop="static"
 ></div>
 
+<!-- loadModal = (modalId, triggerElementSelector, url)  -->
 <script>
   $(document).ready(function () {
     const csrftoken = getCookie("csrftoken");
@@ -57,7 +59,7 @@
     loadModal("#createOrganismModal", "#createOrganism","{% url 'org_create'%}");
     loadModal("#createCellModal", "#createCell","{% url 'cell_create'%}");
     loadModal("#createDrugModal", "#createDrug", "{% url 'drug_create'%}");
-    loadModal("#createScreenRunModal", "#createScreenRun", "{% url 'screenrun_create'%}");
+  //  loadModal("#createScreenRunModal", "#createScreenRun", "{% url 'screenrun_create'%}");
   //  loadModal("#createGeneModal", "#createGene", "{% url 'gene_create'%}");
   //  loadModal("#createSequenceModal","#createSequence","{% url 'genomeseq_create'%}");
   });

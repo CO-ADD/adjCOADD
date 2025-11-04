@@ -83,7 +83,8 @@ def ScreenRun_CreateView(req):
         else:
             messages.warning(req, form.errors)
             return redirect(req.META['HTTP_REFERER'])          
-    return render(req, 'dscreen/screenrun/screenrun_create.html', { 'form':form, }) 
+    #return render(req, 'dscreen/screenrun/screenrun_create.html', { 'form':form, }) 
+    return render(req, 'modal/createModel_partial_modal.html', { 'form':form, 'urlname':'screenrun_create'}) 
 
 # -----------------------------------------------------------------
 @login_required

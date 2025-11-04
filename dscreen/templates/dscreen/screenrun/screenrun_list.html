@@ -5,8 +5,11 @@
 
 
 <div class="d-flex flex-row vh-100">
-  {% url 'pivoted-table' app_model='dscreen-Screen_Run' as pivot_url%}
-  {% include 'grid/base/sidebar_lists.html' with list_url='screenrun_list' card_url='' create_object='createScreenRun' create_objectModal='createScreenRunModal' pivot_url='' %}
+  {% comment %} 
+    {% url 'pivoted-table' app_model='dscreen-Screen_Run' as pivot_url%}
+  {% endcomment %}
+
+  {% include 'grid/base/sidebar_lists.html' with list_url='screenrun_list' card_url='' create_model='ScreenRun' create_url='screenrun_create' pivot_url='' %}
   <!-- Sidebar View -->
   {% include "utils/sidebar.html" %}
   

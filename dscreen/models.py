@@ -70,9 +70,9 @@ class Screen_Run(AuditModel):
 
     VIEW_GROUPS = [
         ['run_type','run_status','run_name','run_project','run_date'],
-        ['run_conditions','assay_note','run_issues','process_status'],
-        ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_testplates_valid','n_qc','n_seq'],
-        ['screen_date','n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic',]
+        ['run_conditions','assay_note','run_issues'],
+#        ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_testplates_valid','n_qc','n_seq'],
+#        ['screen_date','n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic',]
     ]
 
 

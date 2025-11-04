@@ -1,0 +1,20 @@
+
+<form  
+    hx-post="{% url urlname %} "
+    hx-target="#modal-body"
+    hx-swap="innerHTML"
+    >
+    {% csrf_token %}
+
+    <!-- Default Create Model Form Template  -->
+    <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+    {% for field in form.visible_fields%}
+        <div class="col django-form-table">
+        <label>{{field.label}}</label>
+        <p>{{field | safe}}</p>
+        <span class="badge bg-info text-light">{{field.help_text}}</span>
+        <span class="badge bg-info text-danger">{{field.errors}}</span>
+        </div>
+    {% endfor %}
+    </div>
+</form>

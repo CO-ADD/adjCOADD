@@ -1,0 +1,21 @@
+
+<div class="modal fade" id="create{{create_model}}_modal" tabindex="-1">
+<div class="modal-dialog">
+    <div class="modal-content" id="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-title"> New {{create_model}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body" id="modal-body"> 
+        <!-- HTMX will load content here -->
+      </div>
+
+      <div class="modal-footer">
+        {% include 'utils/miscellaneous/save_btn.html' %}
+        {% include 'utils/miscellaneous/cancel_btn.html' %}
+      </div>
+
+    </div>
+</div>
+</div>

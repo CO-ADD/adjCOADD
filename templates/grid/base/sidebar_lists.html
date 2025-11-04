@@ -1,7 +1,15 @@
+
+<!-- 
+  list_url
+  card_url
+  pivot_url
+  create_url, create_model
+-->
+
 <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
   <div class="d-flex flex-column p-0">
 
-    <!-- Filter Show Switch -->
+    <!-- Filter Show Switch via filter_toggle.js -->
     <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="Filter">
       <i class="bi bi-funnel fs-5"></i>
     </a>
@@ -12,6 +20,46 @@
       data-bs-toggle="tooltip" data-bs-placement="right"
       title="Table View">
       <i class="{% if list_url %} fa-solid fa-table-list fs-5 {% else %} fa-solid fa-table-list fs-5 text-muted{% endif %}"></i></a>
+
+    <!-- Card View {card_url}--> 
+    <a href="{% if card_url %} {% url card_url %} {% else %} # {% endif %}" 
+      class=" {% if card_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Card View"> 
+      <i class="{% if card_url %} fa-solid fa-grip fs-5  {% else %} fa-solid fa-grip fs-5 text-muted{% endif %}"></i>
+    </a>
+    
+    <!-- Export View {export_url} --> 
+    <a href="{% if export_url %} {% url export_url %} {% else %} # {% endif %}"
+      class="{% if export_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Export Table"  target="_blank">
+      <i class="bi bi-file-earmark-spreadsheet fs-5"></i>
+    </a>
+   
+    <!-- Pivot View {pivot_url} --> 
+    <a href="{% if pivot_url %} {{pivot_url}} {% else %} # {% endif %}" 
+      class="{% if pivot_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Pivot Table"  target="_blank">
+      <i class="bi bi-file-ppt fs-5"></i>
+    </a>
+
+    <!-- Create Model HTMX-Modal {create_model, create_url} -->
+    <a id="{{create_model}}"
+        class="{% if create_model %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}"
+        hx-get="{% url create_url %}"
+        hx-target="#modal-body"
+        hx-trigger="click"
+        hx-swap="innerHTML"
+        data-bs-toggle="modal"
+        data-bs-target="#create{{create_model}}_modal"
+        data-bs-placement="right"
+        title="Add New {{create_model}}">
+      <i class="{% if create_model %} bi bi-file-earmark-plus {% else %} bi bi-file-earmark-plus text-muted {% endif %}" ></i>
+    </a>
+    <!-- Empty modal container -->
+    {% include 'modal/createModel_base_modal.html' with create_model=create_model %}
 
   </div>  
 </div>
