@@ -126,7 +126,7 @@ class Cell(AuditModel):
     #           CellNo 
     # Output:   Cell_ID as string like GN_0001 
     #
-        return(f"CL{CELL_SEP}{CellNo:04d}")
+        return(f"CL{CELLID_SEP}{CellNo:04d}")
 
     #------------------------------------------------
     @classmethod
@@ -207,7 +207,6 @@ class Cell_Batch(AuditModel):
     FORM_GROUPS = {
        'Group1': ["batch_id", "batch_notes", "previous_batch_id", "passage_number", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
        }
-    #SEP = '_'
 
     cellbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "CellBatch ID")
     cell_id = models.ForeignKey(Cell, null=False, blank=False, verbose_name = "Cell ID", on_delete=models.DO_NOTHING,
@@ -309,7 +308,7 @@ class Cell_Batch(AuditModel):
                 super(Cell_Batch,self).save(*args, **kwargs)
         else:
             # confirms Batch_ID from CellBatchID
-            self.batch_id = str(self.cellbatch_id).replace(str(self.cell_id.cell_id),"").split(ORGBATCH_SEP)[1]
+            self.batch_id = str(self.cellbatch_id).replace(str(self.cell_id.cell_id),"").split(CELLBATCH_SEP)[1]
             super(Cell_Batch,self).save(*args, **kwargs)
             #print(f"[CellBatch.save]: {self.cellbatch_id}")
         

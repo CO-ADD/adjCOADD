@@ -247,7 +247,7 @@ class Organism(AuditModel):
     #           OrganismNo 
     # Output:   Oragnism_ID as string like GN_0001 
     #
-        return(f"{OrganimClass}{ORGANSIM_SEP}{OrganismNo:04d}")
+        return(f"{OrganimClass}{ORGID_SEP}{OrganismNo:04d}")
 
     #------------------------------------------------
     @classmethod
@@ -315,7 +315,6 @@ class Organism_Batch(AuditModel):
     FORM_GROUPS = {
        'Group1': ["batch_id", "batch_notes", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
        }
-    #SEP = '_'
 
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 

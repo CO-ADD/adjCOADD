@@ -16,22 +16,24 @@ from django.core.validators import RegexValidator
 # Concentrations:  models.DecimalField(max_digits=12, decimal_places=4)
 #
 
+ID_SEP = '_'
+BATCH_SEP = '.'
 
 
 # -dOrganism Settings ---------------------------------------------------
 ORGANISM_CLASSES = ['GN','GP','MB','FG']
-ORGANSIM_SEP = "_"
+ORGID_SEP = "_"
 ORGBATCH_SEP = "_"
 
 # -dCell Settings 
-CELL_CLASSES = ['MA']
-CELL_SEP = "_"
+CELL_CLASSES = ['CL']
+CELLID_SEP = "_"
 CELLBATCH_SEP = "_"
 
 # -dPeptide Settings 
 PEPTIDE_CLASSES = ['NB','MAB','PEP']
-PEPTIDE_SEP = "_"
-PEPBATCH_SEP = "_"
+PEPID_SEP = "_"
+PEPBATCH_SEP = "."
 
 # -dChem Settings ---------------------------------------------------
 SAMPLE_SEP = "_"

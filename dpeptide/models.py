@@ -156,7 +156,7 @@ class Peptide(AuditModel):
     #
     # Output:   Peptide_ID as string like MAB_0001, PEP_0001, NB_0001 
     #
-        return(f"{PeptidClass}{PEPTIDE_SEP}{PeptideNo:04d}")
+        return(f"{PeptidClass}{PEPID_SEP}{PeptideNo:04d}")
 
 
     #------------------------------------------------
@@ -271,7 +271,7 @@ class Peptide_Batch(AuditModel):
     @classmethod
     # Formats PeptideID:str,BatchID:str -> PepBatchID:str
     def str_PepBatchID(self,PeptideID:str,BatchID:str) -> str:
-        return(f"{PeptideID}{PEPTIDE_SEP}{BatchID}")
+        return(f"{PeptideID}{PEPBATCH_SEP}{BatchID}")
 
     #------------------------------------------------
     def find_Next_BatchID(self, PeptideID:str, BatchID:str=None) -> str:
@@ -326,7 +326,7 @@ class Peptide_Batch(AuditModel):
                 super(Peptide_Batch,self).save(*args, **kwargs)
         else:
             # confirms Batch_ID from PepBatchID
-            self.batch_id = str(self.pepbatch_id).replace(str(self.peptide_id.peptide_id),"").split(ORGBATCH_SEP)[1]
+            self.batch_id = str(self.pepbatch_id).replace(str(self.peptide_id.peptide_id),"").split(PEPBATCH_SEP)[1]
             super(Peptide_Batch,self).save(*args, **kwargs)
             #print(f"[PepBatch.save]: {self.pepbatch_id}")
         

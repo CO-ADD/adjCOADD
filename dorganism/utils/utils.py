@@ -13,7 +13,7 @@ def reformat_OrganismID(OrgID):
 #-----------------------------------------------------------------------------------
 def reformat_OrgBatchID(OrgBatchID):
     """
-    Reformat OrganismBatch ID from old GN_001:02 (3 digits,':') to new GN_0001_02 (3 digits,'_') 
+    Reformat OrganismBatch ID from old GN_001:02 (3 digits,':') to new GN_0001_02 (3 digits,'.') 
     """
     xStr = OrgBatchID.split(":")
     #print(xStr)
