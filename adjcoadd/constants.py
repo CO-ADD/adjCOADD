@@ -19,7 +19,6 @@ from django.core.validators import RegexValidator
 ID_SEP = '_'
 BATCH_SEP = '.'
 
-
 # -dOrganism Settings ---------------------------------------------------
 ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGID_SEP = "_"
@@ -34,6 +33,10 @@ CELLBATCH_SEP = "_"
 PEPTIDE_CLASSES = ['NB','MAB','PEP']
 PEPID_SEP = "_"
 PEPBATCH_SEP = "."
+
+# -dGene Settings 
+SEQID_SEP = "_"
+SEQRUN_SEP = "_"
 
 # -dChem Settings ---------------------------------------------------
 SAMPLE_SEP = "_"

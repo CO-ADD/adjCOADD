@@ -66,25 +66,37 @@ def ScreenRun_CreateView(req):
     '''  
     kwargs={}
     kwargs['user']=req.user
+    message={'status':'new','text':''}
+
     form=ScreenRun_CreateForm()
+    
+    #print(f" [ScreenRun_CreateView] {req.method} {req.POST}")
     if req.method=='POST':
         form=ScreenRun_CreateForm(req.POST) 
         if form.is_valid():
+            #print(f" [ScreenRun_CreateView] Valid Form")
             try:
                 with transaction.atomic(using='dscreen'):
-                    instance=form.save(commit=False) 
-                    instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Screen Run','Completed')
-                    return redirect(req.META['HTTP_REFERER'])
+                    instance=form.save(commit=False)
+                    instance.save(**kwargs) 
+                    _newid = str(instance.run_id)
+                    print(f" [ScreenRun_CreateView] Saved:  [{_newid}]")            
+                    message={'status':'saved','text':f'Screen Run [{_newid}] Created'}
+                    return render(req, 'modal/createModel_partial_modal.html', {'message':message})
 
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-                    return redirect(req.META['HTTP_REFERER'])                
+                    message={'status':'error','text':f'IntegrityError [{err}]'}
+                    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'screenrun_create'})
+                    #return redirect(req.META['HTTP_REFERER'])                 
         else:
             messages.warning(req, form.errors)
-            return redirect(req.META['HTTP_REFERER'])          
+            message={'status':'new','text':'Input Error'}
+            return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'screenrun_create'})
+            #return redirect(req.META['HTTP_REFERER'])          
+
     #return render(req, 'dscreen/screenrun/screenrun_create.html', { 'form':form, }) 
-    return render(req, 'modal/createModel_partial_modal.html', { 'form':form, 'urlname':'screenrun_create'}) 
+    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'screenrun_create'}) 
 
 # -----------------------------------------------------------------
 @login_required

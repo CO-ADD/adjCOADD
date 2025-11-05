@@ -163,7 +163,7 @@ td {
 }
 
 .bg-info {
-  background-color: var(--info) !important;
+  background-color: var(--brand-bg) !important;
 }
 
 .text-info,

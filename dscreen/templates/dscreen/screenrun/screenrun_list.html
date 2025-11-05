@@ -9,11 +9,11 @@
     {% url 'pivoted-table' app_model='dscreen-Screen_Run' as pivot_url%}
   {% endcomment %}
 
+  <!-- Sidebar View/Buttons -->
   {% include 'grid/base/sidebar_lists.html' with list_url='screenrun_list' card_url='' create_model='ScreenRun' create_url='screenrun_create' pivot_url='' %}
-  <!-- Sidebar View -->
+  <!-- Filterbar View/Filter -->
   {% include "utils/sidebar.html" %}
   
-
   <!-- Main View -->
   <div class="d-flex flex-column w-100"> 
 

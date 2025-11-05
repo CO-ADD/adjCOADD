@@ -50,16 +50,16 @@
         class="{% if create_model %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}"
         hx-get="{% url create_url %}"
         hx-target="#modal-body"
-        hx-trigger="click"
         hx-swap="innerHTML"
         data-bs-toggle="modal"
         data-bs-target="#create{{create_model}}_modal"
         data-bs-placement="right"
+        data-bs-backdrop="static"
         title="Add New {{create_model}}">
       <i class="{% if create_model %} bi bi-file-earmark-plus {% else %} bi bi-file-earmark-plus text-muted {% endif %}" ></i>
     </a>
     <!-- Empty modal container -->
-    {% include 'modal/createModel_base_modal.html' with create_model=create_model %}
+    {% include 'modal/createModel_base_modal.html' with create_model=create_model create_url=create_url %}
 
   </div>  
 </div>

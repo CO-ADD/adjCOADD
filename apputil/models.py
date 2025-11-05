@@ -606,8 +606,11 @@ class Dictionary(AuditModel):
         return f"{self.dict_value}|{self.dict_desc}"
         #return f"[{self.dict_class}] {self.dict_value} ({self.dict_desc})"
 
+    # def strtml(self)-> str:
+    #     return f"{self.dict_value} <small class='not-visible'> {self.dict_desc} </small>"
+
     def strtml(self)-> str:
-        return f"{self.dict_value} <small class='not-visible'> {self.dict_desc} </small>"
+        return f"{self.dict_value} | {self.dict_desc}"
 
     #------------------------------------------------
     @classmethod
