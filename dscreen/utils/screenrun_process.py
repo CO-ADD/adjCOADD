@@ -8,7 +8,7 @@ from dplate.models import Labware, TestPlate, TestWell, MasterPlate
 
 from applib.plate.multimode_reader import multimodereader_xls
 #from applib.plate.masterplates import read_motherplate_prepsheet_xls
-from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS
+from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans
 from applib.plate.testplates import add_mother_to_testplate
 from applib.bio.doseresponse import process_testplate_doseresponse
 from dscreen.utils.summary import update_screenrun_summary
@@ -21,12 +21,14 @@ logger = logging.getLogger(__name__)
 
 #-----------------------------------------------------------------------------------
 def Summary_ScreenRun_Process(Request, RunID, upload=False, overwrite=False, appuser=None):
+#-----------------------------------------------------------------------------------
     djRun = Screen_Run.get(RunID)
     print(f" [ScreenRun] Update Summary [{djRun}]")
     update_screenrun_summary(djRun)
     djRun.save()
 
 
+#-----------------------------------------------------------------------------------
 def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
     """
@@ -97,6 +99,7 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
     return(valLog)
 
 
+#-----------------------------------------------------------------------------------
 def Upload_Motherplates_Process(Request, DirName, FileList, RunID=None, upload=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
     """
@@ -163,6 +166,7 @@ def Upload_Motherplates_Process(Request, DirName, FileList, RunID=None, upload=F
     valLog.select_unique()
     return(valLog)
 
+#-----------------------------------------------------------------------------------
 def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None, 
                                  upload=False, apply_mp=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
@@ -321,4 +325,35 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
         print(f"[Upload_TestplateList] No Xlsx to process in {DirName}  ")
 
     valLog.select_unique()
+    return(valLog)
+
+#-----------------------------------------------------------------------------------
+def Gen_Masterplates_Process(Request, FileList, RackFileList, RunID=None, 
+                                 generate=False, ):
+#-----------------------------------------------------------------------------------
+    
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+
+    if RackFileList:
+        nRacks = len(RackFileList)
+    else:
+        nRacks = 0
+    
+    djRun = Screen_Run.get(RunID)
+    valLog = Validation_Log("Gen_Masterplates")
+
+    logNumbers = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
+                  'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
+                  'Processed AssayData':0,'Uploaded AssayData':0,
+                  'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0, 
+                  'Empty':0}
+
+    if nRacks > 0:
+        Barcodes = get_BarcodeScans(RackFileList, valLog=valLog)
+
+    valLog.select_unique()
+    
     return(valLog)

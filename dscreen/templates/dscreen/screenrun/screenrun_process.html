@@ -5,11 +5,15 @@
     <a href="{% url 'load_readouts' pk=object.pk %}" style="color:inherit"> Upload Readouts </a>
   </button>
 
-{% comment %} 
-  <button type="button" class="btn btn-outline-success"> 
-    <a href="{% url 'screenrun_report' pk=object.pk %}" style="color:inherit"> Generate Motherplate</a>
-  </button>
-{% endcomment %}
+  {% if runtype == 'PSR' %}
+    <button type="button" class="btn btn-outline-success"> 
+      <a href="{% url 'gen_motherplates_psr' pk=object.pk %}" style="color:inherit"> Generate PSR Motherplates</a>
+    </button>
+  {% elif runtype == 'HCR' %}
+    <button type="button" class="btn btn-outline-success"> 
+      <a href="{% url 'gen_motherplates_hcr' pk=object.pk %}" style="color:inherit"> Generate HCR Motherplates</a>
+    </button>
+  {% endif %}
 
   <button type="button" class="btn btn-outline-success"> 
     <a href="{% url 'load_motherplates' pk=object.pk %}" style="color:inherit"> Upload Motherplates </a>

@@ -93,7 +93,7 @@ class FileValidator(object):
         if self.content_types:
             
             content_type = magic.from_buffer(fileobj.read(self.read_size), mime=True)
-            #print(f"[FileValidator] {content_type}")
+            # print(f" [FileValidator] [{content_type}]")
             # seek back to start so a valid file could be read
             # later without resetting the position
             fileobj.seek(0)
@@ -124,7 +124,8 @@ class FileValidator(object):
 
 # set filefield Validator
 validate_file = FileValidator(#max_size=1024 * 100, 
-                             content_types=('text/csv', 
+                             content_types=('text/csv',
+                                            'text/plain',
                                             'application/pdf',
                                             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 
                                             'image/png'))

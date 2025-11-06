@@ -36,6 +36,12 @@ class MultipleFileInput(forms.ClearableFileInput):
 class SingleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = False
 
+# class MultipleFileFolderInput(forms.Form):
+#     # This field will handle multiple files from the selected directory
+#     folder_contents = forms.FileField(
+#         widget=forms.ClearableFileInput(attrs={'webkitdirectory': True, 'multiple': True}),
+#         required=False # Make it optional if you want
+#     )
 # -----------------------------------------------------------------
 class MultipleFileField(forms.FileField):
     
@@ -66,16 +72,34 @@ class SingleFileField(forms.FileField):
         else:
             result = single_file_clean(data, initial)
         return result
+
+# -----------------------------------------------------------------
+# class SingleFolderField(forms.FileField):
+    
+#     def __init__(self, *args, **kwargs):
+#         kwargs.setdefault("widget", SingleFileInput())
+#         super().__init__(*args, **kwargs)
+       
+        
+#     def clean(self, data, initial=None):
+#         single_file_clean = super().clean
+#         if isinstance(data, (list, tuple)):
+#             result = [single_file_clean(d, initial) for d in data]
+#         else:
+#             result = single_file_clean(data, initial)
+#         return result
+
     
 # =================================================================
 # Process Step Forms
 # -----------------------------------------------------------------
 class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
-    multi_files = SingleFileField(label='Upload File', 
+    multi_files = SingleFileField(label='Select Single File', 
                                   validators=[validate_file], 
                                   required=False,
-                                  help_text="Select a single file")
+                                  #help_text="Select a single file"
+                                  )
         
     def clean(self):
         cleaned_data = super().clean()
@@ -108,10 +132,11 @@ class SelectSingleFile_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
 class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
-    multi_files = MultipleFileField(label='Upload Files', 
+    multi_files = MultipleFileField(label='Select Multiple Files ', 
                                   validators=[validate_file], 
                                   required=False,
-                                  help_text="Select one or multiple files")
+                                  #help_text="Select one or multiple files"
+                                  )
 
     def clean(self):
         cleaned_data = super().clean()
@@ -140,6 +165,48 @@ class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
             raise forms.ValidationError("No files selected")
         return cleaned_data
 
+class SelectSingleFileFolder_StepForm(WriteUserRequiredMixin, forms.Form):
+# --------------------------------------------------------------------------------------------------
+    files = SingleFileField(label='Select Single File', 
+                                  validators=[validate_file], 
+                                  required=False,
+                                  #help_text="Select a single file"
+                                  )
+
+    folder_files = MultipleFileField(label='Upload Multiple Files', 
+                                  validators=[validate_file], 
+                                  required=False,
+                                  #help_text="Select one or multiple files"
+                                  )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        uploadfiles=[]
+        # List of file fields to validate
+        file_fields = ['files','folder_files']
+        
+        # check if filelist is MultiValueDict
+        if not isinstance(self.files, MultiValueDict):
+            return cleaned_data
+        
+        for field in file_fields:
+            files = self.files.getlist(f'select_file-{field}')
+            
+            uploadfiles.extend(files)
+
+            for file in files:
+                for validator in self.fields[field].validators:
+                    try:
+                        validator(file)
+                    except ValidationError as e:
+                        self.add_error(field, f"{file.name}: {str(e)}")
+                        
+        if len(uploadfiles)<1: 
+            self.add_error('multi_files', "No file selected. Please select a file")
+            raise forms.ValidationError("No files selected")
+        
+        return cleaned_data
+    
 # --------------------------------------------------------------------------------------------------
 class Upload_StepForm(forms.Form):
 # --------------------------------------------------------------------------------------------------
@@ -152,6 +219,15 @@ class Upload_StepForm(forms.Form):
         self.fields['overwrite'].label = "Overwrite Existing Data"
         # self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
         # self.fields['overwrite'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
+
+# --------------------------------------------------------------------------------------------------
+class Generate_StepForm(forms.Form):
+# --------------------------------------------------------------------------------------------------
+    generate = forms.BooleanField(initial=False, required=False, help_text="Generate output")
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['generate'].label = "Generate requested Report/Worksheet"
 
 # --------------------------------------------------------------------------------------------------
 class Finalize_StepForm(forms.Form):

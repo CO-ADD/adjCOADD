@@ -26,14 +26,15 @@ from django import forms
 from adjcoadd.constants import *
 from dscreen.models import Screen_Run
 from dscreen.utils.screenrun_process import (Summary_ScreenRun_Process, 
-                                            Upload_ReadOuts_Process, Upload_Motherplates_Process,Upload_TestplateList_Process)
+                                            Upload_ReadOuts_Process, Upload_Motherplates_Process,Upload_TestplateList_Process,
+                                            Gen_Masterplates_Process)
 # from dsample.models import Project
 # from dplate.models import MasterPlate, TestPlate
 
 from applib.process.process_forms import Process_View
 from apputil.utils.form_wizard_tools import ImportHandler_View
 
-from applib.process.process_forms import SelectSingleFile_StepForm, Finalize_StepForm, Upload_StepForm
+from applib.process.process_forms import SelectSingleFile_StepForm, Finalize_StepForm, Upload_StepForm, Generate_StepForm, SelectSingleFileFolder_StepForm
 #from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
 
@@ -41,19 +42,18 @@ from applib.process.process_forms import SelectSingleFile_StepForm, Finalize_Ste
 class PlatePrep_SelectForm(SelectSingleFile_StepForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['multi_files'].label = 'PlatePrep Workbook'
+        self.fields['multi_files'].label = 'PlatePrep Workbook [XLSX] containing [MotherPlates, TestPlateList, Assays] sheets'
 
-        _help_text = 'XLSX Workbook containing the following Sheets: '
-        _help_text += '<li> [MotherPlates]'
-        _help_text += '<li> [TestPlateList, Assays, (HCPrep, PSPrep)]'
+        # _help_text = 'XLSX Workbook containing the following Sheets: '
+        # _help_text += '<li> [MotherPlates]'
+        # _help_text += '<li> [TestPlateList, Assays, (HCPrep, PSPrep)]'
         # _help_text += '<p> Use <a href "{% static '
         # _help_text += f"'{DOC_TEMPLATES['hc_plateprep']}'"
         # _help_text += ' %}"> PlatePrep Template</a> '
         #_help_text += f'<p> Use <a href="static/{DOC_TEMPLATES["hc_plateprep"]}">PlatePrep Template</a>'
         #_help_text += ' {% static '
-        #_help_text += f"'{DOC_TEMPLATES['hc_plateprep']}'"
-        
-        self.fields['multi_files'].help_text = mark_safe(_help_text)
+        #_help_text += f"'{DOC_TEMPLATES['hc_plateprep']}'"        
+        # self.fields['multi_files'].help_text = mark_safe(_help_text)
 
         #<a href="{% static 'django-pdf/generator/static/pdfs/nowy.pdf' %}">{{ file }}</a>
 
@@ -61,7 +61,7 @@ class PlatePrep_SelectForm(SelectSingleFile_StepForm):
 class Readout_SelectForm(SelectSingleFile_StepForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['multi_files'].label = 'Xlsx file from Tecan/BioTek readers'
+        self.fields['multi_files'].label = 'Tecan/BioTek reader [XLSX] files'
 
 
 # --------------------------------------------------------------------------------------------------
@@ -212,3 +212,55 @@ class Load_TestplateList_ProcessView(Process_View):
 
     def file_process_finalizer(self, request, pk):
         Summary_ScreenRun_Process(request, pk)
+
+
+# --------------------------------------------------------------------------------------------------
+class PlatePrep_Racks_SelectForm(SelectSingleFileFolder_StepForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['files'].label = 'PlatePrep Workbook [XLSX] containing [HCPrep, PSPrep] sheets'
+        self.fields['folder_files'].label = 'TubeRack Scan [CSV] Files '
+
+        #<a href="{% static 'django-pdf/generator/static/pdfs/nowy.pdf' %}">{{ file }}</a>
+
+# --------------------------------------------------------------------------------------------------
+class Gen_Motherplates_PSR_ProcessView(Process_View):
+    process_name = 'Gen_Motherplates_PSR'
+    model = Screen_Run
+
+    form_list = [
+        ('select_file', PlatePrep_Racks_SelectForm),
+        ('upload', Generate_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+
+    template_name = 'dscreen/screenrun_process/gen_motherplates_psr.html'
+
+    def file_process_handler(self, request, *args, **kwargs):    
+        self.generate = False
+        # self.only_dr = False
+                
+        # Set Form Data        
+        form_data=kwargs.get('form_data', None)
+        if 'generate' in form_data:
+            self.generate = form_data['generate']
+        print(" [Gen_MotherPlates_PSR.file_process_handler]")
+        valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
+                                           generate=self.generate,
+                                           appuser=request.user)
+        return(valLog)
+# --------------------------------------------------------------------------------------------------
+class Gen_Motherplates_HCR_ProcessView(Process_View):
+    process_name = 'Gen_Motherplates_HCR'
+    model = Screen_Run
+
+    form_list = [
+        ('select_file', PlatePrep_Racks_SelectForm),
+        ('upload', Generate_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+
+    template_name = 'dscreen/screenrun_process/gen_motherplates_hcr.html'
+
+    def file_process_handler(self, request, *args, **kwargs):    
+        print(" [Gen_MotherPlates_HCR.file_process_handler]")

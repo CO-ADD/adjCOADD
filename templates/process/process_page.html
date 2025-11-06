@@ -41,6 +41,7 @@
               {% if field.errors %}
                 <div class="row p-1 text-start">{{ field.errors }} </div>
               {% endif %}
+              <br>
             {% endfor %}
           </div>
  
@@ -78,7 +79,7 @@
           <button class="btn-active" name="wizard_goto_step" type="submit"
             value="{{ wizard.steps.prev }}"> Previous</button>
         {% else %}
-          <button class="btn-disabled" disabled> Cancel</button> 
+          <button class="btn-active" href="{{reset_url}}?reset">Cancel</button>  
           <button class="btn-disabled" disabled> Previous</button>
         {% endif %}
 

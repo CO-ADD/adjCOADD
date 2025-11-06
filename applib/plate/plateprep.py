@@ -54,6 +54,74 @@ def get_PlatePrep_xlsx(xlsFile, Sheets=[], FillNA='-', **kwargs):
         
     return(PlatePrep_Sheets)
 
+
+# --------------------------------------------------------------------------------
+def get_BarcodeScans(csvFiles, **kwargs):
+# --------------------------------------------------------------------------------
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
+    Racks = {}
+    for rack_file in csvFiles:
+        _n_tubes = 0
+        _n_cmpds = 0
+        _rack_df = pd.read_csv(rack_file)
+        _rack_df.columns =  [c.upper() for c in _rack_df.columns]
+        _rack_id = str(_rack_df['RACKID'].unique()[0])
+
+        #_rack_df=_rack_df.apply(apply_get_barcode, axis=1)
+        #print(f" [Rack] {_rack_id} from {rack_file}")
+
+        _rack = MasterPlate.new(_rack_id,96,'Storage',WellData=True,NoCheck=True)
+        for idx,row in _rack_df.iterrows():
+            if row['BARCODE'] != 'NO READ':
+                _n_tubes += 1
+                _well = _rack.get_well(row['WELLID'])
+                _well.barcode = row['BARCODE']
+
+                _tube = MasterWell.get(None,None,row['BARCODE'])
+                if _tube:
+                    _n_cmpds += 1
+                    _well.cmpbatch_id = _tube.cmpbatch_id
+                else:
+                    if valLog:
+                        valLog.add_error('Unknown Barcode',row['BARCODE'],"Barcode not found","Add Compound/Barcode to Database" )
+                    _well.cmpbatch_id = None
+
+        Racks[_rack_id] = _rack
+    return(Racks)
+
+# --------------------------------------------------------------------------------
+def gen_Motherplates_PSPrep(xlFile, RackDir, prefix=None, **kwargs):
+# --------------------------------------------------------------------------------
+
+    PREP_SHEET = 'PSPrep'
+    QUADRANTS = {'A1':(0,0),'B1':(1,0),'A2':(0,1),'B2':(1,1)}
+
+    MP_Prep_Xlsx = 'MotherPlate_from_PSPrep.xlsx'
+
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
+    _prepSheets = get_PlatePrep_xlsx(xlFile,Sheets=[PREP_SHEET],FillNA=None) 
+    if _prepSheets[PREP_SHEET] is not None:
+        xDF = _prepSheets[PREP_SHEET]
+
+        MPs = {}
+        for idx,row in xDF.iterrows():
+            print(row)
+            if row['motherplateid'] not in MPs:
+                MPs[row['motherplateid']]= MasterPlate.new(row['motherplateid'],384,'Mother',WellData=True)
+
+            _setid = 1
+
+
+# --------------------------------------------------------------------------------
+def gen_Motherplates_HCPrep():
+# --------------------------------------------------------------------------------
+    pass
+
+
 # --------------------------------------------------------------------------------
 def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
 # --------------------------------------------------------------------------------

@@ -120,7 +120,8 @@ def ScreenRun_DetailView(req, pk):
 
     context["object"]=_object
     context["form"]=form
-
+    context["runtype"] = str(_object.run_type)
+    
     if str(_object.run_type) in ['HCR','PSR']:
         context["process"] = {"type":"Screening"}
         context["process_status"] = _object.process_status
@@ -190,7 +191,7 @@ def ScreenRun_UpdateView(req, pk):
     context={}
     context["object"]=_object
     context["form"]=form
-   
+
     return render(req, "dscreen/screenrun/screenrun_update.html", context)
 
 # -----------------------------------------------------------------
