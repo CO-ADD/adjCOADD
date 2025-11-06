@@ -166,6 +166,7 @@ class TestPlate_UploadForm(forms.Form):
 class Load_TestplateList_ProcessView(Process_View):
     process_name = 'Upload_TestplatesList'
     model = Screen_Run
+    progress = [0,0]
 
     form_list = [
         ('select_file', PlatePrep_SelectForm),

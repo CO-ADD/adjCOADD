@@ -1,9 +1,13 @@
 <div class="m-2" style="height: fit-content;">
 {% comment %}   
   <h2 class="m-5 text-center">{{data_model}} Data Import for <b>{{pk}}</b> </h2>
+
+  To add to <form ...>
+  hx-on::submit="htmx.trigger('#progress-div', 'startProgress')"
 {% endcomment %}
 
-<form id="processForm" method="post" enctype="multipart/form-data" class="row m-5 text-center">
+<form id="processForm" method="post" enctype="multipart/form-data" class="row m-5 text-center"
+  >
     {% csrf_token %}
 
     {{ wizard.management_form }}
@@ -38,30 +42,8 @@
                 <div class="row p-1 text-start">{{ field.errors }} </div>
               {% endif %}
             {% endfor %}
-{% comment %} 
-
-            <table>
-              <tbody>
-                <tr>
-                  <td style="text-align: left; vertical-align: middle;">
-                    {% for field in wizard.form %}
-                      <div> <strong>{{ field.label_tag }}</strong> </div>
-                      <div> {{ field }} </div>
-                      <div>{{ field.help_text }} </div>
-                      {% if field.errors %}
-                        {{ field.errors }}
-                      {% endif %}
-
-                    {% endfor %}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-{% endcomment %}
-
-</div>
-        {% comment %} {% endif %} {% endcomment %}
-
+          </div>
+ 
         <!-- Step 1 Upload -->
         {% elif wizard.steps.current == 'upload' %}
           <div class="p-3 m-auto">
@@ -72,14 +54,16 @@
                     <td style="text-align: right; vertical-align: middle;"> <strong>{{ field.label_tag }}</strong></td>
                     <td style="text-align: center; vertical-align: middle;">{{ field }}</td>
                     <td style="text-align: left; vertical-align: middle;">{{ field.help_text }} </td>
-                {% comment %} {% if field.errors %}
-                  <div class="row p-1 text-start">{{ field.errors }} </div>
-                {% endif %} {% endcomment %}
+                    {% comment %} {% if field.errors %}
+                      <div class="row p-1 text-start">{{ field.errors }} </div>
+                    {% endif %} {% endcomment %}
                   </tr>
-            {% endfor %}
+                {% endfor %}
               </tbody>
             </table>
           </div>        
+
+        <!-- Step 2 Finalize -->
         {% elif wizard.steps.current == 'finalize' %}
           <div class="p-3 m-auto">
             Finalize Upload
@@ -105,33 +89,25 @@
             <button class="btn-disabled" disabled> Next</button>
           {% endif %}
         {% elif wizard.steps.next %}
-          <button class="btn-active" type="submit" value="Click to start">Next</button>
+          <button class="btn-active" 
+            type="submit" 
+            value="Click to start"
+        {% comment %}
+            -- "Works but does not submit"              
+            hx-get="{% url 'start_progress' %}"
+            hx-target="#progress-content"
+            hx-swap="innerHTML"
+            data-bs-toggle="modal" 
+            data-bs-target="#progress-modal"
+        {% endcomment %}
+          >Next</button>
         {% else %}
           <button class="btn-active" type="submit" value="Finalize">Finalize</button>
         {% endif %}
-
-
-      {% comment %} <div class="row bg-transparent">
-        {% if wizard.steps.current == 'select_file' %}
-          <div class="col"> <button class="btn-disabled" disabled>Select File</button> </div>
-          <div class="col"> <button class="btn-active" type="submit" value="Click to start">Validate Data</button> </div>
-          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Reset Form</button> </div>
-          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Cancel</button> </div>
-        {% elif wizard.steps.current == 'upload_file' %}
-          <div class="col"> <button class="btn-active" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Select File</button> </div>
-          <div class="col"> <button class="btn-active" type="submit" value="Next">Upload Data</button> </div>
-          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Reset Form</button> </div>
-          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Cancel</button> </div>
-        {% elif wizard.steps.current == 'finalize' %}
-          <div class="col"> <button class="btn-active" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Select File</button> </div>
-          <div class="col"> <button class="btn-disabled" disabled>Upload Data</button> </div>
-          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Reset Form</button> </div>
-          <div class="col"> <button class="btn-active" href="{{reset_url}}?reset">Finish</button> </div>
-        {% endif %} 
-      </div> {% endcomment %}
       
     </div>
 
+    <!-- Message Box -->
     <div class="col-md-7 border border-2 rounded" style="position: relative">
       <span class="labeltext px-4 py-1"> Message </span>
 
@@ -159,5 +135,25 @@
 
     </div>
   </form>
+
+  <!-- Progress -->
+  {% comment %}  
+  {% include 'modal/progress_base_modal.html' %}
+  <div id="progress-div"
+      hx-get="{% url 'start_progress' %}"
+      hx-trigger="startProgress"
+      hx-swap="innerHTML"
+      hx-target="#progress-content"
+      data-bs-toggle="modal" 
+      data-bs-target="#progress-modal"
+    >
+    <!-- 
+    <div class="progress">
+      <div class="progress-bar" style="width:0%">0%</div>
+    </div>
+    -->
+  </div>
+  {% endcomment %}
+
 </div>
 

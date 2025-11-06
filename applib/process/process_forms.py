@@ -14,6 +14,18 @@ from apputil.utils.files_upload import validate_file, file_location, OverwriteSt
 from applib.logging.validation_log import Validation_Log
 
 
+
+# =================================================================
+# Progress Utilities
+# -----------------------------------------------------------------
+def Start_Progress(request):
+    return render(request, 'modal/progress_partial_modal.html')
+
+def Update_Progress(request,):
+    current_progress = 50 # Replace with actual logic
+    total_progress = 100
+    return render(request, 'modal/progress_partial_modal.html', {'current': current_progress, 'total':total_progress})
+
 # =================================================================
 # Utilities Forms
 # -----------------------------------------------------------------

@@ -1,0 +1,22 @@
+<!-- my_app/progress_modal_content.html -->
+  <div class="modal-header">
+    <h5 class="modal-title">Processing...</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+    <div class="modal-body">
+      <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <p>Please wait while your request is processed.</p>
+
+        {% comment %} 
+        <!-- Optionally, trigger the actual task here with hx-trigger="load" -->
+        <div hx-get="{% url 'my_app:get_progress_updates' %}"
+             hx-trigger="load delay:500ms"
+             hx-target="#progress-modal .progress-bar"
+             hx-swap="outerHTML"
+             hx-indicator="#progress-modal .progress-bar">
+        </div>
+        {% endcomment %}
+
+    </div>

@@ -1,9 +1,11 @@
 
 <!-- 
+  model_name
   list_url
   card_url
   pivot_url
-  create_url, create_model
+  create_url, 
+  import_url
 -->
 
 <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
@@ -46,20 +48,28 @@
     </a>
 
     <!-- Create Model HTMX-Modal {create_model, create_url} -->
-    <a id="{{create_model}}"
-        class="{% if create_model %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}"
+    <a id="{{momodel_namedel}}"
+        class="{% if create_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}"
         hx-get="{% url create_url %}"
         hx-target="#modal-body"
         hx-swap="innerHTML"
         data-bs-toggle="modal"
-        data-bs-target="#create{{create_model}}_modal"
+        data-bs-target="#create{{model_name}}_modal"
         data-bs-placement="right"
         data-bs-backdrop="static"
-        title="Add New {{create_model}}">
-      <i class="{% if create_model %} bi bi-file-earmark-plus {% else %} bi bi-file-earmark-plus text-muted {% endif %}" ></i>
+        title="Add New {{model_name}}">
+      <i class="{% if create_url %} bi bi-clipboard2-plus-fill {% else %} bi bi-clipboard2-plus-fill text-muted {% endif %}" ></i>
     </a>
     <!-- Empty modal container -->
-    {% include 'modal/createModel_base_modal.html' with create_model=create_model create_url=create_url %}
+    {% include 'modal/createModel_base_modal.html' with create_model=model_name create_url=create_url %}
+
+    <!-- Import Model {import_url} -->
+    <a href="{% if import_url %} {% url import_url %} {% else %} # {% endif %}" 
+      class=" {% if import_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Import New {{model_name}}"> 
+      <i class="{% if import_url %} bi bi-filetype-xlsx fs-5  {% else %} bi bi-filetype-xlsx fs-5 text-muted {% endif %}"></i>
+    </a>
 
   </div>  
 </div>

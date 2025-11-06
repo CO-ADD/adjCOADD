@@ -10,6 +10,7 @@ from apputil.views import (index, userprofile,
 
 from apputil.utils.flex_pivottable import flex_pivottable
 from apputil.test_app import Test_View
+from applib.process.process_forms import  Start_Progress
 
 urlpatterns = [
     path('index/', index, name="index"),
@@ -31,6 +32,8 @@ urlpatterns = [
     # path('img-delete/<str:pk>', ImageDeleteView.as_view(), name='org_img_delete'),
     path('doc-delete/<str:pk>', DocDeleteView.as_view(), name='org_doc_delete'),
     # path('data-visual/<str:process_name>', Data_visualView.as_view(), name="data-visual"),
+
+    path('progress/', Start_Progress, name='start_progress'),
     
     path('exportData/', DataExportView.as_view(), name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
