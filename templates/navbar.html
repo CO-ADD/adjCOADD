@@ -236,12 +236,12 @@
                   Profile <span class="text-info">[{{ user.permission }}]</span>
               </a>
               <a class="dropdown-item" 
-                hx-get="{% url 'info'%}"
-                hx-target="#modal-body"
+                hx-get="{% url 'system_info' %}"
+                hx-target="#info-body"
                 hx-swap="innerHTML"
                 data-bs-toggle="modal"
                 data-bs-target="#infoModal">
-                About </span>
+                About
               </a>
 
               <!-- <a href="{%url 'userprofile' pk=user.pk%}">UserDashboard</a> -->

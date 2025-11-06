@@ -40,7 +40,7 @@ from apputil.utils.validation_log import Validation_Log
 #=================================================================================================
 # System Info - Home
 #=================================================================================================
-def InfoView(req):
+def SystemInfoView(req):
     info_data={'version': settings.VERSION,
                'database':settings.HOST_NAME,
                'appuser':'user'}

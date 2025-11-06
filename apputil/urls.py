@@ -7,7 +7,7 @@ from apputil.views import (index, userprofile,
                            AppLog_ListView, 
                            Dictionary_ListView, Dictionary_CreateView,updateDictionary, removeDictionary,
                            DataExportView, Importhandler_apputils, CreatedocumentView, DocDeleteView,
-                           InfoView)
+                           SystemInfoView)
 
 from apputil.utils.flex_pivottable import flex_pivottable
 from apputil.test_app import Test_View
@@ -35,7 +35,7 @@ urlpatterns = [
     # path('data-visual/<str:process_name>', Data_visualView.as_view(), name="data-visual"),
 
     path('progress/', Start_Progress, name='start_progress'),
-    path('info/', InfoView, name='info'),
+    path('info/', SystemInfoView, name='system_info'),
     
     path('exportData/', DataExportView.as_view(), name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),
