@@ -14,6 +14,7 @@ from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from django.db import transaction, IntegrityError
+from django.conf import settings
 
 #from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
@@ -35,6 +36,15 @@ from apputil.utils.data_style import convert_heatmap
 from apputil.utils.form_wizard_tools import SelectMultipleFiles_StepForm,SelectSingleFile_StepForm
 from apputil.utils.validation_log import Validation_Log
 
+
+#=================================================================================================
+# System Info - Home
+#=================================================================================================
+def InfoView(req):
+    info_data={'version': settings.VERSION,
+               'database':settings.HOST_NAME,
+               'appuser':'user'}
+    return render(req, "modal/systeminfo_partial_modal.html", info_data)
 
 #=================================================================================================
 # Landing Page - Home
