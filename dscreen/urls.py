@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_DetailView,ScreenRun_UpdateView, ScreenRun_RemoveView, ScreenRun_ReportView,                         
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
-                            Assay_ListView, Assay_CreateView,
+                            Assay_ListView, Assay_CreateView, Assay_UpdateView,
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
                     ) 
 from dscreen.process_views import (Load_Readouts_ProcessView, Load_TestplateList_ProcessView, Load_Motherplates_ProcessView,
@@ -30,7 +30,7 @@ urlpatterns = [
     path('assay_list', Assay_ListView.as_view(), name="assay_list"),
     # path('screenrun/<str:pk>', Assay_DetailView, name="assay_detail"),
     path('createAssay/', Assay_CreateView, name="assay_create"),
-    #path('updateAssay/<str:pk>', Assay_UpdateView, name="assay_update"),
+    path('updateAssay/<str:pk>', Assay_UpdateView, name="assay_update"),
     # path('deleteAssay/<str:pk>', Assay_RemoveView.as_view(), name="sassay_delete"),
 ]
 

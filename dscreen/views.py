@@ -28,7 +28,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 from dscreen.models import Screen_Run, Assay
 #from dsummary.models import Summary_ScreenRun 
 from dscreen.forms import (ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm,
-                           Assay_Filter, Assay_CreateForm)
+                           Assay_Filter, Assay_CreateForm, Assay_UpdateForm)
 
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dscreen.utils.summary import update_screenrun_summary, get_projects_screenrun
@@ -286,3 +286,43 @@ def Assay_CreateView(req):
             #return redirect(req.META['HTTP_REFERER'])          
 
     return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'assay_create'}) 
+
+# -----------------------------------------------------------------
+@login_required
+def Assay_UpdateView(req, pk):
+
+    _object=get_object_or_404(Assay, assay_id=pk)
+
+    kwargs={}
+    kwargs['user']=req.user
+    message={'status':'update','text':''}
+    
+    form=Assay_UpdateForm(instance=_object)
+    
+    if req.method=='POST':
+        try:
+            with transaction.atomic(using='dscreen'):
+                obj = Assay.objects.select_for_update().get(assay_id=pk)
+                form= Assay_UpdateForm(req.POST, instance=obj)    
+                if form.is_valid():
+                    instance=form.save(commit=False)
+                    #update_screenrun_summary(instance)
+                    instance.save(**kwargs)
+
+                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Assay','Completed')
+                    message={'status':'saved','text':f'Assay [{pk}] Updated'}
+                    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
+                else:
+                    messages.warning(req, f'Update failed due to {form.errors} error')
+                    
+        except Exception as err:
+            messages.warning(req, f'Update failed due to {err} error')
+            message={'status':'update','text':'Input Error'}
+            return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
+
+    context={}
+    context["object"]=_object
+    context["form"]=form
+    
+    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
+    #return render(req, "dscreen/assay/assay_update.html", context)

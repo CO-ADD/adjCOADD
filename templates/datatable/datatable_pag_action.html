@@ -11,7 +11,7 @@
   <h2 class="accordion-header" id="headingOne">
     <button class="collapsed accordion-button mt-0" style="max-height: fit-content" type="button" data-bs-toggle="collapse"
       data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-      <h5 class="fs-4 my-0"><b>{{title}}</b>
+      <h5 class="fs-4 my-0"><b>{{model_name}}s</b>
       </h5>
     </button>
   </h2>
@@ -22,7 +22,8 @@
   </div>
 
   <!-- Data Table -->
-  <div class="contain-fluid data-contain" style="height: 100vh;overflow: auto;">
+  <!-- <div class="contain-fluid data-contain" style="height: 100vh;overflow: auto;" -->
+  <div class="contain-fluid data-contain" style="height: 90vh;overflow: auto">
     <table class="table table-hover sorting_table fixTableHead table-bg" style="width: 100%">
       <thead>
         <tr>
@@ -45,17 +46,31 @@
       <tbody hx-target="closest tr" hx-swap="outerHTML">
         {% for object in page_obj %}
           <tr>
-            {% if data_url %}
-              <td> data_url </td>
+            {% if update_url %}
+              <td>
+                <a id="update{{model_name}}"
+                    class="btn btn-sm "
+                    hx-get="{% url update_url object.pk %}"
+                    hx-target="#update-content"
+                    hx-swap="innerHTML"
+                    data-bs-toggle="modal"
+                    data-bs-target="#update{{model_name}}_modal"
+                    data-bs-placement="right"
+                    data-bs-backdrop="static"
+                    title="Update {{model_name}}">
+                  <i class="bi bi-clipboard2-plus-fill" ></i>
+                </a>
+              </td>
             {% else %}
               <td> </td>
             {% endif %}
+
             {% for item in object.get_values %}
               <td>
                 {% if item|is_dict %}                   
                     <!-- If item isdict - display item.key and use  item.value as link -->
                     {% for key, value in item.items %}      
-                    <a href="{{value}}" target="_blank">{{ key }}</a>
+                      <a href="{{value}}" target="_blank">{{ key }}</a>
                     {% endfor %}
                 {% else %}
                   {{item}}

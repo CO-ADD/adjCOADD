@@ -1,0 +1,67 @@
+
+<div class="modal-header">
+    <h5 class="modal-title" id="update-title"> Update {{update_pk}}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body" id="update-body">
+
+    {% if message.status == 'update' %}
+    <form  
+        hx-post="{% url update_url update_pk %}"
+        hx-target="#update-body"
+        hx-swap="innerHTML"
+    >
+        {% csrf_token %}
+        <!-- Default Create Model Form Template  -->
+        <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+
+        {% for field in form.visible_fields%}
+            <div class="col">
+            <label>{{field.label}}</label> 
+            {% if field.field.widget.attrs.readonly %}
+                : {{field.value}}
+            {% else %}          
+                <p>{{field | safe}}</p>
+            {% endif %}
+            <span class="badge bg-info text-light">{{field.help_text}}</span>
+            {% for error in field.errors%} 
+                <span class="badge text-info text-warning">{{error}}</span>
+            {% endfor %}
+            </div>
+        {% endfor %}
+        </div>
+        <hr>
+        <div>
+        {{message.text}} 
+        </div>
+
+        <!-- Needs to be within </form> for 'submit' to post -->
+        <div class="modal-footer d-flex justify-content-center align-center">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+    </form>
+
+    {% elif message.status == 'saved' %}
+        <div>
+        {{message.text}} 
+        </div>
+
+        <!-- Needs to be within </form> for 'submit' to post -->
+        <div class="modal-footer d-flex justify-content-center align-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Finish</button>
+        </div>
+
+    {% elif message.status == 'error' %}
+        <div>
+        {{message.text}} 
+        </div>
+
+        <!-- Needs to be within </form> for 'submit' to post -->
+        <div class="modal-footer d-flex justify-content-center align-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+
+    {% endif %}
+</div>

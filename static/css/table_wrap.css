@@ -102,11 +102,14 @@ table.dataframe tr:nth-child(even) {
 
 .fixTableHead thead th {
   position: sticky !important;
-  top: -2px;
+  top: -50px;
+  z-index: 10;
+ /*
   resize: horizontal;
   overflow: hidden;
   min-width: 70px;
   max-height: fit-content;
+  */
 }
 
 /*----------- pivottable ---------------*/
