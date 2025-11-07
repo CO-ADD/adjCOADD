@@ -11,7 +11,7 @@
   <h2 class="accordion-header" id="headingOne">
     <button class="collapsed accordion-button mt-0" style="max-height: fit-content" type="button" data-bs-toggle="collapse"
       data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-      <h5 class="fs-4 my-0"><b>{{model_name}}s</b>
+      <h5 class="fs-4 my-0"><b>{{model_name}}</b>
       </h5>
     </button>
   </h2>
@@ -51,14 +51,14 @@
                 <a id="update{{model_name}}"
                     class="btn btn-sm "
                     hx-get="{% url update_url object.pk %}"
-                    hx-target="#update-content"
+                    hx-target="#update-body"
                     hx-swap="innerHTML"
                     data-bs-toggle="modal"
                     data-bs-target="#update{{model_name}}_modal"
                     data-bs-placement="right"
                     data-bs-backdrop="static"
                     title="Update {{model_name}}">
-                  <i class="bi bi-clipboard2-plus-fill" ></i>
+                  <i class="bi bi-record-circle-fill" ></i>
                 </a>
               </td>
             {% else %}

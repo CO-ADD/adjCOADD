@@ -93,7 +93,6 @@ class CollabUser_Filter(BaseStatus_Filter):
         'Organisation':      {'lookup':'choice','field_name':'organisation_id__organisation_name'},
     }
 
-
     Organisation = ChoiceFilter(field_name='organisation_id__organisation_name', choices=[], label="Organisation")
     Country = ChoiceFilter(field_name='country', choices=CountryField().choices)
     #Country = ChoiceFilter(field_name='country', choices=sorted(COUNTRIES.items()))
@@ -131,62 +130,55 @@ class CollabUser_Filter(BaseStatus_Filter):
         model=Collab_User
         fields=['first_name','last_name','email','Organisation','Country',]
 
-    # user_id = models.CharField(max_length=15, primary_key=True, verbose_name = "User ID")
-    # title = models.CharField(max_length=15, blank=True, verbose_name = "Title")
-    # first_name = models.CharField(max_length=50, blank=True, verbose_name = "First Code")
-    # last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Code")
-    # position = models.CharField(max_length=100, blank=True, verbose_name = "Position")
-
-    # email1 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 1")
-    # email2 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 2")
-    # active_email = models.SmallIntegerField(default=0, blank=True, verbose_name ="Active")
-
-    # phone = models.CharField(max_length=50, blank=True, verbose_name = "Phone")
-    # subscribed = models.BooleanField(default=False, blank=True, verbose_name = "Newsletter")
-    # portal_userid = models.CharField(max_length=50, blank=True, verbose_name = "Portal UserID")
-    # portal_pw = models.CharField(max_length=50, blank=True, verbose_name = "Portal Password")
-
-    # organisation_id = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation ID", on_delete=models.DO_NOTHING,
-    #     db_column="organisation_id", related_name="%(class)s_organisation_id")
-        
-    # department = models.CharField(max_length=250, blank=True, verbose_name = "Department")
-    # postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
-    # city = models.CharField(max_length=250, blank=True, verbose_name = "City")
-    # country = CountryField(verbose_name = "Country")
-
-
 
 # -----------------------------------------------------------------
 class CollabUser_CreateForm(forms.ModelForm):
 
-    # PK to add help text
-    #organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    #organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    organisation = ChoiceFilter(field_name='organisation_id__organisation_name', choices=[], label="Organisation")
-    country = CountryField()
-    #organisation_type=ChoiceFilter(field_name='organisation_type',choices=[], empty_label=None)
-
     def __init__(self, *args, **kwargs): 
-        super(CollabUser_CreateForm, self).__init__(*args, **kwargs)
-        
+        super().__init__(*args, **kwargs)
         # Set Labels from Model Definitions
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
 
-        # Set Dictionary values
-        #self.fields['organisation_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organisation.DICTIONARY_FIELDS['organisation_type'])]
 
+        # Create groups of fields for View 
         self.create_field_groups()
+        
+        # Add the 'group-input' class to the widget attrs
+        for field in self.fields.values():
+            if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
+                attrs = field.widget.attrs
+                attrs['class'] = attrs.get('class', '') + 'input-group'
+                field.widget.attrs = attrs
+        
+        # Make Calculated fields ReadOnly
+        # for field in Collab_User.CALCULATED_FIELDS:
+        #     self.fields[field].widget.attrs['readonly'] = True
 
+        
     class Meta:
         model=Collab_User
-        exclude=['user_id']
+        exclude=['assay_id']
+        #exclude=Screen_Run.CALCULATED_FIELDS
 
     def create_field_groups(self):
         if len(Collab_User.VIEW_GROUPS) > 0:
             self.groups = []
             for grp in Collab_User.VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
+
+# -----------------------------------------------------------------
+class CollabUser_UpdateForm(CollabUser_CreateForm):
+
+    def __init__(self, *args, **kwargs): 
+        super(CollabUser_UpdateForm, self).__init__(*args, **kwargs)
+
+        # Make Calculated fields ReadOnly
+        # for field in Collab_User.CALCULATED_FIELDS:
+        #     self.fields[field].widget.attrs['readonly'] = True
+    class Meta:
+        model=Collab_User
+        exclude=['assay_id']
 
 #=================================================================================================
 # Collab Group
@@ -228,32 +220,81 @@ class CollabGroup_Filter(BaseStatus_Filter):
 # -----------------------------------------------------------------
 class CollabGroup_CreateForm(forms.ModelForm):
 
-    # PK to add help text
-    organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    country = CountryField()
-    organisation_type=ChoiceFilter(field_name='organisation_type',choices=[], empty_label=None)
-
     def __init__(self, *args, **kwargs): 
-        super(CollabGroup_CreateForm, self).__init__(*args, **kwargs)
-        
+        super().__init__(*args, **kwargs)
         # Set Labels from Model Definitions
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
 
-        # Set Dictionary values
-        self.fields['organisation_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organisation.DICTIONARY_FIELDS['organisation_type'])]
 
+        # Create groups of fields for View 
         self.create_field_groups()
+        
+        # Add the 'group-input' class to the widget attrs
+        for field in self.fields.values():
+            if isinstance(field.widget, forms.TextInput) or isinstance(field.widget, forms.NumberInput):
+                attrs = field.widget.attrs
+                attrs['class'] = attrs.get('class', '') + 'input-group'
+                field.widget.attrs = attrs
+        
+        # Make Calculated fields ReadOnly
+        # for field in Collab_User.CALCULATED_FIELDS:
+        #     self.fields[field].widget.attrs['readonly'] = True
 
+        
     class Meta:
         model=Collab_Group
         exclude=['group_id']
+        #exclude=Screen_Run.CALCULATED_FIELDS
 
     def create_field_groups(self):
         if len(Collab_Group.VIEW_GROUPS) > 0:
             self.groups = []
             for grp in Collab_Group.VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
+
+
+# -----------------------------------------------------------------
+class CollabGroup_UpdateForm(CollabUser_CreateForm):
+
+    def __init__(self, *args, **kwargs): 
+        super(CollabGroup_UpdateForm, self).__init__(*args, **kwargs)
+
+        # Make Calculated fields ReadOnly
+        # for field in Collab_User.CALCULATED_FIELDS:
+        #     self.fields[field].widget.attrs['readonly'] = True
+    class Meta:
+        model=Collab_Group
+        exclude=['group_id']
+                
+# class CollabGroup_CreateForm(forms.ModelForm):
+
+#     # PK to add help text
+#     organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
+#     organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
+#     country = CountryField()
+#     organisation_type=ChoiceFilter(field_name='organisation_type',choices=[], empty_label=None)
+
+#     def __init__(self, *args, **kwargs): 
+#         super(CollabGroup_CreateForm, self).__init__(*args, **kwargs)
+        
+#         # Set Labels from Model Definitions
+#         for field_name in self.fields:
+#             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
+
+#         # Set Dictionary values
+#         self.fields['organisation_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Organisation.DICTIONARY_FIELDS['organisation_type'])]
+
+#         self.create_field_groups()
+
+#     class Meta:
+#         model=Collab_Group
+#         exclude=['group_id']
+
+#     def create_field_groups(self):
+#         if len(Collab_Group.VIEW_GROUPS) > 0:
+#             self.groups = []
+#             for grp in Collab_Group.VIEW_GROUPS:
+#                 self.groups.append([self[name] for name in grp])   
 
 

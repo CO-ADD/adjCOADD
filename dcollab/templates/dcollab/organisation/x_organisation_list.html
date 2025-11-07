@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+<!--  -->
+{% block title%} COADD {% endblock %}
+<!--  -->
+{% block content %}
+<!--  -->
+<div class="d-flex flex-row vh-100">
+  <!-- Left Navigation -->
+  {% url 'pivoted-table' app_model='dcollab-Organisation' as pivot_url%}
+  {% include 'grid/base/navbar_left_top.html' with list_url='organisation_list' card_url='' create_object='createOrganisation' create_objectModal='createOrganisationModal' pivot_url='' export_url=''%}
+
+  <!-- Filter Navigation -->
+  {% include "grid/base/navbar_filter.html" %}
+  
+  <!-- Main View -->
+  {% include 'datatable/datatable_pag_editRow.html' with title='Organisation' htmx_template="dcollab/organisation/organisation_update_htmx.html" %}
+
+</div>
+{% endblock %}

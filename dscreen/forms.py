@@ -137,33 +137,12 @@ class Assay_Filter(BaseStatus_Filter):
 
 class Assay_CreateForm(forms.ModelForm):
 
-    # PK to add help text
-    #run_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next PSR/HCR/.. number")
-    #run_type=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=True,queryset=Dictionary.objects.all())
-    #run_status=forms.ModelChoiceField(widget=forms.Select(attrs={'class': 'form-control'}), required=False,queryset=Dictionary.objects.all())
-
-    # DateFields
-    #run_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
-
-    # TextFields - 2 rows (Normal,short CharFields do not need definition)
-    # assay_note= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    # test_media= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    # run_issues= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    # run_project= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-
     def __init__(self, *args, **kwargs): 
         super().__init__(*args, **kwargs)
         # Set Labels from Model Definitions
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
 
-        # Set Dictionary values
-        # self.fields['run_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_type'])]
-        # self.fields['run_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Screen_Run.DICTIONARY_FIELDS['run_status'])]
-
-        # Additional attributes
-        # self.fields["run_id"].widget.attrs.update({"class":"special"})
-        # self.fields["run_id"].widget.attrs.update(size=40)
 
         # Create groups of fields for View 
         self.create_field_groups()
