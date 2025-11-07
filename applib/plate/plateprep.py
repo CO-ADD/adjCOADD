@@ -56,7 +56,7 @@ def get_PlatePrep_xlsx(xlsFile, Sheets=[], FillNA='-', **kwargs):
 
 
 # --------------------------------------------------------------------------------
-def get_BarcodeScans(csvFiles, **kwargs):
+def get_BarcodeScans(DirName, csvFiles, **kwargs):
 # --------------------------------------------------------------------------------
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)
@@ -65,7 +65,7 @@ def get_BarcodeScans(csvFiles, **kwargs):
     for rack_file in csvFiles:
         _n_tubes = 0
         _n_cmpds = 0
-        _rack_df = pd.read_csv(rack_file)
+        _rack_df = pd.read_csv(os.path.join(DirName,rack_file))
         _rack_df.columns =  [c.upper() for c in _rack_df.columns]
         _rack_id = str(_rack_df['RACKID'].unique()[0])
 
@@ -129,6 +129,7 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
 
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)
+    validStatus = True
 
     _prepSheets = get_PlatePrep_xlsx(xlFile,Sheets=[PREP_SHEET],FillNA=None) 
     # fXlsx = open(xlFile, "rb")
@@ -197,8 +198,11 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                                 valLog.add_log(k,'Missing CompoundID',row['compound_id'],f"{djMP.plate_id}:{row['motherwell_id']}",
                                                "Correct PlatePrep or Register Compound")
     
-            djMP.add_dilutions(valLog=valLog)
-            djMP.set_defaults_model()
+            if dictPl['valid_status']:
+                dictPl['valid_status'] = djMP.add_dilutions(valLog=valLog)
+                
+            if dictPl['valid_status']:
+                djMP.set_defaults_model()
 
             dictPl['new'] = _status == 'New'
             dictPl['plate'] = djMP

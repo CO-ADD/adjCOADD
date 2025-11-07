@@ -4,6 +4,7 @@ from django.urls import path, include, re_path
 
 from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_DetailView,ScreenRun_UpdateView, ScreenRun_RemoveView, ScreenRun_ReportView,                         
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
+                            Assay_ListView, Assay_CreateView,
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
                     ) 
 from dscreen.process_views import (Load_Readouts_ProcessView, Load_TestplateList_ProcessView, Load_Motherplates_ProcessView,
@@ -25,11 +26,11 @@ urlpatterns = [
     path('screenrun/load_motherplates/<str:pk>', Load_Motherplates_ProcessView.as_view(), name='load_motherplates'),
     path('screenrun/load_testplatelist/<str:pk>', Load_TestplateList_ProcessView.as_view(), name='load_testplatelist'),
     path('screenrun/report/<str:pk>', ScreenRun_ReportView, name="screenrun_report"),
+
+    path('assay_list', Assay_ListView.as_view(), name="assay_list"),
+    # path('screenrun/<str:pk>', Assay_DetailView, name="assay_detail"),
+    path('createAssay/', Assay_CreateView, name="assay_create"),
+    #path('updateAssay/<str:pk>', Assay_UpdateView, name="assay_update"),
+    # path('deleteAssay/<str:pk>', Assay_RemoveView.as_view(), name="sassay_delete"),
 ]
 
-    # path('drug_card', DrugCardView.as_view(), name="drug_card"),
-    # path('drug_list', DrugListView.as_view(), name="drug_list"),
-    # path('drug/<str:pk>', detailDrug, name="drug_detail"),
-    # path('drug_detail_structure/<str:pk>', smartsQuery, name="smartsquery"),
-    # path('createDrug/', DrugCreateView.as_view(), name="drug_create"),
-    # path('updateDrug/<str:pk>', DrugUpdateView.as_view(), name="drug_update"),

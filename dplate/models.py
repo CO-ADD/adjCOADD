@@ -1232,6 +1232,7 @@ class MasterPlate(Plate):
 
         verbose = kwargs.get('verbose',0)
         valLog = kwargs.get('valLog',None)
+        validStatus = True
        
         if self.wells:
             for w in self.wells:
@@ -1285,10 +1286,12 @@ class MasterPlate(Plate):
 
                                 #print(f" {i} {self.plate_id} {dw_id} {wConc} {self.wells[dw_id].test_conc_lst}")
                         else:
+                            validStatus = False
                             logger.warning(f"[MasterPlate] Unknown dilution {d} [{self.plate_id} {w}]")
                             if valLog:
                                 valLog.add_error("Unknown dilution",f"Diluation [{d}]",f"{self.plate_id}:{w}",f"Correct Dilution {list(DILUTION_DICT.keys())}")
 
+        return(validStatus)
                     
 
 

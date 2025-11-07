@@ -4,16 +4,21 @@
 {% if message.status == 'new' %}
   <form  
     hx-post="{% url create_url %}"
-    hx-target="#modal-body"
+    hx-target="#create-body"
     hx-swap="innerHTML"
   >
     {% csrf_token %}
     <!-- Default Create Model Form Template  -->
     <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+
       {% for field in form.visible_fields%}
         <div class="col">
-          <label>{{field.label}}</label>
-          <p>{{field | safe}}</p>
+          <label>{{field.label}}</label> 
+          {% if field.field.widget.attrs.readonly %}
+            : {{field.value}}
+          {% else %}          
+            <p>{{field | safe}}</p>
+          {% endif %}
           <span class="badge bg-info text-light">{{field.help_text}}</span>
           {% for error in field.errors%} 
             <span class="badge text-info text-warning">{{error}}</span>

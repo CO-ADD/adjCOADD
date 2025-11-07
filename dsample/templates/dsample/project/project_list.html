@@ -5,11 +5,16 @@
 {% block content %}
 <!--  -->
 <div class="d-flex flex-row vh-100">
+
+  <!-- Sidebar View/Buttons -->
   {% url 'pivoted-table' app_model='dsample-Project' as pivot_url%}
-  {% include 'grid/base/left_navbar.html' with list_url='project_list' card_url='' create_object='createProject' create_objectModal='createProjectModal' pivot_url='' %}
-  <!-- Sidebar View -->
+  {% include 'grid/base/sidebar_lists.html' with model_name='Project' list_url='project_list' card_url='' export_url='' pivot_url='' create_url='project_create' import_url=''  %}
+  <!-- Filterbar View/Filter -->
   {% include "utils/sidebar.html" %}
-  
+
+{% comment %}   
+  {% include 'grid/base/left_navbar.html' with list_url='project_list' card_url='' create_object='createProject' create_objectModal='createProjectModal' pivot_url='' export_url=''%}
+   {% endcomment %}
 
   <!-- Main View -->
   <div class="d-flex flex-column w-100"> 

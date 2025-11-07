@@ -32,9 +32,8 @@ from dscreen.utils.screenrun_process import (Summary_ScreenRun_Process,
 # from dplate.models import MasterPlate, TestPlate
 
 from applib.process.process_forms import Process_View
-from apputil.utils.form_wizard_tools import ImportHandler_View
-
-from applib.process.process_forms import SelectSingleFile_StepForm, Finalize_StepForm, Upload_StepForm, Generate_StepForm, SelectSingleFileFolder_StepForm
+from applib.process.process_stepforms import SelectSingleFile_StepForm, Finalize_StepForm, Upload_StepForm, Generate_StepForm, SelectSingleFileFolder_StepForm
+#from apputil.utils.form_wizard_tools import ImportHandler_View
 #from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
 
@@ -42,7 +41,7 @@ from applib.process.process_forms import SelectSingleFile_StepForm, Finalize_Ste
 class PlatePrep_SelectForm(SelectSingleFile_StepForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['multi_files'].label = 'PlatePrep Workbook [XLSX] containing [MotherPlates, TestPlateList, Assays] sheets'
+        self.fields['single_file'].label = 'PlatePrep Workbook [XLSX] containing [MotherPlates, TestPlateList, Assays] sheets'
 
         # _help_text = 'XLSX Workbook containing the following Sheets: '
         # _help_text += '<li> [MotherPlates]'
@@ -61,7 +60,7 @@ class PlatePrep_SelectForm(SelectSingleFile_StepForm):
 class Readout_SelectForm(SelectSingleFile_StepForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['multi_files'].label = 'Tecan/BioTek reader [XLSX] files'
+        self.fields['single_file'].label = 'Tecan/BioTek reader [XLSX] files'
 
 
 # --------------------------------------------------------------------------------------------------
@@ -101,7 +100,7 @@ class Load_Readouts_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
+        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
                                        upload=self.upload, overwrite=self.overwrite,appuser=request.user)
 
         return(valLog)
@@ -136,7 +135,7 @@ class Load_Motherplates_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
        
-        valLog=Upload_Motherplates_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
+        valLog=Upload_Motherplates_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
                                            upload=self.upload, overwrite=self.overwrite, appuser=request.user) 
  
         return(valLog)
@@ -204,7 +203,7 @@ class Load_TestplateList_ProcessView(Process_View):
         # if 'only_dr' in form_data:
         #     self.only_dr = form_data['only_dr']
 
-        valLog=Upload_TestplateList_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
+        valLog=Upload_TestplateList_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
                                            upload=self.upload, apply_mp=self.apply_mp, 
                                            appuser=request.user) 
  
@@ -218,8 +217,8 @@ class Load_TestplateList_ProcessView(Process_View):
 class PlatePrep_Racks_SelectForm(SelectSingleFileFolder_StepForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['files'].label = 'PlatePrep Workbook [XLSX] containing [HCPrep, PSPrep] sheets'
-        self.fields['folder_files'].label = 'TubeRack Scan [CSV] Files '
+        self.fields['single_file'].label = 'PlatePrep Workbook [XLSX] containing [HCPrep, PSPrep] sheets'
+        self.fields['multi_files'].label = 'TubeRack Scan [CSV] Files '
 
         #<a href="{% static 'django-pdf/generator/static/pdfs/nowy.pdf' %}">{{ file }}</a>
 
@@ -245,7 +244,11 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
         if 'generate' in form_data:
             self.generate = form_data['generate']
         print(" [Gen_MotherPlates_PSR.file_process_handler]")
-        valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list, RunID=self.pk, 
+        print(f" [Gen_MotherPlates_PSR.file_process_handler] FileDir: {self.file_dir}")
+        print(f" [Gen_MotherPlates_PSR.file_process_handler] FileList: {self.file_list}")
+        
+        
+        valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
                                            generate=self.generate,
                                            appuser=request.user)
         return(valLog)

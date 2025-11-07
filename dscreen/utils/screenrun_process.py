@@ -328,12 +328,12 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
     return(valLog)
 
 #-----------------------------------------------------------------------------------
-def Gen_Masterplates_Process(Request, FileList, RackFileList, RunID=None, 
-                                 generate=False, ):
+def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID=None, 
+                                 generate=False,  appuser=None):
 #-----------------------------------------------------------------------------------
     
-    if FileList:
-        nFiles = len(FileList)
+    if PrepFileList:
+        nFiles = len(PrepFileList)
     else:
         nFiles = 0
 
@@ -352,7 +352,7 @@ def Gen_Masterplates_Process(Request, FileList, RackFileList, RunID=None,
                   'Empty':0}
 
     if nRacks > 0:
-        Barcodes = get_BarcodeScans(RackFileList, valLog=valLog)
+        Barcodes = get_BarcodeScans(DirName, RackFileList, valLog=valLog)
 
     valLog.select_unique()
     

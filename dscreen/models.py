@@ -203,21 +203,29 @@ class Assay(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     LIST_VIEW_FIELDS = {
-        # "run_id":"Run ID",
-        # "run_type":"Run Type",
-        # "assay_note":"Assay",
-        # "run_status":"Status",
+        "assay_id":"Assay ID",
+        "assay_code":"Assay Code",
+        #"assay_subtype":"Assay SubType",
+        "organism_id":"Organism",
+        "cell_id":"Cell",
         # "run_project":"Project",
-        # "run_name":"Name",
-        # "run_date":"Run Date",
-        # "run_conditions":"Conditions",
-        # "run_issues":"Issues",
+        'test_media' :"Media",
+        'test_dye' :"Dye/Kit",
+        'test_enviroment' : "Enviroment",
+        'test_temperature' : "Temp",
+        'test_time' :  "Test Time",
+        'test_additive' : "Additive",
+        'subculture_type' : "Subculture",
+        #'incubation_time' : "Incubation Time",
     }
 
     DICTIONARY_FIELDS = {
         # 'run_type':'Run_Type',
         # 'run_status':'Process_Status',
     }
+
+    CALCULATED_FIELDS = []
+    VIEW_GROUPS=[]
 
     assay_id = models.CharField(max_length=100,primary_key=True, verbose_name = "Assay ID")
     ora_assay_id = models.CharField(max_length=100,blank=True, verbose_name = "Ora Assay ID")

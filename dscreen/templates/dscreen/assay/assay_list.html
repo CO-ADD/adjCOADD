@@ -6,11 +6,11 @@
 
 <div class="d-flex flex-row vh-100">
   {% comment %} 
-    {% url 'pivoted-table' app_model='dscreen-Screen_Run' as pivot_url%}
+    {% url 'pivoted-table' app_model='dscreen-Assay' as pivot_url%}
   {% endcomment %}
 
   <!-- Sidebar View/Buttons -->
-  {% include 'grid/base/sidebar_lists.html' with model_name='ScreenRun' list_url='screenrun_list' card_url='' export_url='' pivot_url='' create_url='screenrun_create' import_url='' %}
+  {% include 'grid/base/sidebar_lists.html' with model_name='Assay' list_url='assay_list' card_url='' export_url='' pivot_url='' create_url='assay_create' import_url='' %}
   <!-- Filterbar View/Filter -->
   {% include "utils/sidebar.html" %}
   
@@ -18,7 +18,7 @@
   <div class="d-flex flex-column w-100"> 
 
     <!-- prettier-ignore -->
-    {% include 'datatable/base/datatable_top.html' with title='ScreenRun'  model_name='Screen_Run' application='dscreen' %}
+    {% include 'datatable/base/datatable_top.html' with title='Assay'  model_name='Assay' application='dscreen' %}
     <!-- prettier-ignore -->
     <!--  -->
 
@@ -26,7 +26,7 @@
     <!-- list View Content -->
    <div class="contain-fluid data-contain">
       <!-- prettier-ignore --> <!-- Here include datatable_general --> 
-      {% include 'datatable/base/datatable_base.html' with modelname='Screen_Run' %}
+      {% include 'datatable/base/datatable_base.html' with modelname='Assay' %}
     </div>
     </div>
 

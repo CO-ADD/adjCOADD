@@ -25,9 +25,11 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 
 # from adjcoadd.constants import *
 
-from dscreen.models import Screen_Run
+from dscreen.models import Screen_Run, Assay
 #from dsummary.models import Summary_ScreenRun 
-from dscreen.forms import ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm
+from dscreen.forms import (ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm,
+                           Assay_Filter, Assay_CreateForm)
+
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dscreen.utils.summary import update_screenrun_summary, get_projects_screenrun
 from dsample.models import Project
@@ -227,3 +229,60 @@ def ScreenRun_ReportView(req, pk):
             req['Content-Disposition'] = f'attachment; filename={_xls_name}'
             cReport.to_excel(req)
         return req
+
+#=================================================================================================
+# Assay
+#=================================================================================================
+class Assay_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Assay  
+    template_name = 'dscreen/assay/assay_list.html'
+    filterset_class = Assay_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Assay'
+    app_name = 'dscreen'
+    ordering=['-acreated_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['base_template'] = 'coadd_base.html'
+        return context
+
+# -----------------------------------------------------------------
+@login_required
+def Assay_CreateView(req):
+    '''
+    View to Create new ScreenRun foreignkey: Dictionary. 
+    '''  
+    kwargs={}
+    kwargs['user']=req.user
+    message={'status':'new','text':''}
+
+    form=Assay_CreateForm()
+    
+    #print(f" [Assay_CreateView] {req.method} {req.POST}")
+    if req.method=='POST':
+        form=Assay_CreateForm(req.POST) 
+        if form.is_valid():
+            #print(f" [Assay_CreateView] Valid Form")
+            try:
+                with transaction.atomic(using='dscreen'):
+                    instance=form.save(commit=False)
+                    instance.save(**kwargs) 
+                    _newid = str(instance.run_id)
+                    print(f" [Assay_CreateView] Saved:  [{_newid}]")            
+                    message={'status':'saved','text':f'Assay [{_newid}] Created'}
+                    return render(req, 'modal/createModel_partial_modal.html', {'message':message})
+
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    message={'status':'error','text':f'IntegrityError [{err}]'}
+                    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'assay_create'})
+                    #return redirect(req.META['HTTP_REFERER'])                 
+        else:
+            messages.warning(req, form.errors)
+            message={'status':'new','text':'Input Error'}
+            return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'assay_create'})
+            #return redirect(req.META['HTTP_REFERER'])          
+
+    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'assay_create'}) 

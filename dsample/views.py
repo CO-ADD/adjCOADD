@@ -56,29 +56,41 @@ class Project_ListView(LoginRequiredMixin, Filtered_ListView):
 @login_required
 def Project_CreateView(req):
     '''
-    View to Create new Project foreignkey: Dictionary. 
+    View to Create new Project  
     '''  
+    
     kwargs={}
     kwargs['user']=req.user
+    message={'status':'new','text':''}
+
     form=Project_CreateForm()
+    
+    #print(f" [Project_CreateView] {req.method} {req.POST}")
     if req.method=='POST':
         form=Project_CreateForm(req.POST) 
         if form.is_valid():
-            print('Project_CreateView Valid')
+            #print(f" [Project_CreateView] Valid Form")
             try:
                 with transaction.atomic(using='dsample'):
-                    instance=form.save(commit=False) 
-                    instance.save(**kwargs)
-                    ApplicationLog.add('Create',str(instance.pk),'Info',req.user,str(instance.pk),'Create a new Project','Completed')
-                    return redirect(req.META['HTTP_REFERER'])
+                    instance=form.save(commit=False)
+                    instance.save(**kwargs) 
+                    _newid = str(instance.project_id)
+                    print(f" [Project_CreateView] Saved:  [{_newid}]")            
+                    message={'status':'saved','text':f'Project [{_newid}] Created'}
+                    return render(req, 'modal/createModel_partial_modal.html', {'message':message})
+
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-                    return redirect(req.META['HTTP_REFERER'])                
+                    message={'status':'error','text':f'IntegrityError [{err}]'}
+                    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'project_create'})
+                    #return redirect(req.META['HTTP_REFERER'])                 
         else:
             messages.warning(req, form.errors)
-            return redirect(req.META['HTTP_REFERER'])          
-    return render(req, 'dsample/project/project_create.html', { 'form':form, }) 
+            message={'status':'new','text':'Input Error'}
+            return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'project_create'})
+            #return redirect(req.META['HTTP_REFERER'])          
 
+    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'project_create'}) 
 
 # -----------------------------------------------------------------
 @login_required

@@ -3,8 +3,9 @@
   model_name
   list_url
   card_url
+  export_url
   pivot_url
-  create_url, 
+  create_url 
   import_url
 -->
 
@@ -21,14 +22,14 @@
       class="{% if list_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
       title="Table View">
-      <i class="{% if list_url %} fa-solid fa-table-list fs-5 {% else %} fa-solid fa-table-list fs-5 text-muted{% endif %}"></i></a>
+      <i class="{% if list_url %} fa-solid fa-table-list fs-5 {% else %} fa-solid fa-table-list fs-5 text-muted {% endif %}"></i></a>
 
     <!-- Card View {card_url}--> 
     <a href="{% if card_url %} {% url card_url %} {% else %} # {% endif %}" 
       class=" {% if card_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
       title="Card View"> 
-      <i class="{% if card_url %} fa-solid fa-grip fs-5  {% else %} fa-solid fa-grip fs-5 text-muted{% endif %}"></i>
+      <i class="{% if card_url %} fa-solid fa-grip fs-5  {% else %} fa-solid fa-grip fs-5 text-muted {% endif %}"></i>
     </a>
     
     <!-- Export View {export_url} --> 
@@ -36,7 +37,7 @@
       class="{% if export_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
       title="Export Table"  target="_blank">
-      <i class="bi bi-file-earmark-spreadsheet fs-5"></i>
+      <i class="{% if export_url %} bi bi-file-earmark-spreadsheet fs-5 {% else %} bi bi-file-earmark-spreadsheet fs-5 text-mute {% endif %} "></i>
     </a>
    
     <!-- Pivot View {pivot_url} --> 
@@ -44,25 +45,35 @@
       class="{% if pivot_url %} btn-sm btn-outline-success {% else %} btn btn-sm disabled {% endif %}" 
       data-bs-toggle="tooltip" data-bs-placement="right"
       title="Pivot Table"  target="_blank">
-      <i class="bi bi-file-ppt fs-5"></i>
+      <i class="{% if pivot_url %} bi bi-file-ppt fs-5 {% else %} bi bi-file-ppt fs-5 text-muted {% endif %}"></i>
     </a>
 
     <!-- Create Model HTMX-Modal {create_model, create_url} -->
-    <a id="{{momodel_namedel}}"
-        class="{% if create_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}"
-        hx-get="{% url create_url %}"
-        hx-target="#modal-body"
-        hx-swap="innerHTML"
-        data-bs-toggle="modal"
-        data-bs-target="#create{{model_name}}_modal"
-        data-bs-placement="right"
-        data-bs-backdrop="static"
-        title="Add New {{model_name}}">
-      <i class="{% if create_url %} bi bi-clipboard2-plus-fill {% else %} bi bi-clipboard2-plus-fill text-muted {% endif %}" ></i>
-    </a>
-    <!-- Empty modal container -->
-    {% include 'modal/createModel_base_modal.html' with create_model=model_name create_url=create_url %}
+    {% if create_url %}
+      <a id="create{{model_name}}"
+          class="btn btn-sm "
+          hx-get="{% url create_url %}"
+          hx-target="#create-body"
+          hx-swap="innerHTML"
+          data-bs-toggle="modal"
+          data-bs-target="#create{{model_name}}_modal"
+          data-bs-placement="right"
+          data-bs-backdrop="static"
+          title="Add New {{model_name}}">
+        <i class="bi bi-clipboard2-plus-fill" ></i>
+      </a>
+      <!-- Empty modal container -->
+      {% include 'modal/createModel_base_modal.html' with create_model=model_name create_url=create_url %}
 
+    {% else %}
+      <a href="#" 
+      class="btn btn-sm disabled " 
+      data-bs-toggle="tooltip" data-bs-placement="right"
+      title="Add New {{model_name}}">
+      <i class="bi bi-clipboard2-plus-fill text-muted"></i>
+      </a>
+    {% endif %}
+  
     <!-- Import Model {import_url} -->
     <a href="{% if import_url %} {% url import_url %} {% else %} # {% endif %}" 
       class=" {% if import_url %} btn btn-sm {% else %} btn btn-sm disabled {% endif %}" 

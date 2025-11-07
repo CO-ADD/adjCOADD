@@ -129,7 +129,7 @@ class Project(AuditModel):
     # -- Oracle-CastDB data ------------------------------------------------------------
     ORACLE_FIELDS = ['ora_project_id','ora_group_id','ora_contact_ids','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date']
 
-    ora_project_id = models.CharField(max_length=15, unique=True, verbose_name = "Old Project ID")
+    ora_project_id = models.CharField(max_length=15, null=True, blank=True, unique=True, verbose_name = "Old Project ID")
     ora_group_id = models.CharField(max_length=10, blank=True, verbose_name = "Old GroupID")
     ora_contact_ids = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=2, 
                                  verbose_name = "Old ContactsUser", null=True, blank=True)
@@ -205,10 +205,12 @@ class Project(AuditModel):
     def save(self, *args, **kwargs):
         if not self.project_id:
             self.project_id = self.next_id()
-            if self.project_id: 
-                super(Project, self).save(*args, **kwargs)
-        else:
-            super(Project, self).save(*args, **kwargs) 
+            
+        if not self.group_id:
+            self.group_id = Collab_Group.get('CGRP00000')
+            
+        if self.project_id: 
+            super(Project, self).save(*args, **kwargs)
 
 #=================================================================================================
 class Project_Membership(models.Model):

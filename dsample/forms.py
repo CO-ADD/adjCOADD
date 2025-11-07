@@ -55,10 +55,10 @@ class Project_CreateForm(forms.ModelForm):
     received = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
     completed = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
 
-    compound_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_COMPOUND_STATUS], widget=forms.CheckboxSelectMultiple())
-    screen_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_SCREEN_STATUS], widget=forms.CheckboxSelectMultiple())
-    data_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_DATA_STATUS], widget=forms.CheckboxSelectMultiple())
-    report_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_REPORT_STATUS], widget=forms.CheckboxSelectMultiple())
+    compound_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_COMPOUND_STATUS], widget=forms.CheckboxSelectMultiple(),required=False)
+    screen_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_SCREEN_STATUS], widget=forms.CheckboxSelectMultiple(),required=False)
+    data_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_DATA_STATUS], widget=forms.CheckboxSelectMultiple(),required=False)
+    report_status = forms.MultipleChoiceField(choices=[(i,i) for i in PROJECT_REPORT_STATUS], widget=forms.CheckboxSelectMultiple(),required=False)
  
     # Simple Array Fields
     stock_status = SimpleArrayField(forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'})), required=False, delimiter=';', max_length=20)
@@ -87,6 +87,9 @@ class Project_CreateForm(forms.ModelForm):
         self.fields['pub_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['pub_status'])]
         self.fields['provided_container'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['provided_container'])]
         self.fields['stock_conc_unit'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['stock_conc_unit'])]
+
+        for field_name in Project.CALCULATED_FIELDS:
+            self.fields[field_name].widget.attrs['readonly'] = 'readonly'
 
         self.create_field_groups()
 
