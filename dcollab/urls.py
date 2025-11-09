@@ -5,7 +5,7 @@ from django.urls import path, include, re_path
 from dcollab.views import  (Organisation_ListView, Organisation_CreateView, Organisation_UpdateView,
                             CollabGroup_ListView,  CollabGroup_CreateView, 
                             CollabUser_ListView, CollabUser_CreateView, CollabUser_UpdateView,
-                            CollabGroup_UpdateView, AddMembershipRow_View
+                            CollabGroup_UpdateView, AddMembershipRow_View, CollabUser_SearchView
                             # Project_CreateView, Project_DetailView, Project_UpdateView, Project_ReportView,
                             # Project_RemoveView,
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
@@ -41,5 +41,6 @@ urlpatterns = [
     
     path('collabgroup/<str:pk>/edit/', CollabGroup_UpdateView.as_view(), name='group-update'),
     path('collabgroup/<str:pk>/add-member/', AddMembershipRow_View.as_view(), name='add-member'),
+    path("collabuser/search/", CollabUser_SearchView.as_view(), name="collabuser-search"),
     
 ]

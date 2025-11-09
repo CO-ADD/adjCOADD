@@ -1,0 +1,7 @@
+{% for user in users %}
+<option value="{{ user.pk }}">
+  {{ user.first_name }} {{ user.last_name }} ({{ user.email }})
+</option>
+{% empty %}
+<option disabled>No matches found</option>
+{% endfor %}

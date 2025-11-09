@@ -1,22 +1,95 @@
-<div class="row align-items-end mb-2 border-bottom pb-2">
-  <div class="col-md-6">
-    {{ form.user_id.label_tag }}
-    {{ form.user_id }}
-  </div>
-  <div class="col-md-4">
-    {{ form.role.label_tag }}
-    {{ form.role }}
-  </div>
+
+<div class="membership-row row align-items-end mb-3 border-bottom pb-2" 
+  id="{{ form.prefix }}">
+  <!-- Hidden management fields (required for formset tracking) -->
+  {{ form.id }}
+  {{ form.group_id }}
+ 
+  <input type="hidden" name="{{ form.DELETE.html_name }}" id="id_{{ form.prefix }}-DELETE" value="">
+
+  <!-- <div class="row align-items-end mb-2 border-bottom pb-2"> -->
+    <div class="col-md-6">
+      <label class="form-label">User</label>
+      <input
+        type="text"
+        class="form-control"
+        name="q"
+        placeholder="Search user..."
+        hx-get="{% url 'collabuser-search' %}"
+        hx-trigger="keyup changed delay:400ms"
+        hx-target="#collabuser-options-{{ form.prefix }}"
+        hx-swap="innerHTML"
+      >
+
+      <select name="{{ form.user_id.html_name }}" id="id_{{ form.prefix }}-user_id" class="form-select mt-1">
+        <option value="">Select a user...</option>
+        <optgroup id="collabuser-options-{{ form.prefix }}">
+          {% if form.instance.user_id %}
+            <option value="{{ form.instance.user_id.pk }}" selected>
+              {{ form.instance.user_id.first_name }} {{ form.instance.user_id.last_name }} ({{ form.instance.user_id.organisation_id.organisation_code }})
+            </option>
+          {% endif %}
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      {{ form.role.label_tag }}
+      {{ form.role }}
+    </div>
+
+    <div class="col-md-2 text-end">
+      {% if form.instance.pk %}
+        {{ form.DELETE }}
+        <button type="button" class="btn btn-sm btn-outline-danger" hx-get="{% url 'add-member' object.pk %}" hx-swap="outerHTML" hx-target="closest .row">Remove</button>
+      {% endif %}
+    </div>
+
+{% comment %} 
   <div class="col-md-2 text-end">
-    {% if form.instance.pk %}
-      <button type="button"
-              class="btn btn-sm btn-outline-danger"
-              hx-get="{% url 'add-member' object.pk %}"
-              hx-swap="outerHTML"
-              hx-target="closest .row">
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-danger remove-row"
+        data-prefix="{{ form.prefix }}"
+      >
         Remove
       </button>
-      {{ form.DELETE }}
+    </div> 
+{% endcomment %}
+
+
+{% comment %} 
+  <div class="col-md-2 text-end">
+    <!-- Remove row button (optional HTMX) -->
+    {% if form.instance.pk %}
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-danger"
+        hx-on="click: this.closest('.membership-row').remove()"
+      >
+        Remove
+      </button>
+    {% else %}
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-danger"
+        hx-on="click: this.closest('.membership-row').remove()"
+      >
+        Remove
+      </button>
     {% endif %}
   </div>
+ {% endcomment %}
+
+{% comment %} 
+  <div class="col-md-2 text-end">
+    {% if form.instance.pk %}
+      {{ form.DELETE }}
+      <button type="button" class="btn btn-sm btn-outline-danger" hx-get="{% url 'add-member' object.pk %}" hx-swap="outerHTML" hx-target="closest .row">Remove</button>
+    {% endif %}
+  </div>
+ {% endcomment %}
+
+
+  <!-- </div> -->
 </div>
