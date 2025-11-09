@@ -221,7 +221,7 @@ class CollabGroup_Form(forms.ModelForm):
 
     class Meta:
         model=Collab_Group
-        exclude=['group_id']
+        exclude=['group_id','group_members']
         widgets = {
             'group_code': forms.TextInput(attrs={'class': 'form-control'}),
             'organisation_id': forms.Select(attrs={'class': 'form-select'}),
