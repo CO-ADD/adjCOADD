@@ -53,6 +53,9 @@ class Organisation(AuditModel):
     def __repr__(self) -> str:
         return f"{self.organisation_id} {self.organisation_name}"
 
+    def __str__(self) -> str:
+        return f"{self.organisation_name}"
+
     #------------------------------------------------
     @classmethod
     def get(cls, ID, OrganisationName=None, Code=None, verbose=0):
@@ -154,10 +157,13 @@ class Collab_User(AuditModel):
             models.Index(name="cuser_email_idx",fields=['email']),
         ]
 
-
     #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.first_name} {self.last_name} {self.organisation_id.organisation_code}"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name} ({self.organisation_id.organisation_code})"
 
     #------------------------------------------------
     @classmethod
@@ -209,6 +215,9 @@ class Collab_Group(AuditModel):
         'mta_status':'License_Status',
     }
 
+
+    VIEW_GROUPS = []
+
     ID_SEQUENCE = 'Collab_Group'
     ID_PREFIX = 'CGRP'
     ID_PAD = 5
@@ -216,7 +225,7 @@ class Collab_Group(AuditModel):
     group_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Group ID")
     group_code = models.CharField(max_length=50, unique=True, verbose_name = "Group Code")
 
-    group_members = models.ManyToManyField(Collab_User, through='Collab_Membership')
+    group_members = models.ManyToManyField(Collab_User, through='Collab_Membership',through_fields=('group_id', 'user_id'))
 
     organisation_id = models.ForeignKey(Organisation, null=True, blank=True, verbose_name = "Organisation ID", on_delete=models.DO_NOTHING,
         db_column="organisation_id", related_name="%(class)s_organisation_id")    
@@ -248,6 +257,9 @@ class Collab_Group(AuditModel):
     def __repr__(self) -> str:
         return f"{self.group_id} {self.group_code}"
 
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.group_id} ({self.group_code})"
 
     #------------------------------------------------
     @classmethod
@@ -287,8 +299,8 @@ class Collab_Membership(models.Model):
             ("M","Member")
         ]
 
-    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE)
-    group_id = models.ForeignKey(Collab_Group, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE, related_name="memberships")
+    group_id = models.ForeignKey(Collab_Group, on_delete=models.CASCADE, related_name="memberships")
     #date_joined = models.DateField()
     role = models.CharField(max_length=2,
             choices=MEMBERSHIP_CHOICES,
@@ -297,6 +309,7 @@ class Collab_Membership(models.Model):
     class Meta:
         app_label = 'dcollab'
         db_table = 'collab_membership'
+        unique_together = ('user_id', 'group_id')
         indexes = [
             models.Index(name="cmem_role_idx",fields=['role']),
         ]
@@ -304,6 +317,9 @@ class Collab_Membership(models.Model):
     #------------------------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.group_id} <-- {self.role} -- {self.user_id}"
+
+    def __str__(self) -> str:
+        return f"{self.user_id.first_name} {self.user_id.last_name}"
 
     #------------------------------------------------
     @classmethod

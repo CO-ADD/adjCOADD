@@ -1,0 +1,22 @@
+<div class="row align-items-end mb-2 border-bottom pb-2">
+  <div class="col-md-6">
+    {{ form.user_id.label_tag }}
+    {{ form.user_id }}
+  </div>
+  <div class="col-md-4">
+    {{ form.role.label_tag }}
+    {{ form.role }}
+  </div>
+  <div class="col-md-2 text-end">
+    {% if form.instance.pk %}
+      <button type="button"
+              class="btn btn-sm btn-outline-danger"
+              hx-get="{% url 'add-member' object.pk %}"
+              hx-swap="outerHTML"
+              hx-target="closest .row">
+        Remove
+      </button>
+      {{ form.DELETE }}
+    {% endif %}
+  </div>
+</div>

@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
-from django.forms import ModelForm
+from django.forms import ModelForm, inlineformset_factory
 from django.shortcuts import get_object_or_404
 from django.forms.widgets import HiddenInput
 from django.contrib.postgres.forms import SimpleArrayField, SplitArrayField
@@ -17,7 +17,7 @@ from adjcoadd.constants import PROJECT_COMPOUND_STATUS, PROJECT_SCREEN_STATUS, P
 from applib.django.base.filters import BaseStatus_Filter
  
 #-- dCollab --------------------------------------------------------------------
-from dcollab.models import Organisation, Collab_Group, Collab_User
+from dcollab.models import Organisation, Collab_Group, Collab_User, Collab_Membership
 
 #=================================================================================================
 # Organisation
@@ -189,7 +189,6 @@ class CollabGroup_Filter(BaseStatus_Filter):
         'Organisation':      {'lookup':'choice','field_name':'organisation_id__organisation_name'},
     }
 
-
     Organisation = ChoiceFilter(field_name='organisation_id__organisation_name', choices=[], label="Organisation")
     Country = ChoiceFilter(field_name='country', choices=CountryField().choices)
     mta_status = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Collab_Group.DICTIONARY_FIELDS['mta_status'], astatus__gte=0))
@@ -218,7 +217,60 @@ class CollabGroup_Filter(BaseStatus_Filter):
         fields=['group_code','Organisation','Country','mta_status']
 
 # -----------------------------------------------------------------
+class CollabGroup_Form(forms.ModelForm):
+
+    class Meta:
+        model=Collab_Group
+        exclude=['group_id']
+        widgets = {
+            'group_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'organisation_id': forms.Select(attrs={'class': 'form-select'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'department': forms.TextInput(attrs={'class': 'form-control'}),
+            'postal_address': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.Select(attrs={'class': 'form-select'}),
+            'mta_status': forms.Select(attrs={'class': 'form-select'}),
+            'mta_document': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+# -----------------------------------------------------------------
+class CollabMembership_Form(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        user_queryset = kwargs.pop('user_queryset', None)
+         
+        super().__init__(*args, **kwargs)
+        # Set Labels from Model Definitions
+        for field_name in self.fields:
+            self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
+
+        if user_queryset is not None:
+            self.fields['user_id'].queryset = user_queryset
+            
+    class Meta:
+        model=Collab_Membership
+        fields = ['user_id', 'role']
+        widgets = {
+            'user_id': forms.Select(attrs={'class': 'form-select'}),
+            'role': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+
+# Inline formset — one group → many memberships
+CollabMembership_FormSet = inlineformset_factory(
+    Collab_Group,
+    Collab_Membership,
+    form=CollabMembership_Form,
+    fields=['user_id', 'role'],
+    extra=1,
+    can_delete=True,
+)
+        
+# -----------------------------------------------------------------
 class CollabGroup_CreateForm(forms.ModelForm):
+
+    #organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
 
     def __init__(self, *args, **kwargs): 
         super().__init__(*args, **kwargs)
@@ -228,7 +280,7 @@ class CollabGroup_CreateForm(forms.ModelForm):
 
 
         # Create groups of fields for View 
-        self.create_field_groups()
+        #self.create_field_groups()
         
         # Add the 'group-input' class to the widget attrs
         for field in self.fields.values():
@@ -241,7 +293,6 @@ class CollabGroup_CreateForm(forms.ModelForm):
         # for field in Collab_User.CALCULATED_FIELDS:
         #     self.fields[field].widget.attrs['readonly'] = True
 
-        
     class Meta:
         model=Collab_Group
         exclude=['group_id']
@@ -253,9 +304,21 @@ class CollabGroup_CreateForm(forms.ModelForm):
             for grp in Collab_Group.VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
+# -----------------------------------------------------------------
+class CollabMembership_Form(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # You can customize queryset for 'person' and 'group' if needed
+        self.fields['user_id'].queryset = Collab_User.objects.all()
+        self.fields['group_id'].queryset = Collab_Group.objects.all()
+        
+    class Meta:
+        model = Collab_Membership
+        fields = ['group_id', 'user_id', 'role'] # Include custom fields and related objects
 
 # -----------------------------------------------------------------
-class CollabGroup_UpdateForm(CollabUser_CreateForm):
+class CollabGroup_UpdateForm(CollabGroup_CreateForm):
 
     def __init__(self, *args, **kwargs): 
         super(CollabGroup_UpdateForm, self).__init__(*args, **kwargs)

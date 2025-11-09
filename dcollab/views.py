@@ -17,6 +17,7 @@ from django.http import JsonResponse, QueryDict
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.functional import SimpleLazyObject
+from django.views.generic import UpdateView, View
 
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
@@ -30,6 +31,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 from dcollab.models import Organisation, Collab_Group, Collab_User
 from dcollab.forms import (Organisation_Filter, Organisation_CreateForm, Organisation_UpdateForm,
                         CollabGroup_Filter, CollabGroup_CreateForm, CollabGroup_UpdateForm,
+                        CollabGroup_Form, CollabMembership_FormSet,
                         CollabUser_Filter,  CollabUser_CreateForm,  CollabUser_UpdateForm,
                         )
 # from dscreen.models import Screen_Run
@@ -138,20 +140,21 @@ def CollabGroup_CreateView(req):
 
 # -----------------------------------------------------------------
 @login_required
-def CollabGroup_UpdateView(req, pk):
+def CollabGroup_XUpdateView_old(req, pk):
 
-    _object=get_object_or_404(Collab_Group, assay_id=pk)
+    _object=get_object_or_404(Collab_Group, group_id=pk)
 
     kwargs={}
     kwargs['user']=req.user
     message={'status':'update','text':''}
     
     form=CollabGroup_UpdateForm(instance=_object)
+    update_url = 'collabgroup_update'
     
     if req.method=='POST':
         try:
             with transaction.atomic(using='dscreen'):
-                obj = Collab_Group.objects.select_for_update().get(assay_id=pk)
+                obj = Collab_Group.objects.select_for_update().get(group_id=pk)
                 form= CollabGroup_UpdateForm(req.POST, instance=obj)    
                 if form.is_valid():
                     instance=form.save(commit=False)
@@ -160,21 +163,76 @@ def CollabGroup_UpdateView(req, pk):
 
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update CollabGroup','Completed')
                     message={'status':'saved','text':f'CollabGroup [{pk}] Updated'}
-                    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'collabgroup_update', 'update_pk':pk}) 
+                    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':update_url, 'update_pk':pk}) 
                 else:
                     messages.warning(req, f'Update failed due to {form.errors} error')
                     
         except Exception as err:
             messages.warning(req, f'Update failed due to {err} error')
             message={'status':'update','text':'Input Error'}
-            return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'collabgroup_update', 'update_pk':pk}) 
+            return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':update_url, 'update_pk':pk}) 
 
     context={}
     context["object"]=_object
     context["form"]=form
     
-    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'collabgroup_update', 'update_pk':pk}) 
+    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':update_url, 'update_pk':pk}) 
 
+
+#=================================================================================================
+class CollabGroup_UpdateView(LoginRequiredMixin, UpdateView):
+    
+    model = Collab_Group
+    form_class = CollabGroup_Form
+    template_name = "dcollab/collab/group_update.html"
+    success_url = reverse_lazy("collabgroup_list")
+
+    # redirect unauthenticated users
+    login_url = "login"              # your login URL name (can be path like '/accounts/login/')
+    redirect_field_name = "next"     # optional, controls ?next= param
+
+    def get_user_queryset(self):
+        """Preload all users efficiently once."""
+        return Collab_User.objects.select_related("organisation_id").order_by("last_name", "first_name")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_query_set = self.get_user_queryset()
+        
+        if self.request.POST:
+            context["membership_formset"] = CollabMembership_FormSet(
+                self.request.POST, instance=self.object
+            )
+        else:
+            context["membership_formset"] = CollabMembership_FormSet(instance=self.object)
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        membership_formset = context["membership_formset"]
+
+        if membership_formset.is_valid():
+            self.object = form.save()
+            membership_formset.instance = self.object
+            membership_formset.save()
+            messages.success(self.request, "Group and members updated successfully.")
+            if self.request.htmx:
+                context["membership_formset"] = CollabMembership_FormSet(instance=self.object)
+                return render(self.request, "dcollab/collab/partials/membership_list.html", context)
+            return redirect(self.success_url)
+        else:
+            if self.request.htmx:
+                return render(self.request, "dcollab/collab/partials/membership_list.html", context)
+            return self.form_invalid(form)  
+        
+class AddMembershipRow_View(View):
+    def get(self, request, pk):
+        group = get_object_or_404(Collab_Group, pk=pk)
+        formset = CollabMembership_FormSet(instance=group)
+        new_form = formset.empty_form
+        context = {"form": new_form}
+        return render(request, "dcollab/collab/partials/membership_row.html", context)
+             
 #=================================================================================================
 # Collaborator User
 #=================================================================================================
@@ -204,6 +262,7 @@ def CollabUser_CreateView(req):
     message={'status':'new','text':''}
 
     form=CollabUser_CreateForm()
+    create_url = 'collabuser_create'
     
     #print(f" [CollabUser_CreateView] {req.method} {req.POST}")
     if req.method=='POST':
@@ -222,15 +281,15 @@ def CollabUser_CreateView(req):
             except IntegrityError as err:
                     messages.error(req, f'IntegrityError {err} happens, record may be existed!')
                     message={'status':'error','text':f'IntegrityError [{err}]'}
-                    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'assay_create'})
+                    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':create_url})
                     #return redirect(req.META['HTTP_REFERER'])                 
         else:
             messages.warning(req, form.errors)
             message={'status':'new','text':'Input Error'}
-            return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'assay_create'})
+            return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':create_url})
             #return redirect(req.META['HTTP_REFERER'])          
 
-    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'assay_create'}) 
+    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':create_url}) 
 
 # -----------------------------------------------------------------
 @login_required
@@ -270,4 +329,3 @@ def CollabUser_UpdateView(req, pk):
     context["form"]=form
     
     return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
-    
