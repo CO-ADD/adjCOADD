@@ -36,33 +36,20 @@ class Project(AuditModel):
         "project_id":{'Project ID': {'project_id':URL_LINKS['project_id']}},
         "group_id.group_code":"Group",
         "group_id.country.name":"Country",
-        #"project_type":"Type",
+        #"project_type":"Type",s",
         "project_status":"Status",
         "project_name":"Project Name",
+        #"process_status":"Screening",
         'n_compounds':"#Cmpds",
         'n_structures':"#Struct",
         'n_barcodes':"#BC",
         #"group_id":"Group",
         # "group_id.group_code":"Group",
-
-    # n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cpmds")
-    # n_mcc_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#MCC")
-    # n_structure = models.IntegerField(default=0, blank=True, verbose_name = "#Struc")
-    # n_barcode = models.IntegerField(default=0, blank=True, verbose_name = "#BCode")
-    # n_motherplates = models.IntegerField(default=0, blank=True, verbose_name = "#MP")
-    # n_testplates = models.IntegerField(default=0, blank=True, verbose_name = "#TP")
-    # n_runids = models.IntegerField(default=0, blank=True, verbose_name = "#Runs")
-    # n_assays = models.IntegerField(default=0, blank=True, verbose_name = "#Assays")
-    # n_ps_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#PS")
-    # n_dr_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#DR")
-    # n_syn_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#SYN")
-    # n_sc_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Inhib Hits")
-    # n_mic_hits = models.IntegerField(default=0, blank=True, verbose_name = "#MIC Hits")
-    # n_tox_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Tox Hits")
     }
 
     DICTIONARY_FIELDS = {
         'project_type':'Project_Type',
+        #'process_status':'Process_Status',
         'project_status':'Project_Status',
         'provided_container':'Container_Type',
         'stock_conc_unit':'Unit_Concentration',
@@ -81,6 +68,16 @@ class Project(AuditModel):
     ]
 
     # Add Project Upload File Name
+
+# Waiting for Compounds
+# Compounds arrived
+# StockPrep completed
+# Primary Screening completed
+# Hit Confirmation completed
+# Removed no Compounds
+# Analysis completed
+# Reports completed
+# Continous Screening
 
     project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
     project_name = models.CharField(max_length=150, blank=True, verbose_name = "Project Name")

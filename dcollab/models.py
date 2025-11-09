@@ -42,7 +42,7 @@ class Organisation(AuditModel):
     organisation_name = models.CharField(max_length=250, blank=False, unique=True, verbose_name = "Organisation")
     organisation_type = models.ForeignKey(Dictionary, blank=False, verbose_name = "Organisation Type", on_delete=models.DO_NOTHING,
         db_column="organisation_type", related_name="%(class)s_organisation_type")
-    country = CountryField(verbose_name = "Country")
+    country = CountryField(default='AU',verbose_name = "Country")
 
     #------------------------------------------------
     class Meta:
@@ -136,7 +136,7 @@ class Collab_User(AuditModel):
     department = models.CharField(max_length=250, blank=True, verbose_name = "Department")
     postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
     city = models.CharField(max_length=250, blank=True, verbose_name = "City")
-    country = CountryField(verbose_name = "Country")
+    country = CountryField(default='AU',verbose_name = "Country")
 
     # group_id = models.ForeignKey("Collab_Group", null=True, blank=True, verbose_name = "Group Membership", on_delete=models.DO_NOTHING,
     #     db_column="group_id", related_name="%(class)s_group_id")
@@ -224,7 +224,7 @@ class Collab_Group(AuditModel):
     department = models.CharField(max_length=250, blank=True, verbose_name = "Department")
     postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
     city = models.CharField(max_length=250, blank=True, verbose_name = "City")
-    country = CountryField(verbose_name = "Country")
+    country = CountryField(default='AU', verbose_name = "Country")
     pi_user_id = models.CharField(max_length=10, blank=True, verbose_name = "PI ID")
     # pi = models.ForeignKey(Collab_User, null=True, blank=True, verbose_name = "Principal Investigator", on_delete=models.DO_NOTHING,
     #     db_column="pi", related_name="%(class)s_pi")
