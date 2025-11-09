@@ -1473,3 +1473,10 @@ class MasterWell(Sample_Base):
         self.test_conc_unit_lst = []
         self.test_conc_types = ""
         self.test_conc_type_lst = []
+
+    @staticmethod
+    #------------------------------------------------
+    def get_barcodes(CmpBatchID, *args, **kwargs):
+        BarcodeWells = MasterWell.objects.filter(cmpbatch_id = CmpBatchID).values('barcode')
+        _barcodes = []
+        return(_barcodes)

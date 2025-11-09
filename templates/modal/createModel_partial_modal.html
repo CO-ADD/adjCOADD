@@ -19,6 +19,8 @@
           {% else %}          
             <p>{{field | safe}}</p>
           {% endif %}
+
+
           <span class="badge bg-info text-light">{{field.help_text}}</span>
           {% for error in field.errors%} 
             <span class="badge text-info text-warning">{{error}}</span>
@@ -40,7 +42,8 @@
 
 {% elif message.status == 'saved' %}
     <div>
-      {{message.text}} 
+      {{ message.text }}:
+      {{ message.html }}  
     </div>
 
     <!-- Needs to be within </form> for 'submit' to post -->

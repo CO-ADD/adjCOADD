@@ -36,11 +36,29 @@ class Project(AuditModel):
         "project_id":{'Project ID': {'project_id':URL_LINKS['project_id']}},
         "group_id.group_code":"Group",
         "group_id.country.name":"Country",
-        "project_type":"Type",
+        #"project_type":"Type",
         "project_status":"Status",
         "project_name":"Project Name",
+        'n_compounds':"#Cmpds",
+        'n_structures':"#Struct",
+        'n_barcodes':"#BC",
         #"group_id":"Group",
         # "group_id.group_code":"Group",
+
+    # n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cpmds")
+    # n_mcc_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#MCC")
+    # n_structure = models.IntegerField(default=0, blank=True, verbose_name = "#Struc")
+    # n_barcode = models.IntegerField(default=0, blank=True, verbose_name = "#BCode")
+    # n_motherplates = models.IntegerField(default=0, blank=True, verbose_name = "#MP")
+    # n_testplates = models.IntegerField(default=0, blank=True, verbose_name = "#TP")
+    # n_runids = models.IntegerField(default=0, blank=True, verbose_name = "#Runs")
+    # n_assays = models.IntegerField(default=0, blank=True, verbose_name = "#Assays")
+    # n_ps_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#PS")
+    # n_dr_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#DR")
+    # n_syn_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#SYN")
+    # n_sc_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Inhib Hits")
+    # n_mic_hits = models.IntegerField(default=0, blank=True, verbose_name = "#MIC Hits")
+    # n_tox_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Tox Hits")
     }
 
     DICTIONARY_FIELDS = {
@@ -140,26 +158,26 @@ class Project(AuditModel):
 
 
     # -- Calculated Fields - No View/Update ------------------------------------------
-    CALCULATED_FIELDS = ['n_compounds','n_mcc_compounds','n_structure','n_barcode',
+    CALCULATED_FIELDS = ['n_compounds','n_mcc_compounds','n_structures','n_barcodes',
                          'n_motherplates','n_testplates','n_runids','n_assays',
                          'n_ps_compounds','n_dr_compounds','n_syn_compounds',
                          'n_sc_hits','n_mic_hits','n_tox_hits',
                          'screen_date']
 
-    n_compounds = models.IntegerField(default=0, verbose_name = "#Cpmds")
-    n_mcc_compounds = models.IntegerField(default=0, verbose_name = "#MCC")
-    n_structure = models.IntegerField(default=0, verbose_name = "#Struc")
-    n_barcode = models.IntegerField(default=0, verbose_name = "#BCode")
-    n_motherplates = models.IntegerField(default=0, verbose_name = "#MP")
-    n_testplates = models.IntegerField(default=0, verbose_name = "#TP")
-    n_runids = models.IntegerField(default=0, verbose_name = "#Runs")
-    n_assays = models.IntegerField(default=0, verbose_name = "#Assays")
-    n_ps_compounds = models.IntegerField(default=0, verbose_name = "#PS")
-    n_dr_compounds = models.IntegerField(default=0, verbose_name = "#DR")
-    n_syn_compounds = models.IntegerField(default=0, verbose_name = "#SYN")
-    n_sc_hits = models.IntegerField(default=0, verbose_name = "#Inhib Hits")
-    n_mic_hits = models.IntegerField(default=0, verbose_name = "#MIC Hits")
-    n_tox_hits = models.IntegerField(default=0, verbose_name = "#Tox Hits")
+    n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cpmds")
+    n_mcc_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#MCC")
+    n_structures = models.IntegerField(default=0, blank=True, verbose_name = "#Struc")
+    n_barcodes = models.IntegerField(default=0, blank=True, verbose_name = "#BCode")
+    n_motherplates = models.IntegerField(default=0, blank=True, verbose_name = "#MP")
+    n_testplates = models.IntegerField(default=0, blank=True, verbose_name = "#TP")
+    n_runids = models.IntegerField(default=0, blank=True, verbose_name = "#Runs")
+    n_assays = models.IntegerField(default=0, blank=True, verbose_name = "#Assays")
+    n_ps_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#PS")
+    n_dr_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#DR")
+    n_syn_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#SYN")
+    n_sc_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Inhib Hits")
+    n_mic_hits = models.IntegerField(default=0, blank=True, verbose_name = "#MIC Hits")
+    n_tox_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Tox Hits")
     screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
 
 
@@ -171,7 +189,8 @@ class Project(AuditModel):
             models.Index(name="prj_pname_idx", fields=['project_name']),
             models.Index(name="prj_opid_idx", fields=['ora_project_id']),
             models.Index(name="prj_ncmp_idx", fields=['n_compounds']),
-            models.Index(name="prj_nstr_idx", fields=['n_structure']),
+            models.Index(name="prj_nbc_idx", fields=['n_barcodes']),
+            models.Index(name="prj_nstr_idx", fields=['n_structures']),
             models.Index(name="prj_nsh_idx", fields=['n_sc_hits']),
             models.Index(name="prj_nmh_idx", fields=['n_mic_hits']),
             models.Index(name="prj_nth_idx", fields=['n_tox_hits']),
@@ -589,7 +608,7 @@ class COADD_Compound(AuditModel):
             #logger.info(f" [Save COADD Compound] {self} {self.std_status}")
             super(COADD_Compound, self).save(*args, **kwargs) 
 
-
+#-------------------------------------------------------------------------------------------------
 class ABase_Compound(AuditModel):
     """
     List of Abase Compounds as per Registration

@@ -59,7 +59,7 @@ class ScreenRun_CreateForm(forms.ModelForm):
     run_project= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
 
     def __init__(self, *args, **kwargs): 
-        super(ScreenRun_CreateForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # Set Labels from Model Definitions
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
@@ -81,12 +81,12 @@ class ScreenRun_CreateForm(forms.ModelForm):
                 attrs = field.widget.attrs
                 attrs['class'] = attrs.get('class', '') + 'input-group'
                 field.widget.attrs = attrs
-        
-        # Make Calculated fields ReadOnly
-        for field in Screen_Run.CALCULATED_FIELDS:
-            self.fields[field].widget.attrs['readonly'] = True
-
-        
+            
+        # Make Calculated fields ReadOnly and Hidden
+        for field_name in Screen_Run.CALCULATED_FIELDS:
+            self.fields[field_name].widget.attrs['readonly'] = True
+            self.fields[field_name].widget = self.fields[field_name].hidden_widget()
+            
     class Meta:
         model=Screen_Run
         exclude=[]
@@ -135,6 +135,7 @@ class Assay_Filter(BaseStatus_Filter):
         model=Assay
         fields=[ 'assay_id', 'assay_subtype','assay_code']
 
+#----------------------------------------------------------------
 class Assay_CreateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs): 
@@ -154,11 +155,11 @@ class Assay_CreateForm(forms.ModelForm):
                 attrs['class'] = attrs.get('class', '') + 'input-group'
                 field.widget.attrs = attrs
         
-        # Make Calculated fields ReadOnly
+        # Make Calculated fields ReadOnly and Change to Hidden Widget
         # for field in Assay.CALCULATED_FIELDS:
         #     self.fields[field].widget.attrs['readonly'] = True
-
-        
+        #     self.fields[field].widget = self.fields[field].hidden_widget()
+                    
     class Meta:
         model=Assay
         exclude=['assay_id']

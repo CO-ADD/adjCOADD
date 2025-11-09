@@ -92,8 +92,9 @@ def ScreenRun_CreateView(req):
                     return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'screenrun_create'})
                     #return redirect(req.META['HTTP_REFERER'])                 
         else:
+            print(form)
             messages.warning(req, form.errors)
-            message={'status':'new','text':'Input Error'}
+            message={'status':'new','text':f'Input Error','html':form.errors}
             return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'screenrun_create'})
             #return redirect(req.META['HTTP_REFERER'])          
 

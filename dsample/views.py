@@ -29,6 +29,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 
 from dsample.models import Project, COADD_Compound, ABase_Compound_Batch
 from dsample.forms import Project_Filter, Project_CreateForm, Project_UpdateForm
+from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
 from applib.report.screen_data import Report_Screening
@@ -147,6 +148,7 @@ def Project_UpdateView(req, pk):
                 form=Project_UpdateForm(req.POST, instance=obj)    
                 if form.is_valid():       
                     instance=form.save(commit=False)
+                    update_project_summary(instance)
                     instance.save(**kwargs)
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Project','Completed')
                     # form.save_m2m() 

@@ -88,8 +88,11 @@ class Project_CreateForm(forms.ModelForm):
         self.fields['provided_container'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['provided_container'])]
         self.fields['stock_conc_unit'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['stock_conc_unit'])]
 
+        # Make Calculated fields ReadOnly and Hidden
         for field_name in Project.CALCULATED_FIELDS:
             self.fields[field_name].widget.attrs['readonly'] = 'readonly'
+            self.fields[field_name].widget = self.fields[field_name].hidden_widget()
+
 
         self.create_field_groups()
 

@@ -98,22 +98,22 @@ class Screen_Run(AuditModel):
                          'screen_date',
                          'process_status']
 
-    n_compounds = models.IntegerField(default=0, verbose_name = "#Cpmds")
+    n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cpmds")
     #n_projects = models.SmallIntegerField(default=0, verbose_name = "#Projects")
-    n_seq = models.IntegerField(default=0, verbose_name = "#Seq")
-    n_qc = models.IntegerField(default=0, verbose_name = "#QC")
-    n_structure = models.IntegerField(default=0, verbose_name = "#Struc")
-    n_motherplates = models.IntegerField(default=0, verbose_name = "#MP")
-    n_testplates = models.IntegerField(default=0, verbose_name = "#TP")
-    n_testplates_valid = models.IntegerField(default=0, verbose_name = "#TP Valid")
-    n_assays = models.IntegerField(default=0, verbose_name = "#Assays")
-    n_inhibitions = models.IntegerField(default=0, verbose_name = "#Inhib")
-    n_mic = models.IntegerField(default=0, verbose_name = "#MIC")
-    n_cc50 = models.IntegerField(default=0, verbose_name = "#CC50")
-    n_hc50 = models.IntegerField(default=0, verbose_name = "#HC50")
-    n_synmic = models.IntegerField(default=0, verbose_name = "#micSyn")
+    n_seq = models.IntegerField(default=0, blank=True, verbose_name = "#Seq")
+    n_qc = models.IntegerField(default=0, blank=True, verbose_name = "#QC")
+    n_structure = models.IntegerField(default=0, blank=True, verbose_name = "#Struc")
+    n_motherplates = models.IntegerField(default=0, blank=True, verbose_name = "#MP")
+    n_testplates = models.IntegerField(default=0, blank=True, verbose_name = "#TP")
+    n_testplates_valid = models.IntegerField(default=0, blank=True, verbose_name = "#TP Valid")
+    n_assays = models.IntegerField(default=0, blank=True, verbose_name = "#Assays")
+    n_inhibitions = models.IntegerField(default=0, blank=True, verbose_name = "#Inhib")
+    n_mic = models.IntegerField(default=0, blank=True, verbose_name = "#MIC")
+    n_cc50 = models.IntegerField(default=0, blank=True, verbose_name = "#CC50")
+    n_hc50 = models.IntegerField(default=0, blank=True, verbose_name = "#HC50")
+    n_synmic = models.IntegerField(default=0, blank=True, verbose_name = "#micSyn")
     screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
-    process_status = models.IntegerField(default=0, verbose_name = "Process Status")
+    process_status = models.IntegerField(default=0, blank=True, verbose_name = "Process Status")
 
 
     #------------------------------------------------
