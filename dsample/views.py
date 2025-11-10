@@ -213,12 +213,13 @@ def Project_StockPrepView(req, pk):
 
         _object=get_object_or_404(Project, project_id=pk)
         _now = datetime.datetime.now()
-        _xls_name = f'Project_{pk}_CmpdPrep_{_now:%Y%m%d}.xlsx'
+        _xls_name = f'Project_{pk}_StockPrep_{_now:%Y%m%d}.xlsx'
 
         cCmpdPrep = StockPrep_Project(pk)
         cCmpdPrep.get_samples()
 
         if cCmpdPrep.n_samples>0:
+            cCmpdPrep.make_stockprep()
             req = HttpResponse(content_type='application/vnd.ms-excel')
             req['Content-Disposition'] = f'attachment; filename={_xls_name}'
             cCmpdPrep.to_excel(req)

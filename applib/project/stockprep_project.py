@@ -22,15 +22,17 @@ class StockPrep_Project():
     def __init__(self, ProjectID, **kwargs):
     # --------------------------------------------------------------------------------------
         self.n_samples = 0
+        self.n_stockprep = 0
         self.project_id = ProjectID
         self.project = Project.get(ProjectID)
 
         self.df_samples = None
         self.dict_samples = {}
 
+        self.df_stockprep = None
 
         self.DF_COL_CMPD = ['compound_id','compound_code',
-                            'reg_mw','reg_amount','reg_amount_unit','reg_solvent',
+                            'reg_mw','reg_amount','reg_amount_unit','reg_solvent','reg_smiles'
                             ]
 
     # --------------------------------------------------------------------------------------
@@ -38,7 +40,7 @@ class StockPrep_Project():
         self.qryCmpd = COADD_Compound.objects.filter(project_id=self.project
                                                      ).values_list(*self.DF_COL_CMPD)
         self.n_samples = self.qryCmpd.count()
-        print(f" [CmpdPrep_Project ] {self.project} {self.n_samples}")
+        print(f" [StockPrep_Project ] {self.project} {self.n_samples}")
         if self.n_samples > 0:
             self.df_samples = pd.DataFrame(list(self.qryCmpd), columns=self.DF_COL_CMPD)
             self.df_samples = self.df_samples.apply(self.apply_get_barcodes,axis=1)
@@ -63,6 +65,28 @@ class StockPrep_Project():
         return(s)
 
     # --------------------------------------------------------------------------------------
+    def make_stockprep(self):
+    # --------------------------------------------------------------------------------------
+    # 'Compound_ID','Compound_Code','MW',
+    # 'Amount','Amount_Unit','Volume','Volume_Unit',
+    # 'Solvent','Conc','Conc_Unit','Barcode','MasterPlate','MasterWell','Stock_Date','Stock_Comment'
+    #
+        _now = datetime.datetime.now()
+        _Lst = []
+        if self.n_samples>0:
+            for idx,row in self.df_samples.iterrows():
+                _Lst.append(
+                    {'Compound_ID':row['compound_id'],'Compound_Code':row['compound_code'], 'MW':float(row['reg_mw']), 
+                    'Amount':float(row['reg_amount']),'Amount_Unit':row['reg_amount_unit'],
+                    'Volume':float(row['reg_amount']),'Volume_Unit':'uL',
+                    'Solvent':row['reg_solvent'],'Conc':10,'Conc_Unit':'mg/mL',
+                    'Barcode':row['barcode'],'MasterPlate':row['masterplate'],'MasterWell':row['masterwell'],
+                    'Stock_Date':f'{_now:%d/%m/%Y}','Stock_Comment':''}
+                )
+            self.df_stockprep = pd.DataFrame(_Lst)
+            self.n_stockprep = len(_Lst)
+
+    # --------------------------------------------------------------------------------------
     def to_excel(self,XlFile=None, Transpose_PivTables=False, verbose=0):
     # --------------------------------------------------------------------------------------
         SHEET_NAME = {
@@ -77,8 +101,11 @@ class StockPrep_Project():
         if self.n_samples > 0:
             with pd.ExcelWriter(XlFile) as writer:
                 if self.n_samples > 0:
-                    logger.info(f" [CmpdPrep]     [Samples] {self.df_samples.shape}")
+                    logger.info(f" [StockPrep]     [Samples] {self.df_samples.shape}")
                     self.df_samples.to_excel(writer, sheet_name='Samples')
+                if self.n_stockprep > 0:
+                    logger.info(f" [StockPrep]     [StockPrep] {self.df_stockprep.shape}")
+                    self.df_stockprep.to_excel(writer, sheet_name='StockPrep')
 
 
     # --------------------------------------------------------------------------------------

@@ -1485,5 +1485,4 @@ class MasterWell(Sample_Base):
             print(bc)
             _barcodes[bc['barcode']] = bc
 
-        print(_barcodes)
         return(_barcodes)
