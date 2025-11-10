@@ -71,6 +71,9 @@ def Upload_StockPrep_Process(Request, DirName, FileList, ProjectID=None, upload=
                 if upload and validStatus:
                     if lstMP[_mpid]['new'] or overwrite:
                         print(f" [Upload_StockPrep] Saving: {lstMP[_mpid]['plate']} [Overwrite: {overwrite}]")
+                        # for w in lstMP[_mpid]['plate'].wells:
+                        #     _w = lstMP[_mpid]['plate'].wells[w]
+                        #     print(f" {_w} {_w.barcode} {_w.cmpbatch_id}")
                         lstMP[_mpid]['plate'].save(verbose=0)
                         nUploads += 1
         if upload:

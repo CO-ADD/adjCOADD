@@ -325,6 +325,7 @@ class Plate(AuditModel):
                     self.wells[m[self.WELL_POS]].well_id = m[self.WELL_ID]
                     self.wells[m[self.WELL_POS]].plate_id = PlateInstance
                 else:
+                    #print(f"[Plate.init_wells] {m} with None")
                     self.wells[m[self.WELL_POS]] = None
 
                 for key in self.MAP_POSITIONS:
@@ -337,7 +338,7 @@ class Plate(AuditModel):
                 if self.wells[w] is None:
                     self.wells[w] = WellModel()
                     self.wells[w].well_id = w
-                    self.wells[w].plate_id = self.plate_id
+                    self.wells[w].plate_id = self
 
     #------------------------------------------------
     def reset_well_fields(self, Fields=[]):
@@ -1142,7 +1143,7 @@ class MasterPlate(Plate):
             _plate.plate_type = Dictionary.get(cls.DICTIONARY_FIELDS["plate_type"],PlateType)
 
             if WellData:
-                #print(f"[MasterPlate.new] WithModel {TestWell}")
+                #print(f"[MasterPlate.new] WithModel {MasterWell}")
                 _plate.init_wells(WellModel=MasterWell,PlateInstance=_plate)
             else:
                 _plate.init_wells(WellModel=None, PlateInstance=None)
@@ -1395,7 +1396,7 @@ class MasterWell(Sample_Base):
         ]
     #-------------------------------------------------------------------------------
     def __str__(self):
-        return f"{self.plate_id} {self.well_id} {self.barcode}"
+        return f"{self.plate_id} {self.well_id} {self.barcode} {self.cmpbatch_id}"
     
     def str_cmpbatch_data(self):
         return f"{self.plate_id} {self.well_id} {self.cmpbatch_lst} {self.test_conc_lst} {self.test_conc_unit_lst}"
