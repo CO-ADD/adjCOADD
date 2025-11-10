@@ -33,6 +33,7 @@ from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
 from applib.report.screen_data import Report_Screening
+from applib.project.cmpdprep_project import CmpdPrep_Project
 
 
 #=================================================================================================
@@ -171,7 +172,6 @@ class Project_RemoveView(Base_RemoveView):
     model = Project
     transaction_use = 'dsample'
 
-
 # -----------------------------------------------------------------
 @login_required
 def Project_ReportView(req, pk):
@@ -205,3 +205,21 @@ def Project_ReportView(req, pk):
         return(req)
     
 # -----------------------------------------------------------------
+
+@login_required
+def Project_CmpdPrepView(req, pk):
+
+    if req.method=='GET':
+
+        _object=get_object_or_404(Project, project_id=pk)
+        _now = datetime.datetime.now()
+        _xls_name = f'Project_{pk}_CmpdPrep_{_now:%Y%m%d}.xlsx'
+
+        cCmpdPrep = CmpdPrep_Project(pk)
+        cCmpdPrep.get_samples()
+
+        if cCmpdPrep.n_samples>0:
+            req = HttpResponse(content_type='application/vnd.ms-excel')
+            req['Content-Disposition'] = f'attachment; filename={_xls_name}'
+            cCmpdPrep.to_excel(req)
+        return req

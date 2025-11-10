@@ -1477,6 +1477,12 @@ class MasterWell(Sample_Base):
     @staticmethod
     #------------------------------------------------
     def get_barcodes(CmpBatchID, *args, **kwargs):
-        BarcodeWells = MasterWell.objects.filter(cmpbatch_id = CmpBatchID).values('barcode')
-        _barcodes = []
+        BarcodeWells = MasterWell.objects.filter(cmpbatch_id = CmpBatchID, barcode__isnull=False).values('barcode','plate_id','well_id')
+        _barcodes = {}
+
+        for bc in BarcodeWells:
+            print(bc)
+            _barcodes[bc['barcode']] = bc
+
+        print(_barcodes)
         return(_barcodes)
