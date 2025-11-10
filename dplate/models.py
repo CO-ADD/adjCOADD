@@ -681,6 +681,22 @@ class TestPlate(Plate):
     # Model specific implemnetation    
         pass
 
+    @staticmethod
+    def get_layout_range(inStr, **kwargs):
+
+        # A11B22 - AA111BB111, excluding any AAA or 1111, or any other pattern (X,MIC,...)
+        pattern = re.compile(r"^([a-zA-Z]{1,2})([0-9]{2,3})([a-zA-Z]{1,2})([0-9]{2,3})$")
+        match = pattern.findall(inStr)
+        
+        if match:
+            return({"R1":TestPlate.ROW_LABELS.index(match[0][0])+1,
+                       "C1":int(match[0][1]),
+                       "R2":TestPlate.ROW_LABELS.index(match[0][2])+1,
+                       "C2":int(match[0][3])}
+            )
+        else:
+            return({})
+
     #--------------------------------------------------------------
     def apply_layout(self,verbose=0) -> int:
         CONTROL_LABELS = ['is_negcontrol','is_poscontrol','is_control','is_sample']
@@ -691,20 +707,22 @@ class TestPlate(Plate):
             # Parse LAYOUT ------------------------------------------------------
             if verbose > 0:
                 logger.info(f"[TestPlate ApplyLayout] {self.plate_id} <- {self.control_layout} {self.n_wells}")
-            _layLst = self.control_layout.split('_')
+            _layLst = self.control_layout.upper().split('_')
             _layDict = {}
             nLay = 0
             for _lo in CONTROL_ORDER:
-                _l = _layLst[nLay]
-#                if _l != 'X' or _l != 'MIC':
-                if _l not in ['X','MIC']:
-                    _layDict[_lo] = {'R1':self.ROW_LABELS.index(_l[:1])+1,
-                                     'C1':int(_l[1:3]),
-                                     'R2':self.ROW_LABELS.index(_l[3:4])+1,
-                                     'C2':int(_l[4:6])}
-                else:
-                    _layDict[_lo] = {}
-                nLay += 1
+                _layDict[_lo] = self.get_layout_range(_layLst[nLay])
+                if _layDict[_lo]:
+                    nLay += 1
+
+                #_l = _layLst[nLay]
+                # if _l not in ['X','MIC','']:
+                #     _layDict[_lo] = {'R1':self.ROW_LABELS.index(_l[:1])+1,
+                #                      'C1':int(_l[1:3]),
+                #                      'R2':self.ROW_LABELS.index(_l[3:4])+1,
+                #                      'C2':int(_l[4:6])}
+                # else:
+                #     _layDict[_lo] = {}
 
             # ReSet LAYOUT ------------------------------------------------------
             _n_layout = -1

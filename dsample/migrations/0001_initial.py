@@ -13,7 +13,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('dchem', '0001_initial'),
-        ('dcollab', '0013_alter_collab_group_country_and_more'),
         ('apputil', '0005_alter_applicationuser_department_and_more'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
