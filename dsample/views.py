@@ -33,7 +33,7 @@ from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
 from applib.report.screen_data import Report_Screening
-from applib.project.cmpdprep_project import CmpdPrep_Project
+from applib.project.stockprep_project import StockPrep_Project
 
 
 #=================================================================================================
@@ -207,7 +207,7 @@ def Project_ReportView(req, pk):
 # -----------------------------------------------------------------
 
 @login_required
-def Project_CmpdPrepView(req, pk):
+def Project_StockPrepView(req, pk):
 
     if req.method=='GET':
 
@@ -215,7 +215,7 @@ def Project_CmpdPrepView(req, pk):
         _now = datetime.datetime.now()
         _xls_name = f'Project_{pk}_CmpdPrep_{_now:%Y%m%d}.xlsx'
 
-        cCmpdPrep = CmpdPrep_Project(pk)
+        cCmpdPrep = StockPrep_Project(pk)
         cCmpdPrep.get_samples()
 
         if cCmpdPrep.n_samples>0:

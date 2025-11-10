@@ -3,11 +3,13 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from dsample.views import  (Project_ListView, Project_CreateView, Project_DetailView, Project_UpdateView, Project_ReportView,
-                            Project_CmpdPrepView,
+                            Project_StockPrepView,
                             # Project_RemoveView,
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
-                    ) 
+                    )
+from dsample.process_views import (Load_StockPrep_ProcessView)
+ 
 urlpatterns = [
     # Project 
     # path('project_card', Project_CardView.as_view(), name="project_card"),
@@ -18,5 +20,7 @@ urlpatterns = [
     #path('deleteProject/<str:pk>', Project_RemoveView.as_view(), name="project_delete"),
     path('project/<str:pk>/report', Project_ReportView, name="project_report"),
 
-    path('project/<str:pk>/generate_cmpdprep', Project_CmpdPrepView, name="generate_cmpdprep"),
+    path('project/<str:pk>/generate_stockprep', Project_StockPrepView, name="generate_stockprep"),
+    path('project/<str:pk>/load_stockprep', Load_StockPrep_ProcessView.as_view(), name='load_stockprep'),
+
 ]

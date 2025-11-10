@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import pandas as pd
 import datetime
@@ -11,9 +12,8 @@ from dplate.models import MasterWell
 import logging
 logger = logging.getLogger(__name__)
 
-
 #-----------------------------------------------------------------------------------------
-class CmpdPrep_Project():
+class StockPrep_Project():
     """
     Analysis class for Screening data Doseresponse and Single Concentration data
     

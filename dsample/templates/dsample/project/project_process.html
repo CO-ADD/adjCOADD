@@ -3,7 +3,11 @@
 <div>
 
   <button type="button" class="btn btn-outline-success {% if process_status < 9 %}disabled {% endif %}"> 
-    <a href="{% url 'generate_cmpdprep' pk=object.pk %}" style="color:inherit"> Generate CmpdPrep</a>
+    <a href="{% url 'generate_stockprep' pk=object.pk %}" style="color:inherit"> Generate StockPrep</a>
+  </button>
+
+  <button type="button" class="btn btn-outline-success"> 
+    <a href="{% url 'load_stockprep' pk=object.pk %}" style="color:inherit"> Upload StockPrep </a>
   </button>
 
   <button type="button" class="btn btn-outline-success {% if process_status < 9 %} disabled {% endif %}"> 
