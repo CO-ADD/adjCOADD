@@ -8,6 +8,7 @@ from asgiref.sync import sync_to_async
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.sessions.models import Session
 from django.contrib.postgres.fields import ArrayField
 from django.forms.models import model_to_dict
 from django.urls import reverse
@@ -63,6 +64,20 @@ class ApplicationUser(AbstractUser):
             retInstance = None
         return(retInstance)
 
+    #------------------------------------------------
+    # Returns an Logged in User instance by Time
+    @staticmethod
+    def get_current_users():
+        active_sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        user_name_list = []
+        for session in active_sessions:
+            data = session.get_decoded()
+            user_name_list.append(data.get('_auth_user_id', None))
+        user_name_list = list(set(user_name_list))
+        # Query all logged in users based on id list
+        #print(f" [ApplicationUser] LoggedIn: {user_name_list}")
+        return ApplicationUser.objects.filter(name__in=user_name_list)
+    
     #------------------------------------------------
     # Returns an User instance if found by name
     @classmethod

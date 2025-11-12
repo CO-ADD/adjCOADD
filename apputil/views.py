@@ -16,6 +16,8 @@ from django.views.generic.detail import DetailView
 from django.db import transaction, IntegrityError
 from django.conf import settings
 
+from django.utils import timezone
+
 #from adjcoadd.constants import *
 from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
@@ -43,7 +45,7 @@ from apputil.utils.validation_log import Validation_Log
 def SystemInfoView(req):
     info_data={'version': settings.VERSION,
                'database':settings.HOST_NAME,
-               'appuser':'user'}
+               'current_users':ApplicationUser.get_current_users() }
     return render(req, "modal/systeminfo_partial_modal.html", info_data)
 
 #=================================================================================================
@@ -138,7 +140,7 @@ class AppUser_DetailView(DetailView):
 #-------------------------------------------------------------------------------------------------
 @login_required(login_url='/')
 def userprofile(req, id):
-    current_user=get_object_or_404(User, pk=id)
+    current_user=get_object_or_404(ApplicationUser, pk=id)
     return render(req, 'apputil/appUserProfile.html', {'currentUser': current_user})
 
 #-------------------------------------------------------------------------------------------------

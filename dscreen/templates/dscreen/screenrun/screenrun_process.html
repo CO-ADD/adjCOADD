@@ -6,11 +6,11 @@
   </button>
 
   {% if runtype == 'PSR' %}
-    <button type="button" class="btn btn-outline-success"> 
+    <button type="button" class="btn btn-outline-success disabled"> 
       <a href="{% url 'gen_motherplates_psr' pk=object.pk %}" style="color:inherit"> Generate PSR Motherplates</a>
     </button>
   {% elif runtype == 'HCR' %}
-    <button type="button" class="btn btn-outline-success"> 
+    <button type="button" class="btn btn-outline-success disabled"> 
       <a href="{% url 'gen_motherplates_hcr' pk=object.pk %}" style="color:inherit"> Generate HCR Motherplates</a>
     </button>
   {% endif %}

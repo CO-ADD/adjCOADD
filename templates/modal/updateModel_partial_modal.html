@@ -16,7 +16,7 @@
         <!-- Default Create Model Form Template  -->
         <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3">
 
-        {% for field in form.visible_fields%}
+        {% for field in form.visible_fields %}
             <div class="col">
             <label>{{field.label}}</label> 
             {% if field.field.widget.attrs.readonly %}

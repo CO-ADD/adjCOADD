@@ -9,8 +9,19 @@
 <div>
   <p>Version: {{version}}</span></p>
   <p>Database: {{database}}</span></p>
-  <p>User: {{appuser}}</span></p>
+  <!-- <p>User: {{user}}</span></p> -->
+  <p>User: {{user}}</span></p>
+
+  {% if user.is_superuser %}
+   <p>Logged in: 
+    {% for user in current_users %}
+     {{user.name}}
+    {% endfor %}  
+   </p>
+  {% endif %}
+
 </div>
+
 
 {% comment %} 
 <div class="modal-footer">
