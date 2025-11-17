@@ -7,3 +7,5 @@ class ApputilConfig(AppConfig):
 
     def ready(self):
         import apputil.signals
+
+
