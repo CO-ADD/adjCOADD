@@ -3,8 +3,13 @@
     <div class="brand d-flex flex-column align-items-center">
       <a class="navbar-brand" href="{% url 'index' %}">
         {% load static %}
-        <img class="d-inline-block align-text-top"
-          src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
+        {% if DEVELOPMENT %}
+          <img class="d-inline-block align-text-top"
+            src="{% static '/images/brand/CO-ADD_Logo_Black_NoBackground.png'%}" alt="CoADD Logo" />
+        {% else %}
+          <img class="d-inline-block align-text-top"
+            src="{% static '/images/brand/CO-ADD_Logo_White_NoBackground_CMYK.png'%}" alt="CoADD Logo" />
+        {% endif %}
       </a>
     </div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

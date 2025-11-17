@@ -181,7 +181,7 @@ class OrgBatch_Form(forms.ModelForm):
     stock_date=forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     quality_source=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False,)
-    batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input','pattern':'[0-9a-zA-Z]'}), 
+    batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '15', 'default':'optional input','pattern':'[0-9a-zA-Z]*'}), 
                                         help_text='Optional - If empty, next number will be assigned', required=False)
     biologist=forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=True,)
 
