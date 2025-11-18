@@ -123,7 +123,7 @@ class CellBatch_Form(forms.ModelForm):
 
     #alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
-    batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input','pattern':'[0-9a-zA-Z]'}), 
+    batch_id=forms.CharField(widget=forms.TextInput(attrs={'maxlength': '5', 'default':'optional input','pattern':'[0-9a-zA-Z]*'}), 
                                         help_text='Optional - If empty, next number will be assigned', required=False)
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     previous_batch_id= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group'}), required=False,)

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 #-----------------------------------------------------------------------------------------
 class StockPrep_Project():
     """
-    Analysis class for Screening data Doseresponse and Single Concentration data
+    Class for Preparation of Stock, Assigning Barcodes
     
     """
     # --------------------------------------------------------------------------------------

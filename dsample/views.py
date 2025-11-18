@@ -213,7 +213,7 @@ def Project_StockPrepView(req, pk):
 
         _object=get_object_or_404(Project, project_id=pk)
         _now = datetime.datetime.now()
-        _xls_name = f'Project_{pk}_StockPrep_{_now:%Y%m%d}.xlsx'
+        _xls_name = f'{pk}_StockPrep_{_now:%d%b%Y}.xlsx'
 
         cCmpdPrep = StockPrep_Project(pk)
         cCmpdPrep.get_samples()

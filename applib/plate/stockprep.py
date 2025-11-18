@@ -81,12 +81,15 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
 
         # For each Compound
         for idx,row in xDF.iterrows():
-            
+            _is_stock = True
             _mw_status = "New"
             validStatus = True
+            
+            # Check if MasterPlate/Well given ----------------
+            if 'masterplate' not in row or 'masterwell' not in row:
+                _is_stock = False
 
             # Check if Barcode exists ----------------
-            _barcode_status = "New"
             if row['barcode']:
                 # In case of numeric only Barcode's
                 row['barcode'] = str(row['barcode'])
@@ -94,70 +97,77 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                 if MasterWell.exists(None,None,row['barcode']):
                     _barcode_status = "Exists"
                     valLog.add_error('Barcode exists', row['barcode'],f"Existing Barcode for {row['compound_id']}")
+            else:
+                _is_stock = False
 
-            #Check if Compound exists
-            _cmpd_status = 'Exists'
-            djCmp = Compound_Batch.get(row['compound_id'])
-            if not djCmp:
-                valLog.add_error('Wrong Compound_ID', row['compound_id'],
-                    f"Compound (Batch) not found","Upload Compounds")
-                _cmpd_status = "Missing"
 
-            _mw_status = "New"
-            _rackid = str(row['masterplate'])
-            _wellid = row['masterwell']
+            if _is_stock:
+                #Check if Compound exists
+                _cmpd_status = 'Exists'
+                djCmp = Compound_Batch.get(row['compound_id'])
+                if not djCmp:
+                    valLog.add_error('Wrong Compound_ID', row['compound_id'],
+                        f"Compound (Batch) not found","Upload Compounds")
+                    _cmpd_status = "Missing"
 
-            # Check if MasterWell has CmpdBatch_ID or Barcode
-            _MP = lstMP[_rackid]['plate']
-            _Well = _MP.get_well(_wellid)
+                _mw_status = "New"
+                _rackid = str(row['masterplate'])
+                _wellid = row['masterwell']
 
-            if _Well.barcode:
-                valLog.add_error('Existing Rack/Pos', f"{_rackid}:{_wellid}",
-                                        f"Rack has Tube in this position: {_Well.barcode} [{_Well.cmpbatch_id}]","Relocate Tube/Barcode first")
-                _mw_status = 'Exists'
-            elif _Well.cmpbatch_id:
-                valLog.add_error('Existing Rack/Pos', f"{_rackid}:{_wellid}",
-                                        f"Rack has Compound in this position: [{_Well.cmpbatch_id}]","Check MasterPlate/Well ID's")
-                _mw_status = 'Exists'
+                # Check if MasterWell has CmpdBatch_ID or Barcode
+                _MP = lstMP[_rackid]['plate']
+                _Well = _MP.get_well(_wellid)
 
-            if _mw_status in ['New','Empty']: 
+                if _Well.barcode:
+                    valLog.add_error('Existing Rack/Pos', f"{_rackid}:{_wellid}",
+                                            f"Rack has Tube in this position: {_Well.barcode} [{_Well.cmpbatch_id}]","Relocate Tube/Barcode first")
+                    _mw_status = 'Exists'
+                elif _Well.cmpbatch_id:
+                    valLog.add_error('Existing Rack/Pos', f"{_rackid}:{_wellid}",
+                                            f"Rack has Compound in this position: [{_Well.cmpbatch_id}]","Check MasterPlate/Well ID's")
+                    _mw_status = 'Exists'
 
-                if 'solvent_conc' not in row:
-                    row['solvent_conc'] = 100
-                if 'solvent_conc_unit' not in row:
-                    row['solvent_conc_unit'] = 'pct'
+                if _mw_status in ['New','Empty']: 
 
-                if 'amount_unit' not in row:
-                    row['amount_unit'] = 'mg'
-                if 'volume_unit' not in row:
-                    row['volume_unit'] = 'uL'
-                if 'conc_unit' not in row:
-                    row['conc_unit'] = 'mg/mL'
+                    if 'solvent_conc' not in row:
+                        row['solvent_conc'] = 100
+                    if 'solvent_conc_unit' not in row:
+                        row['solvent_conc_unit'] = 'pct'
 
-                set_model_dicts(_Well,row,['conc_unit','amount_unit','solvent_conc_unit'])
-                _Well.barcode = row['barcode']
-                _Well.conc = Decimal(row['conc'])
-                _Well.amount = Decimal(row['amount'])
-                _Well.volume = Decimal(row['volume'])
-                _Well.solvent = row['solvent']
-                _Well.solvent_conc = Decimal(row['solvent_conc'])
+                    if 'amount_unit' not in row:
+                        row['amount_unit'] = 'mg'
+                    if 'volume_unit' not in row:
+                        row['volume_unit'] = 'uL'
+                    if 'conc_unit' not in row:
+                        row['conc_unit'] = 'mg/mL'
+                    if 'stock_comment' not in row:
+                        row['stock_comment'] = ''
 
-                _Well.cmpbatch_lst = [row['compound_id']]
-                _Well.cmpbatch_id = djCmp
-                _Well.n_cmpbatches = 1
- 
-                # validDict = _Well.validate_model()       
-                # if validDict:
-                #     validStatus = False
-                #     for c in validDict:
-                #         print(f" [Upload_StockPrep] validDict Well {_rackid}:{_wellid} {c} ")
- 
-        #DEBUG output
-        # for _mpid in lstMP:
-        #     print(f" {_mpid} {repr(lstMP[_mpid]['plate'])}")
+                    set_model_dicts(_Well,row,['conc_unit','amount_unit','solvent_conc_unit'])
+                    _Well.barcode = row['barcode']
+                    _Well.conc = Decimal(row['conc'])
+                    _Well.amount = Decimal(row['amount'])
+                    _Well.volume = Decimal(row['volume'])
+                    _Well.solvent = row['solvent']
+                    _Well.solvent_conc = Decimal(row['solvent_conc'])
+                    #_Well. = row['stock_comment']
 
-        #     for w in  lstMP[_mpid]['plate'].wells:
-        #         print(f"{lstMP[_mpid]['plate'].wells[w]}")       
+                    _Well.cmpbatch_lst = [row['compound_id']]
+                    _Well.cmpbatch_id = djCmp
+                    _Well.n_cmpbatches = 1
+    
+                    # validDict = _Well.validate_model()       
+                    # if validDict:
+                    #     validStatus = False
+                    #     for c in validDict:
+                    #         print(f" [Upload_StockPrep] validDict Well {_rackid}:{_wellid} {c} ")
+    
+            #DEBUG output
+            # for _mpid in lstMP:
+            #     print(f" {_mpid} {repr(lstMP[_mpid]['plate'])}")
+
+            #     for w in  lstMP[_mpid]['plate'].wells:
+            #         print(f"{lstMP[_mpid]['plate'].wells[w]}")       
 
     else:
         if verbose>0:
