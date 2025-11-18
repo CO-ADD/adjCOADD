@@ -2,6 +2,12 @@
 # Deploy new version of adjCOADD from github 
 #  currently applicable to imb-coadd-work
 #
+# Version number
+#   1.6.0
+#   | | |
+#   | | Smaller changes in views/forms/procedures
+#   | Includes change in models requiring migration
+#   Major changes, additional models/functionality  
 #
 #------------------------------------------------------
 # login as django linux user
