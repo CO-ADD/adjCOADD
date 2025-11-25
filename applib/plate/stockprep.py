@@ -52,7 +52,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
     verbose = kwargs.get('verbose',0)
     lstMP = {}         
 
-    _prepSheets = get_StockPrep_xlsx(xlFile,Sheets=[PREP_SHEET],FillNA='-') 
+    _prepSheets = get_StockPrep_xlsx(xlFile,Sheets=[PREP_SHEET],FillNA='') 
 
     if _prepSheets[PREP_SHEET] is not None:
         xDF = _prepSheets[PREP_SHEET]
@@ -70,7 +70,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                 valLog.add_info('New Rack', _rackid,f'New Storage TubeRack',"Select Upload")
                 _mp_new = True
             else:
-                #_MP.load_wells(WellModel=MasterWell)
+                valLog.add_warning('Rack exists', _rackid,f"Tube rack exists","Select Overwrite to add tubes") #_MP.load_wells(WellModel=MasterWell)
                 _mp_new = False
 
             # for w in  _MP.wells:
@@ -150,7 +150,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                     _Well.volume = Decimal(row['volume'])
                     _Well.solvent = row['solvent']
                     _Well.solvent_conc = Decimal(row['solvent_conc'])
-                    #_Well. = row['stock_comment']
+                    _Well.stock_notes = row['stock_comment']
 
                     _Well.cmpbatch_lst = [row['compound_id']]
                     _Well.cmpbatch_id = djCmp
