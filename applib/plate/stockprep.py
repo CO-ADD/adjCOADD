@@ -59,25 +59,26 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
 
         # Create/Get MasterPlates
         for _mpid in xDF['masterplate'].unique():
-            _mp_new = True
-            _rackid = str(_mpid)
-            lstMP[_rackid] = {'plate_id':_rackid}
-
-            _MP = MasterPlate.get(_rackid, WellData=True, verbose=0)
-            if _MP is None:
-                nWells=384
-                _MP = MasterPlate.new(_rackid, nWells, PlateType='Storage', WellData=True)
-                valLog.add_info('New Rack', _rackid,f'New Storage TubeRack',"Select Upload")
+            if not pd.isna(_mpid):
                 _mp_new = True
-            else:
-                valLog.add_warning('Rack exists', _rackid,f"Tube rack exists","Select Overwrite to add tubes") #_MP.load_wells(WellModel=MasterWell)
-                _mp_new = False
+                _rackid = str(_mpid)
+                lstMP[_rackid] = {'plate_id':_rackid}
 
-            # for w in  _MP.wells:
-            #     print(f"{_MP.wells[w]}")       
+                _MP = MasterPlate.get(_rackid, WellData=True, verbose=0)
+                if _MP is None:
+                    nWells=384
+                    _MP = MasterPlate.new(_rackid, nWells, PlateType='Storage', WellData=True)
+                    valLog.add_info('New Rack', _rackid,f'New Storage TubeRack',"Select Upload")
+                    _mp_new = True
+                else:
+                    valLog.add_warning('Rack exists', _rackid,f"Tube rack exists","Select Overwrite to add tubes") #_MP.load_wells(WellModel=MasterWell)
+                    _mp_new = False
 
-            lstMP[_rackid]['plate'] = _MP
-            lstMP[_rackid]['new'] = _mp_new
+                # for w in  _MP.wells:
+                #     print(f"{_MP.wells[w]}")       
+
+                lstMP[_rackid]['plate'] = _MP
+                lstMP[_rackid]['new'] = _mp_new
 
         # For each Compound
         for idx,row in xDF.iterrows():
@@ -86,8 +87,9 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
             validStatus = True
             
             # Check if MasterPlate/Well given ----------------
-            if 'masterplate' not in row or 'masterwell' not in row:
+            if pd.isna(row['masterplate']) or pd.isna(row['masterwell']):
                 _is_stock = False
+                valLog.add_warning('No Stock',f"{row['compound_code']} ({row['compound_id']})",f"Sample has no Plate/Well information")
 
             # Check if Barcode exists ----------------
             if row['barcode']:
@@ -99,6 +101,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                     valLog.add_error('Barcode exists', row['barcode'],f"Existing Barcode for {row['compound_id']}")
             else:
                 _is_stock = False
+                valLog.add_warning('No Stock',f"{row['compound_code']} ({row['compound_id']})",f"Sample has Barcode information")
 
 
             if _is_stock:
