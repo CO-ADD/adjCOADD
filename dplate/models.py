@@ -1369,7 +1369,7 @@ class MasterWell(Sample_Base):
     solvent_conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "SolvConc Unit", on_delete=models.DO_NOTHING,
          db_column="solvent_conc_unit", related_name="%(class)s_solvent_conc_unit")
 
-    #stock_notes = models.CharField(max_length=50, blank=True, verbose_name = "Stock Notes" ) 
+    stock_notes = models.CharField(max_length=50, blank=True, verbose_name = "Stock Notes" ) 
 
     amount = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "Amount")
     amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Amount Unit", on_delete=models.DO_NOTHING,
