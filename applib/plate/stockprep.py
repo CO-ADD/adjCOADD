@@ -5,6 +5,7 @@ from decimal import Decimal
 from dplate.models import MasterPlate, MasterWell
 from dsample.models import Compound_Batch
 from applib.data.set_fielddata import set_model_dicts
+from applib.data.str_lists import to_str
 
 from django.conf import settings
 import logging
@@ -61,7 +62,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
         for _mpid in xDF['masterplate'].unique():
             if not pd.isna(_mpid):
                 _mp_new = True
-                _rackid = str(_mpid)
+                _rackid = MasterPlate.fix_plateid(_mpid)
                 lstMP[_rackid] = {'plate_id':_rackid}
 
                 _MP = MasterPlate.get(_rackid, WellData=True, verbose=0)
@@ -80,6 +81,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                 lstMP[_rackid]['plate'] = _MP
                 lstMP[_rackid]['new'] = _mp_new
 
+        print(lstMP)
         # For each Compound
         for idx,row in xDF.iterrows():
             _is_stock = True
@@ -114,7 +116,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                     _cmpd_status = "Missing"
 
                 _mw_status = "New"
-                _rackid = str(row['masterplate'])
+                _rackid = MasterPlate.fix_plateid(row['masterplate'])
                 _wellid = row['masterwell']
 
                 # Check if MasterWell has CmpdBatch_ID or Barcode

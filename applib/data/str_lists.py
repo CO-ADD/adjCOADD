@@ -14,6 +14,14 @@ def to_num(s):
     else:
         return(None)
 
+def to_str(s):
+    _type = type(s)
+    if _type in ['int']:
+        return(f"{s}")
+    elif _type in ['float']:
+        return(f"{s:.0f}")        
+    return(s)
+
 def sig_round(f,n=3):
     if int(f) == f:
         return(f)

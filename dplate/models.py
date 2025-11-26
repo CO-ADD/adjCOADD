@@ -356,6 +356,24 @@ class Plate(AuditModel):
     # Model specific implemnetation    
         pass
 
+    #--------------------------------------------------------------
+    @staticmethod
+    def fix_plateid(id):
+
+        # Convert any number based id into str
+        if isinstance(id,(str)):
+            try:
+                s = str(int(float(id)))
+            except:
+                s = id
+        elif isinstance(id,(int,float)):
+            s = str(int(id))
+
+        else:
+            s = str(id)
+        return(s)
+                        
+
 #=================================================================================================#=================================================================================================
 class TestPlate(Plate):
     """
