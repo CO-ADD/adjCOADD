@@ -1524,3 +1524,20 @@ class MasterWell(Sample_Base):
             _barcodes[bc['barcode']] = bc
 
         return(_barcodes)
+
+    #--------------------------------------------------------------
+    @staticmethod
+    def fix_barcode(id):
+
+        # Convert any number based id into str
+        if isinstance(id,(str)):
+            try:
+                s = str(int(float(id)))
+            except:
+                s = id
+        elif isinstance(id,(int,float)):
+            s = str(int(id))
+
+        else:
+            s = str(id)
+        return(s)

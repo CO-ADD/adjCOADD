@@ -94,16 +94,17 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                 valLog.add_warning('No Stock',f"{row['compound_code']} ({row['compound_id']})",f"Sample has no Plate/Well information")
 
             # Check if Barcode exists ----------------
-            if row['barcode']:
-                # In case of numeric only Barcode's
-                row['barcode'] = str(row['barcode'])
-
-                if MasterWell.exists(None,None,row['barcode']):
-                    _barcode_status = "Exists"
-                    valLog.add_error('Barcode exists', row['barcode'],f"Existing Barcode for {row['compound_id']}")
-            else:
+            if pd.isna(row['barcode']):
                 _is_stock = False
                 valLog.add_warning('No Stock',f"{row['compound_code']} ({row['compound_id']})",f"Sample has Barcode information")
+            else:
+                # In case of numeric only Barcode's
+                #row['barcode'] = MasterWell.fix_barcode(row['barcode'])
+                _barcode = MasterWell.fix_barcode(row['barcode'])
+
+                if MasterWell.exists(None,None,_barcode):
+                    _barcode_status = "Exists"
+                    valLog.add_error('Barcode exists', _barcode,f"Existing Barcode for {row['compound_id']}")
 
 
             if _is_stock:
@@ -149,7 +150,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                         row['stock_comment'] = ''
 
                     set_model_dicts(_Well,row,['conc_unit','amount_unit','solvent_conc_unit'])
-                    _Well.barcode = row['barcode']
+                    _Well.barcode = _barcode
                     _Well.conc = Decimal(row['conc'])
                     _Well.amount = Decimal(row['amount'])
                     _Well.volume = Decimal(row['volume'])
