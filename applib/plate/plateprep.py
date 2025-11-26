@@ -69,6 +69,8 @@ def get_BarcodeScans(DirName, csvFiles, **kwargs):
         _rack_df.columns =  [c.upper() for c in _rack_df.columns]
         _rack_id = str(_rack_df['RACKID'].unique()[0])
 
+        valLog.add_info('Rack Scan',_rack_id,f"From: {rack_file}","" )
+
         #_rack_df=_rack_df.apply(apply_get_barcode, axis=1)
         #print(f" [Rack] {_rack_id} from {rack_file}")
 
