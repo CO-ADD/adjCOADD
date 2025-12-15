@@ -234,6 +234,7 @@ def main(prgArgs,djDir):
             PSPrep = xlWB.parse('PSPrep')
             PSPrep.columns = [c.upper() for c in PSPrep.columns]
 
+
             # For each MotherPlate <- Racks A1, B1, A2, B2 
             MPs = {}
             for idx,row in PSPrep.iterrows():

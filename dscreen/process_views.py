@@ -32,7 +32,8 @@ from dscreen.utils.screenrun_process import (Summary_ScreenRun_Process,
 # from dplate.models import MasterPlate, TestPlate
 
 from applib.process.process_forms import Process_View
-from applib.process.process_stepforms import SelectSingleFile_StepForm, Finalize_StepForm, Upload_StepForm, Generate_StepForm, SelectSingleFileFolder_StepForm
+from applib.process.process_stepforms import (SelectSingleFile_StepForm, SelectSingleFileFolder_StepForm,
+                                              Upload_StepForm, Generate_StepForm,  Finalize_StepForm, Download_StepForm)
 #from apputil.utils.form_wizard_tools import ImportHandler_View
 #from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
@@ -150,9 +151,8 @@ class TestPlate_UploadForm(forms.Form):
 #    only_dr = forms.BooleanField(initial=False, required=False, help_text="Recalculate only Doseresponse (after change of PlateQuality)")
     upload = forms.BooleanField(initial=False, required=False, help_text="Upload Testplates and Doseresponse to Database")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -230,7 +230,7 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
         ('upload', Generate_StepForm),
-        ('finalize', Finalize_StepForm),
+        ('finalize', Download_StepForm),
     ]
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_psr.html'
@@ -243,15 +243,17 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
         form_data=kwargs.get('form_data', None)
         if 'generate' in form_data:
             self.generate = form_data['generate']
-        print(" [Gen_MotherPlates_PSR.file_process_handler]")
-        print(f" [Gen_MotherPlates_PSR.file_process_handler] FileDir: {self.file_dir}")
-        print(f" [Gen_MotherPlates_PSR.file_process_handler] FileList: {self.file_list}")
+
+        #print(" [Gen_MotherPlates_PSR.file_process_handler]")
+        #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileDir: {self.file_dir}")
+        #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileList: {self.file_list}")
         
         
         valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
                                            generate=self.generate,
                                            appuser=request.user)
         return(valLog)
+    
 # --------------------------------------------------------------------------------------------------
 class Gen_Motherplates_HCR_ProcessView(Process_View):
     process_name = 'Gen_Motherplates_HCR'

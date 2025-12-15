@@ -8,7 +8,7 @@ from dplate.models import Labware, TestPlate, TestWell, MasterPlate
 
 from applib.plate.multimode_reader import multimodereader_xls
 #from applib.plate.masterplates import read_motherplate_prepsheet_xls
-from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans
+from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans, gen_Motherplates_PSPrep
 from applib.plate.testplates import add_mother_to_testplate
 from applib.bio.doseresponse import process_testplate_doseresponse
 from dscreen.utils.summary import update_screenrun_summary
@@ -353,6 +353,16 @@ def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID
 
     if nRacks > 0:
         Barcodes = get_BarcodeScans(DirName, RackFileList, valLog=valLog)
+    
+    if nFiles > 0 :
+        dfMP = gen_Motherplates_PSPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
+
+        if generate and len(dfMP)>0:
+            print(f" Generate Download")
+            # req = HttpResponse(content_type='application/vnd.ms-excel')
+            # req['Content-Disposition'] = f'attachment; filename={_xls_name}'
+            # dfMP.to_excel(req)
+
 
     valLog.select_unique()
     

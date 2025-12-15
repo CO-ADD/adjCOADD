@@ -213,10 +213,16 @@ class Generate_StepForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['generate'].label = "Generate requested Report/Worksheet"
+        self.doc_type = "Report"
+        self.fields['generate'].label = "Generate requested Document"
 
 # --------------------------------------------------------------------------------------------------
 class Finalize_StepForm(forms.Form):
 # --------------------------------------------------------------------------------------------------
     pass
 
+# --------------------------------------------------------------------------------------------------
+class Download_StepForm(forms.Form):
+# --------------------------------------------------------------------------------------------------
+    print(f" Download_StepForm : ")
+    pass
