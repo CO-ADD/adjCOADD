@@ -39,8 +39,9 @@ SEQID_SEP = "_"
 SEQRUN_SEP = "_"
 
 # -dChem Settings ---------------------------------------------------
-SAMPLE_SEP = "_"
-SAMPLEBATCH_SEP = "_"
+#SAMPLE_SEP = "_"
+#SAMPLEBATCH_SEP = "_"
+SAMPLEBATCH_SEP = "."
 COMPOUND_SEP = '|'
 
 # -dScreen Settings ---------------------------------------------------

@@ -30,6 +30,7 @@ def get_subdir(OrgBatchID,binsize=100):
 
 
 #--Ajax search funcion--
+#-----------------------------------------------------------------------------------
 ## Search Organism Name in Taxonomy
 def search_organism(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
@@ -56,6 +57,7 @@ def search_organism(req):
         return JsonResponse({'data':res})
     return JsonResponse({})
 
+#-----------------------------------------------------------------------------------
 ## Search Organism ID in Organism
 def search_organism_id(req):
     if req.headers.get('x-requested-with') == 'XMLHttpRequest':
