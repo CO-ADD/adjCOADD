@@ -55,7 +55,6 @@ def move_cmpbatch_instance(djInst,upload=False):
     return(nChg,nUpl)
 
 #-----------------------------------------------------------------------------
-
 def main(prgArgs,djDir):
 
     sys.path.append(djDir)
