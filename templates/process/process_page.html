@@ -15,7 +15,7 @@
     <div class="col-md-5 border border-2 rounded" style="position: relative;">
       <span class="labeltext px-4 py-1"> {{data_model}} - <b>{{pk}}</b> </span>
 
-      <!-- Process Line -->
+      <!-- Process Line - To change to a list of Process -->
       <div class="step-line">
         <div class="step {% if wizard.steps.current == 'select_file' %}active{% endif %}">
           Select Files
@@ -68,6 +68,15 @@
         {% elif wizard.steps.current == 'finalize' %}
           <div class="p-3 m-auto">
             Finalize Upload
+          </div>
+        <!-- Step 2 Download -->
+        {% elif wizard.steps.current == 'download' %}
+          <div class="p-3 m-auto">
+            Download Generate Files:
+            <table>
+              <tbody>
+              </tbody>
+            </table>
           </div>
         {% endif %}
 

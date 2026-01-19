@@ -222,6 +222,11 @@ class PlatePrep_Racks_SelectForm(SelectSingleFileFolder_StepForm):
 
         #<a href="{% static 'django-pdf/generator/static/pdfs/nowy.pdf' %}">{{ file }}</a>
 
+class PlatePrep_DownloadForm(Download_StepForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        print(f" [PlatePrep_DownloadForm].__init__()")
+
 # --------------------------------------------------------------------------------------------------
 class Gen_Motherplates_PSR_ProcessView(Process_View):
     process_name = 'Gen_Motherplates_PSR'
@@ -230,12 +235,13 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
         ('upload', Generate_StepForm),
-        ('finalize', Download_StepForm),
+        ('download', PlatePrep_DownloadForm),
     ]
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_psr.html'
 
     def file_process_handler(self, request, *args, **kwargs):    
+        print(" [Gen_MotherPlates_PSR.file_process_handler]")
         self.generate = False
         # self.only_dr = False
                 

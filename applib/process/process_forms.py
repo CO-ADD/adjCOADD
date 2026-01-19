@@ -58,7 +58,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
 
     # ----------------------------------------------------
     def __init__(self, *args, **kwargs):
-        #print(f" [Process_View.__init__] ")
+        print(f" [Process_View.__init__] ")
         super().__init__(*args, **kwargs)
         self.file_list={}
         self.file_dir=None
@@ -70,24 +70,25 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     
     # ----------------------------------------------------
     def get_object(self):
-        #print(f" [Process_View.get_object] ")
         self.pk = self.kwargs.get('pk')
+
+        print(f" [get_object] {self.pk}")
         self.object = get_object_or_404(self.model, pk=self.pk)
 
     # ----------------------------------------------------
     def file_process_handler(self, request, *args, **kwargs):
-        pass
+        print(f" [file_process_handler] not implemented")
         
     # ----------------------------------------------------
     def file_process_finalizer(self, request, *args, **kwargs):
-        pass
+        print(f" [file_process_finalizer] not implemented")
 
     # ----------------------------------------------------
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
 
-        #print(f" [Process_View.process_step] Step: {current_step} Request: {request} ")
+        print(f" [process_step] Step: {current_step} Request: {request} ")
         
         # First Step - Select File(s) -> self.filelist[{file_field as per select form}]
         if current_step == 'select_file':
@@ -112,7 +113,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                     if _field:
                         _files[_field] = request.FILES.getlist(_key)
                         
-                print(f" [process_step] _files {_files}")
+                #print(f" [process_step] _files {_files}")
                 # if 'select_file-multi_files' in request.FILES:
                 #     files.extend(request.FILES.getlist('select_file-multi_files'))
                               
@@ -190,7 +191,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
             # self.file_dir=self.storage.extra_data['file_dir'] #get file path
             # self.file_list=self.storage.extra_data['file_list'] #get files' name  
             self.pk = self.storage.extra_data['object_pk']
-            #print(f" [Process_View.process_step] {current_step} PK: {self.pk}")
+            print(f" [process_step] {current_step} PK: {self.pk}")
             self.file_process_finalizer(request, self.pk)
                             
         return self.get_form_step_data(form)
