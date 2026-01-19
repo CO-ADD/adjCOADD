@@ -358,7 +358,10 @@ def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID
         dfMP = gen_Motherplates_PSPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
 
         if generate and len(dfMP)>0:
-            print(f" Generate Download")
+            xlsFile = f"{RunID}_PS_Motherplates.xlsx"
+            print(f" Generate Download {DirName} {xlsFile}")
+            dfMP.to_excel(os.path.join(DirName,xlsFile))
+
             # req = HttpResponse(content_type='application/vnd.ms-excel')
             # req['Content-Disposition'] = f'attachment; filename={_xls_name}'
             # dfMP.to_excel(req)
