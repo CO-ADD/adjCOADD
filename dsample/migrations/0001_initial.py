@@ -12,10 +12,10 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('apputil', '0005_alter_applicationuser_department_and_more'),
-        ('dchem', '0001_initial'),
+#        ('apputil', '0005_alter_applicationuser_department_and_more'),
+#        ('dchem', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('dcollab', '0013_alter_collab_group_country_and_more'),
+#        ('dcollab', '0013_alter_collab_group_country_and_more'),
     ]
 
     operations = [

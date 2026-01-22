@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import timedelta
 import psycopg2.extensions
 import ldap
+import django
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
 
@@ -74,6 +75,7 @@ else:
     MOL_IMG_URL = 'static/images/mol'
     MOL_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
 
+print(f"Django : {django.__version__}" )
 print(f"BaseDir: {BASE_DIR}")
 print(f"Version: {VERSION}")
 
@@ -209,28 +211,34 @@ if DEVELOPMENT:
     DB_USER = os.environ.get('db_usr') or 'orgdb'
     DB_PASSWD = os.environ.get('password') or 'orgdb'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
+
     if DEVELOPMENT == 'Local':
         HOST_NAME = 'Localhost'
+        print(f"Host Name: {HOST_NAME}")
         
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
+        print(f"Host Name: {HOST_NAME}")
 
     elif DEVELOPMENT == 'Test':
         HOST_NAME = 'localhost'
         DB_NAME = os.environ.get('db_name') or 'coadd'
         DB_USER = os.environ.get('db_usr') or 'coadd'
         DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
+        print(f"Host Name: imb-coadd-test.imb.uq.edu.au ({HOST_NAME})")
 
     elif DEVELOPMENT == 'Meran':
         HOST_NAME = 'schlern'
+        print(f"Host Name: {HOST_NAME}")
+
 else:
     DB_NAME = os.environ.get('db_name') or 'coadd'
     DB_USER = os.environ.get('db_usr') or 'coadd'
     DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
     HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
+    print(f"Host Name: {HOST_NAME}")
 
-print(f"Host Name: {HOST_NAME}")
 
 DATABASES = {
     'default': {
