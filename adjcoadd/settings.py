@@ -211,10 +211,16 @@ if DEVELOPMENT:
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
     if DEVELOPMENT == 'Local':
         HOST_NAME = 'Localhost'
+        
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
+
     elif DEVELOPMENT == 'Test':
-        HOST_NAME = 'Localhost'
+        HOST_NAME = 'localhost'
+        DB_NAME = os.environ.get('db_name') or 'coadd'
+        DB_USER = os.environ.get('db_usr') or 'coadd'
+        DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
+
     elif DEVELOPMENT == 'Meran':
         HOST_NAME = 'schlern'
 else:
