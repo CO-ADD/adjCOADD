@@ -214,7 +214,7 @@ if DEVELOPMENT:
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
     elif DEVELOPMENT == 'Test':
-        HOST_NAME = 'imb-coadd-test.imb.uq.edu.au'
+        HOST_NAME = 'Localhost'
     elif DEVELOPMENT == 'Meran':
         HOST_NAME = 'schlern'
 else:
