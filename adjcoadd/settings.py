@@ -30,8 +30,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
 #               Meran - Devlopment using Schlern PostgrSQL database  
-DEVELOPMENT=None
-#DEVELOPMENT='Work'
+#DEVELOPMENT=None
+DEVELOPMENT='Test'
 #
 
 #........................................................................
@@ -39,7 +39,7 @@ if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
     VERSION = 'Development (1.6.2)'
     DEBUG = True
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-test.imb.uq.edu.au", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
     UPLOAD_DIR = os.path.join(BASE_DIR.parent, 'uploads')
     MEDIA_URL = ('uploads/')
@@ -213,6 +213,8 @@ if DEVELOPMENT:
         HOST_NAME = 'Localhost'
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
+    elif DEVELOPMENT == 'Test':
+        HOST_NAME = 'imb-coadd-test.imb.uq.edu.au'
     elif DEVELOPMENT == 'Meran':
         HOST_NAME = 'schlern'
 else:
