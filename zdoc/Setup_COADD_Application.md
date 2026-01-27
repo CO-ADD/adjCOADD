@@ -13,10 +13,13 @@
 - (base) django> conda create -n dj42py311 django=4.2 django-rdkit python=3.11<br>
    creates base enviroment with django 4.2.2, python 3.11.3
 
+- (base) django> conda create -n dj60py314 django python -c conda-forge<br>
+   creates base enviroment with django 4.2.2, python 3.11.3
+
 - (base) django> conda activate <b>dj42py311</b>
 
 - (dj42py311) django> <b>conda</b> install ..<br>
-      django-filter django-pandas psycopg2 python-ldap requests djangorestframework <br>
+      django-filter django-pandas django-rdkit psycopg2 python-ldap requests djangorestframework <br>
       pdfplumber python-magic openpyxl  ipython CairoSVG<br>
       seaborn<br>
       rdkit -c rdkit<br>
