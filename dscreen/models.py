@@ -80,6 +80,7 @@ class Screen_Run(AuditModel):
     run_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Type", on_delete=models.DO_NOTHING,
         db_column="run_type", related_name="%(class)s_RunType+")
     run_name = models.CharField(max_length=500, blank=True, verbose_name = "Run Name")
+    #run_folder = models.CharField(max_length=120, blank=True, verbose_name = "Run Name")
     assay_note = models.CharField(max_length=250, blank=True, verbose_name = "Assay Note")
     run_conditions = models.CharField(max_length=250, blank=True, verbose_name = "Run Conditions")
     run_issues = models.CharField(max_length=250, blank=True, verbose_name = "Run Issues")
