@@ -85,8 +85,6 @@ def get_BarcodeScans(DirName, csvFiles, **kwargs):
         _rack_df.columns =  [c.upper() for c in _rack_df.columns]
         _rack_id = str(_rack_df['RACKID'].unique()[0])
 
-        valLog.add_info('Rack Scan',_rack_id,f"From: {rack_file}","" )
-
         #_rack_df=_rack_df.apply(apply_get_barcode, axis=1)
         #print(f" [Rack] {_rack_id} from {rack_file}")
 
@@ -107,6 +105,8 @@ def get_BarcodeScans(DirName, csvFiles, **kwargs):
                     _well.cmpbatch_id = None
 
         Racks[_rack_id] = _rack
+        valLog.add_info('Rack Scan',_rack_id,f"{rack_file} ({_n_tubes} tubes)","" )
+
     return(Racks)
 
 # --------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ def gen_Motherplates_PSPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
 # --------------------------------------------------------------------------------
 
     PREP_SHEET = 'PSPrep'
-    QUADRANTS = {'A1':(0,0),'A1':(1,0),'A2':(0,1),'A2':(1,1)}
+    QUADRANTS = {'A1':(0,0),'B1':(1,0),'A2':(0,1),'B2':(1,1)}
 
     MP_Prep_Xlsx = 'MotherPlate_from_PSPrep.xlsx'
 
@@ -125,22 +125,27 @@ def gen_Motherplates_PSPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
     #print(f" Barcodes: {Barcodes}")
 
     _prepSheets = get_PlatePrep_xlsx(os.path.join(DirName,xlFile),Sheets=[PREP_SHEET],FillNA=None,UpperCase=True)
+    #print(_prepSheets)
     if _prepSheets[PREP_SHEET] is not None:
         xDF = _prepSheets[PREP_SHEET]
-        valLog.add_info('PSPrep',f" {len(xDF)}",f"From: {xlFile}","" )
-
+        
+        _n_mps = len(xDF)
+        _n_tubes = 0
+        _n_quad = 0
         MPs = {}
         for idx,row in xDF.iterrows():
-            #rint(f" Row: {row}")
+            #print(f" Row: {row}")
 
             if row['MOTHERPLATEID'] not in MPs:
                 MPs[row['MOTHERPLATEID']]= MasterPlate.new(row['MOTHERPLATEID'],384,'Mother',WellData=True)
 
             _setid = 1
             for qq in QUADRANTS.keys():
+                #print(f" {qq} {row[qq]}")
                 if qq not in row:
                     valLog.add_error('PSPrep Header Error',f" {list(row.keys())}","Correct Quadrants Headers [A1,B1,A2,B2]","Correct the [PSPrep] Sheet" )
                 elif not pd.isna(row[qq]) :
+                    _n_quad += 1
                     _rackid = fix_rackid_str(row[qq])
                     _rack = Barcodes[_rackid]
 
@@ -154,22 +159,28 @@ def gen_Motherplates_PSPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
 
                         _mp_well.barcode = _tube.barcode
                         _mp_well.cmpbatch_id = _tube.cmpbatch_id
-
+                        if _mp_well.barcode:
+                            _n_tubes += 1
+                        #print(f" {_mrow} {_mcol} : {_tube.barcode} ")
+                        
                         if verbose>0:
                             print(f" {_rackid} {_tube.well_id} -> {row['MOTHERPLATEID']} {_mp_well.well_id} [{_mp_well.barcode} {_mp_well.cmpbatch_id}] ")
 
             _setid += 1
+
+        valLog.add_info('PSPrep',f" {len(xDF)}",f"{xlFile} [#MP: {_n_mps}] (#Tubes: {_n_tubes})","" )
 
         # == Create MotherPlate output - to be copied into [MotherPlate] ===============================
         for _mp in MPs:
             for w in MPs[_mp].wells:
                 if MPs[_mp].wells[w].barcode:
                     _mp_well_dict = {'MotherPlate_ID':_mp,
-                                        'MotherWell_ID':w,
-                                        'Plating':'IMB',
+                                     'MotherWell_ID':w,
+                                     'Plating':'IMB',
                                     }                   
                     if MPs[_mp].wells[w].cmpbatch_id:
                         _mp_well_dict['CompoundID'] = str(MPs[_mp].wells[w].cmpbatch_id)
+                        _mp_well_dict['SetID'] = 'A'
                         if MPs[_mp].wells[w].cmpbatch_id.batch_source == 'COADD':
                             _cmp = COADD_Compound.get(MPs[_mp].wells[w].cmpbatch_id)
                             _mp_well_dict['CompoundName'] = _cmp.compound_code
@@ -223,6 +234,8 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
             dictPl['plate_id'] = xDF['motherplate_id']
             dictPl['valid_status'] = True
             
+            _n_mwells = len(mpwells)
+            
             _status = "Exists"
             djMP = MasterPlate.get(mpid, WellData=True, verbose=0)
             if djMP is None:
@@ -240,7 +253,7 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                 if _status == 'New':
                     valLog.add_info("New MotherPlate",
                                     djMP.plate_id, 
-                                    f"{djMP.plating}  {djMP.n_wells}w ",
+                                    f"{djMP.plating}  {djMP.n_wells}w [Wells: {_n_mwells}; Dilut. ]",
                                     "Select Upload")
                 elif _status == 'Exists':
                     valLog.add_warning("MotherPlate Exists ",

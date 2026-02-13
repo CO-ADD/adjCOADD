@@ -8,7 +8,8 @@ from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_De
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
                     ) 
 from dscreen.process_views import (Load_Readouts_ProcessView, Load_TestplateList_ProcessView, Load_Motherplates_ProcessView,
-                                   Gen_Motherplates_PSR_ProcessView, Gen_Motherplates_HCR_ProcessView)
+                                   Gen_Motherplates_PSR_ProcessView, Gen_Motherplates_HCR_ProcessView,
+                                   Load_Sequences_ProcessView)
 
 urlpatterns = [
     # ScreenRun 
@@ -20,6 +21,7 @@ urlpatterns = [
     path('deleteScreenrun/<str:pk>', ScreenRun_RemoveView.as_view(), name="screenrun_delete"),
 
     path('screenrun/load_readouts/<str:pk>', Load_Readouts_ProcessView.as_view(), name='load_readouts'),
+    path('screenrun/load_sequences/<str:pk>', Load_Sequences_ProcessView.as_view(), name='load_sequences'),
     path('screenrun/gen_motherplates_psr/<str:pk>', Gen_Motherplates_PSR_ProcessView.as_view(), name='gen_motherplates_psr'),
     path('screenrun/gen_motherplates_hcr/<str:pk>', Gen_Motherplates_HCR_ProcessView.as_view(), name='gen_motherplates_hcr'),
 

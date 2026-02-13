@@ -660,6 +660,7 @@ class TestPlate(Plate):
                                 _readouts.append(float(self.wells[w].readouts[0]))
                     else:
                         _readouts.append(float(self.wells[w].readouts[0]))
+        #print(f" [tp.get_readouts] {Selection} : {len(_readouts)}")
         return(np.array(_readouts))
 
     #--------------------------------------------------------------
@@ -730,8 +731,9 @@ class TestPlate(Plate):
             nLay = 0
             for _lo in CONTROL_ORDER:
                 _layDict[_lo] = self.get_layout_range(_layLst[nLay])
-                if _layDict[_lo]:
-                    nLay += 1
+                #print(f" [apply_layout] {_layLst[nLay]} {nLay} {_layDict}")
+                #if _layDict[_lo]:
+                nLay += 1
 
                 #_l = _layLst[nLay]
                 # if _l not in ['X','MIC','']:
@@ -742,6 +744,7 @@ class TestPlate(Plate):
                 # else:
                 #     _layDict[_lo] = {}
 
+            #print(f" [apply_layout] {_layDict}")
             # ReSet LAYOUT ------------------------------------------------------
             _n_layout = -1
             for w in self.wells:

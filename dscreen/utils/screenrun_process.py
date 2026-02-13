@@ -98,7 +98,6 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
     
     return(valLog)
 
-
 #-----------------------------------------------------------------------------------
 def Upload_Motherplates_Process(Request, DirName, FileList, RunID=None, upload=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
@@ -222,6 +221,7 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
 
                     if apply_mp:
                         # Apply MP -> Add Compounds
+                        # -------------------------
                         if hasattr(_tp,'motherplate_ids'):
                             if settings.DEBUG:
                                 print(f" [Upload_TestplateList] {_tp.plate_id} Apply MP: {_tp.motherplate_ids}")
@@ -239,34 +239,56 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
                             validStatus = False
                             valLog.add_error("No MIssing MotherPlates",_tpid,"No MotherPlate_IDs","Correct TestPlateList")
 
-                        # Analyze Testplate -> Inhibition
+                        # Analyze Testplate 
+                        # -----------------
                         if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
                             #print(f"{_tp.plate_id} {_tp.n_wells} {_tp.control_layout}")
         
                             if _tp.apply_layout() > 0:
                                 # Analyze Testplate -> Inhibition
+                                # -------------------------------
                                 _tp.calc_inhibition()
                                 if settings.DEBUG:
                                     print(f" [Upload_TestPlateList] {_tpid} {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
 
+                                _dr_list = []
                                 if str(_tp.plate_quality) == 'Valid':
                                     logNumbers['Valid Plates'] += 1
                                     if str(_tp.result_type) in DR_CLASSES:
                                         # Analyze Testplate -> DR AssayData                                            
+                                        # ---------------------------------
                                         _dr_list = process_testplate_doseresponse(_tp)
-                                        if settings.DEBUG:
-                                            print(f" [Upload_TestplateList] {_tpid} DR: {_tp.result_type} {len(_dr_list)}")
-                                                                        
+                                                                                                    
+                                        # Analyze Testplate -> AssayData
+                                        # ------------------------------             
                                         logNumbers['Processed AssayData'] += len(_dr_list)
                                         for _dr in _dr_list:
                                             logNumbers[f'{_dr.dr_type} AssayData'] += 1
-                                    elif _tp.result_type == 'Inhibition':
-                                            logNumbers[f'Inhibition AssayData'] += _tp.n_inhibitions
+
+                                        if settings.DEBUG:
+                                            print(f" [Upload_TestplateList] {_tpid} DR: {_tp.result_type} {len(_dr_list)}")
+                                            
+                                    elif str(_tp.result_type) == 'Inhibition':
+                                        logNumbers[f'Inhibition AssayData'] += _tp.n_inhibitions
+
+                                        if settings.DEBUG:
+                                            print(f" [Upload_TestplateList] {_tpid} SC: {_tp.result_type} {_tp.n_inhibitions}")
+                                    else:
+                                        if settings.DEBUG:
+                                            print(f" [Upload_TestplateList] {_tpid} ??: {_tp.result_type}")
+                                        
 
                                 elif str(_tp.plate_quality) == 'Rejected':
                                     logNumbers['Rejected Plates'] += 1
                                 else:
                                     logNumbers['Failed Plates'] += 1
+                                
+                                # print(f"PosCntr: {_tp.poscontrol_stats}")
+                                # print(f"NegCntr: {_tp.negcontrol_stats}")
+                                # print(f"Sample: {_tp.sample_stats}")
+                                # print(f"Edge: {_tp.edge_stats}")                                
+                                # validDict= _tp.validate_fields()
+                                # print(validDict)
 
  
                         else:

@@ -275,3 +275,49 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
 
     def file_process_handler(self, request, *args, **kwargs):    
         print(" [Gen_MotherPlates_HCR.file_process_handler]")
+
+# --------------------------------------------------------------------------------------------------
+class Load_Sequences_ProcessView(Process_View):
+    process_name = 'Upload_Sequences'
+    model = Screen_Run
+
+    #name_step1="Upload"
+    form_list = [
+        ('select_file', Readout_SelectForm),
+        ('upload', Upload_StepForm),
+        ('finalize', Finalize_StepForm),
+    ]
+
+    template_name = 'dscreen/screenrun_process/load_sequences.html'
+
+    select_html  = 'Please select a Excel [xlsx] file from Tecan/BioTek readers'
+    select_html += '\n Make sure file contains correct  <b>TestPlate IDs</b>'
+
+    upload_html  = 'Please check the TestPlate IDs [<i>Item</i>] for any "New Testplate" [<i>Action</i>]'
+    upload_html += '\n Make sure the IDs are unique and reflect the IDs in <b>TestPLateList</b>'
+    upload_html += '\n In case, correct the IDs in the <b>Readout</b> file and repeat the upload'
+
+    message_html =[
+       ('select_file',select_html),
+       ('upload',upload_html),
+       ('finalize','') 
+    ]
+
+    # Customize Function to validate and upload files:
+    def file_process_handler(self, request, *args, **kwargs):
+
+        # Set Form Data        
+        form_data=kwargs.get('form_data', None)
+        if 'upload' in form_data:
+            self.upload = form_data['upload']
+        if 'overwrite' in form_data:
+            self.overwrite = form_data['overwrite']
+
+        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
+                                       upload=self.upload, overwrite=self.overwrite,appuser=request.user)
+
+        return(valLog)
+
+    # Customize Function to update after upload:
+    def file_process_finalizer(self, request, pk):
+        Summary_ScreenRun_Process(request, pk)

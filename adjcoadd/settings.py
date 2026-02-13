@@ -115,7 +115,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'dbbackup',
-    #'reset_migrations',
     "sequences.apps.SequencesConfig",
     'apputil.apps.ApputilConfig',
     'dcollab.apps.dCollabConfig',
