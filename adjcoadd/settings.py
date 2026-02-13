@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
+import os,sys
 from pathlib import Path
 from datetime import timedelta
 import psycopg2.extensions
@@ -76,6 +76,7 @@ else:
     MOL_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
 
 print(f"Django : {django.__version__}" )
+print(f"Python : {sys.version}" )
 print(f"BaseDir: {BASE_DIR}")
 print(f"Version: {VERSION}")
 

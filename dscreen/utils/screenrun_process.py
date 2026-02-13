@@ -254,6 +254,7 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
                                 _dr_list = []
                                 if str(_tp.plate_quality) == 'Valid':
                                     logNumbers['Valid Plates'] += 1
+                                    
                                     if str(_tp.result_type) in DR_CLASSES:
                                         # Analyze Testplate -> DR AssayData                                            
                                         # ---------------------------------
@@ -282,15 +283,7 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
                                     logNumbers['Rejected Plates'] += 1
                                 else:
                                     logNumbers['Failed Plates'] += 1
-                                
-                                # print(f"PosCntr: {_tp.poscontrol_stats}")
-                                # print(f"NegCntr: {_tp.negcontrol_stats}")
-                                # print(f"Sample: {_tp.sample_stats}")
-                                # print(f"Edge: {_tp.edge_stats}")                                
-                                # validDict= _tp.validate_fields()
-                                # print(validDict)
-
- 
+                                 
                         else:
                             validStatus = False
                             valLog.add_error("Calc Error",_tp.plate_id,"Either no Wells, Readout or Layout","Correct TestPlateList")
