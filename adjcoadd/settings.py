@@ -34,7 +34,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
 #
-
+DJANGO_VER = django.__version__
+PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
@@ -75,8 +76,8 @@ else:
     MOL_IMG_URL = 'static/images/mol'
     MOL_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
 
-print(f"Django : {django.__version__}" )
-print(f"Python : {sys.version}" )
+print(f"Django : {DJANGO_VER}" )
+print(f"Python : {PYTHON_VER}" )
 print(f"BaseDir: {BASE_DIR}")
 print(f"Version: {VERSION}")
 
