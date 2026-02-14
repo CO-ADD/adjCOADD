@@ -61,7 +61,7 @@ else:
     VERSION = '1.6.2'
     DEBUG = True
 
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd.imb.uq.edu.au", "localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-app.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
     UPLOAD_DIR = '/opt/django/var/uploads/'
     MEDIA_URL = ('uploads/')
@@ -235,10 +235,11 @@ if DEVELOPMENT:
 else:
     DB_NAME = os.environ.get('db_name') or 'coadd'
     DB_USER = os.environ.get('db_usr') or 'coadd'
-    DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
+    DB_PASSWD = os.environ.get('password') or 'MtBarney25'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
-    HOST_NAME = 'imb-coadd-db.imb.uq.edu.au'
-    print(f"Host Name: {HOST_NAME}")
+    HOST_NAME = 'localhost'
+    #print(f"Host Name: {HOST_NAME}")
+    print(f"Host Name: imb-coadd-app.imb.uq.edu.au ({HOST_NAME})")
 
 
 DATABASES = {
