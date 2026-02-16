@@ -7,38 +7,39 @@ from django.core.exceptions import ValidationError
 from rdkit import Chem
 
 #-----------------------------------------------------------------------------
-def get_CompoundSubmisssion_xlsx(xlsFile, Sheets=[], FillNA='-', **kwargs):
+def get_CompoundSubmisssion_xlsx(xlsFile, FillNA='-', **kwargs):
 # --------------------------------------------------------------------------------
 
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)
 
     SHEET_NAMES = {
-        'Samples': 'Compound Submission',
-        'Contacts': 'Contact Info',
-        
+        'Samples': 'Sample Info',
+        'Contacts': 'Collaborator Info',
     }
-    Submission_Sheets = {
+    
+    _Sheets = {
         'Samples': None,
         'Contacts': None,
         }
 
+
+    print(f"  [get_CompoundSubmisssion_xlsx] {xlsFile} ")
     if os.path.isfile(xlsFile):
         fXlsx = open(xlsFile, "rb")
         xls = pd.ExcelFile(fXlsx)
+        xlsheets = xls.sheet_names
         #xls = pd.ExcelFile(xlsFile)
-
-        if Sheets is None:
-            sheets = [Submission_Sheets.keys()]
-        for key in Sheets:
-            if SHEET_NAMES[key] in Submission_Sheets:
-                Submission_Sheets[key] = xls.parse(key, header = None) 
+            
+        for key in SHEET_NAMES:
+            if SHEET_NAMES[key] in xlsheets:
+                _Sheets[key] = xls.parse(SHEET_NAMES[key], header = None) 
             else:
                 if valLog:
-                    valLog.add_error('Missing Sheet',key,f"XLSX {os.path.basename(xlsFile)}",f"Correct XLSX Sheets {list(Submission_Sheets)}")
+                    valLog.add_error(f'Missing Sheet for {key}',f"XLSX {os.path.basename(xlsFile)}",f"Correct XLSX Sheets [{SHEET_NAMES[key]}]")
         fXlsx.close()
         
-    return(Submission_Sheets)
+    return(_Sheets)
 
 #-----------------------------------------------------------------------------
 def validate_smiles(smiles_string, *args, **kwargs):
@@ -48,15 +49,20 @@ def validate_smiles(smiles_string, *args, **kwargs):
 
     try:
         mol = Chem.MolFromSmiles(smiles_string)
-        return mol is not None
+        return mol
     except Exception:
+        print(smiles_string)
         if valLog:
             valLog.add_error('Wrong SMILES',smiles_string,'Smiles not valid','Correct Smiles')
-        return False
+        return None
 
 #-----------------------------------------------------------------------------
-def parse_SampleSubmission(xSheet, valLog=None):
+def parse_SampleInfo_Sheet(xSheet, *args, **kwargs):
 #-----------------------------------------------------------------------------
+
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
     SAMPLE_FIELDS = {
         0:'compound_code',
         1:'plate_id',
@@ -76,37 +82,62 @@ def parse_SampleSubmission(xSheet, valLog=None):
     }
     SAMPLE_FLOATS = ['amount','conc','MW']
     
-    _Samples = []    
-    for r in range(3,len(xSheet)):
-        _Sample = {}
-        for i in SAMPLE_FIELDS.keys():
-            _Sample[SAMPLE_FIELDS[i]] = xSheet[i][r]
-            
-        #Clean Floats
-        for f in SAMPLE_FLOATS:
-            try:
-                _Sample[f] = float(_Sample[f])
-            except ValueError:
-                if valLog:
-                    valLog.add_error("Not Numeric",_Sample[f],f" Field [{f}] in row {r} is not numeric","Correct Compound Sheet")   
-        
-        #Smiles
-        if _Sample['smiles']:
-            try:
-                _Sample['smol'] = Chem.MolFromSmiles(_Sample['smiles'])
-            except Exception:
-                _Sample['smol'] = None
-                if valLog:
-                    valLog.add_error('Wrong SMILES',_Sample['smiles'],'Smiles not valid','Correct Smiles')
-                return False
+    _Samples = []
+    _missing_smiles = 0
+    _unique_codes = {}
+    
+    if xSheet is not None:    
+        for r in range(3,len(xSheet)):
+            _Sample = {}
+            for i in SAMPLE_FIELDS.keys():
+                _Sample[SAMPLE_FIELDS[i]] = xSheet[i][r]
                 
-        _Samples.append(_Sample)
+            #Clean Floats
+            for f in SAMPLE_FLOATS:
+                try:
+                    _Sample[f] = float(_Sample[f])
+                except ValueError:
+                    if valLog:
+                        valLog.add_error("Not Numeric",_Sample[f],f" Field [{f}] in row {r} is not numeric","Correct Compound Sheet")   
+            
+            # Check Unique Codes
+            if _Sample['compound_code'] in _unique_codes:
+                valLog.add_error('Duplicate Code',_Sample['compound_code'],'Code exists already','Correct Compound Code')
+            else:
+                _unique_codes[_Sample['compound_code']] = 1
+            
+            # Check Smiles
+            if pd.isna(_Sample['smiles']):
+                _missing_smiles += 1
+            else:
+                _Sample['smol'] = validate_smiles(_Sample['smiles'])
+                if _Sample['smol'] is None:
+                    if valLog:
+                        valLog.add_error('Wrong SMILES',_Sample['smiles'],'Smiles not valid','Correct Smiles')
+                            
+            _Samples.append(_Sample)
 
+        if _missing_smiles > 0:
+            valLog.add_warning("Missing SMILES",f" {_missing_smiles} Samples without SMILES ") 
+            
+    valLog.add_info("Sample Info",f" {len(_Samples)} Samples") 
     return(_Samples)
 
 #-----------------------------------------------------------------------------
-def parse_SampleSubmission(xSheet, valLog=None):
+def parse_ContactInfo_Sheet(xSheet, *args, **kwargs):
 #-----------------------------------------------------------------------------
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
+    # - Project Title --------------------------------
+    PRJTITLE_ROW = 3
+    PRJTITLE_COL = 3
+
+    _PrjTitle = xSheet[PRJTITLE_COL-1][PRJTITLE_ROW-1]
+    if pd.isna(_PrjTitle):
+        _PrjTitle = None
+
+    # - Contacts --------------------------------
     CONTACT_FIELDS = {
         0:'title',
         1:'first_name',
@@ -119,33 +150,44 @@ def parse_SampleSubmission(xSheet, valLog=None):
         8:'street_address',
         9:'country',     
     }
-    
+    CONTACT_ROW = 6
+    CONTACT_COL = 3
     CONTACT_TYPES = {
         0:'PI',
         1:'PC',
         2:'M',        
     }
 
-    _Contacts = []            
+    _Contacts = {}            
     for c in range(3):
         _Contact = {'type':CONTACT_TYPES[c]}
         
         # Col C(2), F(5), I(8)
         for i in CONTACT_FIELDS.keys():
-            _Contact[CONTACT_FIELDS[i]] = xSheet[(c*3)+2][i+2]
+            print(f" {CONTACT_FIELDS[i]} {xSheet[(c*3)+CONTACT_COL-1][i+CONTACT_ROW-1]}")
+            _Contact[CONTACT_FIELDS[i]] = xSheet[(c*3)+CONTACT_COL-1][i+CONTACT_ROW-1]
         
         # Check Email
-        try:
-            validate_email(_Contact['email'])
-        except ValidationError as e:
-            if valLog:
-                valLog.add_error("Not EMail",_Contact['email'],f" Email of [{_Contact['type']}] not valid","Correct Contact Sheet")   
+        if pd.isna(_Contact['email']):
+            if not (pd.isna(_Contact['first_name']) and pd.isna(_Contact['last_name'])):
+                valLog.add_warning("Has no EMail",_Contact['email'],f" Email of [{_Contact['type']}] missing","Correct Contact Sheet") 
+        else:
+            try:
+                validate_email(_Contact['email'])
+            except ValidationError as e:
+                if valLog:
+                    valLog.add_error("Not EMail",_Contact['email'],f" Email of [{_Contact['type']}] not valid","Correct Contact Sheet")   
 
-        _Contacts.append(_Contact)
-    return(_Contacts)
+            _Contacts[CONTACT_TYPES[c]] = _Contact
+        
+    valLog.add_info("Collaborator Info",f" {len(_Contacts)} Contacts {list(_Contacts.keys())}")
+    if _PrjTitle:
+        valLog.add_info("Project Title",f" {_PrjTitle}")
+        
+    return(_Contacts,_PrjTitle)
 
 #-----------------------------------------------------------------------------
-def parse_ContactSubmission(SubmissionFile, SubType=['Samples','Contacts'], **kwargs):
+def parse_CompoundSubmission(SubmissionFile, SubType=['Samples','Contacts'], **kwargs):
 #-----------------------------------------------------------------------------
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)

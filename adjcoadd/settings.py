@@ -24,6 +24,12 @@ print(f"Project: adjCOADD ")
 #--------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Collect Versions
+#--------------------------------------------------------------------
+DJANGO_VER = django.__version__
+PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
+
+
 #======================================================================
 # Define Version 
 #======================================================================
@@ -33,15 +39,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 #               Meran - Devlopment using Schlern PostgrSQL database  
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
-#
-DJANGO_VER = django.__version__
-PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
+
+VERSION = '1.6.3'
+
 #........................................................................
 if DEVELOPMENT:
     # Development -----------------------------------------------------------------------
-    VERSION = 'Development (1.6.2)'
+    VERSION = f'Development ({VERSION})'
     DEBUG = True
-    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-test.imb.uq.edu.au", "imb-coadd-work.imb.uq.edu.au", "localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-test.imb.uq.edu.au", "localhost", "127.0.0.1"]
 
     UPLOAD_DIR = os.path.join(BASE_DIR.parent, 'uploads')
     MEDIA_URL = ('uploads/')
@@ -51,14 +57,26 @@ if DEVELOPMENT:
     STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
     STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
 
-    DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+            },
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "dbbackup": {
+            "BACKEND":'django.core.files.storage.FileSystemStorage',
+            "OPTIONS": {
+                "location": os.path.join(BASE_DIR.parent, 'backups'),
+            },
+        },
+    }
 
     MOL_IMG_URL = 'static/images/mol'
     MOL_IMG_DIR = os.path.join(BASE_DIR, 'static/images/mol') 
 
 else:
     # Production ----------------------------------------------------------------------
-    VERSION = '1.6.2'
     DEBUG = True
 
     ALLOWED_HOSTS = ["0.0.0.0", "imb-coadd-app.imb.uq.edu.au", "localhost", "127.0.0.1"]
@@ -71,10 +89,31 @@ else:
     STATICFILES_DIRS=[os.path.join(BASE_DIR, 'static')]
     STATIC_ROOT = os.path.join(BASE_DIR.parent, 'static')
 
-    DBBACKUP_STORAGE_OPTIONS = {'location': '/opt/django/var/backup'}
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+            },
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "dbbackup": {
+            "BACKEND":'django.core.files.storage.FileSystemStorage',
+            "OPTIONS": {
+                "location": '/opt/django/var/backup',
+            },
+        },
+    }
+
 
     MOL_IMG_URL = 'static/images/mol'
     MOL_IMG_DIR = os.path.join(STATIC_ROOT, 'images/mol')
+
+#........................................................................
+# MEDIA_URL = ('uploads/')
+# MEDIA_ROOT= UPLOAD_DIR
+
+
+
 
 print(f"Django : {DJANGO_VER}" )
 print(f"Python : {PYTHON_VER}" )
@@ -208,13 +247,13 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 #--------------------------------------------------------------------
 if DEVELOPMENT:
-    DB_NAME = os.environ.get('db_name') or 'orgdb'
-    DB_USER = os.environ.get('db_usr') or 'orgdb'
-    DB_PASSWD = os.environ.get('password') or 'orgdb'
+    DB_NAME = os.environ.get('db_name') or 'coadd'
+    DB_USER = os.environ.get('db_usr') or 'coadd'
+    DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
     if DEVELOPMENT == 'Local':
-        HOST_NAME = 'Localhost'
+        HOST_NAME = 'localhost'
         print(f"Host Name: {HOST_NAME}")
         
     elif DEVELOPMENT == 'Work':
@@ -223,9 +262,6 @@ if DEVELOPMENT:
 
     elif DEVELOPMENT == 'Test':
         HOST_NAME = 'localhost'
-        DB_NAME = os.environ.get('db_name') or 'coadd'
-        DB_USER = os.environ.get('db_usr') or 'coadd'
-        DB_PASSWD = os.environ.get('password') or 'MtMaroon23'
         print(f"Host Name: imb-coadd-test.imb.uq.edu.au ({HOST_NAME})")
 
     elif DEVELOPMENT == 'Meran':
@@ -238,7 +274,6 @@ else:
     DB_PASSWD = os.environ.get('password') or 'MtBarney25'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
     HOST_NAME = 'localhost'
-    #print(f"Host Name: {HOST_NAME}")
     print(f"Host Name: imb-coadd-app.imb.uq.edu.au ({HOST_NAME})")
 
 
@@ -249,11 +284,6 @@ DATABASES = {
                    'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
-        # 'TEST_MIRROR': 'default',
-        # "TEST": {
-        #     "NAME": "dorganism",
-            # "OPTIONS":{'options': '-c search_path=dorganism,apputil,public'}     
-        # },
     },
 
     'dorganism': {
@@ -341,13 +371,13 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 #--------------------------------------------------------------------
 # Requires django-dbbackup django-crontab and pg_dump/restore
 DBBACKUP_DATABASES = ['default'
-                      'dorganism','dcell','ddrug','dgene',
-                      'dplate','dcollab','dsample','dscreen',
-                      'dchem','dsummary']
+                    #   'dorganism','dcell','ddrug','dgene','dpeptide',
+                    #   'dplate','dcollab','dsample','dscreen',
+                    #   'dchem','dsummary',
+                    ]
 
 #DBBACKUP_DATABASES = list(DATABASES.keys())
-DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpConnector'}
+DBBACKUP_CONNECTOR_MAPPING = {'django.db.backends.postgresql_psycopg2':'dbbackup.db.postgresql.PgDumpBinaryConnector'}
 
 if DEVELOPMENT:
     #DBBACKUP_STORAGE_OPTIONS = {'location': os.path.join(BASE_DIR, 'backup')}
@@ -365,7 +395,7 @@ else:
 CRONJOBS = [
     # ('*/1 * * * *','django.core.management.call_command',['dbbackup','-z']),
     # ('*/1 * * * *','django.core.management.call_command',['mediabackup','-z'])
-    ('0 0 * * FRI','apputil.utils.cron.Backup_adjCOADD'),
+    ('0 0 * * SAT','apputil.utils.cron.Backup_adjCOADD'),
     # ('*/1 * * * *','django.core.management.call_command')
 ]
 

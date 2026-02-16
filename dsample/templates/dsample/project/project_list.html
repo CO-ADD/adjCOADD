@@ -8,7 +8,7 @@
 
   <!-- Sidebar View/Buttons -->
   {% url 'pivoted-table' app_model='dsample-Project' as pivot_url%}
-  {% include 'grid/base/sidebar_lists.html' with model_name='Project' list_url='project_list' card_url='' export_url='' pivot_url='' create_url='project_create' import_url=''  %}
+  {% include 'grid/base/sidebar_lists.html' with model_name='Project' list_url='project_list' card_url='' export_url='' pivot_url='' create_url='project_create' import_url='load_submission'  %}
   <!-- Filterbar View/Filter -->
   {% include "utils/sidebar.html" %}
 

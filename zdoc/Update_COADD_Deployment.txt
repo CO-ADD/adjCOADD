@@ -77,17 +77,25 @@ If any changes listed:
 (dj41py310)> python manage.py migrate
 
 #------------------------------------------------------
-# 6. start django server (gunicorn application server)
+# 6. check backup
+(dj41py310)> python manage.py crontab show
+(dj41py310)> python manage.py crontab add
+(dj41py310)> python manage.py crontab remove
+#
+
+
+#------------------------------------------------------
+# 7. start django server (gunicorn application server)
 (base)>./etc/dj_start.sh
 
 #------------------------------------------------------
-# 7.check running instance
+# 8.check running instance
 (base)>more var/log/gunicorn_error.log
 (base)>curl localhost:8009 # gunicorn reply
 (base)>curl localhost:8008 # nginx reply
 
 #------------------------------------------------------
-# 8.pull request development->main
+# 9.pull request development->main
 
 #------------------------------------------------------
 # Backup 

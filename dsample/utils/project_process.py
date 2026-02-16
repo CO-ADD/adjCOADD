@@ -5,16 +5,84 @@ from django.core.cache import cache
 
 from applib.logging.validation_log import Validation_Log
 from dsample.models import Project
+from dcollab.models import Collab_Group, Collab_User, Collab_Membership, Organisation
 from dplate.models import MasterPlate, MasterWell
 
 
 from applib.plate.stockprep import  read_Stock_Prepsheet_XLS
+from applib.project.import_project import get_CompoundSubmisssion_xlsx, parse_SampleInfo_Sheet, parse_ContactInfo_Sheet
 from dsample.utils.summary import update_project_summary
+
 
 from django.conf import settings
 import logging
 logger = logging.getLogger(__name__)
 
+
+#-----------------------------------------------------------------------------------
+def Load_Project_Process(Request, DirName, FileList, upload=False, overwrite=False, appuser=None):
+#-----------------------------------------------------------------------------------
+
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+    nUploads = 0
+
+    valLog = Validation_Log("Upload_Project")
+
+    if nFiles > 0:
+        for i in range(nFiles):
+            
+            
+            if settings.DEBUG:
+                print(f" [Upload_Project] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{appuser}] ")
+                
+            _dictSheets = get_CompoundSubmisssion_xlsx(os.path.join(DirName,FileList[i]), valLog=valLog)
+
+            if _dictSheets['Samples'] is not None:
+                _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
+
+            if _dictSheets['Contacts'] is not None:
+                _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
+                
+                for key in _Contacts:
+                    djUsr = Collab_User.get(None,_Contacts[key]['email'])
+                    djOrg = Organisation.get_bysimilarity(_Contacts[key]['organisation'])
+                    
+                    if djOrg is None:
+                        djOrg = Organisation()
+                        djOrg.organisation_name = _Contacts[key]['organisation']
+                        valLog.add_warning("New Organisation",_Contacts[key]['organisation'])
+                    
+                    if djUsr is None:
+                        djUsr = Collab_User()   
+                        djUsr.email = _Contacts[key]['email'] 
+                        djUsr.first_name = _Contacts[key]['first_name'] 
+                        djUsr.last_name = _Contacts[key]['last_name']
+                        djUsr.organisation_id = djOrg 
+                        valLog.add_warning("New Collaborator",f"{djUsr}")
+                    
+                    if 'PI' == key:
+    
+                        djGrp = Collab_Group.get(None,Code=None, PI_ID=djUsr.user_id)
+                        if djGrp is None:
+                            djGrp = Collab_Group()
+                            djGrp.group_code = f"{_Contacts[key]['first_name'][0]}{_Contacts[key]['last_name']}{djOrg.organisation_code}"
+                            djGrp.organisation_id = djOrg
+                            valLog.add_warning("New Group",f"{djGrp}")
+                              
+                        print(f" [Upload_Project] {djGrp}")            
+                    print(f" [Upload_Project] {djUsr} [{key}] {djOrg}")            
+                        
+            valLog.show()
+             
+                
+    else:
+        print(f" [Upload_Project] No Xlsx to process in {DirName}  ")
+
+    valLog.select_unique()
+    return(valLog)
 
 #-----------------------------------------------------------------------------------
 def Summary_Project_Process(Request, ProjectID, upload=False, overwrite=False, appuser=None):
@@ -93,5 +161,7 @@ def Upload_StockPrep_Process(Request, DirName, FileList, ProjectID=None, upload=
 
     valLog.select_unique()
     return(valLog)
+
+
 
 

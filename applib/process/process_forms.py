@@ -98,11 +98,15 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
 
             _files = {}
             
-            self.pk = self.storage.extra_data['object_pk']
+            if 'object_pk' in self.storage.extra_data:
+                # ProcessView for Existing Entry
+                self.pk = self.storage.extra_data['object_pk']
+            else:
+                # ProcessView for New Entry
+                self.pk = None
+                
             if form.is_valid():
-
-
-                #print(f" [Process_View.process_step] Valid Form {self.pk}")
+                print(f" [Process_View.process_step] Valid Form {self.pk}")
                 
                 # Get list of files for each select_file-{file-field}
                 for _key in request.FILES:

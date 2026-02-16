@@ -114,7 +114,7 @@ class Validation_Log():
                 for l in self.logs[t]:
                     _note = l['Note'] if l['Note'] else ""
                     _help = l['Help'] if l['Help'] else ""
-                    _repr = f"[{t:7s}] {l['Process']} : {l['Text']} {l['Item']} {_note} {_help}"
+                    _repr = f"[{t:7s}] {l['Process']} : {l['Action']} {l['Item']} {_note} {_help}"
                     logger.info(_repr)
                     print(_repr)
             else:

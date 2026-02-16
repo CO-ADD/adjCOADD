@@ -6,6 +6,7 @@ from django_rdkit.models import *
 
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GistIndex
+from django.contrib.postgres.search import TrigramSimilarity
 from django.db import transaction, IntegrityError
 
 from adjcoadd.constants import *
@@ -70,6 +71,19 @@ class Organisation(AuditModel):
         except:
             if verbose:
                 print(f"[Organisation Not Found] {ID} {OrganisationName} {Code} ")
+            retInstance = None
+        return(retInstance)
+
+    @classmethod
+    def get_bysimilarity(cls, OrganisationName=None, Similarity=0.6, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            retInstance = cls.objects.annotate(
+                            similarity=TrigramSimilarity('organisation_name', OrganisationName),
+                        ).filter(similarity__gt=Similarity).order_by('-similarity').first()
+        except:
+            if verbose:
+                print(f"[Organisation Not Found] {OrganisationName} [by Similarity] ")
             retInstance = None
         return(retInstance)
 
@@ -163,7 +177,7 @@ class Collab_User(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name} ({self.organisation_id.organisation_code})"
+        return f"{self.first_name} {self.last_name} ({self.organisation_id.organisation_code}) [{self.user_id}]"
 
     #------------------------------------------------
     @classmethod
@@ -181,6 +195,22 @@ class Collab_User(AuditModel):
                 print(f"[User Not Found] {ID} {EMail} {LastName} ")
             retInstance = None
         return(retInstance)
+
+   #------------------------------------------------
+    @classmethod
+    def exists(cls, ID, EMail=None, FirstName=None, LastName=None, verbose=0):
+        try:
+            if ID is not None:
+                retValue = cls.objects.filter(user_id=ID).exists()
+            elif EMail is not None:
+                retValue = cls.objects.filter(email=EMail).exists()
+            elif LastName is not None:
+                retValue = cls.objects.filter(first_name=FirstName, last_name=LastName).exists()
+        except:
+            if verbose:
+                print(f"[Data Not Found] {DataID} ")
+            retValue = False
+        return(retValue)
 
     # #------------------------------------------------
     def save(self, *args, **kwargs):
@@ -259,7 +289,7 @@ class Collab_Group(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.group_id} ({self.group_code})"
+        return f"{self.group_code} ({self.group_id})"
 
     #------------------------------------------------
     @classmethod
