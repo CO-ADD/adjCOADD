@@ -12,7 +12,7 @@ from dplate.models import MasterPlate, MasterWell
 from applib.plate.stockprep import  read_Stock_Prepsheet_XLS
 from applib.project.import_project import get_CompoundSubmisssion_xlsx, parse_SampleInfo_Sheet, parse_ContactInfo_Sheet
 from dsample.utils.summary import update_project_summary
-
+from dsample.utils.compounds import Upload_COADD_Compound
 
 from django.conf import settings
 import logging
@@ -20,7 +20,9 @@ logger = logging.getLogger(__name__)
 
 
 #-----------------------------------------------------------------------------------
-def Load_Project_Process(Request, DirName, FileList, upload=False, overwrite=False, appuser=None):
+def Load_Project_Process(Request, DirName, FileList,
+                         ProjectID=None, UploadContent=['Samples','Contacts'], 
+                         upload=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
 
     if FileList:
@@ -34,16 +36,30 @@ def Load_Project_Process(Request, DirName, FileList, upload=False, overwrite=Fal
     if nFiles > 0:
         for i in range(nFiles):
             
-            
             if settings.DEBUG:
                 print(f" [Upload_Project] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{appuser}] ")
                 
             _dictSheets = get_CompoundSubmisssion_xlsx(os.path.join(DirName,FileList[i]), valLog=valLog)
 
-            if _dictSheets['Samples'] is not None:
-                _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
+            # - Project ----------------------------------------------
+            djPrj = None
+            if ProjectID:
+                djPrj = Project.get(ProjectID)
+                if djPrj is None:
+                    djPrj = Project()
+                    djPrj.project_id = ProjectID
+            else:
+                djPrj = Project()
 
-            if _dictSheets['Contacts'] is not None:
+            # - Samples ----------------------------------------------
+            if 'Samples' in UploadContent and _dictSheets['Samples'] is not None:
+                _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
+                for _smp in _Samples:
+                    _smp['project_id'] = str(djPrj)
+                    Upload_COADD_Compound(_smp, upload=upload, overwrite=overwrite, valLog=valLog)
+                
+            # - Contacts / Project Membership ------------------------
+            if 'Contacts' in UploadContent and _dictSheets['Contacts'] is not None:
                 _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
                 
                 for key in _Contacts:
