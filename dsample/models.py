@@ -585,7 +585,8 @@ class COADD_Compound(AuditModel):
             if not _batch:
                 _batch = Compound_Batch()
             _batch.cmpbatch_id= self.compound_id 
-            _batch.batch_code = self.compound_code 
+            _batch.batch_code = self.compound_code
+            _batch.batch_source = 'COADD' 
             #_batch.batch_type = self.compound_type
             
             # mw,mf, salt and structure_id

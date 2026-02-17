@@ -44,7 +44,9 @@ from apputil.utils.validation_log import Validation_Log
 #=================================================================================================
 def SystemInfoView(req):
     info_data={'version': settings.VERSION,
-               'database':settings.HOST_NAME,
+               'database':settings.DBHOST_NAME,
+               'django':settings.DJANGO_VER,
+               'python':settings.PYTHON_VER,
                'current_users':ApplicationUser.get_current_users() }
     return render(req, "modal/systeminfo_partial_modal.html", info_data)
 

@@ -112,9 +112,6 @@ else:
 # MEDIA_URL = ('uploads/')
 # MEDIA_ROOT= UPLOAD_DIR
 
-
-
-
 print(f"Django : {DJANGO_VER}" )
 print(f"Python : {PYTHON_VER}" )
 print(f"BaseDir: {BASE_DIR}")
@@ -254,19 +251,19 @@ if DEVELOPMENT:
 
     if DEVELOPMENT == 'Local':
         HOST_NAME = 'localhost'
-        print(f"Host Name: {HOST_NAME}")
+        DBHOST_NAME = HOST_NAME
         
     elif DEVELOPMENT == 'Work':
         HOST_NAME = 'imb-coadd-work.imb.uq.edu.au'
-        print(f"Host Name: {HOST_NAME}")
+        DBHOST_NAME = HOST_NAME
 
     elif DEVELOPMENT == 'Test':
         HOST_NAME = 'localhost'
-        print(f"Host Name: imb-coadd-test.imb.uq.edu.au ({HOST_NAME})")
+        DBHOST_NAME = 'imb-coadd-app.imb.uq.edu.au'
 
     elif DEVELOPMENT == 'Meran':
         HOST_NAME = 'schlern'
-        print(f"Host Name: {HOST_NAME}")
+        DBHOST_NAME = HOST_NAME
 
 else:
     DB_NAME = os.environ.get('db_name') or 'coadd'
@@ -274,8 +271,9 @@ else:
     DB_PASSWD = os.environ.get('password') or 'MtBarney25'
     PG_ENGINE = 'django.db.backends.postgresql_psycopg2'
     HOST_NAME = 'localhost'
-    print(f"Host Name: imb-coadd-app.imb.uq.edu.au ({HOST_NAME})")
-
+    DBHOST_NAME = 'imb-coadd-app.imb.uq.edu.au'
+    
+print(f"DBHost Name: {DBHOST_NAME} ")
 
 DATABASES = {
     'default': {

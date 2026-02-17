@@ -4,5 +4,7 @@ def global_settings(request):
     return {
         'DEVELOPMENT': settings.DEVELOPMENT,
         'VERSION': settings.VERSION,
-        'HOST_NAME': settings.HOST_NAME,
+        'DBHOST_NAME': settings.DBHOST_NAME,
+        'DJANGO_VER': settings.DJANGO_VER,
+        'PYTHON_VER': settings.PYTHON_VER,
     }

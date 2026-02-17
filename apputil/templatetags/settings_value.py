@@ -15,7 +15,7 @@ class AssignNode(template.Node):
 # settings value
 @register.simple_tag
 def settings_value(name):
-    if name in ['DEVELOPMENT','HOST_NAME','VERSION']:
+    if name in ['DEVELOPMENT','DBHOST_NAME','VERSION','DJANGO_VER','PYTHON_VER']:
         return getattr(settings, name, "")
     else:
         return ""

@@ -40,7 +40,9 @@
     {% load settings_value %}
     <h5 class="logintext fs-6 fw-bold m-3"> 
       Version: {% settings_value "VERSION" %} <br>
-      DB: {% settings_value "HOST_NAME" %}
+      DataBase: {% settings_value "DBHOST_NAME" %} <br>
+      [Django: {% settings_value "DJANGO_VER" %} 
+      Python: {% settings_value "PYTHON_VER" %}]
     </h5>
   <!-- </div> -->
 </div>
