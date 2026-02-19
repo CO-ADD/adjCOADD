@@ -1,0 +1,33 @@
+[Unit]
+Description=Django Web Application Server
+Requires=postgresql.service
+After=network.target
+
+[Service]
+# 'notify' is best for Gunicorn. It tells systemd when it is ready to accept connections.
+Type=notify
+PIDFile==/opt/django/var/gunicorn.pid
+
+# Security: Run as a dedicated user
+User=django
+Group=django
+
+# Context: Where is the django project?
+#WorkingDirectory=/opt/django/project/adjCOADD
+
+# Command: Run gunicorn directly, with source dj_setenv.sh
+ExecStart=/bin/bash -c '. "$0" && exec "$@"' /opt/django/etc/dj_setenv.sh gunicorn -c /opt/django/etc/dj_gunicorn.py
+ExecStop=pkill -F /opt/django/var/gunicorn.pid
+
+# Restart behavior
+#Restart=always
+#RestartSec=5
+
+# Hardening / Security (Good for Oracle Linux 9)
+# Prevents the service from modifying the filesystem (except specific paths if needed)
+#ProtectSystem=full
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
