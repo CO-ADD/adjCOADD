@@ -1,0 +1,18 @@
+[Unit]
+Description=Django Database Worker
+Requires=django.service
+After=network.target
+
+[Service]
+User=django
+Group=django
+
+WorkingDirectory=/opt/django/project/adjCOADD
+ExecStart=/bin/bash -c '. "$0" && exec "$@"' /opt/django/etc/dj_setenv.sh python manage.py db_worker
+
+# Restart behavior
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

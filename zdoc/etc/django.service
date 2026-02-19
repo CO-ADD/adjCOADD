@@ -13,7 +13,7 @@ User=django
 Group=django
 
 # Context: Where is the django project?
-#WorkingDirectory=/opt/django/project/adjCOADD
+WorkingDirectory=/opt/django/project/adjCOADD
 
 # Command: Run gunicorn directly, with source dj_setenv.sh
 ExecStart=/bin/bash -c '. "$0" && exec "$@"' /opt/django/etc/dj_setenv.sh gunicorn -c /opt/django/etc/dj_gunicorn.py
