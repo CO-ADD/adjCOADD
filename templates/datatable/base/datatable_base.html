@@ -39,15 +39,17 @@
 
               {% for item in object.get_values %}
                 <td>
-                {% if item|is_dict %}                   
+                {% if item|is_dict %}
+
                   <!-- If item isdict - display item.key and use  item.value as link -->
                   {% for key, value in item.items %}      
                     <a href="{{value}}" target="_blank">{{ key }}</a>
                   {% endfor %}
                 {% else %}
                  <!-- Display item -->
-                  {{item}}
+                  {{item|linebreaksbr}}
                 {% endif %}
+
                 </td>
               {% endfor %}       
             </tr>

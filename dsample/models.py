@@ -10,6 +10,7 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.indexes import GinIndex
+from django.db.models.functions import Substr, Concat
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List
@@ -34,11 +35,12 @@ class Project(AuditModel):
 #=================================================================================================
     LIST_VIEW_FIELDS = {
         "project_id":{'Project ID': {'project_id':URL_LINKS['project_id']}},
-        "group_id.group_code":"Group",
+        "project_name":"Project Name",
+        "collaborator":"Collaborator",
+        "group_id.organisation_id.organisation_name":"Organisation",
         "group_id.country.name":"Country",
         #"project_type":"Type",s",
         "project_status":"Status",
-        "project_name":"Project Name",
         #"process_status":"Screening",
         'n_compounds':"#Cmpds",
         'n_structures':"#Struct",
@@ -127,6 +129,8 @@ class Project(AuditModel):
         db_column="group_id", related_name="%(class)s_group_id")
     project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
                              verbose_name = "Project Contacts", null=True, blank=True)
+    project_members = models.ManyToManyField(Collab_User, through='Project_Membership',through_fields=('project_id', 'user_id'))
+    
     #owner_users = models.ManyToManyField(Collab_User)
          
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
@@ -177,7 +181,21 @@ class Project(AuditModel):
     n_tox_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Tox Hits")
     screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
 
-
+    # -- Generated Fields - Property ------------------------------------------
+    @property
+    def collaborator(self):
+        _retList = []
+        _pc = self.get_members(role='PC')
+        _li = self.group_id.get_members(role='LI')
+        
+        if _pc:
+            _retList.append(_pc[0]['full_name'])
+        if _li:
+            if _li[0]['full_name'] not in _retList:
+                _retList.append(_li[0]['full_name'])
+        
+        return(f"{'\n'.join(_retList)}")
+    
     class Meta:
         app_label = 'dsample'
         db_table = 'project'
@@ -196,6 +214,19 @@ class Project(AuditModel):
     #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.project_id}  {self.source}"
+
+    #------------------------------------------------
+    def get_members(self,role=None):
+        if role:
+            _qry_members = self.project_memberships.filter(role=role)
+        else:
+            _qry_members = self.project_memberships.all()
+        
+        _members = []   
+        for member in _qry_members:
+            _members.append({"full_name":member.user_id.full_name, "role" :member.role, "status":member.status})
+            
+        return(_members)
 
     #------------------------------------------------
     @classmethod
@@ -239,18 +270,28 @@ class Project_Membership(models.Model):
             ("AC","Alternative Contact")
         ]
 
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE)
+    MEMBERSTATUS_CHOICES = [ 
+            ("C","Current"),
+            ("P","Past"),
+       ]
+
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_memberships")
+    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE, related_name="project_memberships")
     #date_joined = models.DateField()
     role = models.CharField(max_length=2,
             choices=MEMBERSHIP_CHOICES,
             default='AC')
+    status = models.CharField(max_length=1,
+            choices=MEMBERSTATUS_CHOICES,
+            default='C')
 
     class Meta:
         app_label = 'dsample'
         db_table = 'project_membership'
+        unique_together = ('user_id', 'project_id','role')
         indexes = [
             models.Index(name="pmem_role_idx",fields=['role']),
+            models.Index(name="pmem_status_idx",fields=['status']),
         ]
 
     #------------------------------------------------------------------

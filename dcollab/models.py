@@ -8,6 +8,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GistIndex
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db import transaction, IntegrityError
+from django.db.models.functions import Substr, Concat
 
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
@@ -137,7 +138,7 @@ class Collab_User(AuditModel):
     first_name = models.CharField(max_length=50, blank=True, verbose_name = "First Name")
     last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Name")
     position = models.CharField(max_length=100, blank=True, verbose_name = "Position")
-
+    
     email = models.EmailField(max_length=254, blank=True, verbose_name = "EMail")
     email2 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 2nd")
     active_email = models.SmallIntegerField(default=0, blank=True, verbose_name ="Active")
@@ -161,6 +162,11 @@ class Collab_User(AuditModel):
 
     ora_user_id = models.CharField(max_length=15, blank=True, verbose_name = "Old User ID")
     ora_group_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Group ID")
+
+    # Generated fields - Properties
+    @property    
+    def full_name(self):
+        return(f"{self.first_name} {self.last_name}")
     
     #------------------------------------------------
     class Meta:
@@ -208,7 +214,7 @@ class Collab_User(AuditModel):
                 retValue = cls.objects.filter(first_name=FirstName, last_name=LastName).exists()
         except:
             if verbose:
-                print(f"[Data Not Found] {DataID} ")
+                print(f"[Data Not Found] {ID} - {EMail} - {FirstName} {LastName}")
             retValue = False
         return(retValue)
 
@@ -291,6 +297,20 @@ class Collab_Group(AuditModel):
     def __str__(self) -> str:
         return f"{self.group_code} ({self.group_id})"
 
+
+    #------------------------------------------------
+    def get_members(self,role=None):
+        if role:
+            _qry_members = self.group_memberships.filter(role=role)
+        else:
+            _qry_members = self.group_memberships.all()
+        
+        _members = []   
+        for member in _qry_members:
+            _members.append({"full_name":member.user_id.full_name,"role":member.role, "status":member.status})
+            
+        return(_members)
+    
     #------------------------------------------------
     @classmethod
     def get(cls, ID, Code=None, PI_ID=None, Organisation_ID=None, verbose=0):
@@ -328,13 +348,20 @@ class Collab_Membership(models.Model):
             ("LI","Lead Investigator"),
             ("M","Member")
         ]
+    MEMBERSTATUS_CHOICES = [ 
+            ("C","Current"),
+            ("P","Past"),
+       ]
 
-    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE, related_name="memberships")
-    group_id = models.ForeignKey(Collab_Group, on_delete=models.CASCADE, related_name="memberships")
+    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE, related_name="group_memberships")
+    group_id = models.ForeignKey(Collab_Group, on_delete=models.CASCADE, related_name="group_memberships")
     #date_joined = models.DateField()
     role = models.CharField(max_length=2,
             choices=MEMBERSHIP_CHOICES,
             default='M')
+    status = models.CharField(max_length=1,
+            choices=MEMBERSTATUS_CHOICES,
+            default='C')
 
     class Meta:
         app_label = 'dcollab'
@@ -342,6 +369,7 @@ class Collab_Membership(models.Model):
         unique_together = ('user_id', 'group_id')
         indexes = [
             models.Index(name="cmem_role_idx",fields=['role']),
+            models.Index(name="cmem_status_idx",fields=['status']),
         ]
 
     #------------------------------------------------------------------

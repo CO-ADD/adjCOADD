@@ -25,13 +25,14 @@ class Project_Filter(BaseStatus_Filter):
     
     project_type=ChoiceFilter(field_name='project_type',widget=forms.RadioSelect, choices=[], empty_label=None)
     project_status=ChoiceFilter(field_name='project_status',widget=forms.RadioSelect, choices=[], empty_label=None)
+    Organisation=ChoiceFilter(field_name='group_id__organisation_id__organisation_name', choices=[], empty_label=None)
     Country = ChoiceFilter(field_name='group_id__country', choices=CountryField().choices,)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["project_type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['project_type'])]
         self.filters["project_status"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['project_status'])]
-        #self.filters['Country'].extra["choices"] = self.Meta.model.get_field_choices(field_name='group_id__country')
+        self.filters['Organisation'].extra["choices"] = self.Meta.model.get_field_choices(field_name='group_id__organisation_id__organisation_name')
 
         # Set Filter label to the Fields VerboseName or Filter Name
         for i in self.filters:
@@ -41,7 +42,7 @@ class Project_Filter(BaseStatus_Filter):
                 self.filters[i].label=i
     class Meta:
         model=Project
-        fields=[ 'project_id','project_name','project_type','project_status','Country',]
+        fields=[ 'project_id','project_name','project_type','project_status','Organisation','Country',]
 
 # -----------------------------------------------------------------
 class Project_CreateForm(forms.ModelForm):
@@ -97,7 +98,7 @@ class Project_CreateForm(forms.ModelForm):
 
     class Meta:
         model=Project
-        exclude=Project.ORACLE_FIELDS 
+        exclude=Project.ORACLE_FIELDS
 
     def create_field_groups(self):
         if len(Project.VIEW_GROUPS) > 0:
@@ -109,4 +110,4 @@ class Project_CreateForm(forms.ModelForm):
 class Project_UpdateForm(Project_CreateForm):     
     class Meta:
         model=Project
-        exclude=['project_id'] + Project.ORACLE_FIELDS 
+        exclude=['project_id','project_members'] + Project.ORACLE_FIELDS 

@@ -479,15 +479,15 @@ class AuditModel(models.Model):
         super(AuditModel,self).save(*args, **kwargs)
 
     #------------------------------------------------
-    # get field verbose or customized name in the order provided by headerfields
+    # Get model-field and property names, in the order provided by model.LIST_VIEW_FIELDS or fields
     @classmethod
     def get_fields(cls, fields=None):
         if fields is None:
             fields = cls.LIST_VIEW_FIELDS
-        if fields:
-            fieldsname=[field.name for field in cls._meta.fields]
-            select_fields=[fields[f] for f in fields.keys() if f in fieldsname or f.split(".")[0] in fieldsname]
             
+        if fields:
+            model_field_names=[f.name for f in cls._meta.fields]
+            select_fields=[fields[f] for f in fields.keys() if f in model_field_names or f.split(".")[0] in model_field_names or hasattr(cls,f)]
         else:
             select_fields=None   
         return select_fields
@@ -508,30 +508,36 @@ class AuditModel(models.Model):
     #------------------------------------------------
     def get_values(self, fields=None):
         
-        from django.db.models import Model
         if fields is None:
             fields = self.LIST_VIEW_FIELDS
 
         value_list=[]
-        fieldsname=[field.name for field in self._meta.fields]
+
+        #model_field_names=[field.name for field in self._meta.fields]
+        self_field_names=dir(self)
+        
         for name in fields.keys():
-            n=len(name.split("."))
+            #n=len(name.split("."))
             nameArray=name.split(".")
-            if n>1 and nameArray[0] in fieldsname:
-                obj = self.iter_foreignkey(nameArray=nameArray, n=n)            
+            
+            if len(nameArray)>1 and nameArray[0] in self_field_names:
+                #
+                # Value from Foreignkey Class
+                #
+                obj = self.iter_foreignkey(nameArray=nameArray, n=len(nameArray))            
                 if isinstance(fields[name], dict):
                     #if LIST_VIEW_FIELDS contains a dictionary for link/url information
                     # for foreignkey link not equal field values
                     url_name = list(list(fields[name].values())[0].keys())[0]
                     if url_name != name:
-                        n=len(url_name.split("."))
+                        #n=len(url_name.split("."))
                         urlArray=url_name.split(".")
-                        obj_link= self.iter_foreignkey(nameArray=urlArray, n=n)
+                        obj_link= self.iter_foreignkey(nameArray=urlArray, n=len(urlArray))
                         value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj_link))})
                     else:
                         # foreignkey link name equal field values 
                         value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj))})
-                elif isinstance(obj, Model):
+                elif isinstance(obj, models.Model):
                     value_list.append(obj.pk)   
                 elif isinstance(obj, list):
                     varray_to_string=','.join(str(e) for e in obj)
@@ -539,7 +545,10 @@ class AuditModel(models.Model):
                 else:
                     value_list.append(obj)
                 
-            elif name in fieldsname:
+            elif name in self_field_names:
+                #
+                # Value from Class 
+                #
                 obj=getattr(self, name)
                 if obj:
                     # check field value is a dict with link value
@@ -549,7 +558,7 @@ class AuditModel(models.Model):
                         url=getattr(self, url_name)
                         # Append link to the value list
                         value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(url))})
-                    elif isinstance(obj, Model):
+                    elif isinstance(obj, models.Model):
                         value_list.append(obj.pk)
                     elif isinstance(obj, list):
                         array_to_string=','.join(str(e) for e in obj)
@@ -865,12 +874,12 @@ class ApplicationLog(models.Model):
     #------------------------------------------------
     def get_values(self, fields=None):
         
-        from django.db.models import Model
         if fields is None:
             fields = self.LIST_VIEW_FIELDS
 
         value_list=[]
         fieldsname=[field.name for field in self._meta.fields]
+        
         for name in fields.keys():
             n=len(name.split("."))
             nameArray=name.split(".")
@@ -888,7 +897,7 @@ class ApplicationLog(models.Model):
                     else:
                         # foreignkey link name equal field values 
                         value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(obj))})
-                elif isinstance(obj, Model):
+                elif isinstance(obj, models.Model):
                     value_list.append(obj.pk)   
                 elif isinstance(obj, list):
                     varray_to_string=','.join(str(e) for e in obj)
@@ -906,7 +915,7 @@ class ApplicationLog(models.Model):
                         url=getattr(self, url_name)
                         # Append link to the value list
                         value_list.append({obj: list(list(fields[name].values())[0].values())[0].replace('{VALUE1}', str(url))})
-                    elif isinstance(obj, Model):
+                    elif isinstance(obj, models.Model):
                         value_list.append(obj.pk)
                     elif isinstance(obj, list):
                         array_to_string=','.join(str(e) for e in obj)
