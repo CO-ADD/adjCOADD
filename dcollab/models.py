@@ -293,6 +293,7 @@ class Collab_Group(AuditModel):
             models.Index(name="cgrp_code_idx",fields=['group_code']),
             models.Index(name="cgrp_email_idx",fields=['email']),
         ]
+        ordering = ['group_code']
 
     #------------------------------------------------
     def __repr__(self) -> str:
