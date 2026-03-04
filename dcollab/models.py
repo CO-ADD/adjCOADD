@@ -79,14 +79,18 @@ class Organisation(AuditModel):
     @classmethod
     def get_bysimilarity(cls, OrganisationName=None, Similarity=0.6, verbose=0):
     # Returns an instance if found by ImageNAme
-        try:
-            retInstance = cls.objects.annotate(
-                            similarity=TrigramSimilarity('organisation_name', OrganisationName),
-                        ).filter(similarity__gt=Similarity).order_by('-similarity').first()
-        except:
-            if verbose:
-                print(f"[Organisation Not Found] {OrganisationName} [by Similarity] ")
-            retInstance = None
+    
+        if cls.exists(None,OrganisationName=OrganisationName):
+            retInstance = cls.get(None,OrganisationName=OrganisationName)
+        else:
+            try:
+                retInstance = cls.objects.annotate(
+                                similarity=TrigramSimilarity('organisation_name', OrganisationName),
+                            ).filter(similarity__gt=Similarity).order_by('-similarity').first()
+            except:
+                if verbose:
+                    print(f"[Organisation Not Found] {OrganisationName} [by Similarity] ")
+                retInstance = None
         return(retInstance)
 
     #------------------------------------------------
