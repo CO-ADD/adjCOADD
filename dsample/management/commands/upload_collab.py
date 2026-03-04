@@ -44,18 +44,18 @@ class Command(BaseCommand):
                     valLog.add_warning(f"New Project",f"{options["projectid"]}")
 
                 # - Contacts and Project ----------------------------------------------
-                # if _dictSheets['Contacts'] is not None:
-                #     _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
+                if _dictSheets['Contacts'] is not None:
+                    _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
 
-                #     djPrj.project_name = _PrjTitle
-                #     Upload_Project_Collab(djPrj, _Contacts, upload=options["upload"], overwrite=options["overwrite"], valLog=valLog)
+                    djPrj.project_name = _PrjTitle
+                    Upload_Project_Collab(djPrj, _Contacts, upload=options["upload"], overwrite=options["overwrite"], valLog=valLog)
 
                 #- Samples ----------------------------------------------
-                if _dictSheets['Samples'] is not None:
-                    _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
-                    for _smp in _Samples:
-                        _smp['project_id'] = str(djPrj)
-                        Upload_COADD_Compound(_smp, upload=options["upload"], overwrite=options["overwrite"], valLog=valLog)
+                # if _dictSheets['Samples'] is not None:
+                #     _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
+                #     for _smp in _Samples:
+                #         _smp['project_id'] = str(djPrj)
+                #         Upload_COADD_Compound(_smp, upload=options["upload"], overwrite=options["overwrite"], valLog=valLog)
 
                  
                     
