@@ -257,8 +257,8 @@ class Project(AuditModel):
         if not self.project_id:
             self.project_id = self.next_id()
             
-        if not self.group_id:
-            self.group_id = Collab_Group.get('CGRP00000')
+        #if not self.group_id:
+        #    self.group_id = Collab_Group.get('CGRP00000')
             
         if self.project_id: 
             super(Project, self).save(*args, **kwargs)
