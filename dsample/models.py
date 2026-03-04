@@ -186,13 +186,17 @@ class Project(AuditModel):
     def collaborator(self):
         _retList = []
         _pc = self.get_members(role='PC')
-        _li = self.group_id.get_members(role='LI')
+        _li = self.group_id.li_user_id
+        #_li = self.get_members(role='LI')
         
         if _pc:
             _retList.append(_pc[0]['full_name'])
-        if _li:
-            if _li[0]['full_name'] not in _retList:
-                _retList.append(_li[0]['full_name'])
+        if _li :
+            if _li.full_name not in _retList:
+                _retList.append(_li.full_name)
+        # if _li:
+        #     if _li[0]['full_name'] not in _retList:
+        #         _retList.append(_li[0]['full_name'])
         
         return(f"{'\n'.join(_retList)}")
     
@@ -265,7 +269,7 @@ class Project_Membership(models.Model):
     List of Project Membership
     """
     MEMBERSHIP_CHOICES = [ 
-            ("LI","Lead Investigator"),
+    #        ("LI","Lead Investigator"),
             ("PC","Primary Contact"),
             ("AC","Alternative Contact")
         ]

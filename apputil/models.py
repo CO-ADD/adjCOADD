@@ -14,6 +14,8 @@ from django.forms.models import model_to_dict
 from django.urls import reverse
 from django import forms
 from django.utils import timezone
+from django.contrib.postgres.search import TrigramSimilarity
+
 from adjcoadd.constants import *
 
 import logging
@@ -663,6 +665,31 @@ class Dictionary(AuditModel):
         else:
             retDict = None
         return(retDict)
+
+    #------------------------------------------------
+    @classmethod
+    def get_bysimilarity(cls,DictClass=None, DictValue=None, Similarity=0.6, **kwargs):
+    #
+    # Returns a Dictionary instance if found 
+    #    by dict_value
+    #    by dict_desc (set dict_value = None)
+    #
+        verbose = kwargs.get('verbose',0)
+        
+        if DictValue:
+            if cls.exists(DictClass, DictValue):
+                retInstance = cls.get(DictClass, DictValue)
+            else:
+                try:
+                    retInstance = cls.objects.annotate(
+                                    similarity=TrigramSimilarity('dict_value', DictValue),
+                                ).filter(similarity__gt=Similarity,dict_class=DictClass).order_by('-similarity').first()
+                except:
+                    if verbose:
+                        logger.warning(f"[Dict Value Not Found (bySimilarity)] {DictValue} {DictClass}")
+                    retInstance = None
+        return(retInstance)
+
 
     #------------------------------------------------
     @classmethod

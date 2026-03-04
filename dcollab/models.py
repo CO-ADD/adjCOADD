@@ -45,6 +45,7 @@ class Organisation(AuditModel):
     organisation_type = models.ForeignKey(Dictionary, blank=False, verbose_name = "Organisation Type", on_delete=models.DO_NOTHING,
         db_column="organisation_type", related_name="%(class)s_organisation_type")
     country = CountryField(default='AU',verbose_name = "Country")
+    previous_names = models.CharField(max_length=250, blank=False, verbose_name = "Former")
 
     #------------------------------------------------
     class Meta:
@@ -270,9 +271,9 @@ class Collab_Group(AuditModel):
     postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
     city = models.CharField(max_length=250, blank=True, verbose_name = "City")
     country = CountryField(default='AU', verbose_name = "Country")
-    pi_user_id = models.CharField(max_length=10, blank=True, verbose_name = "PI ID")
-    # pi = models.ForeignKey(Collab_User, null=True, blank=True, verbose_name = "Principal Investigator", on_delete=models.DO_NOTHING,
-    #     db_column="pi", related_name="%(class)s_pi")
+    # pi_user_id = models.CharField(max_length=10, blank=True, verbose_name = "PI ID")
+    li_user_id = models.ForeignKey(Collab_User, null=True, blank=True, verbose_name = "Lead Investigator", on_delete=models.DO_NOTHING,
+        db_column="li_user_id", related_name="%(class)s_li_user_id")
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta_status")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
@@ -313,18 +314,18 @@ class Collab_Group(AuditModel):
     
     #------------------------------------------------
     @classmethod
-    def get(cls, ID, Code=None, PI_ID=None, Organisation_ID=None, verbose=0):
+    def get(cls, ID, Code=None, LI_ID=None, Organisation_ID=None, verbose=0):
     # Returns an instance if found by ImageNAme
         try:
             if ID is not None:
                 retInstance = cls.objects.get(group_id=ID)
             elif Code is not None:
                 retInstance = cls.objects.get(group_code=Code)
-            elif PI_ID is not None:
-                retInstance = cls.objects.get(pi_user_id=PI_ID, organisation_id=Organisation_ID)
+            elif LI_ID is not None:
+                retInstance = cls.objects.get(li_user_id=LI_ID, organisation_id=Organisation_ID)
         except:
             if verbose:
-                print(f"[Group Not Found] {ID} {Code} {Organisation_ID} {PI_ID}")
+                print(f"[Group Not Found] {ID} {Code} {Organisation_ID} {LI_ID}")
             retInstance = None
         return(retInstance)
 

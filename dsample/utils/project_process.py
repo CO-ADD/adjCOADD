@@ -18,7 +18,6 @@ from django.conf import settings
 import logging
 logger = logging.getLogger(__name__)
 
-
 #-----------------------------------------------------------------------------------
 def Load_Project_Process(Request, DirName, FileList,
                          ProjectID=None, UploadContent=['Samples','Contacts'], 
