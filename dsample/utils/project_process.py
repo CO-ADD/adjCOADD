@@ -10,7 +10,7 @@ from dplate.models import MasterPlate, MasterWell
 
 
 from applib.plate.stockprep import  read_Stock_Prepsheet_XLS
-from applib.project.import_project import get_CompoundSubmisssion_xlsx, parse_SampleInfo_Sheet, parse_ContactInfo_Sheet
+from applib.project.import_project import get_CompoundSubmisssion_xlsx, parse_SampleInfo_Sheet, parse_ContactInfo_Sheet, Upload_Project_Collab
 from dsample.utils.summary import update_project_summary
 from dsample.utils.compounds import Upload_COADD_Compound
 
@@ -19,8 +19,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 #-----------------------------------------------------------------------------------
-def Load_Project_Process(Request, DirName, FileList,
-                         ProjectID=None, UploadContent=['Samples','Contacts'], 
+def Load_Project_Process(Request, DirName, FileList, ProjectID=None, 
+                         UploadContent={'Samples':True,'Contacts':True}, 
                          upload=False, overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
 
@@ -40,59 +40,36 @@ def Load_Project_Process(Request, DirName, FileList,
                 
             _dictSheets = get_CompoundSubmisssion_xlsx(os.path.join(DirName,FileList[i]), valLog=valLog)
 
-            # - Project ----------------------------------------------
+            # - Project Init ------------------------------------------------------
             djPrj = None
             if ProjectID:
                 djPrj = Project.get(ProjectID)
                 if djPrj is None:
                     djPrj = Project()
                     djPrj.project_id = ProjectID
+                    valLog.add_warning(f"New Project",f"{ProjectID}")
+                else:
+                    valLog.add_info(f"Existing Project",f"{djPrj}")
             else:
                 djPrj = Project()
+                valLog.add_warning(f"New Project",f"{ProjectID}")
 
-            # - Samples ----------------------------------------------
-            if 'Samples' in UploadContent and _dictSheets['Samples'] is not None:
+            # - Contacts and Project ----------------------------------------------
+            if UploadContent['Contacts'] and _dictSheets['Contacts'] is not None:
+                _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
+
+                djPrj.project_name = _PrjTitle
+                Upload_Project_Collab(djPrj, _Contacts, upload=upload, overwrite=overwrite, valLog=valLog)
+
+            #- Samples ----------------------------------------------
+            if UploadContent['Samples'] and _dictSheets['Samples'] is not None:
                 _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
                 for _smp in _Samples:
                     _smp['project_id'] = str(djPrj)
                     Upload_COADD_Compound(_smp, upload=upload, overwrite=overwrite, valLog=valLog)
-                
-            # - Contacts / Project Membership ------------------------
-            if 'Contacts' in UploadContent and _dictSheets['Contacts'] is not None:
-                _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
-                
-                for key in _Contacts:
-                    djUsr = Collab_User.get(None,_Contacts[key]['email'])
-                    djOrg = Organisation.get_bysimilarity(_Contacts[key]['organisation'])
-                    
-                    if djOrg is None:
-                        djOrg = Organisation()
-                        djOrg.organisation_name = _Contacts[key]['organisation']
-                        valLog.add_warning("New Organisation",_Contacts[key]['organisation'])
-                    
-                    if djUsr is None:
-                        djUsr = Collab_User()   
-                        djUsr.email = _Contacts[key]['email'] 
-                        djUsr.first_name = _Contacts[key]['first_name'] 
-                        djUsr.last_name = _Contacts[key]['last_name']
-                        djUsr.organisation_id = djOrg 
-                        valLog.add_warning("New Collaborator",f"{djUsr}")
-                    
-                    if 'PI' == key:
-    
-                        djGrp = Collab_Group.get(None,Code=None, PI_ID=djUsr.user_id)
-                        if djGrp is None:
-                            djGrp = Collab_Group()
-                            djGrp.group_code = f"{_Contacts[key]['first_name'][0]}{_Contacts[key]['last_name']}{djOrg.organisation_code}"
-                            djGrp.organisation_id = djOrg
-                            valLog.add_warning("New Group",f"{djGrp}")
-                              
-                        print(f" [Upload_Project] {djGrp}")            
-                    print(f" [Upload_Project] {djUsr} [{key}] {djOrg}")            
-                        
-            valLog.show()
-             
-                
+
+            #valLog.show()
+                   
     else:
         print(f" [Upload_Project] No Xlsx to process in {DirName}  ")
 

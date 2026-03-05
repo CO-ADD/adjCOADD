@@ -55,6 +55,12 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     template_name = None
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
+    
+    initial_dict = {
+        'select_file': {'instructions':''},
+        'upload': {'instructions':''},
+        'finalize': {'instructions':''},
+        }
 
     # ----------------------------------------------------
     def __init__(self, *args, **kwargs):
@@ -239,14 +245,16 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         context['pk'] = self.storage.extra_data.get('object_pk', None)
         if current_step == 'select_file':
             context['validation_result']=""
+            context['instructions'] = self.initial_dict[current_step]['instructions']
             #context['pk'] = self.pk
         elif current_step == 'upload_file':
             context['validation_result']=""
+            context['instructions'] = self.initial_dict[current_step]['instructions']
             #context['pk'] = self.storage.extra_data.get('object_pk', None)
         else:
             context['validation_result'] = self.storage.extra_data.get('validation_result', None)
             context['confirm_to_upload'] = self.storage.extra_data.get('confirm_to_upload', None)
-            context['help_text']=""
+            context['instructions']=""
             #context['pk'] = self.storage.extra_data.get('object_pk', None)
             
         #print(f" [Process_View.get_context_data] Step: [{current_step}] Validation_result: {context['validation_result']}")

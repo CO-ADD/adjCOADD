@@ -17,8 +17,8 @@ def get_CompoundSubmisssion_xlsx(xlsFile, FillNA='-', **kwargs):
     verbose = kwargs.get('verbose',0)
 
     SHEET_NAMES = {
-        'Samples': 'Sample Info',
-        'Contacts': 'Collaborator Info',
+        'Samples': 'Compound Info',
+        'Contacts': 'Contact Info',
     }
     
     _Sheets = {

@@ -2,6 +2,10 @@
 
 <div>
 
+   <button type="button" class="btn btn-outline-success {% if process_status < 9 %}disabled {% endif %}"> 
+    <a href="{% url 'add_projectinfo' pk=object.pk %}" style="color:inherit"> Add Samples/Contacts</a>
+  </button>
+ 
   <button type="button" class="btn btn-outline-success {% if process_status < 9 %}disabled {% endif %}"> 
     <a href="{% url 'generate_stockprep' pk=object.pk %}" style="color:inherit"> Generate StockPrep</a>
   </button>
