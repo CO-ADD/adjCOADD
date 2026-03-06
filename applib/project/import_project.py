@@ -267,12 +267,14 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
 
         # -- Collaborator Group  -----------------------------    
         if 'LI' == key:
-            djGrp = Collab_Group.get(None,Code=None, LI_ID=djUsr, Organisation_ID=djOrg)
+            djGrp = Collab_Group.get_byLI(djUsr, djOrg)
+            #print(f" {djUsr} {djOrg} -> {djGrp}")
             if djGrp is None:
                 djGrp = Collab_Group()
                 djGrp.group_code = f"{CollabDict[key]['last_name']}{CollabDict[key]['first_name'][0]}_{djOrg.organisation_code}"
                 djGrp.organisation_id = djOrg
-                valLog.add_warning("New Group",f"{djGrp}")
+                djGrp.li_user_id = djUsr
+                valLog.add_warning("New Group",f"{djGrp} : LI {djUsr} at {djOrg}")
 
                 # - Validation ----------------------------------------------------------
                 validStatus = True
@@ -285,6 +287,11 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
                 if validStatus:
                     if upload:
                         djGrp.save()
+                        
+                if upload:
+                    #print(f" {djGrp} {djUsr}")
+                    djProject.group_id = djGrp
+                    djProject.save()
             else:
                 valLog.add_info("Existing Group",f"{djGrp}")
         else:

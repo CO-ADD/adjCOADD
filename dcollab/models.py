@@ -319,18 +319,28 @@ class Collab_Group(AuditModel):
     
     #------------------------------------------------
     @classmethod
-    def get(cls, ID, Code=None, LI_ID=None, Organisation_ID=None, verbose=0):
+    def get(cls, ID, Code=None, verbose=0):
     # Returns an instance if found by ImageNAme
         try:
             if ID is not None:
                 retInstance = cls.objects.get(group_id=ID)
             elif Code is not None:
                 retInstance = cls.objects.get(group_code=Code)
-            elif LI_ID is not None:
-                retInstance = cls.objects.get(li_user_id=LI_ID, organisation_id=Organisation_ID)
         except:
             if verbose:
-                print(f"[Group Not Found] {ID} {Code} {Organisation_ID} {LI_ID}")
+                print(f"[Group Not Found] {ID} {Code}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def get_byLI(cls, LI_ID, Organisation_ID, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            retInstance = cls.objects.get(li_user_id=LI_ID, organisation_id=Organisation_ID)
+        except:
+            if verbose:
+                print(f"[Group Not Found] {LI_ID} {Organisation_ID} ")
             retInstance = None
         return(retInstance)
 
