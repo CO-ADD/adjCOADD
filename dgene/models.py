@@ -40,12 +40,12 @@ class Genome_Sequence(AuditModel):
      }
 
     DICTIONARY_FIELDS = {
-        'seq_type':'Seq_Type',      # WGS, 16S, ..
-        'seq_method':'Seq_Method',  # Illumina, MinION
+        'seq_type':'Seq_Type',      # DNA, RNA, cDNA, metDNA  
+        'seq_method':'Seq_Method',  # Illumina, MinION-RB, MinION-Nat
     }
 
     SEQUENCE_FILES = [
-        ('Raw','Raw reads'),
+        ('Reads','Raw reads'),
         ('FastQ','Fastq files (trimmed)'),
         ('FastA','Fasta files (assembly)'),
         ]
@@ -55,22 +55,26 @@ class Genome_Sequence(AuditModel):
     ID_PAD = 5
     
     seq_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Seq ID")
+    run_id = models.ForeignKey(Screen_Run, null=True, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
+        db_column="run_id", related_name="%(class)s_run_id") 
+    orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
+        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id")
+
     seq_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq Type", on_delete=models.DO_NOTHING,
          db_column="seq_type", related_name="%(class)s_seqtype")
     seq_method = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq Method", on_delete=models.DO_NOTHING,
          db_column="seq_method", related_name="%(class)s_seqmethod")
-    seq_name = models.CharField(max_length=120, unique=True, blank=True, verbose_name = "Seq Name")
-    run_id = models.ForeignKey(Screen_Run, null=True, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
-        db_column="run_id", related_name="%(class)s_run_id") 
-    orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
-        db_column="orgbatch_id", related_name="%(class)s_orgbatch_id") 
+    
+    runsample_file = models.CharField(max_length=250, blank=True, verbose_name = "RunFile")
+    runsample_dir = models.CharField(max_length=250, blank=True, verbose_name = "RunFolder")
+    runsample_name = models.CharField(max_length=120, unique=True, blank=True, verbose_name = "Seq Name")
+     
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
     source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
-    seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
-    seq_files = models.CharField(max_length=150, blank=True, verbose_name = "Files")
-    #seq_files = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=4, verbose_name = "Files", null=True, blank=True)
+#    seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
+    seq_files = models.CharField(max_length=6, choices=SEQUENCE_FILES, default='Reads', verbose_name = "Files")
 
     class Meta:
         app_label = 'dgene'

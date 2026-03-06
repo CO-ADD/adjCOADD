@@ -69,7 +69,7 @@ class Screen_Run(AuditModel):
     }
 
     VIEW_GROUPS = [
-        ['run_type','run_status','run_name','run_project','run_date'],
+        ['run_type','run_status','run_name','run_source','run_project','run_date'],
         ['run_conditions','assay_note','run_issues'],
         ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_testplates_valid','n_qc','n_seq'],
         ['screen_date','n_assays','n_inhibitions','n_mic','n_cc50','n_hc50','n_synmic','process_status']
@@ -85,6 +85,7 @@ class Screen_Run(AuditModel):
     run_conditions = models.CharField(max_length=250, blank=True, verbose_name = "Run Conditions")
     run_issues = models.CharField(max_length=250, blank=True, verbose_name = "Run Issues")
     run_date = models.DateField(null=True, blank=True, verbose_name = "Run Date")
+    run_source = models.CharField(max_length=50, blank=True, verbose_name = "Source")
     run_project = models.CharField(max_length=50, blank=True, verbose_name = "Project")
     run_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Run Status", on_delete=models.DO_NOTHING,
         db_column="run_status", related_name="%(class)s_run_status+")
