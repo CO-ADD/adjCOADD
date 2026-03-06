@@ -13,17 +13,16 @@ from applib.process.process_stepforms import SelectSingleFile_StepForm, Finalize
 # --------------------------------------------------------------------------------------------------
 class UploadSelect_StepForm(Upload_StepForm):
 # --------------------------------------------------------------------------------------------------
+    
     contacts = forms.BooleanField(initial=False, required=False, help_text="Upload Contact Information for Project")
     samples = forms.BooleanField(initial=False, required=False, help_text="Upload Compound Information for Project")
-    #overwrite = forms.BooleanField(initial=False, required=False, help_text="Overwrite Existing Data as well")
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.Process_fields = ['samples','contacts']
         self.fields['contacts'].label = "Contact/Collaborator Information"
         self.fields['samples'].label = "Compound/Sample Information"
-        #self.fields['overwrite'].label = "Overwrite Existing Data"
-        # self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
-        # self.fields['overwrite'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}
 
 # --------------------------------------------------------------------------------------------------
 class Load_Project_ProcessView(Process_View):

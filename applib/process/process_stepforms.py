@@ -196,9 +196,17 @@ class SelectSingleFileFolder_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
 class Upload_StepForm(forms.Form):
 # --------------------------------------------------------------------------------------------------
+
+    # Process Fields
+    #
+    Process_fields = []
+    
+    # Upload Fields
+    Upload_fields = ['upload','overwrite']
     upload = forms.BooleanField(initial=False, required=False, help_text="Upload New Data to Database")
     overwrite = forms.BooleanField(initial=False, required=False, help_text="Overwrite Existing Data as well")
-    
+
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         #empty_field = models.CharField(max_length=100, blank=True)
