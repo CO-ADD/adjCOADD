@@ -34,5 +34,6 @@ urlpatterns = [
     path('createAssay/', Assay_CreateView, name="assay_create"),
     path('updateAssay/<str:pk>', Assay_UpdateView, name="assay_update"),
     # path('deleteAssay/<str:pk>', Assay_RemoveView.as_view(), name="sassay_delete"),
+
 ]
 

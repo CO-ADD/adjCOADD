@@ -2,44 +2,25 @@ import os
 import json
 import datetime
 
-#from rdkit import Chem
-#from django_filters.views import FilterView
-
-# from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-# from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.contrib import messages
-# from django.core.exceptions import ValidationError
-# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from django.db import transaction, IntegrityError
-# from django.db.models import Count
-# from django.http import JsonResponse
-# from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-# from django.urls import reverse_lazy
-# from django.utils.functional import SimpleLazyObject
 from django.utils.safestring import mark_safe
 from django import forms
 
-# from apputil.models import ApplicationLog
-# from apputil.forms import Document_Form
-# from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_RemoveView, Filtered_ListView
 
 from adjcoadd.constants import *
 from dscreen.models import Screen_Run
 from dscreen.utils.screenrun_process import (Summary_ScreenRun_Process, 
                                             Upload_ReadOuts_Process, Upload_Motherplates_Process,Upload_TestplateList_Process,
-                                            Gen_Masterplates_Process)
-# from dsample.models import Project
-# from dplate.models import MasterPlate, TestPlate
+                                            Gen_Masterplates_Process,
+                                            Upload_Sequences_Process)
 
 from applib.process.process_forms import Process_View
 from applib.process.process_stepforms import (SelectSingleFile_StepForm, SelectSingleFileFolder_StepForm,
                                               Upload_StepForm, Generate_StepForm,  Finalize_StepForm, Download_StepForm)
-#from apputil.utils.form_wizard_tools import ImportHandler_View
-#from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
 
 # --------------------------------------------------------------------------------------------------
 class PlatePrep_SelectForm(SelectSingleFile_StepForm):
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['single_file'].label = 'PlatePrep Workbook [XLSX] containing [MotherPlates, TestPlateList, Assays] sheets'
@@ -254,7 +235,6 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
         #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileDir: {self.file_dir}")
         #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileList: {self.file_list}")
         
-        
         valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
                                            generate=self.generate,
                                            appuser=request.user)
@@ -313,7 +293,7 @@ class Load_Sequences_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
+        valLog=Upload_Sequences_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
                                        upload=self.upload, overwrite=self.overwrite,appuser=request.user)
 
         return(valLog)

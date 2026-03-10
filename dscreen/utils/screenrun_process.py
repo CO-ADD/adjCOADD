@@ -385,3 +385,21 @@ def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID
     valLog.select_unique()
     
     return(valLog)
+
+#-----------------------------------------------------------------------------------
+def Upload_Sequences_Process(Request, DirName, FileList, RunID=None, 
+                                 upload=False,  overwrite=False, appuser=None):
+#-----------------------------------------------------------------------------------
+
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+    nUploads = 0
+    
+    djRun = Screen_Run.get(RunID)
+    valLog = Validation_Log("Upload_Sequences")
+
+    if nFiles > 0 :
+        dfSeq = None
+        # dfSeq = get sequences from Excel file [header == fieldnames]
