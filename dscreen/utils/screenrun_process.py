@@ -5,6 +5,8 @@ from django.core.cache import cache
 from applib.logging.validation_log import Validation_Log
 from dscreen.models import Screen_Run
 from dplate.models import Labware, TestPlate, TestWell, MasterPlate
+from dorganism.models import Organism_Batch
+from dgene.models import Genome_Sequence
 
 from applib.plate.multimode_reader import multimodereader_xls
 #from applib.plate.masterplates import read_motherplate_prepsheet_xls
@@ -13,6 +15,8 @@ from applib.plate.testplates import add_mother_to_testplate
 from applib.bio.doseresponse import process_testplate_doseresponse
 from dscreen.utils.summary import update_screenrun_summary
 from adjcoadd.constants import DR_CLASSES
+
+import pandas as pd
 
 from django.conf import settings
 import logging
@@ -388,8 +392,13 @@ def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID
 
 #-----------------------------------------------------------------------------------
 def Upload_Sequences_Process(Request, DirName, FileList, RunID=None, 
-                                 upload=False,  overwrite=False, appuser=None):
+                                Sheets=None,
+                                upload=False,  overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
+
+    SeqRun_Sheets = {
+        'DNA': None,
+        }
 
     if FileList:
         nFiles = len(FileList)
@@ -401,5 +410,50 @@ def Upload_Sequences_Process(Request, DirName, FileList, RunID=None,
     valLog = Validation_Log("Upload_Sequences")
 
     if nFiles > 0 :
-        dfSeq = None
+        xlsFile = os.path.join(DirName,FileList[0])
+
+        # -- Load Xlsx into Dataframe
+        if os.path.isfile(xlsFile):
+            fXlsx = open(xlsFile, "rb")
+            xls = pd.ExcelFile(fXlsx)
+            #xls = pd.ExcelFile(xlsFile)
+
+            if Sheets is None:
+                Sheets = list(SeqRun_Sheets)
+            for key in Sheets:
+                if key in xls.sheet_names:
+                    SeqRun_Sheets[key] = pd.read_excel(xls, key)
+                    valLog.add_info('Reading SeqRun file',f"{FileList[0]} [{key}]","")
+                    SeqRun_Sheets[key].columns = [c.lower() for c in SeqRun_Sheets[key].columns]
+                    #SeqRun_Sheets[key] = SeqRun_Sheets[key].fillna('-')
+
+                else:
+                    if valLog:
+                        valLog.add_error('Missing Sheet',key,f"XLSX {os.path.basename(xlsFile)}",f"Correct XLSX Sheets {list(SeqRun_Sheets)}")
+            fXlsx.close()
+        else:
+            valLog.add_error('XLSX not Found',FileList[0],f"XLSX {os.path.basename(xlsFile)}",f"File upload failed") 
+
+        # -- DNA - Upload
+        df = SeqRun_Sheets['DNA']
+        df = df[ df['run_id'] == str(djRun)]
+        if len(df)>0:
+            nSeq = 0
+            for idx,row in df.iterrows():
+                
+                djOrgBatch = Organism_Batch.get(row['orgbatch_id'])
+                if djOrgBatch is None:
+                    valLog.add_error('OrgBatch not found',row['orgbatch_id'],f"Correct OrgBatch_ID or Import new OrgBatch")
+                else:
+                    nSeq += 1
+                print(row)
+                
+                djSeq = Genome_Sequence.get() 
+            valLog.add_info('Reading SeqRun file',f"{nSeq} Sequences","")
+        else:
+           valLog.add_error('[DNA] no sequences for RunID',str(RunID),f"Correct Run_ID in [DNA].SeqRun_ID")  
+        print(df)
+        
+    return(valLog)
+
         # dfSeq = get sequences from Excel file [header == fieldnames]

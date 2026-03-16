@@ -259,7 +259,7 @@ if DEVELOPMENT:
 
     elif DEVELOPMENT == 'Test':
         HOST_NAME = 'localhost'
-        DBHOST_NAME = 'imb-coadd-app.imb.uq.edu.au'
+        DBHOST_NAME = 'imb-coadd-test.imb.uq.edu.au'
 
     elif DEVELOPMENT == 'Meran':
         HOST_NAME = 'schlern'

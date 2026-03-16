@@ -1,0 +1,9 @@
+{% extends 'base.html'%}
+<!--prettier-ignore-->
+{% block title%} COADD {% endblock %}
+{% block content %}
+<!-- -->
+{% url 'load_sequences' as reset_url %}
+{% include 'process/process_page.html' with data_model='Screen_Run' reset_url=reset_url %}  
+
+{% endblock %}

@@ -44,6 +44,11 @@ class Readout_SelectForm(SelectSingleFile_StepForm):
         super().__init__(*args, **kwargs)
         self.fields['single_file'].label = 'Tecan/BioTek reader [XLSX] files'
 
+# --------------------------------------------------------------------------------------------------
+class XLSX_SelectForm(SelectSingleFile_StepForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['single_file'].label = '[XLSX] File'
 
 # --------------------------------------------------------------------------------------------------
 class Load_Readouts_ProcessView(Process_View):
@@ -66,11 +71,11 @@ class Load_Readouts_ProcessView(Process_View):
     upload_html += '\n Make sure the IDs are unique and reflect the IDs in <b>TestPLateList</b>'
     upload_html += '\n In case, correct the IDs in the <b>Readout</b> file and repeat the upload'
 
-    message_html =[
-       ('select_file',select_html),
-       ('upload',upload_html),
-       ('finalize','') 
-    ]
+    initial_dict = {
+        'select_file': {'instructions':select_html},
+        'upload': {'instructions':upload_html},
+        'finalize': {'instructions':''},
+        }
 
     # Customize Function to validate and upload files:
     def file_process_handler(self, request, *args, **kwargs):
@@ -263,25 +268,25 @@ class Load_Sequences_ProcessView(Process_View):
 
     #name_step1="Upload"
     form_list = [
-        ('select_file', Readout_SelectForm),
+        ('select_file', XLSX_SelectForm),
         ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
 
     template_name = 'dscreen/screenrun_process/load_sequences.html'
 
-    select_html  = 'Please select a Excel [xlsx] file from Tecan/BioTek readers'
-    select_html += '\n Make sure file contains correct  <b>TestPlate IDs</b>'
+    select_html  = '<b>Please select a Excel [xlsx] file with Sequencing information</b><br>'
+    select_html += 'Make sure [DNA] sheet contains: <br> [RunSample_File, OrgBatch_ID, SeqRun_ID, SeqRun_Files, RunSample_Dir, RunSample_Name]'
 
     upload_html  = 'Please check the TestPlate IDs [<i>Item</i>] for any "New Testplate" [<i>Action</i>]'
     upload_html += '\n Make sure the IDs are unique and reflect the IDs in <b>TestPLateList</b>'
     upload_html += '\n In case, correct the IDs in the <b>Readout</b> file and repeat the upload'
 
-    message_html =[
-       ('select_file',select_html),
-       ('upload',upload_html),
-       ('finalize','') 
-    ]
+    initial_dict = {
+        'select_file': {'instructions':select_html},
+        'upload': {'instructions':upload_html},
+        'finalize': {'instructions':''},
+        }
 
     # Customize Function to validate and upload files:
     def file_process_handler(self, request, *args, **kwargs):
@@ -299,5 +304,5 @@ class Load_Sequences_ProcessView(Process_View):
         return(valLog)
 
     # Customize Function to update after upload:
-    def file_process_finalizer(self, request, pk):
-        Summary_ScreenRun_Process(request, pk)
+    # def file_process_finalizer(self, request, pk):
+    #     Summary_ScreenRun_Process(request, pk)

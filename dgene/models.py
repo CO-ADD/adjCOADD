@@ -27,13 +27,15 @@ class Genome_Sequence(AuditModel):
         'seq_id':"Seq ID", 
         'seq_type':'Type',  
         'seq_method':'Method',  
-        'seq_name':'SeqName',  
+        'seq_code':'SeqCode',  
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         'run_id':'Run ID',
+        'runsample_file':'RunFile',
+        'runsample_dir':'RunFDir',
         'source':'Source',
     #    'source_code':'Source Code',
-        'source_link':'Link',
+    #    'source_link':'Link',
     #    'reference':'Reference',
     #     'seq_date':'Seq Date'
         'seq_files':"Seq Files",
@@ -57,6 +59,7 @@ class Genome_Sequence(AuditModel):
     seq_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Seq ID")
     run_id = models.ForeignKey(Screen_Run, null=True, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
+    seq_code = models.CharField(max_length=120, unique=True, blank=True, verbose_name = "Seq Code")
     orgbatch_id = models.ForeignKey(Organism_Batch, null=True, blank=True, verbose_name = "OrgBatch ID", on_delete=models.DO_NOTHING,
         db_column="orgbatch_id", related_name="%(class)s_orgbatch_id")
 
@@ -67,7 +70,7 @@ class Genome_Sequence(AuditModel):
     
     runsample_file = models.CharField(max_length=250, blank=True, verbose_name = "RunFile")
     runsample_dir = models.CharField(max_length=250, blank=True, verbose_name = "RunFolder")
-    runsample_name = models.CharField(max_length=120, unique=True, blank=True, verbose_name = "Seq Name")
+    runsample_name = models.CharField(max_length=120, blank=True, verbose_name = "RunName")
      
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
@@ -83,7 +86,7 @@ class Genome_Sequence(AuditModel):
         indexes = [
             models.Index(name="genoseq_seqid_idx",fields=['seq_id']),
             models.Index(name="genoseq_scr_idx",fields=['source']),
-            models.Index(name="genoseq_seqnm_idx",fields=['seq_name']),
+            models.Index(name="genoseq_seqcd_idx",fields=['seq_code']),
             models.Index(name="genoseq_scode_idx",fields=['source_code']),
         ]
 
