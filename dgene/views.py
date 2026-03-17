@@ -12,6 +12,9 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 
+from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+
 from apputil.models import Dictionary, ApplicationUser
 from applib.django.base.views import permission_not_granted, Base_CreateView, Base_UpdateView, Filtered_ListView
 
@@ -22,6 +25,7 @@ from dgene.forms import (GenomeSeq_Filter, GenomeSeq_Form,
                          Gene_Filter, Gene_Form, 
                          AMRGenotype_Filter,  
                          )
+from dgene.serializer import GenomeSeq_Serializer
 
 
 
@@ -52,7 +56,12 @@ class GenomeSeq_UpdateView(Base_UpdateView):
     template_name='dgene/genomeseq/genomeseq_u.html'
     model=ID_Sequence
 
-
+##
+class GenomeSeq_ViewSet(viewsets.ModelViewSet):
+    queryset = Genome_Sequence.objects.all()
+    serializer_class = GenomeSeq_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['seq_id','run_id','seq_code']
 
 #=================================================================================================
 # ID Sequence 

@@ -40,7 +40,7 @@ PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
 
-VERSION = '1.7.0'
+VERSION = '1.7.1'
 
 #........................................................................
 if DEVELOPMENT:
@@ -166,8 +166,8 @@ INSTALLED_APPS = [
     'dplate.apps.dPlateConfig',
     'dpeptide.apps.dPeptideConfig',
     'dsummary.apps.dSummaryConfig',
-    #'rest_framework',
-    #'rest_framework.authtoken',
+    'rest_framework',
+    'rest_framework.authtoken',
     'formtools',
     'pgtrigger',
 ]
