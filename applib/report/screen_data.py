@@ -15,7 +15,7 @@ from dsample.models import Project, COADD_Compound, Library_Compound
 from ddrug.models import Drug, VITEK_AST, MIC_COADD
 from dscreen.models import AssayData_MIC, AssayData_CC50, AssayData_HC50, Screen_Run, Assay
 from applib.bio.bio_data import DR_Range, agg_Inhib, agg_DR, agg_Lst, dr_max_quality, conv_Conc, split_DR, format_DR, DR_GeoMean
-from applib.data.df import sort_pivtable_bylevel
+from applib.data.dfutils import sort_pivtable_bylevel
 from adjcoadd.constants import COMPOUND_SEP
 
 import logging

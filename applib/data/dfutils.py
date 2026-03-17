@@ -10,13 +10,13 @@ def sort_pivtable_bylevel(df,nLevel=0):
 # Load XLSX Sheets into Dictionary 
 # -------------------------------------------------
 #-----------------------------------------------------------------------------
-def get_Sheets_xlsx(xlsFile, SheetDict={}, SheetList=None, FillNA='-', UpperCase=False, **kwargs):
+def get_Xlxs_Sheets(DirName,XlsxFile, SheetDict={}, SheetList=None, FillNA='-', UpperCase=False, **kwargs):
 # --------------------------------------------------------------------------------
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)
         
-    if os.path.isfile(xlsFile):
-        fXlsx = open(xlsFile, "rb")
+    if os.path.isfile(os.path.join(DirName,XlsxFile)):
+        fXlsx = open(os.path.join(DirName,XlsxFile), "rb")
         xls = pd.ExcelFile(fXlsx)
 
         if SheetList is None:
@@ -24,7 +24,7 @@ def get_Sheets_xlsx(xlsFile, SheetDict={}, SheetList=None, FillNA='-', UpperCase
         for key in SheetList:
             if key in xls.sheet_names:
                 SheetDict[key] = pd.read_excel(xls, key)
-                valLog.add_info('Reading SeqRun file',f"{FileList[0]} [{key}]","")
+                valLog.add_info('Reading XLSX Sheet',f"{XlsxFile} [{key}]","")
                 if UpperCase:
                     SheetDict[key].columns = [c.upper() for c in SheetDict[key].columns]
                 else:
@@ -34,5 +34,6 @@ def get_Sheets_xlsx(xlsFile, SheetDict={}, SheetList=None, FillNA='-', UpperCase
 
             else:
                 if valLog:
-                    valLog.add_error('Missing Sheet',key,f"XLSX {os.path.basename(xlsFile)}",f"Correct XLSX Sheets {list(SeqRun_Sheets)}")
+                    valLog.add_error('Missing Sheet',key,f"XLSX {XlsxFile}",f"Correct XLSX Sheets: {SheetList}")
         fXlsx.close()
+    

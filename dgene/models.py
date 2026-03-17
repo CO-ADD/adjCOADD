@@ -42,7 +42,7 @@ class Genome_Sequence(AuditModel):
      }
 
     DICTIONARY_FIELDS = {
-        'seq_type':'Seq_Type',      # DNA, RNA, cDNA, metDNA  
+        'seq_type':'Seq_Type',      # DNA, RNA, cDNA, natDNA  
         'seq_method':'Seq_Method',  # Illumina, MinION-RB, MinION-Nat
     }
 
@@ -92,15 +92,15 @@ class Genome_Sequence(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.seq_id}"
+        return f"{self.seq_code}"
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.seq_id} {self.seq_name} [{self.seq_type}]"
+        return f"{self.seq_code} ({self.seq_id}) "
 
    #------------------------------------------------
     @classmethod
-    def get(cls,SeqID=None, SeqName=None, verbose=0):
+    def get(cls,SeqID=None, SeqCode=None, verbose=0):
     # Returns an instance if found by [SeqID or SeqName]
         if SeqID:
             try:
@@ -109,23 +109,23 @@ class Genome_Sequence(AuditModel):
                 if verbose:
                     print(f"[SeqID Not Found] {SeqID} ")
                 retInstance = None
-        elif SeqName:
+        elif SeqCode:
             try:
-                retInstance = cls.objects.get(seq_name=SeqName)
+                retInstance = cls.objects.get(seq_code=SeqCode)
             except:
                 if verbose:
-                    print(f"[SeqName Not Found] {SeqName} ")
+                    print(f"[SeqCode Not Found] {SeqCode} ")
                 retInstance = None
         return(retInstance)
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,SeqID=None, SeqName=None,verbose=0):
+    def exists(cls,SeqID=None, SeqCode=None,verbose=0):
     # Returns an instance if found by [SeqID or SeqName]
         if SeqID:
             retValue = cls.objects.filter(seq_id=SeqID).exists()
-        elif SeqName:
-            retValue = cls.objects.filter(seq_name=SeqName).exists()
+        elif SeqCode:
+            retValue = cls.objects.filter(seq_code=SeqCode).exists()
         else:
             retValue = False
         return(retValue)
@@ -139,7 +139,11 @@ class Genome_Sequence(AuditModel):
         else:
             super(Genome_Sequence, self).save(*args, **kwargs) 
 
-
+    #--------------------------------------------------------------
+    @staticmethod
+    def gen_seq_code(OrgBatchID,RunID):
+        return(f"{OrgBatchID}{SEQRUN_SEP}{RunID}")
+    
 #=================================================================================================
 # Identification of Organism
 #=================================================================================================

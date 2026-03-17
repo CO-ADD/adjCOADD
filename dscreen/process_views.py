@@ -304,5 +304,5 @@ class Load_Sequences_ProcessView(Process_View):
         return(valLog)
 
     # Customize Function to update after upload:
-    # def file_process_finalizer(self, request, pk):
-    #     Summary_ScreenRun_Process(request, pk)
+    def file_process_finalizer(self, request, pk):
+        Summary_ScreenRun_Process(request, pk)

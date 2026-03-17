@@ -36,7 +36,7 @@ PEPBATCH_SEP = "."
 
 # -dGene Settings 
 SEQID_SEP = "_"
-SEQRUN_SEP = "_"
+SEQRUN_SEP = "-"
 
 # -dChem Settings ---------------------------------------------------
 #SAMPLE_SEP = "_"

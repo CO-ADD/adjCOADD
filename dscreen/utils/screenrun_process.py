@@ -13,6 +13,8 @@ from applib.plate.multimode_reader import multimodereader_xls
 from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans, gen_Motherplates_PSPrep
 from applib.plate.testplates import add_mother_to_testplate
 from applib.bio.doseresponse import process_testplate_doseresponse
+from applib.data.dfutils import get_Xlxs_Sheets
+from applib.data.set_fielddata import set_model_from_dict
 from dscreen.utils.summary import update_screenrun_summary
 from adjcoadd.constants import DR_CLASSES
 
@@ -396,9 +398,11 @@ def Upload_Sequences_Process(Request, DirName, FileList, RunID=None,
                                 upload=False,  overwrite=False, appuser=None):
 #-----------------------------------------------------------------------------------
 
-    SeqRun_Sheets = {
-        'DNA': None,
-        }
+    # Xlsx Definitions
+    SeqRun_Sheets = {'Seq': None,}
+    SeqRun_List_Fields = ['runsample_file','runsample_dir','runsample_name',]
+    SeqRun_List_Dicts = ['seq_type','seq_method']
+    unqSeqCodes = set()
 
     if FileList:
         nFiles = len(FileList)
@@ -410,50 +414,55 @@ def Upload_Sequences_Process(Request, DirName, FileList, RunID=None,
     valLog = Validation_Log("Upload_Sequences")
 
     if nFiles > 0 :
-        xlsFile = os.path.join(DirName,FileList[0])
-
-        # -- Load Xlsx into Dataframe
-        if os.path.isfile(xlsFile):
-            fXlsx = open(xlsFile, "rb")
-            xls = pd.ExcelFile(fXlsx)
-            #xls = pd.ExcelFile(xlsFile)
-
-            if Sheets is None:
-                Sheets = list(SeqRun_Sheets)
-            for key in Sheets:
-                if key in xls.sheet_names:
-                    SeqRun_Sheets[key] = pd.read_excel(xls, key)
-                    valLog.add_info('Reading SeqRun file',f"{FileList[0]} [{key}]","")
-                    SeqRun_Sheets[key].columns = [c.lower() for c in SeqRun_Sheets[key].columns]
-                    #SeqRun_Sheets[key] = SeqRun_Sheets[key].fillna('-')
-
-                else:
-                    if valLog:
-                        valLog.add_error('Missing Sheet',key,f"XLSX {os.path.basename(xlsFile)}",f"Correct XLSX Sheets {list(SeqRun_Sheets)}")
-            fXlsx.close()
-        else:
-            valLog.add_error('XLSX not Found',FileList[0],f"XLSX {os.path.basename(xlsFile)}",f"File upload failed") 
-
-        # -- DNA - Upload
-        df = SeqRun_Sheets['DNA']
+        get_Xlxs_Sheets(DirName,FileList[0],SeqRun_Sheets,FillNA=None,valLog=valLog)
+        
+        df = SeqRun_Sheets['Seq']
         df = df[ df['run_id'] == str(djRun)]
         if len(df)>0:
             nSeq = 0
             for idx,row in df.iterrows():
                 
+                # Check OrgBatch
                 djOrgBatch = Organism_Batch.get(row['orgbatch_id'])
                 if djOrgBatch is None:
                     valLog.add_error('OrgBatch not found',row['orgbatch_id'],f"Correct OrgBatch_ID or Import new OrgBatch")
                 else:
                     nSeq += 1
-                print(row)
                 
-                djSeq = Genome_Sequence.get() 
+                # SeqCode - Check Duplicates
+                if pd.isna(row['seq_code']):
+                    row['seq_code'] = Genome_Sequence.gen_seq_code(row['orgbatch_id'],str(djRun))
+                
+                if row['seq_code'] in unqSeqCodes:
+                    valLog.add_error('Duplicate SeqCode',f"{row['seq_code']} - {row['orgbatch_id']} {str(djRun)} ",f"Correct SeqCode with unique values")
+                else:
+                    unqSeqCodes.add(row['seq_code'])
+                
+                # New Seq - Check SeqCode        
+                djSeq = Genome_Sequence.get(SeqCode=row['seq_code'])
+                if djSeq is None:
+                    djSeq = Genome_Sequence()
+                    djSeq.orgbatch_id = djOrgBatch
+                    djSeq.run_id = djRun
+                    djSeq.seq_code = row['seq_code']
+                else:
+                    valLog.add_error('SeqCode exists already',f"{row['seq_code']} ",f"Correct SeqCode with unique values")
+                
+                # Set SeqAttributes    
+                validStatus = set_model_from_dict(djSeq,row,
+                                                list_Fields=SeqRun_List_Fields, 
+                                                list_Dicts=SeqRun_List_Dicts,
+                                                valLog=valLog)                
+                # Uploading  
+                if upload and validStatus:
+                    if settings.DEBUG:
+                        print(f" [Upload Sequence] {djSeq} ")
+                    djSeq.save()
+
+                
             valLog.add_info('Reading SeqRun file',f"{nSeq} Sequences","")
         else:
-           valLog.add_error('[DNA] no sequences for RunID',str(RunID),f"Correct Run_ID in [DNA].SeqRun_ID")  
-        print(df)
+           valLog.add_error('[Seq] no sequences for RunID',str(RunID),f"Correct Run_ID in [Seq].SeqRun_ID")  
         
     return(valLog)
 
-        # dfSeq = get sequences from Excel file [header == fieldnames]
