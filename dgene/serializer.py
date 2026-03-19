@@ -3,11 +3,12 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 
 from dgene.models import Genome_Sequence
+from dorganism.serializer import OrgBatch_Serializer
 
 class GenomeSeq_Serializer(serializers.ModelSerializer):
     
     #tag_detail = serializers.HyperlinkedIdentityField(view_name='genomeseq_api_list')
-    
+    orgbatch_id = OrgBatch_Serializer()
     class Meta:
         model = Genome_Sequence
         fields = ["seq_id", "run_id", "orgbatch_id", "seq_code",

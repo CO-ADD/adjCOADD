@@ -32,7 +32,7 @@ class Genome_Sequence(AuditModel):
         "orgbatch_id.organism_id.organism_name":"Organism",
         'run_id':'Run ID',
         'runsample_file':'RunFile',
-        'runsample_dir':'RunFDir',
+        'runsample_dir':'RunDir',
         'source':'Source',
     #    'source_code':'Source Code',
     #    'source_link':'Link',
