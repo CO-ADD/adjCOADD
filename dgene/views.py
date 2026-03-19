@@ -61,7 +61,7 @@ class GenomeSeq_ViewSet(viewsets.ModelViewSet):
     queryset = Genome_Sequence.objects.all()
     serializer_class = GenomeSeq_Serializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['seq_id','run_id','seq_code']
+    filterset_fields = ['seq_id','run_id','orgbatch_id','seq_code',]
 
 #=================================================================================================
 # ID Sequence 
