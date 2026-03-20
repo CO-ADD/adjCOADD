@@ -25,12 +25,12 @@ class Genome_Sequence(AuditModel):
     LIST_VIEW_FIELDS = {
         #'seq_id':{"Seq ID":{"seq_id": URL_LINKS["seq_id"]},}, 
         'seq_id':"Seq ID", 
-        'seq_type':'Type',  
-        'seq_method':'Method',  
-        'seq_code':'SeqCode',  
         "orgbatch_id.orgbatch_id":{'OrgBatch ID': {'orgbatch_id.organism_id.organism_id':URL_LINKS["organism_id"]}},
         "orgbatch_id.organism_id.organism_name":"Organism",
         'run_id':'Run ID',
+        'seq_code':'SeqCode',  
+        'seq_type':'Type',  
+        'seq_method':'Method',  
         'runsample_file':'RunFile',
         'runsample_dir':'RunDir',
         'source':'Source',
@@ -77,7 +77,7 @@ class Genome_Sequence(AuditModel):
     source_link = models.CharField(max_length=120, blank=True, verbose_name = "Source Link")
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 #    seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
-    seq_files = models.CharField(max_length=6, choices=SEQUENCE_FILES, default='Reads', verbose_name = "Files")
+    seq_files = models.CharField(max_length=50, blank=True, default='Reads', verbose_name = "Files")
 
     class Meta:
         app_label = 'dgene'

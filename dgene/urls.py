@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
-from dgene.views import  (GenomeSeq_ListView,GenomeSeq_CreateView,GenomeSeq_UpdateView, GenomeSeq_ViewSet,
+from dgene.views import  (GenomeSeq_ListView,GenomeSeq_CreateView,GenomeSeq_UpdateView, GenomeSeq_ListAPI, GenomeSeq_DetailAPI,
                      IDSeq_ListView,
                      WGS_FastQC_ListView, WGS_CheckM_ListView,
                      Gene_ListView,Gene_CardView,detailGene,Gene_CreateView,Gene_UpdateView,
@@ -17,7 +17,8 @@ urlpatterns = [
     path('sequence/<str:pk>', detailGene, name="gene_detail"),
     path('createSequence/', GenomeSeq_CreateView.as_view(), name="genomeseq_create"),
     #path('updateSequence/<str:pk>', GenomeSeq_UpdateView.as_view(), name="genomeseq_update"),
-    path('api/sequence_list', GenomeSeq_ViewSet.as_view({'get': 'list'}), name="genomeseq_api_list"),
+    path('api/sequence_list', GenomeSeq_ListAPI.as_view({'get': 'list'}), name="genomeseq_api_list"),
+    path('api/sequence/<str:pk>', GenomeSeq_DetailAPI.as_view({'get': 'retrieve',"patch": "partial_update","post": "update"}), name="genomeseq_api_detail"),
     
 
     # WGS_FastQC WGS_CheckM

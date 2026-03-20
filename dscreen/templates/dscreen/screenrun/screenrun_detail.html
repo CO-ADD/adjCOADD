@@ -86,6 +86,32 @@
                 </div>
             </div>
 
+            <!-- Projects -->
+            <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_03">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunProjects" aria-expanded="true" aria-controls="collapse_04">
+                    <h5 class="fs-6 my-0">
+                        Projects
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=project_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunProjects" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
+                    data-bs-parent="#screenrun-projects">
+                    <div class="accordion-body">
+                    <div class="table-responsive">
+                        <!-- prettier-ignore -->
+                        {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_projects' objects=project_objs data_fields=project_fields %}
+                        
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
         {% elif process.type == "Sequencing" %}
 
             <!-- Processing -->
@@ -112,33 +138,33 @@
                 </div>
             </div>
 
+            <!-- Sequences -->
+            <div class="accordion bg-transparent w-100" id="screenrun-sequences">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_02">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunSequences" aria-expanded="true" aria-controls="collapse_02">
+                    <h5 class="fs-6 my-0">
+                        Sequences
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=sequence_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunSequences" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
+                    data-bs-parent="#screenrun-sequences">
+                    <div class="accordion-body">
+                    <div class="table-responsive">
+                        <!-- prettier-ignore -->
+                        {% include 'datatable/subtable_pag_action.html' with table_id='datatable_sequence' objects=sequence_objs data_fields=sequence_fields %}
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
         {% endif %}
 
-        <!-- Projects -->
-        <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_03">
-                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-                    data-bs-target="#collapseRunProjects" aria-expanded="true" aria-controls="collapse_04">
-                <h5 class="fs-6 my-0">
-                    Projects
-                </h5>
-                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=project_count %}
-                <!-- prettier-ignore -->
-                </button>
-            </h2>
-            <div id="collapseRunProjects" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
-                data-bs-parent="#screenrun-projects">
-                <div class="accordion-body">
-                <div class="table-responsive">
-                    <!-- prettier-ignore -->
-                    {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_projects' objects=project_objs data_fields=project_fields %}
-                    
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
 
     </div>
 </div>

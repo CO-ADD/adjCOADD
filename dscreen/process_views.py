@@ -288,6 +288,9 @@ class Load_Sequences_ProcessView(Process_View):
         'finalize': {'instructions':''},
         }
 
+    upload = False
+    overwrite = False
+
     # Customize Function to validate and upload files:
     def file_process_handler(self, request, *args, **kwargs):
 

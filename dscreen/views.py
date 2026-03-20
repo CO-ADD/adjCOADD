@@ -34,6 +34,7 @@ from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dscreen.utils.summary import update_screenrun_summary, get_projects_screenrun
 from dsample.models import Project
 from dplate.models import MasterPlate, TestPlate, TestWell
+from dgene.models import Genome_Sequence
 from applib.report.screen_data import Report_Screening
 
 #=================================================================================================
@@ -147,6 +148,14 @@ def ScreenRun_DetailView(req, pk):
     elif str(_object.run_type) in ['SEQ']:
         context["process"] = {"type":"Sequencing"}
         context["process_status"] = _object.process_status
+
+        # Paginated and filtered list
+        paginate_by = 50
+        _sequences = Genome_Sequence.objects.filter(run_id=_object, )
+        context["sequence_objs"] = _sequences
+        context["sequence_count"] = _sequences.count()
+        context["sequence_fields"]=Genome_Sequence.get_fields()
+
     else:
         context["process"] = {"type":"Undefined"}
         context["process_status"] = _object.process_status

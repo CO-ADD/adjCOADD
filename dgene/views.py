@@ -12,7 +12,8 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from apputil.models import Dictionary, ApplicationUser
@@ -57,11 +58,34 @@ class GenomeSeq_UpdateView(Base_UpdateView):
     model=ID_Sequence
 
 ##
-class GenomeSeq_ViewSet(viewsets.ModelViewSet):
+class GenomeSeq_ListAPI(viewsets.ModelViewSet):
     queryset = Genome_Sequence.objects.all()
     serializer_class = GenomeSeq_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['seq_id','run_id','orgbatch_id','seq_code',]
+
+
+class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
+    queryset = Genome_Sequence.objects.all()
+    serializer_class = GenomeSeq_Serializer
+
+    # def get_queryset(self):
+    #     obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
+    #     user = self.request.user
+    #     print(f" [get_queryset] {obj}")
+    #     return super().get_queryset()
+
+    def update(self, request, *args, **kwargs):
+        obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
+        user = self.request.user
+        serializer = self.serializer_class(obj,data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            print(f" [update] {obj} <- {request.data} {serializer.is_valid()}")
+            updated_data = serializer.data
+            updated_data['custom_message'] = f"{str(obj)} updated successfully!"
+            return Response(updated_data, status=status.HTTP_200_OK)
+        Response(serializer.errors, status=400)
 
 #=================================================================================================
 # ID Sequence 
