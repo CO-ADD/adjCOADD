@@ -14,6 +14,7 @@ from django.views.generic.detail import DetailView
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 
 from apputil.models import Dictionary, ApplicationUser
@@ -69,6 +70,8 @@ class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
     queryset = Genome_Sequence.objects.all()
     serializer_class = GenomeSeq_Serializer
 
+    permission_classes = [IsAuthenticated]
+    
     # def get_queryset(self):
     #     obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
     #     user = self.request.user
