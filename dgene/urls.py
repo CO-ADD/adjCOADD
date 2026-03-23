@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from dgene.views import  (GenomeSeq_ListView,GenomeSeq_CreateView,GenomeSeq_UpdateView, GenomeSeq_ListAPI, GenomeSeq_DetailAPI,
-                     IDSeq_ListView,
+                     IDSeq_ListView, IDSeq_ListAPI, IDSeq_UpdateAPI,
                      WGS_FastQC_ListView, WGS_CheckM_ListView,
                      Gene_ListView,Gene_CardView,detailGene,Gene_CreateView,Gene_UpdateView,
                      AMRGenotype_ListView,
@@ -27,6 +27,8 @@ urlpatterns = [
 
     # ID_Sequence
     path('idseq_list', IDSeq_ListView.as_view(), name="idseq_list"),
+    path('api/idseq_list', IDSeq_ListAPI.as_view({'get': 'list'}), name="idseq_api_list"),
+    path('api/idseq_update', IDSeq_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="idseq_api_detail"),
     #path('createSequence/', SequenceCreateView.as_view(), name="sequence_create"),
     #path('updateSequence/<str:pk>', SequenceUpdateView.as_view(), name="sequence_update"),
 

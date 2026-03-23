@@ -17,6 +17,12 @@ from dorganism.models import Taxonomy, Organism, Organism_Batch
 from dscreen.models import Screen_Run
 
 
+SEQUENCE_FILETYPES = [
+        ('Reads','Raw reads'),
+        ('FastQ','Fastq files (trimmed)'),
+        ('FastA','Fasta files (assembly)'),
+        ]
+
 #=================================================================================================
 # List of Sequences
 #=================================================================================================
@@ -45,12 +51,6 @@ class Genome_Sequence(AuditModel):
         'seq_type':'Seq_Type',      # DNA, RNA, cDNA, natDNA  
         'seq_method':'Seq_Method',  # Illumina, MinION-RB, MinION-Nat
     }
-
-    SEQUENCE_FILES = [
-        ('Reads','Raw reads'),
-        ('FastQ','Fastq files (trimmed)'),
-        ('FastA','Fasta files (assembly)'),
-        ]
 
     ID_SEQUENCE = 'Sequence'
     ID_PREFIX = 'SEQ'
@@ -228,6 +228,7 @@ class ID_Sequence(AuditModel):
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         "seq_id.run_id":'Run ID',
+        "seq_filetype":"Seq Type", 
         "seq_file":"Seq File", 
         "kraken_organisms":"Kraken2 Organisms",
         "mlst_scheme": "MLST Scheme",
@@ -240,10 +241,14 @@ class ID_Sequence(AuditModel):
    }
     DICTIONARY_FIELDS = {
         'seq_file':'Seq_File', # Trimmed, Contigs
+        'seq_filetype':'Seq_FileType', # Trimmed, Contigs
     }
 
+
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
-        db_column="seq_id", related_name="%(class)s_seqid") 
+        db_column="seq_id", related_name="%(class)s_seqid")
+    seq_filetype =  models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq FType", on_delete=models.DO_NOTHING,
+         db_column="seq_filetype", related_name="%(class)s_seqfiletype")
     seq_file = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq File", on_delete=models.DO_NOTHING,
          db_column="seq_file", related_name="%(class)s_seqfile")
     
@@ -264,27 +269,28 @@ class ID_Sequence(AuditModel):
         indexes = [
 #             models.Index(name="idseq_drugid_idx",fields=['orgbatch_id']),
              models.Index(name="idseq_seqfile_idx",fields=['seq_file']),
+             models.Index(name="idseq_seqftype_idx",fields=['seq_filetype']),
              models.Index(name="idseq_seqid_idx",fields=['seq_id']),
              models.Index(name="idseq_source_idx",fields=['source']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        retStr = f"{self.seq_id.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
+        retStr = f"{str(self.seq_id)} {str(self.seq_filetype)} {self.seq_file} "
         return(retStr)
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        retStr = f"{self.seq_id.orgbatch_id} {str(self.seq_id)} {self.seq_file} "
+        retStr = f"{str(self.seq_id)} {str(self.seq_filetype)} {self.seq_file} "
         return(retStr)
 
 
    #------------------------------------------------
     @classmethod
-    def get(cls,SeqFile,SeqID,verbose=0):
+    def get(cls,SeqID,SeqFileType,SeqFile,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
         try:
-            retInstance = cls.objects.get(seq_file=SeqFile,seq_id=SeqID)
+            retInstance = cls.objects.get(seq_id=SeqID, seq_filetype=SeqFileType, seq_file=SeqFile,)
         except:
             if verbose:
                 print(f"[ID-WGS Not Found] {SeqID} {SeqFile}")

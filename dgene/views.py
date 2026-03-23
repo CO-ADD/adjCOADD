@@ -27,7 +27,7 @@ from dgene.forms import (GenomeSeq_Filter, GenomeSeq_Form,
                          Gene_Filter, Gene_Form, 
                          AMRGenotype_Filter,  
                          )
-from dgene.serializer import GenomeSeq_Serializer
+from dgene.serializer import GenomeSeq_Serializer, IDSeq_Serializer
 
 
 
@@ -84,7 +84,7 @@ class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
         serializer = self.serializer_class(obj,data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            print(f" [update] {obj} <- {request.data} {serializer.is_valid()}")
+            print(f" [update] Genome_Sequence {obj} <- {request.data} {serializer.is_valid()}")
             updated_data = serializer.data
             updated_data['custom_message'] = f"{str(obj)} updated successfully!"
             return Response(updated_data, status=status.HTTP_200_OK)
@@ -100,6 +100,63 @@ class IDSeq_ListView(LoginRequiredMixin, Filtered_ListView):
     template_name = 'dgene/idseq/idseq_list.html' 
     filterset_class=IDSeq_Filter
     model_fields=model.LIST_VIEW_FIELDS
+
+##
+class IDSeq_ListAPI(viewsets.ModelViewSet):
+    queryset = ID_Sequence.objects.all()
+    serializer_class = IDSeq_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['seq_id','seq_file']
+
+
+class IDSeq_UpdateAPI(viewsets.ModelViewSet):
+    queryset = ID_Sequence.objects.all()
+    serializer_class = IDSeq_Serializer
+
+    permission_classes = [IsAuthenticated]
+    
+    # def get_queryset(self):
+    #     obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
+    #     user = self.request.user
+    #     print(f" [get_queryset] {obj}")
+    #     return super().get_queryset()
+
+    def update(self, request, *args, **kwargs):
+        
+        seq_id = request.data.get('seq_id',None)
+        seq_filetype = request.data.get('seq_filetype',None)
+        seq_file = request.data.get('seq_file',None)
+        
+        qryDict = {
+            'seq_id' : seq_id,
+            'seq_filetype':seq_filetype,
+            'seq_file':seq_file
+        }
+        
+        obj=ID_Sequence.get(seq_id,seq_filetype,seq_file)
+        if obj:
+            print(f" -- Updating")
+            serializer = self.serializer_class(obj,data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                print(f" [update] IDSeq_UpdateAPI {obj} <- {request.data} {serializer.is_valid()}")
+                updated_data = serializer.data
+                updated_data['custom_message'] = f"{str(obj)} updated successfully!"
+                return Response(updated_data, status=status.HTTP_200_OK)
+        else: 
+            print(f" -- Creating 0")
+            serializer = self.get_serializer(data=request.data)
+            print(f" -- Creating 1 ")
+            if serializer.is_valid():
+                print(f" -- Valid")
+                self.perform_create(serializer)
+                print(f" -- Created")
+                updated_data = serializer.data
+                updated_data['custom_message'] = f"{str(obj)} created successfully!"
+                return Response(updated_data, status=status.HTTP_201_CREATED)
+            else:
+                print(serializer.errors)
+        Response(serializer.errors, status=400)
 
 #=================================================================================================
 # ID Public
