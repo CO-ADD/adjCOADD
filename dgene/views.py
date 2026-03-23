@@ -135,22 +135,17 @@ class IDSeq_UpdateAPI(viewsets.ModelViewSet):
         
         obj=ID_Sequence.get(seq_id,seq_filetype,seq_file)
         if obj:
-            print(f" -- Updating")
             serializer = self.serializer_class(obj,data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                print(f" [update] IDSeq_UpdateAPI {obj} <- {request.data} {serializer.is_valid()}")
+                #print(f" [update] IDSeq_UpdateAPI {obj} <- {request.data} {serializer.is_valid()}")
                 updated_data = serializer.data
                 updated_data['custom_message'] = f"{str(obj)} updated successfully!"
                 return Response(updated_data, status=status.HTTP_200_OK)
         else: 
-            print(f" -- Creating 0")
             serializer = self.get_serializer(data=request.data)
-            print(f" -- Creating 1 ")
             if serializer.is_valid():
-                print(f" -- Valid")
                 self.perform_create(serializer)
-                print(f" -- Created")
                 updated_data = serializer.data
                 updated_data['custom_message'] = f"{str(obj)} created successfully!"
                 return Response(updated_data, status=status.HTTP_201_CREATED)
