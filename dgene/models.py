@@ -45,6 +45,7 @@ class Genome_Sequence(AuditModel):
     #    'reference':'Reference',
     #     'seq_date':'Seq Date'
         'seq_files':"Seq Files",
+        'seq_status':"Seq Status",
      }
 
     DICTIONARY_FIELDS = {
@@ -78,6 +79,7 @@ class Genome_Sequence(AuditModel):
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 #    seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
     seq_files = models.CharField(max_length=50, blank=True, default='Reads', verbose_name = "Files")
+    seq_status = models.CharField(max_length=120, blank=True, default='Reads', verbose_name = "Files")
 
     class Meta:
         app_label = 'dgene'
@@ -240,7 +242,7 @@ class ID_Sequence(AuditModel):
         "id_notes":"Notes",
    }
     DICTIONARY_FIELDS = {
-        'seq_file':'Seq_File', # Trimmed, Contigs
+        #'seq_file':'Seq_File', # Trimmed, Contigs
         'seq_filetype':'Seq_FileType', # Trimmed, Contigs
     }
 
@@ -249,9 +251,10 @@ class ID_Sequence(AuditModel):
         db_column="seq_id", related_name="%(class)s_seqid")
     seq_filetype =  models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq FType", on_delete=models.DO_NOTHING,
          db_column="seq_filetype", related_name="%(class)s_seqfiletype")
-    seq_file = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq File", on_delete=models.DO_NOTHING,
-         db_column="seq_file", related_name="%(class)s_seqfile")
-    
+    # seq_file = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Seq File", on_delete=models.DO_NOTHING,
+    #      db_column="seq_file", related_name="%(class)s_seqfile")
+    seq_file = models.CharField(max_length=120, blank=True, verbose_name = "Seq File")
+        
     kraken_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Kraken2 Organisms", null=True, blank=True)
     mlst_scheme = models.CharField(max_length=20, blank=True, verbose_name = "MLST Scheme")
     mlst_seqtype = models.CharField(max_length=12, blank=True, verbose_name = "MLST SeqType")
@@ -267,8 +270,8 @@ class ID_Sequence(AuditModel):
         db_table = 'id_seq'
         ordering=['seq_id__orgbatch_id','seq_id']
         indexes = [
-#             models.Index(name="idseq_drugid_idx",fields=['orgbatch_id']),
-             models.Index(name="idseq_seqfile_idx",fields=['seq_file']),
+             #models.Index(name="idseq_drugid_idx",fields=['orgbatch_id']),
+             #models.Index(name="idseq_seqfile_idx",fields=['seq_file']),
              models.Index(name="idseq_seqftype_idx",fields=['seq_filetype']),
              models.Index(name="idseq_seqid_idx",fields=['seq_id']),
              models.Index(name="idseq_source_idx",fields=['source']),

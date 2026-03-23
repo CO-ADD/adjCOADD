@@ -11,7 +11,7 @@ class GenomeSeq_Serializer(serializers.ModelSerializer):
     orgbatch_id = OrgBatch_Serializer()
     class Meta:
         model = Genome_Sequence
-        fields = ["seq_id", "run_id", "orgbatch_id", "seq_code",
+        fields = ["seq_id", "run_id", "orgbatch_id", "seq_code","seq_status",
                   "seq_type","seq_method","seq_files",
                   "runsample_file","runsample_dir","runsample_name",
                 #  "tag_detail",
