@@ -209,6 +209,7 @@ class WGS_CheckM_UpdateAPI(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     
+    print(f" [WGS_CheckM_UpdateAPI]")
     # def get_queryset(self):
     #     obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
     #     user = self.request.user
@@ -227,18 +228,21 @@ class WGS_CheckM_UpdateAPI(viewsets.ModelViewSet):
             'fasta_type':fasta_type
         }
         
+        print(f" [WGS_CheckM_UpdateAPI] {request.data}")
         obj=WGS_CheckM.get(seq_id,assembler,fasta_type)
+        print(f" [WGS_CheckM_UpdateAPI] {obj}")
         if obj:
             serializer = self.serializer_class(obj,data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                #print(f" [update] IDSeq_UpdateAPI {obj} <- {request.data} {serializer.is_valid()}")
+                print(f" [update] WGS_CheckM_UpdateAPI {obj} <- {request.data} {serializer.is_valid()}")
                 updated_data = serializer.data
                 updated_data['custom_message'] = f"{str(obj)} updated successfully!"
                 return Response(updated_data, status=status.HTTP_200_OK)
         else: 
             serializer = self.get_serializer(data=request.data)
             if serializer.is_valid():
+                print(f" [create] WGS_CheckM_UpdateAPI <- {request.data} {serializer.is_valid()}")
                 self.perform_create(serializer)
                 updated_data = serializer.data
                 updated_data['custom_message'] = f"{str(obj)} created successfully!"

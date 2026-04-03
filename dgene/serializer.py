@@ -31,7 +31,7 @@ class WGS_CheckM_Serializer(serializers.ModelSerializer):
     
     class Meta:
         model = WGS_CheckM
-        fields = ['seq_id ','assembler', 'fasta_type','checkm_status', 'fasta_file', 
+        fields = ["seq_id",'assembler', 'fasta_type','checkm_status', 'fasta_file', 
                 'genome_size' ,'completeness' ,'contamination','coding_density',
                 'marker_lineage','n_genomes','n_predit_genes','n_markers','n_marker_sets','n_contigs', 
                 'gc','gc_std','n_ambig_bases' ,'longest_contig' ,'mean_contigs','n50_contigs','trans_table',
