@@ -401,17 +401,17 @@ class WGS_CheckM(AuditModel):
         "seq_id.orgbatch_id.organism_id.organism_name":"Organism",
         "seq_id":"SeqID",
         #"seq_id.run_id":'Run ID',
-        "assembly":"Assembly",
-        "fasta":"FastA",
-        "assembly_qc":"QC",
+        "assembler":"Assembler",
+        "fasta_type":"FastA",
+        "checkm_status":"Status",
         "marker_lineage" :"Marker lineage",
         "completeness" :"Completeness",
         "contamination" :"Contamination",
+        "genome_size" :"Genome Size",
         "n_genomes" :"#Genomes",
         "n_predit_genes" :"#Predit Genes",
         "n_markers" :"#Markers",
         "n_marker_sets" :"#Marker Sets",
-        "genome_size" :"Genome Size",
         "coding_density" :"Coding Density",
         "n_contigs" :"#Contigs",
         "longest_contig" :"Longest Contig",
@@ -423,24 +423,26 @@ class WGS_CheckM(AuditModel):
         "trans_table" :"Trans Table",
     }
     DICTIONARY_FIELDS = {
-    }
+        }
 
     seq_id = models.ForeignKey(Genome_Sequence, null=False, blank=False, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
         db_column="seq_id", related_name="%(class)s_seqid")
-    assembly = models.CharField(max_length=25, blank=True, verbose_name = "Assembly")
-    fasta = models.CharField(max_length=55, blank=True, verbose_name = "Fasta")
-    assembly_qc = models.CharField(max_length=15, blank=True, verbose_name = "Assembly QC") 
+    assembler = models.CharField(max_length=25, blank=True, verbose_name = "Assembler")
+    fasta_file = models.CharField(max_length=60, blank=True, verbose_name = "Fasta File")
+    fasta_type = models.CharField(max_length=25, blank=True, verbose_name = "Fasta Ttype")
+    checkm_status = models.CharField(max_length=60, blank=True, verbose_name = "CheckM Status") 
     marker_lineage = models.CharField(max_length=25, blank=True, verbose_name = "Linage")
     n_genomes = models.IntegerField(default=0, blank=True, verbose_name ="n_genomes")
     n_predit_genes = models.IntegerField(default=0, blank=True, verbose_name ="n_predit_genes")
     n_markers = models.IntegerField(default=0, blank=True, verbose_name ="n_markers")
     n_marker_sets = models.IntegerField(default=0, blank=True, verbose_name ="n_marker_sets")
     n_contigs = models.IntegerField(default=0, blank=True, verbose_name ="n_contigs")
+
     genome_size = models.IntegerField(default=0, blank=True, verbose_name ="genome_size")
-    
-    coding_density = models.DecimalField(max_digits=9, decimal_places=3, default=0, blank=True, verbose_name ="coding_density")
     completeness = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="completeness")
     contamination = models.DecimalField(max_digits=9, decimal_places=2, default=0, blank=True, verbose_name ="contamination")
+
+    coding_density = models.DecimalField(max_digits=9, decimal_places=3, default=0, blank=True, verbose_name ="coding_density")
     gc = models.DecimalField(max_digits=9, decimal_places=3,default=0, blank=True, verbose_name ="gc")
     gc_std = models.DecimalField(max_digits=9, decimal_places=3,default=0, blank=True, verbose_name ="gc_std")
     n_ambig_bases = models.IntegerField(default=0, blank=True, verbose_name ="n_ambig_bases")
@@ -457,11 +459,12 @@ class WGS_CheckM(AuditModel):
         indexes = [
         #     models.Index(name="checkqc_orgbid_idx",fields=['orgbatch_id']),
              models.Index(name="checkqc_seqid_idx",fields=['seq_id']),
-             models.Index(name="checkqc_ass_idx",fields=['assembly']),
-             models.Index(name="checkqc_fa_idx",fields=['fasta']),
+             models.Index(name="checkqc_ass_idx",fields=['assembler']),
+             models.Index(name="checkqc_fa_idx",fields=['fasta_type']),
              models.Index(name="checkqc_comp_idx",fields=['completeness']),
              models.Index(name="checkqc_cont_idx",fields=['contamination']),
-             models.Index(name="checkqc_qc_idx",fields=['assembly_qc']),
+             models.Index(name="checkqc_gs_idx",fields=['genome_size']),
+             models.Index(name="checkqc_qc_idx",fields=['checkm_status']),
              models.Index(name="checkqc_ml_idx",fields=['marker_lineage']),
         ]
 
@@ -478,21 +481,21 @@ class WGS_CheckM(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def get(cls,SeqID,Assembly,FastA,verbose=0):
+    def get(cls,SeqID,Assembler,FastAType,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
         try:
-            retInstance = cls.objects.get(seq_id=SeqID,assembly=Assembly,fasta=FastA)
+            retInstance = cls.objects.get(seq_id=SeqID,assembler=Assembler,fasta_type=FastAType)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {SeqID} - {Assembly} - {FastA}")
+                print(f"[ID-WGS Not Found] {SeqID} - {Assembler} - {FastAType}")
             retInstance = None
         return(retInstance)
 
    #------------------------------------------------
     @classmethod
-    def exists(cls,OrgBatchID,SeqID,Assembly,verbose=0):
+    def exists(cls,SeqID,Assembler,FastAType,verbose=0):
     # Returns an instance if found by [OrgBatchID,RunID]
-        return cls.objects.filter(orgbatch_id=OrgBatchID,seq_id=SeqID,assembly=Assembly).exists()
+        return cls.objects.filter(seq_id=SeqID,assembler=Assembler,fasta_type=FastAType).exists()
     
 #=================================================================================================
 # Gene of Interest

@@ -4,7 +4,8 @@ from django.urls import path, include, re_path
 
 from dgene.views import  (GenomeSeq_ListView,GenomeSeq_CreateView,GenomeSeq_UpdateView, GenomeSeq_ListAPI, GenomeSeq_DetailAPI,
                      IDSeq_ListView, IDSeq_ListAPI, IDSeq_UpdateAPI,
-                     WGS_FastQC_ListView, WGS_CheckM_ListView,
+                     WGS_FastQC_ListView, 
+                     WGS_CheckM_ListView, WGS_CheckM_ListAPI, WGS_CheckM_UpdateAPI,
                      Gene_ListView,Gene_CardView,detailGene,Gene_CreateView,Gene_UpdateView,
                      AMRGenotype_ListView,
                      IDPub_ListView,IDPub_CreateView,IDPub_UpdateView,
@@ -21,10 +22,14 @@ urlpatterns = [
     path('api/sequence/<str:pk>', GenomeSeq_DetailAPI.as_view({'get': 'retrieve',"patch": "partial_update","post": "update"}), name="genomeseq_api_detail"),
     
 
-    # WGS_FastQC WGS_CheckM
-    path('wgs_fastqc_list', WGS_FastQC_ListView.as_view(), name="wgs_fastqc_list"),
-    path('wgs_checkm_list', WGS_CheckM_ListView.as_view(), name="wgs_checkm_list"),
-
+    # WGS_FastQC
+    path('wgs_fastqc_list', WGS_FastQC_ListView.as_view(), name="fastqc_list"),
+ 
+    # WGS_CheckM
+    path('wgs_checkm_list', WGS_CheckM_ListView.as_view(), name="checkm_list"),
+    path('api/checkm_list', WGS_CheckM_ListAPI.as_view({'get': 'list'}), name="checkm_api_list"),
+    path('api/checkmupdate', WGS_CheckM_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="checkm_api_detail"),
+ 
     # ID_Sequence
     path('idseq_list', IDSeq_ListView.as_view(), name="idseq_list"),
     path('api/idseq_list', IDSeq_ListAPI.as_view({'get': 'list'}), name="idseq_api_list"),
