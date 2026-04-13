@@ -23,10 +23,10 @@ urlpatterns = [
     
 
     # WGS_FastQC
-    path('wgs_fastqc_list', WGS_FastQC_ListView.as_view(), name="fastqc_list"),
+    path('wgs_fastqc_list', WGS_FastQC_ListView.as_view(), name="wgs_fastqc_list"),
  
     # WGS_CheckM
-    path('wgs_checkm_list', WGS_CheckM_ListView.as_view(), name="checkm_list"),
+    path('wgs_checkm_list', WGS_CheckM_ListView.as_view(), name="wgs_checkm_list"),
     path('api/checkm_list', WGS_CheckM_ListAPI.as_view({'get': 'list'}), name="checkm_api_list"),
     path('api/checkm_update', WGS_CheckM_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="checkm_api_update"),
  

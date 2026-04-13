@@ -235,10 +235,6 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
         form_data=kwargs.get('form_data', None)
         if 'generate' in form_data:
             self.generate = form_data['generate']
-
-        #print(" [Gen_MotherPlates_PSR.file_process_handler]")
-        #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileDir: {self.file_dir}")
-        #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileList: {self.file_list}")
         
         valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
                                            generate=self.generate,
@@ -253,13 +249,23 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
         ('upload', Generate_StepForm),
-        ('finalize', Finalize_StepForm),
+        ('download', PlatePrep_DownloadForm),
     ]
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_hcr.html'
 
     def file_process_handler(self, request, *args, **kwargs):    
         print(" [Gen_MotherPlates_HCR.file_process_handler]")
+        self.generate = False
+
+        # Set Form Data        
+        form_data=kwargs.get('form_data', None)
+        if 'generate' in form_data:
+            self.generate = form_data['generate']
+
+        valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
+                                           generate=self.generate,
+                                           appuser=request.user)
 
 # --------------------------------------------------------------------------------------------------
 class Load_Sequences_ProcessView(Process_View):

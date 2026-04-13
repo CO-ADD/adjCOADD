@@ -10,7 +10,7 @@ from dgene.models import Genome_Sequence
 
 from applib.plate.multimode_reader import multimodereader_xls
 #from applib.plate.masterplates import read_motherplate_prepsheet_xls
-from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans, gen_Motherplates_PSPrep
+from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans, gen_Motherplates_PSPrep, gen_Motherplates_HCPrep
 from applib.plate.testplates import add_mother_to_testplate
 from applib.bio.doseresponse import process_testplate_doseresponse
 from applib.data.dfutils import get_Xlxs_Sheets
@@ -366,27 +366,28 @@ def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID
     djRun = Screen_Run.get(RunID)
     valLog = Validation_Log("Gen_Masterplates")
 
-    logNumbers = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
-                  'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
-                  'Processed AssayData':0,'Uploaded AssayData':0,
-                  'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0, 
-                  'Empty':0}
+    # logNumbers = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
+    #               'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
+    #               'Processed AssayData':0,'Uploaded AssayData':0,
+    #               'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0, 
+    #               'Empty':0}
 
     if nRacks > 0:
         Barcodes = get_BarcodeScans(DirName, RackFileList, valLog=valLog)
     
-    if nFiles > 0 :
-        dfMP = gen_Motherplates_PSPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
-
-        if generate and len(dfMP)>0:
+    if djRun is not None and nFiles > 0:
+        dfMP = pd.DataFrame()
+        
+        if djRun.run_id == 'PSR': 
+            dfMP = gen_Motherplates_PSPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
             xlsFile = f"{RunID}_PS_Motherplates.xlsx"
+        elif djRun.run_id == 'HCR': 
+            dfMP = gen_Motherplates_HCPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
+            xlsFile = f"{RunID}_HC_Motherplates.xlsx"
+
+        if generate and len(dfMP)>0:            
             print(f" Generate Download {DirName} {xlsFile}")
             dfMP.to_excel(os.path.join(DirName,xlsFile))
-
-            # req = HttpResponse(content_type='application/vnd.ms-excel')
-            # req['Content-Disposition'] = f'attachment; filename={_xls_name}'
-            # dfMP.to_excel(req)
-
 
     valLog.select_unique()
     
