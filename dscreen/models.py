@@ -827,6 +827,7 @@ class AssayData_SynergyMIC(CmpBatchList_Base):
 
 # Assay (?)
 # AssayData_SynMIC
+
 class AssayData_SynergyIsobol(CmpBatchList_Base):
     """
     List of Synergy Isobolograms
@@ -854,6 +855,30 @@ class AssayData_SynergyIsobol(CmpBatchList_Base):
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
+    # Assay Data
+    synmic = models.CharField(max_length=50, verbose_name = "MIC")
+    synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
+    synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
+
+    fici = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "FICI")
+
+    act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
+    act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
+    pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "pScore")
+
+    analysis = models.CharField(max_length=15, verbose_name = "Analysis")
+
+    inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
+    inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
+    # conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
+    # conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
+    n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
+
+    # Data Quality
+    data_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Data Quality", on_delete=models.DO_NOTHING,
+        db_column="data_quality", related_name="%(class)s_dataquality")
+    data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
+    valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
     class Meta:
         app_label = 'dscreen'
@@ -878,5 +903,57 @@ class AssayData_SynergyIsobol(CmpBatchList_Base):
         ]
 
 # AssayData_SynIsobol
-#
+#  &xID.                   Number,
+#   Compounds               Varchar2(100),
+#   CompoundA1_ID           Varchar2(25),
+#   CompoundA2_ID           Varchar2(25),
+#   CompoundB1_ID           Varchar2(25),
+#   CompoundB2_ID           Varchar2(25),
+#   N_Compounds             Number(2,0),
+#   TestPlate_ID            Varchar2(25),
+#   TestWell_ID             Varchar2(5),
+#   AssayType_ID            Varchar2(25),
+#   Test_Strain             Varchar2(25),
+#   Test_Dye                Varchar2(25),
+#   Test_Additive           Varchar2(25),
+#   Test_Date               Date,
+#   Run_ID                  Varchar2(25),
+#   Analysis                Varchar2(10),
+#   FICI_Value              Number(8,2),
+#   FICI_Synergy            Number(3,0),
+#   SYNMIC                  Varchar2(50),
+#   SYNMIC_Unit             Varchar2(40),
+#   SYNMIC_Value            Number,
+#   SYNMIC_Prefix           Varchar2(2),
+#   SYNMIC_CmpdA1           Number,
+#   SYNMIC_CmpdA1_Unit      Varchar2(10),
+#   SYNMIC_CmpdA2           Number,
+#   SYNMIC_CmpdA2_Unit      Varchar2(10),
+#   SYNMIC_CmpdB1           Number,
+#   SYNMIC_CmpdB1_Unit      Varchar2(10),
+#   SYNMIC_CmpdB2           Number,
+#   SYNMIC_CmpdB2_Unit      Varchar2(10),
+#   DMax                    Number(12,1),
+#   DMin                    Number(12,1),
+#   MIC_Skips               Number(3,0),
+#   SC50                    Varchar2(20),
+#   SC50_Prefix             Varchar2(2),
+#   SC50_Value              Number,
+#   SC50_Unit               Varchar2(10),
+#   SC50_fSlope             Number,
+#   SC50_fXC50              Number,
+#   SC50_fR2                Number,
+#   SC50_pScore             Number(8,2),
+#   SC50_Quality            Varchar2(20),
+#   ConcA1_Min              Varchar2(20),
+#   ConcA1_Max              Varchar2(20),
+#   ConcB1_Min              Varchar2(20),
+#   ConcB1_Max              Varchar2(20),
+#   Checkerboard            Varchar2(10),
+#   Data_Quality            Varchar2(10),
+#   Status                  Number(5),
+#   aCreatedBy		      Varchar2(20),
+#   aCreatedDate            Date,
+#   aModifiedBy		      Varchar2(20),
+#   aModifiedDate           Date,
 #
