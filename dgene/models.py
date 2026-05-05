@@ -79,7 +79,7 @@ class Genome_Sequence(AuditModel):
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 #    seq_date = models.DateField(null=True, blank=True, verbose_name = "Seq Date")
     seq_files = models.CharField(max_length=50, blank=True, default='Reads', verbose_name = "Files")
-    seq_status = models.CharField(max_length=120, blank=True, default='Reads', verbose_name = "Files")
+    seq_status = models.CharField(max_length=250, blank=True, default='Reads', verbose_name = "Files")
 
     class Meta:
         app_label = 'dgene'
@@ -257,7 +257,7 @@ class ID_Sequence(AuditModel):
     #      db_column="seq_file", related_name="%(class)s_seqfile")
     seq_file = models.CharField(max_length=120, blank=True, verbose_name = "Seq File")
         
-    kraken_organisms =ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Kraken2 Organisms", null=True, blank=True)
+    kraken_organisms =ArrayField(models.CharField(max_length=200, null=True, blank=True), size=20, verbose_name = "Kraken2 Organisms", null=True, blank=True)
     mlst_scheme = models.CharField(max_length=20, blank=True, verbose_name = "MLST Scheme")
     mlst_seqtype = models.CharField(max_length=12, blank=True, verbose_name = "MLST SeqType")
     mlst_alleles = models.CharField(max_length=150, blank=True, verbose_name = "MLST Alleles")
