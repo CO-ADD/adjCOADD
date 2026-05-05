@@ -233,12 +233,14 @@ class ID_Sequence(AuditModel):
         "seq_filetype":"Seq Type", 
         "seq_file":"Seq File", 
         "kraken_organisms":"Kraken2 Organisms",
+        "serotype": "Serotype",
+        #"serotype_program": "ST by",        
         "mlst_scheme": "MLST Scheme",
         "mlst_seqtype": "MLST SeqType",
-        "mlst_alleles": "MLST Alleles",
+        #"mlst_alleles": "MLST Alleles",
         "gtdbtk_class": "GTDBTK",
         "gtdbtk_fastani": "FastANI",
-        "source": "Source",
+        #"source": "Source",
         "id_notes":"Notes",
    }
     DICTIONARY_FIELDS = {
@@ -261,6 +263,8 @@ class ID_Sequence(AuditModel):
     mlst_alleles = models.CharField(max_length=150, blank=True, verbose_name = "MLST Alleles")
     gtdbtk_class = models.CharField(max_length=120, blank=True, verbose_name = "MLST Scheme")
     gtdbtk_fastani = models.CharField(max_length=50, blank=True, verbose_name = "MLST SeqType")
+    serotype = models.CharField(max_length=50, blank=True, verbose_name = "Serotype")
+    serotype_program = models.CharField(max_length=50, blank=True, verbose_name = "Serotype Tool")
     id_notes = models.CharField(max_length=120, blank=True,  verbose_name = "ID Notes")
     source = models.CharField(max_length=20,  blank=True, verbose_name = "Source")
 
@@ -275,6 +279,8 @@ class ID_Sequence(AuditModel):
              models.Index(name="idseq_seqftype_idx",fields=['seq_filetype']),
              models.Index(name="idseq_seqid_idx",fields=['seq_id']),
              models.Index(name="idseq_source_idx",fields=['source']),
+             models.Index(name="idseq_seqt_idx",fields=['mlst_seqtype']),
+             models.Index(name="idseq_sero_idx",fields=['serotype']),
         ]
 
     #------------------------------------------------
@@ -290,13 +296,16 @@ class ID_Sequence(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def get(cls,SeqID,SeqFileType,SeqFile,verbose=0):
+    def get(cls,SeqID,SeqFileType,SeqFile=None,verbose=0):
     # Returns an instance if found by [OrgBatchID, IDType,RunID]
         try:
-            retInstance = cls.objects.get(seq_id=SeqID, seq_filetype=SeqFileType, seq_file=SeqFile,)
+            if SeqFile:
+                retInstance = cls.objects.get(seq_id=SeqID, seq_filetype=SeqFileType, seq_file=SeqFile,)
+            else:
+                retInstance = cls.objects.get(seq_id=SeqID, seq_filetype=SeqFileType,)
         except:
             if verbose:
-                print(f"[ID-WGS Not Found] {SeqID} {SeqFile}")
+                print(f"[ID-WGS Not Found] {SeqID} {SeqFileType} {SeqFile}")
             retInstance = None
         return(retInstance)
 
@@ -636,12 +645,12 @@ class AMR_Genotype(AuditModel):
         "gene_id.gene_type":"Gene Type",
         "gene_id.amr_class":"AMR Class",
         "gene_id.amr_subclass":"AMR SubClass",
-        #"amr_method":"Method",
+        "amr_method":"Method",
         #"seq_method":"Seq Method",
-        "seq_coverage":"Coverage",
-        "seq_identity":"Identity",
-        "closest_id": "Closest",
-        "closest_name": "Closest Name",
+        "ref_coverage":"Ref Cov",
+        "ref_identity":"Ref Ident",
+        "ref_id": "Ref ID",
+        "ref_name": "Ref Name",
     }
 
     seq_id = models.ForeignKey(Genome_Sequence, null=True, blank=True, verbose_name = "Seq ID", on_delete=models.DO_NOTHING,
@@ -652,10 +661,10 @@ class AMR_Genotype(AuditModel):
     amr_method = models.CharField(max_length=25, blank=True,   verbose_name = "AMR Method")
 
     seq_method = models.CharField(max_length=25, blank=True,    verbose_name = "Seq Method")
-    seq_coverage = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Seq Coverage") 
-    seq_identity = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Seq Identity")
-    closest_id = models.CharField(max_length=150, blank=True,    verbose_name = "Closest")
-    closest_name = models.CharField(max_length=150, blank=True, verbose_name = "Closest Name")
+    ref_coverage = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Ref Coverage") 
+    ref_identity = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Ref Identity")
+    ref_id = models.CharField(max_length=150, blank=True,    verbose_name = "Ref ID")
+    ref_name = models.CharField(max_length=150, blank=True, verbose_name = "Ref Name")
 
     #------------------------------------------------
     class Meta:
@@ -676,21 +685,21 @@ class AMR_Genotype(AuditModel):
 
    #------------------------------------------------
     @classmethod
-    def get(cls,GeneID, Method, SeqID=None, OrgBatchID=None, verbose=0):
+    def get(cls,GeneID, AMRMethod, SeqID=None, OrgBatchID=None, verbose=0):
     # Returns an instance if found by [SeGeneIDqID or GeneCode]
         if SeqID:
             try:
-                retInstance = cls.objects.get(gene_id=GeneID,seq_id=SeqID,amr_method=Method)
+                retInstance = cls.objects.get(gene_id=GeneID,seq_id=SeqID,amr_method=AMRMethod)
             except:
                 if verbose:
                     print(f"[AMR_Genotype Not Found] {GeneID} {SeqID} {Method} ")
                 retInstance = None
         elif OrgBatchID:
             try:
-                retInstance = cls.objects.get(gene_id=GeneID,seq_id__orgbatch_id=OrgBatchID,amr_method=Method)
+                retInstance = cls.objects.get(gene_id=GeneID,seq_id__orgbatch_id=OrgBatchID,amr_method=AMRMethod)
             except:
                 if verbose:
-                    print(f"[AMR_Genotype Not Found] {GeneID} {OrgBatchID} {Method} ")
+                    print(f"[AMR_Genotype Not Found] {GeneID} {OrgBatchID} {AMRMethod} ")
                 retInstance = None
         else:
             retInstance = None

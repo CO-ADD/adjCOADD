@@ -2,7 +2,7 @@
 from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 
-from dgene.models import Genome_Sequence, ID_Sequence, WGS_CheckM
+from dgene.models import Genome_Sequence, ID_Sequence, WGS_CheckM, Gene, AMR_Genotype
 from dorganism.serializer import OrgBatch_Serializer
 
 class GenomeSeq_Serializer(serializers.ModelSerializer):
@@ -24,6 +24,7 @@ class IDSeq_Serializer(serializers.ModelSerializer):
         fields = ["seq_id", "seq_file","seq_filetype", "kraken_organisms",
                 "mlst_scheme","mlst_seqtype","mlst_alleles",
                 "gtdbtk_class","gtdbtk_fastani",
+                "serotype","serotype_program",
                 "source","id_notes",
         ]
 
@@ -37,3 +38,22 @@ class WGS_CheckM_Serializer(serializers.ModelSerializer):
                 'gc','gc_std','n_ambig_bases' ,'longest_contig' ,'mean_contigs','n50_contigs','trans_table',
         ] 
     
+# class AMRGenotype_Serializer(serializers.ModelSerializer):
+    
+#     class Meta:
+#         model = AMR_Genotype
+#         fields = ["seq_id",'gene_id', 'amr_method','seq_method', 'seq_coverage','seq_identity',
+#                   'closest_id','closest_name' 
+#         ] 
+class Gene_Serializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Gene
+        exclude = Gene.AUDIT_FIELDS
+    
+class AMRGenotype_Serializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = AMR_Genotype
+        exclude = AMR_Genotype.AUDIT_FIELDS
+

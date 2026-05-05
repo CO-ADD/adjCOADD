@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction, IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
+from django.utils.text import slugify
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.views.generic.detail import DetailView
 
@@ -27,7 +28,7 @@ from dgene.forms import (GenomeSeq_Filter, GenomeSeq_Form,
                          Gene_Filter, Gene_Form, 
                          AMRGenotype_Filter,  
                          )
-from dgene.serializer import GenomeSeq_Serializer, IDSeq_Serializer, WGS_CheckM_Serializer
+from dgene.serializer import GenomeSeq_Serializer, IDSeq_Serializer, WGS_CheckM_Serializer, Gene_Serializer, AMRGenotype_Serializer
 
 
 
@@ -43,22 +44,22 @@ class GenomeSeq_ListView(LoginRequiredMixin, Filtered_ListView):
     model_fields=model.LIST_VIEW_FIELDS
     ordering = ['seq_id']
 
-##
+# -------------------------------------------
 class GenomeSeq_CardView(GenomeSeq_ListView):
     template_name = 'dgene/genomeseq/genomeseq_card.html'
 
-##
+# -------------------------------------------
 class GenomeSeq_CreateView(Base_CreateView):
     form_class=GenomeSeq_Form
     template_name='dgene/genomeseq/genomeseq_c.html'
 
-##
+# -------------------------------------------
 class GenomeSeq_UpdateView(Base_UpdateView):
     form_class=GenomeSeq_Form
     template_name='dgene/genomeseq/genomeseq_u.html'
     model=ID_Sequence
 
-##
+# API ###########
 class GenomeSeq_ListAPI(viewsets.ModelViewSet):
     queryset = Genome_Sequence.objects.all()
     serializer_class = GenomeSeq_Serializer
@@ -101,7 +102,7 @@ class IDSeq_ListView(LoginRequiredMixin, Filtered_ListView):
     filterset_class=IDSeq_Filter
     model_fields=model.LIST_VIEW_FIELDS
 
-##
+# API ###########
 class IDSeq_ListAPI(viewsets.ModelViewSet):
     queryset = ID_Sequence.objects.all()
     serializer_class = IDSeq_Serializer
@@ -130,10 +131,11 @@ class IDSeq_UpdateAPI(viewsets.ModelViewSet):
         qryDict = {
             'seq_id' : seq_id,
             'seq_filetype':seq_filetype,
-            'seq_file':seq_file
+            #'seq_file':seq_file
         }
+        #obj=ID_Sequence.get(seq_id,seq_filetype,seq_file)
         
-        obj=ID_Sequence.get(seq_id,seq_filetype,seq_file)
+        obj=ID_Sequence.get(seq_id,seq_filetype)
         if obj:
             serializer = self.serializer_class(obj,data=request.data, partial=True)
             if serializer.is_valid():
@@ -197,6 +199,7 @@ class WGS_CheckM_ListView(LoginRequiredMixin, Filtered_ListView):
     model_fields=model.LIST_VIEW_FIELDS
     #ordering = []
 
+# API ###########
 class WGS_CheckM_ListAPI(viewsets.ModelViewSet):
     queryset = WGS_CheckM.objects.all()
     serializer_class = WGS_CheckM_Serializer
@@ -209,7 +212,7 @@ class WGS_CheckM_UpdateAPI(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     
-    print(f" [WGS_CheckM_UpdateAPI]")
+    #print(f" [WGS_CheckM_UpdateAPI]")
     # def get_queryset(self):
     #     obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
     #     user = self.request.user
@@ -285,6 +288,60 @@ class Gene_UpdateView(Base_UpdateView):
     template_name='dgene/gene/gene_u.html'
     model=Gene
 
+# API ###########
+class Gene_ListAPI(viewsets.ModelViewSet):
+    queryset = Gene.objects.all()
+    serializer_class = Gene_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['gene_id','gene_code']
+
+class Gene_UpdateAPI(viewsets.ModelViewSet):
+    queryset = Gene.objects.all()
+    serializer_class = Gene_Serializer
+
+    permission_classes = [IsAuthenticated]
+    
+    def update(self, request, *args, **kwargs):
+        
+        gene_id = request.data.get('gene_id',None)
+        gene_code = request.data.get('gene_code',None)
+        #fasta_type = request.data.get('fasta_type',None)
+        
+        qryDict = {
+            'gene_id' : gene_id,
+            'gene_code':gene_code,
+        }
+        
+        # Check if Instance exists
+        obj=Gene.get(gene_id,gene_code)
+        if obj:
+            # Update Instance using request.data
+            serializer = self.serializer_class(obj,data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                print(f" [update] Gene_UpdateAPI {obj} <-  {serializer.is_valid()}")
+                updated_data = serializer.data
+                updated_data['custom_message'] = f"{str(obj)} updated successfully!"
+                return Response(updated_data, status=status.HTTP_200_OK)
+        else:
+            # Create copy of request.data (to make it mutable)
+            _data = request.data.copy()
+            
+            # Add gene_id and urlname
+            _data['gene_id'] = Gene.next_id()
+            _data['urlname'] = slugify(request.data['gene_code'],allow_unicode=False)
+             
+            serializer = self.get_serializer(data=_data)
+            if serializer.is_valid():
+                print(f" [create] Gene_UpdateAPI <- {_data['gene_code']} {serializer.is_valid()}")
+                self.perform_create(serializer)
+                updated_data = serializer.data
+                updated_data['custom_message'] = f"{str(obj)} created successfully!"
+                return Response(updated_data, status=status.HTTP_201_CREATED)
+            else:
+                print(serializer.errors)
+        Response(serializer.errors, status=400)
+        
 #=================================================================================================
 # AMR Genotype
 #=================================================================================================
@@ -295,4 +352,59 @@ class AMRGenotype_ListView(LoginRequiredMixin, Filtered_ListView):
     template_name = 'dgene/amrgenotype/amrgenotype_list.html' 
     filterset_class=AMRGenotype_Filter
     model_fields=model.LIST_VIEW_FIELDS
-    ordering = ['orgbatch_id']
+    ordering = ['seq_id__orgbatch_id__orgbatch_id']
+
+# API ###########
+class AMRGenotype_ListAPI(viewsets.ModelViewSet):
+    queryset = AMR_Genotype.objects.all()
+    serializer_class = AMRGenotype_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['seq_id','gene_id','amr_method']
+
+class AMRGenotype_UpdateAPI(viewsets.ModelViewSet):
+    queryset = Gene.objects.all()
+    serializer_class = AMRGenotype_Serializer
+
+    permission_classes = [IsAuthenticated]
+    
+    def update(self, request, *args, **kwargs):
+        
+        gene_id = request.data.get('gene_id',None)
+        seq_id = request.data.get('seq_id',None)
+        amr_method = request.data.get('amr_method',None)
+        
+        qryDict = {
+            'gene_id' : gene_id,
+            'seq_id':seq_id,
+            'amr_method':amr_method,
+        }
+        
+        # Check if Instance exists
+        obj=AMR_Genotype.get(gene_id, amr_method, SeqID=seq_id)
+        if obj:
+            # Update Instance using request.data
+            serializer = self.serializer_class(obj,data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                print(f" [update] AMRGenotype_UpdateAPI {obj} <- {serializer.is_valid()}")
+                updated_data = serializer.data
+                updated_data['custom_message'] = f"{str(obj)} updated successfully!"
+                return Response(updated_data, status=status.HTTP_200_OK)
+        else:
+            # # Create copy of request.data (to make it mutable)
+            # _data = request.data.copy()
+            
+            # # Add gene_id and urlname
+            # _data['gene_id'] = Gene.next_id()
+            # _data['urlname'] = slugify(request.data['gene_code'],allow_unicode=False)
+             
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                print(f" [create] AMRGenotype_UpdateAPI <- {serializer.is_valid()}")
+                self.perform_create(serializer)
+                updated_data = serializer.data
+                updated_data['custom_message'] = f"{str(obj)} created successfully!"
+                return Response(updated_data, status=status.HTTP_201_CREATED)
+            else:
+                print(serializer.errors)
+        Response(serializer.errors, status=400)

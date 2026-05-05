@@ -6,8 +6,8 @@ from dgene.views import  (GenomeSeq_ListView,GenomeSeq_CreateView,GenomeSeq_Upda
                      IDSeq_ListView, IDSeq_ListAPI, IDSeq_UpdateAPI,
                      WGS_FastQC_ListView, 
                      WGS_CheckM_ListView, WGS_CheckM_ListAPI, WGS_CheckM_UpdateAPI,
-                     Gene_ListView,Gene_CardView,detailGene,Gene_CreateView,Gene_UpdateView,
-                     AMRGenotype_ListView,
+                     Gene_ListView,Gene_CardView,detailGene,Gene_CreateView,Gene_UpdateView, Gene_ListAPI, Gene_UpdateAPI,
+                     AMRGenotype_ListView, AMRGenotype_ListAPI, AMRGenotype_UpdateAPI,
                      IDPub_ListView,IDPub_CreateView,IDPub_UpdateView,
                      )
                      
@@ -47,10 +47,14 @@ urlpatterns = [
     path('gene_list', Gene_ListView.as_view(), name="gene_list"),
     path('gene/<str:pk>', detailGene, name="gene_detail"),
     path('createGene/', Gene_CreateView.as_view(), name="gene_create"),
+    path('api/gene_list', Gene_ListAPI.as_view({'get': 'list'}), name="gene_api_list"),
+    path('api/gene_update', Gene_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="gene_api_detail"),
     #path('updateGene/<str:pk>', GeneUpdateView.as_view(), name="gene_update"),
 
     # AMR_Genotype
     path('amrgene_list', AMRGenotype_ListView.as_view(), name="amrgene_list"),
+    path('api/amrgene_list', AMRGenotype_ListAPI.as_view({'get': 'list'}), name="idseq_api_list"),
+    path('api/amrgene_update', AMRGenotype_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="idseq_api_detail"),
 
 
 ]
