@@ -298,6 +298,7 @@ def clean_GeneUpper(inStr):
                 lstOut.append(s.title())
         retStr = "; ".join(lstOut)
     return(retStr)
+
 # ----------------------------------------------------------------------------------------------------
 def imp_Gene_fromDict(iDict,valLog):
     """

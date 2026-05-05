@@ -391,13 +391,7 @@ class AMRGenotype_UpdateAPI(viewsets.ModelViewSet):
                 updated_data['custom_message'] = f"{str(obj)} updated successfully!"
                 return Response(updated_data, status=status.HTTP_200_OK)
         else:
-            # # Create copy of request.data (to make it mutable)
-            # _data = request.data.copy()
-            
-            # # Add gene_id and urlname
-            # _data['gene_id'] = Gene.next_id()
-            # _data['urlname'] = slugify(request.data['gene_code'],allow_unicode=False)
-             
+            # Create copy of request.data (to make it mutable)
             serializer = self.get_serializer(data=request.data)
             if serializer.is_valid():
                 print(f" [create] AMRGenotype_UpdateAPI <- {serializer.is_valid()}")
