@@ -15,6 +15,12 @@ from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse_lazy
 from django.utils.functional import SimpleLazyObject
 
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+
+
 from adjcoadd.constants import *
 from apputil.models import ApplicationLog
 from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_RemoveView, File_CreateView,
@@ -22,6 +28,7 @@ from applib.django.base.views import (Base_CreateView, Base_UpdateView,  Base_Re
 from apputil.forms import Document_Form
 
 from dorganism.models import  Taxonomy, Organism, Organism_Batch, OrgBatch_Stock, Organism_Culture, OrgBatch_Image
+from dorganism.serializer import Organism_Serializer, OrgBatch_Serializer
 from dorganism.forms import (Taxonomy_Filter, Taxonomy_Form,
                             Organism_Filter, CreateOrganism_form, UpdateOrganism_form, 
                             OrgBatch_Filter, OrgBatch_Form, OrgBatch_UpdateForm,  
@@ -272,6 +279,32 @@ def Organism_UpdateView(req, pk):
 class Organism_RemoveView(Base_RemoveView):
     model = Organism
     transaction_use = 'dorganism'
+
+
+# API ###########
+class Organism_ListAPI(viewsets.ModelViewSet):
+    queryset = Organism.objects.all()
+    serializer_class = Organism_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['organism_id','organism_name','pub_id','strain_ids','strain_code',]
+    
+class Organism_UpdateAPI(viewsets.ModelViewSet):
+    queryset = Organism.objects.all()
+    serializer_class = Organism
+
+    permission_classes = [IsAuthenticated]
+    
+    def update(self, request, *args, **kwargs):
+        obj= Organism.objects.get(organism_id=self.kwargs['pk'])
+        user = self.request.user
+        serializer = self.serializer_class(obj,data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            print(f" [update] Organism {obj} <- {request.data} {serializer.is_valid()}")
+            updated_data = serializer.data
+            updated_data['custom_message'] = f"{str(obj)} updated successfully!"
+            return Response(updated_data, status=status.HTTP_200_OK)
+        Response(serializer.errors, status=400)
 
 #=================================================================================================
 # OrgBatch  

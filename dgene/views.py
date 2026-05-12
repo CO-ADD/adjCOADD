@@ -73,12 +73,6 @@ class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     
-    # def get_queryset(self):
-    #     obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
-    #     user = self.request.user
-    #     print(f" [get_queryset] {obj}")
-    #     return super().get_queryset()
-
     def update(self, request, *args, **kwargs):
         obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
         user = self.request.user

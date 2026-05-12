@@ -8,7 +8,10 @@ class Organism_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Organism
         fields = ["organism_id", "organism_name", "pub_id",
-                  ]
+                    'strain_ids','strain_code','strain_panel','strain_type',
+                    'res_property','gen_property','sero_clone','strain_identification',
+                ]
+
 
 class OrgBatch_Serializer(serializers.ModelSerializer):
     organism_id = Organism_Serializer()
