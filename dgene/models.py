@@ -258,7 +258,7 @@ class ID_Sequence(AuditModel):
     seq_file = models.CharField(max_length=120, blank=True, verbose_name = "Seq File")
         
     kraken_organisms =ArrayField(models.CharField(max_length=200, null=True, blank=True), size=20, verbose_name = "Kraken2 Organisms", null=True, blank=True)
-    mlst_scheme = models.CharField(max_length=20, blank=True, verbose_name = "MLST Scheme")
+    mlst_scheme = models.CharField(max_length=50, blank=True, verbose_name = "MLST Scheme")
     mlst_seqtype = models.CharField(max_length=12, blank=True, verbose_name = "MLST SeqType")
     mlst_alleles = models.CharField(max_length=150, blank=True, verbose_name = "MLST Alleles")
     gtdbtk_class = models.CharField(max_length=120, blank=True, verbose_name = "MLST Scheme")
