@@ -290,7 +290,7 @@ class Organism_ListAPI(viewsets.ModelViewSet):
     
 class Organism_UpdateAPI(viewsets.ModelViewSet):
     queryset = Organism.objects.all()
-    serializer_class = Organism
+    serializer_class = Organism_Serializer
 
     permission_classes = [IsAuthenticated]
     
@@ -298,6 +298,7 @@ class Organism_UpdateAPI(viewsets.ModelViewSet):
         obj= Organism.objects.get(organism_id=self.kwargs['pk'])
         user = self.request.user
         serializer = self.serializer_class(obj,data=request.data, partial=True)
+        print(serializer)
         if serializer.is_valid():
             serializer.save()
             print(f" [update] Organism {obj} <- {request.data} {serializer.is_valid()}")
@@ -305,6 +306,8 @@ class Organism_UpdateAPI(viewsets.ModelViewSet):
             updated_data['custom_message'] = f"{str(obj)} updated successfully!"
             return Response(updated_data, status=status.HTTP_200_OK)
         Response(serializer.errors, status=400)
+
+
 
 #=================================================================================================
 # OrgBatch  
@@ -355,6 +358,34 @@ class OrgBatch_UpdateView(Htmx_UpdateView):
 class OrgBatch_RemoveView(Base_RemoveView):
     model = Organism_Batch
     transaction_use = 'dorganism'
+
+# API ###########
+class OrgBatch_ListAPI(viewsets.ModelViewSet):
+    queryset = Organism_Batch.objects.all()
+    serializer_class = OrgBatch_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['orgbatch_id', 'batch_quality', 'qc_status', 'stock_date']
+    
+class OrgBatch_UpdateAPI(viewsets.ModelViewSet):
+    queryset = Organism_Batch.objects.all()
+    serializer_class = OrgBatch_Serializer
+
+    permission_classes = [IsAuthenticated]
+    
+    def update(self, request, *args, **kwargs):
+        obj= Organism_Batch.objects.get(orgbatch_id=self.kwargs['pk'])
+        user = self.request.user
+        serializer = self.serializer_class(obj,data=request.data, partial=True)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            print(f" [update] Organism {obj} <- {request.data} {serializer.is_valid()}")
+            updated_data = serializer.data
+            updated_data['custom_message'] = f"{str(obj)} updated successfully!"
+            return Response(updated_data, status=status.HTTP_200_OK)
+        Response(serializer.errors, status=400)
+
+
 
 #=================================================================================================
 # OrgBatch Stock  

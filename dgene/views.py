@@ -28,7 +28,7 @@ from dgene.forms import (GenomeSeq_Filter, GenomeSeq_Form,
                          Gene_Filter, Gene_Form, 
                          AMRGenotype_Filter,  
                          )
-from dgene.serializer import GenomeSeq_Serializer, IDSeq_Serializer, WGS_CheckM_Serializer, Gene_Serializer, AMRGenotype_Serializer
+from dgene.serializer import GenomeSeq_Serializer, IDSeq_Serializer, WGS_CheckM_Serializer, Gene_Serializer, AMRGenotype_Serializer,AMR_Serializer
 
 
 
@@ -110,12 +110,6 @@ class IDSeq_UpdateAPI(viewsets.ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     
-    # def get_queryset(self):
-    #     obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
-    #     user = self.request.user
-    #     print(f" [get_queryset] {obj}")
-    #     return super().get_queryset()
-
     def update(self, request, *args, **kwargs):
         
         seq_id = request.data.get('seq_id',None)
@@ -396,3 +390,19 @@ class AMRGenotype_UpdateAPI(viewsets.ModelViewSet):
             else:
                 print(serializer.errors)
         Response(serializer.errors, status=400)
+
+# API ###########
+class AMR_ListAPI(viewsets.ModelViewSet):
+    #queryset = AMR_Genotype.objects.all()
+    serializer_class = AMR_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['seq_id','gene_id','amr_method']
+
+    # def get_queryset(self):
+    #         # Prefetch the child models attached to the parent and filter them
+    #         filtered_gene = Gene.objects.filter(is_active=True, status="published")
+            
+    #         # 'children' here is the related_name on the ParentModel
+    #         return ParentModel.objects.prefetch_related(
+    #             Prefetch('children', queryset=filtered_children)
+    #         )

@@ -2,10 +2,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
+from dorganism.serializer import OrgBatch_Serializer
 from dorganism.views import  (Taxonomy_ListView,Taxonomy_CardView,Taxonomy_DetailView,Taxonomy_CreateView, Taxonomy_UpdateView, Taxonomy_RemoveView, 
                      Organism_ListView,Organism_CardView,Organism_CreateView, Organism_DetailView, Organism_UpdateView, Organism_RemoveView,
                      Organism_ListAPI, Organism_UpdateAPI,
-                     OrgBatch_ListView, OrgBatch_CreateView, OrgBatch_RemoveView, OrgBatch_UpdateView, 
+                     OrgBatch_ListView, OrgBatch_CreateView, OrgBatch_RemoveView, OrgBatch_UpdateView,
+                     OrgBatch_ListAPI, OrgBatch_UpdateAPI, 
                      OrgBatchStock_ListView, OrgBatchStock_CreateView, OrgBatchStock_UpdateView, OrgBatchStock_DetailView, OrgBatchStock_RemoveView,
                      OrgCulture_UpdateView, OrgCulture_CreateView, OrgCulture_RemoveView,
                      OrgBatchImg_RemoveView,OrgBatchImg_CreateView,
@@ -29,15 +31,16 @@ urlpatterns = [
     path('createOrg/', Organism_CreateView, name="org_create"),
     path('updateOrg/<str:pk>', Organism_UpdateView, name="organism_update"),
     path('deleteOrg/<str:pk>', Organism_RemoveView.as_view(), name="organism_delete"),
-
     path('api/organism_list', Organism_ListAPI.as_view({'get': 'list'}), name="organism_api_list"),
-    path('api/organism_update', Organism_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="organism_api_update"),
+    path('api/organism_update/<str:pk>', Organism_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="organism_api_update"),
 
     # OrgBatch
     path('batchlist', OrgBatch_ListView.as_view(), name="org_batch_list"),
     path('createBatch/<str:organism_id>/', OrgBatch_CreateView, name="org_batch_create"),
     path('updateBat/<str:pk>', OrgBatch_UpdateView.as_view(), name="org_batch_update"),
     path('deleteBat/<str:pk>', OrgBatch_RemoveView.as_view(), name="org_batch_delete"),
+    path('api/orgbatch_list', OrgBatch_ListAPI.as_view({'get': 'list'}), name="orgbatch_api_list"),
+    path('api/orgbatch_update/<str:pk>', OrgBatch_UpdateAPI.as_view({"patch": "partial_update","post": "update"}), name="orgbatch_api_update"),
     
     # OrgBatch Images
     path('createbatchimg/<str:pk>', OrgBatchImg_CreateView.as_view(), name="batchimg_create"),

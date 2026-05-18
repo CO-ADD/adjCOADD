@@ -57,3 +57,11 @@ class AMRGenotype_Serializer(serializers.ModelSerializer):
         model = AMR_Genotype
         exclude = AMR_Genotype.AUDIT_FIELDS
 
+
+class AMR_Serializer(serializers.ModelSerializer):
+    gene_id = Gene_Serializer()
+    class Meta:
+        model = AMR_Genotype
+        fields = ["seq_id",'gene', 'amr_method','seq_method', 
+                  'ref_coverage','ref_identity','ref_id','ref_name' 
+        ]
