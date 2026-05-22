@@ -28,12 +28,13 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 # from adjcoadd.constants import *
 
 from dsample.models import Project, COADD_Compound, ABase_Compound_Batch
-from dsample.forms import Project_Filter, Project_CreateForm, Project_UpdateForm
+from dsample.forms import Project_Filter, Project_CreateForm, Project_CreateMinimalForm, Project_UpdateForm
 from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
 from applib.report.screen_data import Report_Screening
 from applib.project.stockprep_project import StockPrep_Project
+from dcollab.models import Collab_User, Collab_Group
 
 
 #=================================================================================================
@@ -65,16 +66,26 @@ def Project_CreateView(req):
     kwargs['user']=req.user
     message={'status':'new','text':''}
 
-    form=Project_CreateForm()
+    _empty_group = Collab_Group.get(Project.EMPTY_GROUP)
+    form=Project_CreateMinimalForm()
+    
     
     #print(f" [Project_CreateView] {req.method} {req.POST}")
     if req.method=='POST':
-        form=Project_CreateForm(req.POST) 
+        form=Project_CreateMinimalForm(req.POST) 
         if form.is_valid():
             #print(f" [Project_CreateView] Valid Form")
             try:
                 with transaction.atomic(using='dsample'):
+                    print(f" [Project_CreateView] Saving Project")   
+                    
                     instance=form.save(commit=False)
+                    
+                    instance.set_defaults_model()
+                    instance.group_id = _empty_group
+                    #instance.ora_project_id = None
+                    #instance.set_none_field('ora_project_id')
+                    
                     instance.save(**kwargs) 
                     _newid = str(instance.project_id)
                     print(f" [Project_CreateView] Saved:  [{_newid}]")            
@@ -93,6 +104,71 @@ def Project_CreateView(req):
             #return redirect(req.META['HTTP_REFERER'])          
 
     return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'project_create'}) 
+
+# -----------------------------------------------------------------
+@login_required
+def Project_CreateMinimalView(req):
+    '''
+    View to Create new Project  
+    '''  
+    
+    kwargs={}
+    kwargs['user']=req.user
+    message={'status':'new','text':''}
+
+    _empty_user = Collab_User.get(Project.EMPTY_USER)
+    _empty_group = Collab_Group.get(Project.EMPTY_GROUP)
+    
+    #form=Project_CreateMinimalForm(initial={'group_id':_empty_group, 'project_members':[_empty_user] })
+    #form=Project_CreateMinimalForm(initial={'group_id':_empty_group, })
+
+    form=Project_CreateMinimalForm()
+    if req.method=='POST':
+        form=Project_CreateMinimalForm(req.POST) 
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dsample'):
+
+                    print(f" [Project_CreateView] Saving Project")   
+                    instance=form.save(commit=False)
+                    
+                    print(f" [Project_CreateView] Set Defaults {instance.project_id} {instance.project_name} {instance.project_type} {instance.project_status} {instance.pub_status} {instance.provided_container}")  
+                    #print(instance.project_members.all())
+
+                    #instance.set_defaults_model()
+                    #instance.set_none_field('ora_project_id')
+                                
+                    #print(f" [Project_CreateView] Save Project {kwargs}")
+                    #valDict = instance.validate_model()
+                    #print(instance.project_members)
+                    #print(f" [Project_CreateView] Validation {valDict}")
+                    
+                    instance.save(verbose=1)
+                    print(f" [Project_CreateView] Saved")
+                    form.save_m2m() 
+
+                    print(f" [Project_CreateView] Init Group")
+                    #instance.init_group()
+
+                    print(f" [Project_CreateView] Wrapup")
+                    _newid = str(instance.project_id)
+                    message={'status':'saved','text':f'Project [{_newid}] Created'}
+                    print(f" [Project_CreateView] Saved:  [{_newid}]")
+                    return render(req, 'modal/createModel_partial_modal.html', {'message':message})
+                
+            except IntegrityError as err:
+                    messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+                    message={'status':'error','text':f'IntegrityError [{err}]'}
+                    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'project_create'})
+                    #return redirect(req.META['HTTP_REFERER'])                 
+    else:
+        messages.warning(req, form.errors)
+        message={'status':'new','text':'Input Error'}
+        return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'project_create'})
+        #return redirect(req.META['HTTP_REFERER'])          
+
+    return render(req, 'modal/createModel_partial_modal.html', {'form':form, 'message':message, 'create_url':'project_create'}) 
+
 
 # -----------------------------------------------------------------
 @login_required

@@ -93,7 +93,6 @@ class Project_CreateForm(forms.ModelForm):
             self.fields[field_name].widget.attrs['readonly'] = 'readonly'
             self.fields[field_name].widget = self.fields[field_name].hidden_widget()
 
-
         self.create_field_groups()
 
     class Meta:
@@ -105,6 +104,35 @@ class Project_CreateForm(forms.ModelForm):
             self.groups = []
             for grp in Project.VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
+
+# -----------------------------------------------------------------
+class Project_CreateMinimalForm(forms.ModelForm):
+
+    # PK to add help text
+    project_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next Pnnnnn number")
+    #project_name= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,initial="Project Name")
+    # DateFields
+    #pub_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
+    received = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
+
+    def __init__(self, *args, **kwargs): 
+        super(Project_CreateMinimalForm, self).__init__(*args, **kwargs)
+
+       # Set Dictionary values
+        self.fields['project_type'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['project_type'])]
+        self.fields['project_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['project_status'])]
+        self.fields['pub_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['pub_status'])]
+        self.fields['provided_container'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['provided_container'])]
+        #self.fields['stock_conc_unit'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['stock_conc_unit'])]
+
+    class Meta:
+        model=Project
+        fields=['project_id','project_name','project_comment','project_type','project_status', 'received',
+                'pub_status','provided_container',
+                #'group_id',
+                #'project_members',
+                ]
+    
 
 # -----------------------------------------------------------------
 class Project_UpdateForm(Project_CreateForm):     

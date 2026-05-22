@@ -69,6 +69,8 @@ class Project(AuditModel):
         ['report_status','report_comment','pub_status','pub_date','pub_name','source','source_code','reference']
     ]
 
+    EMPTY_GROUP = 'CGRP00000'
+    EMPTY_USER = 'CUSR00000'
     # Add Project Upload File Name
 
 # Waiting for Compounds
@@ -129,7 +131,8 @@ class Project(AuditModel):
         db_column="group_id", related_name="%(class)s_group_id")
     project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
                              verbose_name = "Project Contacts", null=True, blank=True)
-    project_members = models.ManyToManyField(Collab_User, through='Project_Membership',through_fields=('project_id', 'user_id'))
+    project_members = models.ManyToManyField(Collab_User, through='Project_Membership',through_fields=('project_id', 'user_id'),
+                                             blank=True, null=True, related_name="project_members")
     
     #owner_users = models.ManyToManyField(Collab_User)
          
@@ -148,7 +151,7 @@ class Project(AuditModel):
     # -- Oracle-CastDB data ------------------------------------------------------------
     ORACLE_FIELDS = ['ora_project_id','ora_group_id','ora_contact_ids','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date']
 
-    ora_project_id = models.CharField(max_length=15, null=True, blank=True, unique=True, verbose_name = "Old Project ID")
+    ora_project_id = models.CharField(max_length=15, null=True, blank=True, verbose_name = "Old Project ID")
     ora_group_id = models.CharField(max_length=10, blank=True, verbose_name = "Old GroupID")
     ora_contact_ids = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=2, 
                                  verbose_name = "Old ContactsUser", null=True, blank=True)
@@ -254,14 +257,33 @@ class Project(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
+        #print(f" [Project Save] ")
+        
         if not self.project_id:
+            #print(f" [Project Save] Next ID")
             self.project_id = self.next_id()
-            
+        
         #if not self.group_id:
         #    self.group_id = Collab_Group.get('CGRP00000')
             
-        if self.project_id: 
+        print(f" [Project Save] {self.project_id} ")
+        if self.project_id is not None:
+            # if self.project_members.count() == 0:
+            #     _empty_user = Collab_User.get(self.EMPTY_USER)
+            #     print(f" [Project Save] {self.project_id} No Members, Adding Empty User {_empty_user}")
+            #      island = Island.objects.create(name=form.instance.name + ' Default Island')
+            #     #self.project_members.add(_empty_user,through_defaults={'role': 'VC', 'status': 'V'})
+            #     print(f" [Project Save] {self.project_id} Added Empty User {_empty_user} to Members")
+            # print(f" [Project Save] {self.project_id} Saving") 
             super(Project, self).save(*args, **kwargs)
+            print(f" [Project Save] {self.project_id} Saved")
+        # else:         
+        #     print(f" [Project Save] {self.project_id} Not Saved")
+
+    #------------------------------------------------
+    def init_group(self):
+        if self.group_id is None:
+            self.group_id = Collab_Group.get(self.EMPTY_GROUP)
 
 #=================================================================================================
 class Project_Membership(models.Model):
@@ -271,12 +293,14 @@ class Project_Membership(models.Model):
     MEMBERSHIP_CHOICES = [ 
     #        ("LI","Lead Investigator"),
             ("PC","Primary Contact"),
-            ("AC","Alternative Contact")
+            ("AC","Alternative Contact"),
+            ("VC","Virtual Contact")
         ]
 
     MEMBERSTATUS_CHOICES = [ 
             ("C","Current"),
             ("P","Past"),
+            ("V","Virtual"),
        ]
 
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_memberships")

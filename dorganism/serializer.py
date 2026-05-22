@@ -4,7 +4,6 @@ from rest_framework import serializers
 from dorganism.models import Organism, Organism_Batch
 
 class Organism_Serializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Organism
         fields = ["organism_id", "organism_name", "pub_id",

@@ -274,7 +274,7 @@ class AuditModel(models.Model):
 
         _defValue = None
         _fieldType = _field.get_internal_type()
-        
+        #print(f" [set_default_field] {self._meta.model_name} - {Field} ({_fieldType}) Current:{getattr(self,_field.name)} ")
         if _fieldType in _Defaults:
             if hasattr(self,_field.name):
                 if getattr(self,_field.name) is None or Reset:
@@ -348,7 +348,7 @@ class AuditModel(models.Model):
     #
         clFields = {}
         for field in self._meta.get_fields(include_parents=False):
-            if field.name not in ignore_fields:
+            if field.name not in ignore_fields and field.name not in self.AUDIT_FIELDS:
                 # Set Defaults for IntegerFields, DecimalFields and CharFields
                 _defval = self.set_default_field(field, Reset=Reset,
                                         default_Char=default_Char, default_Integer=default_Integer, default_Decimal=default_Decimal)
@@ -359,7 +359,7 @@ class AuditModel(models.Model):
                     if _decprc:
                         clFields[field.name]= f"Decimal {_decprc}"
                 clFields[field.name]=_defval
-
+        #print(f" [set_defaults_models] END {clFields}")
         return(clFields)
 
     #------------------------------------------------
@@ -472,11 +472,11 @@ class AuditModel(models.Model):
         kwargs.pop("clean",None)
         if modelClean:
             self.full_clean()
-
+            
         verbose = kwargs.get("verbose",0)
         kwargs.pop("verbose",None)
         if verbose > 0:
-            logger.info(f"[Saving] {self}")
+            logger.info(f"[Saving] {self} {self.created_at} {self.acreated_id} {self.updated_at} {self.aupdated_id} ")
 
         super(AuditModel,self).save(*args, **kwargs)
 

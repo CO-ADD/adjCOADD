@@ -21,7 +21,6 @@ from applib.logging.validation_log import Validation_Log
 
 
 
-
 # =================================================================
 # Progress Utilities
 # -----------------------------------------------------------------
@@ -34,12 +33,11 @@ def Update_Progress(request,):
     return render(request, 'modal/progress_partial_modal.html', {'current': current_progress, 'total':total_progress})
 
 
-
 # --------------------------------------------------------------------------------------------------
 class Process_View(WriteUserRequiredMixin,SessionWizardView):
 # --------------------------------------------------------------------------------------------------
 
-    process_name = 'File Upload'
+    process_name = 'Process_View'
     
     name_step1="Upload" # step label in template
     # define more steps name
@@ -64,7 +62,6 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
 
     # ----------------------------------------------------
     def __init__(self, *args, **kwargs):
-        print(f" [Process_View.__init__] ")
         super().__init__(*args, **kwargs)
         self.file_list={}
         self.file_dir=None
@@ -78,23 +75,23 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     def get_object(self):
         self.pk = self.kwargs.get('pk')
 
-        print(f" [get_object] {self.pk}")
+        #print(f" [get_object] {self.pk}")
         self.object = get_object_or_404(self.model, pk=self.pk)
 
     # ----------------------------------------------------
     def file_process_handler(self, request, *args, **kwargs):
-        print(f" [file_process_handler] not implemented")
+        print(f" [{self.process_name}] not implemented")
         
     # ----------------------------------------------------
     def file_process_finalizer(self, request, *args, **kwargs):
-        print(f" [file_process_finalizer] not implemented")
+        print(f" [{self.process_name}] not implemented")
 
     # ----------------------------------------------------
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
 
-        print(f" [process_step] Step: {current_step} Request: {request} ")
+        print(f" [{self.process_name}] process_step: {current_step} Request: {request} ")
         
         # First Step - Select File(s) -> self.filelist[{file_field as per select form}]
         if current_step == 'select_file':
@@ -112,7 +109,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                 self.pk = None
                 
             if form.is_valid():
-                print(f" [Process_View.process_step] Valid Form {self.pk}")
+                print(f" [{self.process_name}] process_step: Valid Form {self.pk}")
                 
                 # Get list of files for each select_file-{file-field}
                 for _key in request.FILES:
@@ -136,7 +133,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                         filename = fs.save(f.name, f)
                         self.file_list[_field].append(filename)
 
-                print(f" [process_step] file_list {self.file_list}")
+                print(f" [{self.process_name}] process_step: file_list {self.file_list}")
                 # Parse and Validation
                 self.valLog=self.file_process_handler(request, 
                                                       self.file_dir, self.file_list, 
@@ -167,22 +164,15 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                 self.storage.extra_data['file_dir'] = self.file_dir
             else:
                 self.storage.extra_data['validation_result']="No files selected"
-                #print(" [Process_View.process_step] Not Valid")
+                #print(f" [{self.process_name}] process_step: No files selected")
                 return render(request, self.template_name, context)
 
         elif current_step == 'upload': # recheck and save to DB
-            #print(f" [Process_View.process_step] Request.Post: {request.POST}")
-            #print(f" [Process_View.process_step] Request.Post: {request.POST}")
             if form.is_valid():
-                #print(f" [Process_View.process_step] Form CleanedData: {form.cleaned_data}")
-
                 self.file_dir=self.storage.extra_data['file_dir'] #get file path
                 self.file_list=self.storage.extra_data['file_list'] #get files' name  
                 self.pk = self.storage.extra_data['object_pk']
                 
-                #print(f" [Process_View.process_step] {current_step} PK: {self.pk}")
-                #print(f" [Process_View.process_step] {current_step} Form: {form}")
-
                 self.valLog=self.file_process_handler(request, 
                                                     self.file_dir, self.file_list, 
                                                     form_data=form.cleaned_data, 
