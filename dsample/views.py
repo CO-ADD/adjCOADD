@@ -83,8 +83,6 @@ def Project_CreateView(req):
                     
                     instance.set_defaults_model()
                     instance.group_id = _empty_group
-                    #instance.ora_project_id = None
-                    #instance.set_none_field('ora_project_id')
                     
                     instance.save(**kwargs) 
                     _newid = str(instance.project_id)
