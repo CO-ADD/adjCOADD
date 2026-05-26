@@ -54,16 +54,22 @@ def Load_Project_Process(Request, DirName, FileList, ProjectID=None,
                 djPrj = Project()
                 valLog.add_warning(f"New Project",f"{ProjectID}")
 
+            if _dictSheets['Contacts'] is not None:
+                _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
+                djPrj.project_name = _PrjTitle
+                
+            if _dictSheets['Samples'] is not None:
+                _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
+                
             # - Contacts and Project ----------------------------------------------
             if UploadContent['Contacts'] and _dictSheets['Contacts'] is not None:
-                _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
-
+                #_Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
                 djPrj.project_name = _PrjTitle
                 Upload_Project_Collab(djPrj, _Contacts, upload=upload, overwrite=overwrite, valLog=valLog)
 
             #- Samples ----------------------------------------------
             if UploadContent['Samples'] and _dictSheets['Samples'] is not None:
-                _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
+                #_Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
                 for _smp in _Samples:
                     _smp['project_id'] = str(djPrj)
                     Upload_COADD_Compound(_smp, upload=upload, overwrite=overwrite, valLog=valLog)

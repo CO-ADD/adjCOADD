@@ -220,6 +220,8 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         self.pk = self.kwargs.get('pk',None)
         if self.pk:
             self.storage.extra_data['object_pk'] = self.pk
+        # else:
+        #     self.storage.extra_data['object_pk'] = None
         
         #print(f" [Process_View.get_context_data] PK: {self.pk} ")
         # save information to context,

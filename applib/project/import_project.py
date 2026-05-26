@@ -36,6 +36,7 @@ def get_CompoundSubmisssion_xlsx(xlsFile, FillNA='-', **kwargs):
         for key in SHEET_NAMES:
             if SHEET_NAMES[key] in xlsheets:
                 _Sheets[key] = xls.parse(SHEET_NAMES[key], header = None) 
+                valLog.add_info(f'{key}',f"[{SHEET_NAMES[key]}]",f"")
             else:
                 if valLog:
                     valLog.add_error(f'Missing Sheet for {key}',f"XLSX {os.path.basename(xlsFile)}",f"Correct XLSX Sheets [{SHEET_NAMES[key]}]")
@@ -190,26 +191,83 @@ def parse_ContactInfo_Sheet(xSheet, *args, **kwargs):
             #print(f" {CONTACT_FIELDS[i]} {xSheet[(c*3)+CONTACT_COL-1][i+CONTACT_ROW-1]}")
             _Contact[CONTACT_FIELDS[i]] = xSheet[(c*3)+CONTACT_COL-1][i+CONTACT_ROW-1]
         
-        # Check Email
-        if pd.isna(_Contact['email']):
-            if not (pd.isna(_Contact['first_name']) and pd.isna(_Contact['last_name'])):
-                valLog.add_warning("Has no EMail",_Contact['email'],f" Email of [{_Contact['type']}] missing","Correct Contact Sheet") 
-        else:
-            try:
-                validate_email(_Contact['email'])
-            except ValidationError as e:
-                if valLog:
-                    valLog.add_error("Not EMail",_Contact['email'],f" Email of [{_Contact['type']}] not valid","Correct Contact Sheet")   
+        djUsr = parse_CollabUser(_Contact, valLog=valLog)
+        djOrg = parse_Organisation(_Contact, valLog=valLog)
 
+        if CONTACT_TYPES[c] == 'LI':
+            if djUsr is not None and djOrg is not None:
+                djGrp = Collab_Group.get_byLI(djUsr, djOrg)
+
+                if djGrp:
+                    valLog.add_info("Existing Group",f"{djGrp}",f"[{_Contact['type']}] ")
+                else:
+                    valLog.add_warning("New Group",f"{djUsr} at {djOrg}",f"[{_Contact['type']}] ","")
+            else:
+                valLog.add_warning("New Group",f"{_Contact['first_name']} {_Contact['last_name']} at {_Contact['organisation']}",f"[{_Contact['type']}] ",f"")
+                
+        if djUsr is not None:                                
             _Contacts[CONTACT_TYPES[c]] = _Contact
-        
+                
     valLog.add_info("Collaborator Info",f" {len(_Contacts)} Contacts {list(_Contacts.keys())}")
     if _PrjTitle:
         valLog.add_info("Project Title",f" {_PrjTitle}")
         
     return(_Contacts,_PrjTitle)
 
+#-----------------------------------------------------------------------------
+def parse_CollabUser(UserDict, upload=False, overwrite=False, **kwargs):
+# --------------------------------------------------------------------------------
 
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+    retUsr = None 
+    
+    # Check Email
+    if pd.isna(UserDict['email']):
+        if not (pd.isna(UserDict['first_name']) and pd.isna(UserDict['last_name'])):
+            retUsr = Collab_User.get(None,None,UserDict['first_name'],UserDict['last_name'])
+            if retUsr is not None:
+                valLog.add_warning("Existing Collaborator",f"{retUsr}",f"Using recorded email [{retUsr.email}]")  
+            else:
+                valLog.add_error("EMail Missing",f"New Collaborator: {UserDict['first_name']} {UserDict['last_name']}",f" Email required for new Collaborators","Correct Contact Sheet") 
+    else:
+        # Check User
+        try:
+            validate_email(UserDict['email'])
+            retUsr = Collab_User.get(None,UserDict['email'])
+            if retUsr is not None:
+                valLog.add_info("Existing Collaborator",f"{retUsr}",f" [{UserDict['type']}]")  
+            else:
+                valLog.add_warning("New Collaborator",f"{UserDict['email']}",f"[{UserDict['type']}] ",f"")
+                retUsr = Collab_User()
+                retUsr.email = UserDict['email']
+                
+        except ValidationError as e:
+            if valLog:
+                valLog.add_error("Invalid EMail",UserDict['email'],f" Collaborator: {UserDict['first_name']} {UserDict['last_name']}","Correct Contact Sheet")   
+
+    return retUsr
+
+#-----------------------------------------------------------------------------
+def parse_Organisation(OrgDict, upload=False, overwrite=False, **kwargs):
+# --------------------------------------------------------------------------------
+
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+    retOrg = None
+    
+    # Check Organisation
+    if pd.isna(OrgDict['organisation']):
+        if not (pd.isna(OrgDict['first_name']) and pd.isna(OrgDict['last_name'])):
+            valLog.add_warning("Has no Organisation",OrgDict['organisation'],f" Organisation of [{OrgDict['type']}] missing","Correct Contact Sheet")
+    else:
+        retOrg = Organisation.get_bysimilarity(OrgDict['organisation'])
+        if retOrg is None:
+            valLog.add_warning("New Organisation",OrgDict['organisation'],f" [{OrgDict['type']}]","")
+        else:
+            valLog.add_info("Existing Organisation",f"{retOrg}",f"[{OrgDict['type']}] ")
+            
+    return retOrg
 #-----------------------------------------------------------------------------
 def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False, **kwargs):
 # --------------------------------------------------------------------------------
@@ -217,6 +275,9 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
     valLog = kwargs.get('valLog',None)
     verbose = kwargs.get('verbose',0)
     
+    if upload:
+        djProject.save()
+        
     for key in CollabDict:
         
         # -- Organisation -----------------------------
