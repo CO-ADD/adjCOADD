@@ -148,8 +148,8 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
     
     print(f"[ABaseRegDict] {regDF.columns.tolist()} ")
         
-    #for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc='AbaseRegView Upload'):
-    for idx,row in regDF.iterrows():
+    for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc='Abase Batches Upload'):
+    #for idx,row in regDF.iterrows():
         #print(row)
         OutNumbers['Processed'] += 1
         NewEntry = False
@@ -254,7 +254,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
                 djABaseCmpBatch.init_amount_unit = djUnit
             else:
                 djABaseCmpBatch.init_amount_unit = None
-                logger.error(f" [Unit] {row['init_value_unit']} not found ")
+                #logger.error(f" [Unit] {row['init_value_unit']} not found ")
 
             if row['lab_notebook_number'] is not None:
                 _lab = str(row['lab_notebook_number']).split(chr(160))
