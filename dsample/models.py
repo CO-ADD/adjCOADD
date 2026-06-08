@@ -83,7 +83,7 @@ class Project(AuditModel):
 # Reports completed
 # Continous Screening
 
-    project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
+    project_id = models.CharField(max_length=25,primary_key=True, verbose_name = "Project ID")
     project_name = models.CharField(max_length=150, blank=True, verbose_name = "Project Name")
     project_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Project Type", on_delete=models.DO_NOTHING,
         db_column="project_type", related_name="%(class)s_project_type")
