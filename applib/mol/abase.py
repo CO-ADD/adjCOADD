@@ -292,7 +292,13 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             djABaseCmpBatch.date_recieved = row['date_received']
         
         #print(f" {row['init_value']} {row['init_value_unit']} ")
-        djABaseCmpBatch.init_amount = row['init_value']
+        
+        
+        if pd.isna(row['init_value']) :
+            djABaseCmpBatch.init_amount = Decimal('0')
+        else:  
+            djABaseCmpBatch.init_amount = row['init_value']
+            
         djUnit = Dictionary.get(djABaseCmpBatch.DICTIONARY_FIELDS['init_amount_unit'],row['init_value_unit'])
         if djUnit:   
             djABaseCmpBatch.init_amount_unit = djUnit
