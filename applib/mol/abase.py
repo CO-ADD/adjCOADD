@@ -13,11 +13,20 @@ logger = logging.getLogger(__name__)
 
 #-----------------------------------------------------------------------------
 from rdkit import Chem
-from oraABase.oraABase import openABase, get_CompoundBatch
+from rdkit.Chem import Descriptors, rdMolDescriptors
 #-----------------------------------------------------------------------------
 
 from apputil.models import Dictionary, ApplicationUser
+from applib.external.sql_oracle import Oracle
 from dsample.models import Compound_Batch, ABase_Compound_Batch, ABase_Compound
+
+
+#-----------------------------------------------------------------------------
+def openABase():
+    db = Oracle()
+    db.open("ABase","ABASE","imb-coadd-db.imb.uq.edu.au","1521","coadb")
+    return(db)
+#-----------------------------------------------------------------------------
 
 
 #-----------------------------------------------------------------------------
@@ -98,7 +107,7 @@ def get_ABase_RegView(test=0):
     return(_DF)
 
 #-----------------------------------------------------------------------------
-def get_ABaseChem_Structure(CompoundID=None):
+def get_ABaseChem_Structure(CompoundID=None, RDKit=False):
 #-----------------------------------------------------------------------------
     strSQL = "Select ObjdID, ObjsMolFormula, ObjsMolMassValue, ObjsMolFile  from ChemStruct "
     
@@ -113,6 +122,20 @@ def get_ABaseChem_Structure(CompoundID=None):
         for i in range(len(_structList)):
             _molfile = _structList[i]['objsmolfile'].read()
             _structList[i]['molfile'] = _molfile
+            
+            if RDKit:
+                try:
+                    aMol = Chem.MolFromMolBlock(_molfile)
+                    Chem.Kekulize(aMol)
+                except:
+                    aMol = None
+                if aMol is not None:
+                    #print(ObjdID," - ",aMol.GetNumAtoms())
+                    _structList[i]['rdkit_smiles'] = Chem.MolToSmiles(aMol)
+                    _structList[i]['rdlit_mf'] = rdMolDescriptors.CalcMolFormula(aMol)
+                    _structList[i]['rdkit_mass'] = Descriptors.ExactMolWt(aMol)
+                    _structList[i]['rdkit_mw'] = Descriptors.MolWt(aMol)
+                
 
     ABaseDB.close()
     return(_structList)
@@ -204,13 +227,6 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
                     OutNumbers['Upload Entries'] += 1
                     djCmpBatch.save()
 
-# ['objdno', 'objdid', 'objdbatchref', 'objdname', 'study_id', 'analysis', 'compoisition', 
-# 'drug_name', 'library_id', 'salt_id', 'salt_equiv', 'solvate_id', 'solvate_equiv', 
-# 'full_mf', 'full_mw', 'mf', 'mw', 'molfile', 'originator', 'lab_notebook_number', 
-# 'supplier', 'supplier_catno', 'supplier_batch', 'date_received', 'objdtype', 'registered_date', 
-# 'init_value', 'init_value_unit'
-# ]
-
        # ABase Compound ----------------------------------------------------------------
         djABaseCmpBatch = ABase_Compound_Batch.get(djBatch_id)
         if djABaseCmpBatch  is None:
@@ -269,131 +285,259 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 
     print(f"[ABaseRegDict] {OutNumbers}")
     
+#-----------------------------------------------------------------------------
+def get_ABase_Tests(db):
+#-----------------------------------------------------------------------------
+    selSQL = """
+        SELECT * 
+        FROM ABASE.Test
+        """
 
 #-----------------------------------------------------------------------------
-def upload_ABase_RegView(regDF,upload=False,overwrite=False):
+def get_ABase_TestOccation(db,TOC):
 #-----------------------------------------------------------------------------
+    selSQL = """
+        SELECT 
+            A.TTORDirNo,
+            A.TTORObjSeqNo,
+            A.TTORSeqNo,
+            A.TTORDirNo_Parent,
+            A.TTORObjSeqNo_Parent,
+            A.TTORSeqNo_Parent,
+            A.StdyId,
+            A.ProtId,
+            A.ProtVersionNo,
+            A.TOccId,
+            A.TRTsId,
+            A.DictId_Rslt,
+            A.DictId_RsltUnit,
+            A.TTORStatus,
+            A.TTORRsltAlpha,
+            B.DictId_Cond,
+            B.CondQualifierAlpha,
+            B.CondQualifierValue,
+            B.DictNumDecPlaces,
+            B.DictId_CondUnit,
+            A.ObjDId,
+            A.ObjDBatchRef,
+            D.RgstFullMolMassValue,
+            A.OLPtId,
+            A.OLPtPlateInd,
+            A.TTORWellReference,
+            A.CHILD_DictId_Rslt,
+            A.CHILD_DictId_RsltUnit,
+            A.CHILD_TTORStatus,
+            A.CHILD_TTORRsltAlpha,
+            C.DictId_Cond,
+            C.CondQualifierAlpha,
+            C.CondQualifierValue,
+            C.DictNumDecPlaces,
+            C.DictId_CondUnit,
+            A.CHILD_TTORSeqNo,
+            A.CHILD_PrPmValSeqNo_Rslt
+        FROM 
+            ABASE.TOTSODRS_CHILD_VIEW@AbCooper A,
+            ABASE.RSLTCONDVAL_VIEW@AbCooper B,
+            ABASE.RSLTCONDVAL_VIEW@AbCooper C,
+            ABASE.OBJDRGST@AbCooper D
+        WHERE
+            (A.TOccId=?) AND
+            (A.CondGroupNo_Rslt=B.CondGroupNo_Rslt(+) AND A.PrPmNo_Rslt=B.PrPmNo_Rslt(+)) AND
+            (A.CHILD_CondGroupNo_Rslt=C.CondGroupNo_Rslt(+) AND A.CHILD_PrPmNo_Rslt=C.PrPmNo_Rslt(+)) AND
+            (A.ObjDId = D.ObjDId(+) AND A.ObjDBatchRef = D.ObjDBatchRef(+))
+        """
+    selSQL += f" AND (A.TOccId={TOC})"
+    # unqTestID := TTORDIRNO . "-" . TTOROBJSEQNO;
+    # unqCOND := DICTID_COND . "=" . CONDQUALIFIERALPHA . '=' . DICTID_CONDUNIT;
+    # 
+    # unqResult[#i] := DICTID_RSLT[#i] . "=" . TTORRSLTALPHA[#i] . "=" . DICTID_RSLTUNIT[#i];
+    # unqResult[#nVal+#i] := CHILD_DICTID_RSLT[#i] . "=" . CHILD_TTORRSLTALPHA[#i] . "=" . CHILD_DICTID_RSLTUNIT[#i];
+    # remove('TTORRSLTALPHA');
+    # remove('DICTID_RSLT');
+    # remove('DICTID_RSLTUNIT');
+    # remove('CHILD_TTORRSLTALPHA');
+    # remove('CHILD_DICTID_RSLT');
+    # remove('CHILD_DICTID_RSLTUNIT');
 
-    OutNumbers = {'Processed':0,'New CmpBatch':0,'New ABase':0,'New ABase Batch':0,'Uploaded Entries':0}
+
+#-----------------------------------------------------------------------------
+def get_ABase_TestRequest(db,TRS):
+#-----------------------------------------------------------------------------
+    selSQL = """
+        SELECT 
+            A.TTORDirNo,
+            A.TTORObjSeqNo,
+            A.TTORSeqNo,
+            A.TTORDirNo_Parent,
+            A.TTORObjSeqNo_Parent,
+            A.TTORSeqNo_Parent,
+            A.StdyId,
+            A.ProtId,
+            A.ProtVersionNo,
+            A.TOccId,
+            A.TRTsId,
+            A.DictId_Rslt,
+            A.DictId_RsltUnit,
+            A.TTORStatus,
+            A.TTORRsltAlpha,
+            B.DictId_Cond,
+            B.CondQualifierAlpha,
+            B.CondQualifierValue,
+            B.DictNumDecPlaces,
+            B.DictId_CondUnit,
+            A.ObjDId,
+            A.ObjDBatchRef,
+            D.RgstFullMolMassValue,
+            A.OLPtId,
+            A.OLPtPlateInd,
+            A.TTORWellReference,
+            A.CHILD_DictId_Rslt,
+            A.CHILD_DictId_RsltUnit,
+            A.CHILD_TTORStatus,
+            A.CHILD_TTORRsltAlpha,
+            C.DictId_Cond,
+            C.CondQualifierAlpha,
+            C.CondQualifierValue,
+            C.DictNumDecPlaces,
+            C.DictId_CondUnit,
+            A.CHILD_TTORSeqNo,
+            A.CHILD_PrPmValSeqNo_Rslt
+        FROM 
+            ABASE.TOTSODRS_CHILD_VIEW@AbCooper A,
+            ABASE.RSLTCONDVAL_VIEW@AbCooper B,
+            ABASE.RSLTCONDVAL_VIEW@AbCooper C,
+            ABASE.OBJDRGST@AbCooper D
+        WHERE
+            (A.CondGroupNo_Rslt=B.CondGroupNo_Rslt(+) AND A.PrPmNo_Rslt=B.PrPmNo_Rslt(+)) AND
+            (A.CHILD_CondGroupNo_Rslt=C.CondGroupNo_Rslt(+) AND A.CHILD_PrPmNo_Rslt=C.PrPmNo_Rslt(+)) AND
+            (A.ObjDId = D.ObjDId(+) AND A.ObjDBatchRef = D.ObjDBatchRef(+))
+        """
+    selSQL += f" AND (A.TRTsId={TRS})"
     
-    print(f"[ABaseRegDict] {regDF.columns.tolist()} ")
+# #-----------------------------------------------------------------------------
+# def upload_ABase_RegView(regDF,upload=False,overwrite=False):
+# #-----------------------------------------------------------------------------
+
+#     OutNumbers = {'Processed':0,'New CmpBatch':0,'New ABase':0,'New ABase Batch':0,'Uploaded Entries':0}
+    
+#     print(f"[ABaseRegDict] {regDF.columns.tolist()} ")
         
-    for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc='AbaseRegView Upload'):
-    #for idx,row in regDF.iterrows():
-        #print(row)
-        OutNumbers['Processed'] += 1
-        NewEntry = False
-        validStatus = True
-        oraBatch_id = f"{row['objdid']}:{row['objdbatchref']}"
+#     for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc='AbaseRegView Upload'):
+#     #for idx,row in regDF.iterrows():
+#         #print(row)
+#         OutNumbers['Processed'] += 1
+#         NewEntry = False
+#         validStatus = True
+#         oraBatch_id = f"{row['objdid']}:{row['objdbatchref']}"
         
-        # ------------------------------------------------------
-        djCompound_id = f"{row['objdid']}"
-        djBatch_id = f"{row['objdid']}_{row['objdbatchref']}"
+#         # ------------------------------------------------------
+#         djCompound_id = f"{row['objdid']}"
+#         djBatch_id = f"{row['objdid']}_{row['objdbatchref']}"
 
 
-        # ABase Compound ----------------------------------------------------------------
-        djABaseCmp = ABase_Compound.get(djCompound_id)
-        if djABaseCmp  is None:
-            NewEntry = True
-            djABaseCmp = ABase_Compound()
-            djABaseCmp.compound_id = djCompound_id
-            _structList = get_AbaseChem_Structure(CompoundID=djCompound_id)
-            if _structList and len(_structList)>0: 
-                _struct = _structList[0]
-                djABaseCmp.reg_mf = _struct['objsmolformula']
-                djABaseCmp.reg_mw = _struct['objsmolmassvalue']
-                djABaseCmp.reg_molfile = _struct['molfile']            
-            OutNumbers['New ABase'] += 1
+#         # ABase Compound ----------------------------------------------------------------
+#         djABaseCmp = ABase_Compound.get(djCompound_id)
+#         if djABaseCmp  is None:
+#             NewEntry = True
+#             djABaseCmp = ABase_Compound()
+#             djABaseCmp.compound_id = djCompound_id
+#             _structList = get_ABaseChem_Structure(CompoundID=djCompound_id)
+#             if _structList and len(_structList)>0: 
+#                 _struct = _structList[0]
+#                 djABaseCmp.reg_mf = _struct['objsmolformula']
+#                 djABaseCmp.reg_mw = _struct['objsmolmassvalue']
+#                 djABaseCmp.reg_molfile = _struct['molfile']            
+#             OutNumbers['New ABase'] += 1
         
 
-        # Cmpound Batch ----------------------------------------------------------------
-        djCmpBatch = Compound_Batch.get(djBatch_id)
-        if djCmpBatch  is None:
-            NewEntry = True
-            djCmpBatch = Compound_Batch()
-            djCmpBatch.cmpbatch_id = djBatch_id
-            djCmpBatch.batch_id = row['objdbatchref']
-            OutNumbers['New CmpBatch'] += 1
+#         # Cmpound Batch ----------------------------------------------------------------
+#         djCmpBatch = Compound_Batch.get(djBatch_id)
+#         if djCmpBatch  is None:
+#             NewEntry = True
+#             djCmpBatch = Compound_Batch()
+#             djCmpBatch.cmpbatch_id = djBatch_id
+#             djCmpBatch.batch_id = row['objdbatchref']
+#             OutNumbers['New CmpBatch'] += 1
 
-        djCmpBatch.full_mf = row['rgstfullmolformula']
-        djCmpBatch.full_mw = row['rgstfullmolmassvalue']
-        djCmpBatch.batch_source = 'ABASE'
-        djCmpBatch.batch_code = f"{row['objdid']}:{row['objdbatchref']}"
-        if 'rgstdrugname' in row:
-            djCmpBatch.batch_notes = row['rgstdrugname']
+#         djCmpBatch.full_mf = row['rgstfullmolformula']
+#         djCmpBatch.full_mw = row['rgstfullmolmassvalue']
+#         djCmpBatch.batch_source = 'ABASE'
+#         djCmpBatch.batch_code = f"{row['objdid']}:{row['objdbatchref']}"
+#         if 'rgstdrugname' in row:
+#             djCmpBatch.batch_notes = row['rgstdrugname']
 
-        djCmpBatch.set_defaults_model()
-        validDict = djCmpBatch.validate_fields()
-        if validDict:
-            validStatus = False
-            for k in validDict:
-                logger.warning('Warning',k,validDict[k],'-')
-            #OutDict.append(row)
-        #print(f" {validStatus} {prgArgs.upload}")
+#         djCmpBatch.set_defaults_model()
+#         validDict = djCmpBatch.validate_fields()
+#         if validDict:
+#             validStatus = False
+#             for k in validDict:
+#                 logger.warning('Warning',k,validDict[k],'-')
+#             #OutDict.append(row)
+#         #print(f" {validStatus} {prgArgs.upload}")
         
-        if validStatus:
-            if upload:
-                if NewEntry or overwrite:
-                    OutNumbers['Upload Entries'] += 1
-                    djCmpBatch.save()
+#         if validStatus:
+#             if upload:
+#                 if NewEntry or overwrite:
+#                     OutNumbers['Upload Entries'] += 1
+#                     djCmpBatch.save()
 
 
-       # ABase Compound ----------------------------------------------------------------
-        djABaseCmpBatch = ABase_Compound_Batch.get(djBatch_id)
-        if djABaseCmpBatch  is None:
-            NewEntry = True
-            djABaseCmpBatch = ABase_Compound_Batch()
-            djABaseCmpBatch.cmpbatch_id = djCmpBatch
-            # djABaseCmp.compound_id = djABaseCmp
+#        # ABase Compound ----------------------------------------------------------------
+#         djABaseCmpBatch = ABase_Compound_Batch.get(djBatch_id)
+#         if djABaseCmpBatch  is None:
+#             NewEntry = True
+#             djABaseCmpBatch = ABase_Compound_Batch()
+#             djABaseCmpBatch.cmpbatch_id = djCmpBatch
+#             # djABaseCmp.compound_id = djABaseCmp
 
-            djABaseCmpBatch.library_id = row['library_id']
-            djABaseCmpBatch.project_id = row['study_id']
+#             djABaseCmpBatch.library_id = row['library_id']
+#             djABaseCmpBatch.project_id = row['study_id']
             
-            djABaseCmpBatch.full_mw = row['rgstfullmolmassvalue']
-            djABaseCmpBatch.full_mf = row['rgstfullmolformula']   
-            djABaseCmpBatch.salt_code = row['dictmolid_salt']   
-            djABaseCmpBatch.salt_equivalents  = row['rgstsaltequivs']     
-            djABaseCmpBatch.solvate_code = row['dictmolid_solvate']      
-            djABaseCmpBatch.solvate_equivalents = row['rgstsolvateequivs']      
+#             djABaseCmpBatch.full_mw = row['rgstfullmolmassvalue']
+#             djABaseCmpBatch.full_mf = row['rgstfullmolformula']   
+#             djABaseCmpBatch.salt_code = row['dictmolid_salt']   
+#             djABaseCmpBatch.salt_equivalents  = row['rgstsaltequivs']     
+#             djABaseCmpBatch.solvate_code = row['dictmolid_solvate']      
+#             djABaseCmpBatch.solvate_equivalents = row['rgstsolvateequivs']      
 
-            # djABaseCmp.conv_factor = row['objdbatchref']
+#             # djABaseCmp.conv_factor = row['objdbatchref']
 
-            djABaseCmpBatch.supplier = row['supplier']        
-            djABaseCmpBatch.supplier_code  = row['rgstsupplierobjid']       
-            djABaseCmpBatch.supplier_batch = row['rgstsupplierbatchref']        
-            djABaseCmpBatch.date_recieved   = row['rgstdatereceived']
+#             djABaseCmpBatch.supplier = row['supplier']        
+#             djABaseCmpBatch.supplier_code  = row['rgstsupplierobjid']       
+#             djABaseCmpBatch.supplier_batch = row['rgstsupplierbatchref']        
+#             djABaseCmpBatch.date_recieved   = row['rgstdatereceived']
             
-            djABaseCmpBatch.init_amount = row['objdqtyinitvalue']
-            djUnit = Dictionary.get(djABaseCmpBatch.DICTIONARY_FIELDS['init_amount_unit'],row['dictid_qty_unit'])
-            if djUnit:   
-                djABaseCmpBatch.init_amount_unit = djUnit
+#             djABaseCmpBatch.init_amount = row['objdqtyinitvalue']
+#             djUnit = Dictionary.get(djABaseCmpBatch.DICTIONARY_FIELDS['init_amount_unit'],row['dictid_qty_unit'])
+#             if djUnit:   
+#                 djABaseCmpBatch.init_amount_unit = djUnit
 
-            if row['objlabnotebookno'] is not None:
-                _lab = row['objlabnotebookno'].split(chr(160))    
-                djABaseCmpBatch.labbook_no = _lab[0]  
-                djABaseCmpBatch.labbook_page = _lab[1]   
-                djABaseCmpBatch.labbook_page_line = _lab[2]  
+#             if row['objlabnotebookno'] is not None:
+#                 _lab = row['objlabnotebookno'].split(chr(160))    
+#                 djABaseCmpBatch.labbook_no = _lab[0]  
+#                 djABaseCmpBatch.labbook_page = _lab[1]   
+#                 djABaseCmpBatch.labbook_page_line = _lab[2]  
 
 
-            # Chemist ---------------------------
-            USER_RENAME_CHANGE = {
-               'X.Chemist': 'orgdb',
-               'A.BadilloVega': 'A.Kavanagh',
-               'Ciara.Davis':'C.Davis' 
-            }
-            djUser = ApplicationUser.get(row['originator'])
-            if djUser is None:
-                for k in USER_RENAME_CHANGE:
-                    if row['originator'] == k:
-                        djUser = ApplicationUser.get(USER_RENAME_CHANGE[k])           
-            if djUser is None:
-                logger.error(f" [Chemist] {row['originator']} not found")
-            else:
-                djABaseCmpBatch.chemist = djUser            
+#             # Chemist ---------------------------
+#             USER_RENAME_CHANGE = {
+#                'X.Chemist': 'orgdb',
+#                'A.BadilloVega': 'A.Kavanagh',
+#                'Ciara.Davis':'C.Davis' 
+#             }
+#             djUser = ApplicationUser.get(row['originator'])
+#             if djUser is None:
+#                 for k in USER_RENAME_CHANGE:
+#                     if row['originator'] == k:
+#                         djUser = ApplicationUser.get(USER_RENAME_CHANGE[k])           
+#             if djUser is None:
+#                 logger.error(f" [Chemist] {row['originator']} not found")
+#             else:
+#                 djABaseCmpBatch.chemist = djUser            
             
-            OutNumbers['New ABase Batch'] += 1
+#             OutNumbers['New ABase Batch'] += 1
 
-    print(f"[ABaseRegDict] {OutNumbers}")
+#     print(f"[ABaseRegDict] {OutNumbers}")
 
 
 # class Compound_Batch(AuditModel):

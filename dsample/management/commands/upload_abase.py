@@ -8,7 +8,7 @@ from dsample.models import Project
 from dsample.utils.compounds import Upload_COADD_Compound
 
 #from oraABase.oraABase import openABase
-from applib.mol.abase import get_ABase_RegView, upload_ABase_RegView, get_ABase_Batches, upload_ABase_Batches
+from applib.mol.abase import get_ABase_Batches, upload_ABase_Batches
 
 from dcollab.models import Collab_Group, Collab_User, Collab_Membership, Organisation
 
