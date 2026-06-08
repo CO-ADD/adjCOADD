@@ -388,7 +388,21 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
 #         Contact_Lst = parse_ContactSubmission(_subSheets['Contacts'], valLog=valLog)
  
 
+def create_minProject(pid,studyid,type,name,group='CGRP00002',org='CORG00001',upload=False):
+    
+    djPrj= Project.get(pid)
+    if djPrj is None:
+        djPrj = Project()
+        djPrj.project_id = pid
+        djPrj.abase_study_id = studyid
+        djPrj.project_name = name
+        djPrj.project_type = Dictionary(Project.DICTIONARY_FIELDS['project_type'],type)
+        djPrj.group_id = Collab_Group().get(group)
+        # djPrj.organi = Collab_Group().get(group)
+        djPrj.set_defaults_model() 
         
+        if upload:
+            djPrj.save()       
 
 # def upload_CompoundSubmission_Process(Request, DirName, ExcelFile, ProjectID=None,upload=False,appuser=None):
 #     #upload_CompoundSubmission
