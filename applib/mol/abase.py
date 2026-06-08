@@ -220,14 +220,14 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 
 
             # Study ID ---------------------------
-            STUDYI_RENAME_CHANGE = {
-               'G01_Antibact': 'G026_Antibact',
+            STUDYID_RENAME = {
+               'G01_Antibact': '026_Antibact',
             }
             djPrj = Project.objects.filter(abase_study_id = row['study_id']).first()
             if djPrj is None:
-                for k in STUDYI_RENAME_CHANGE:
+                for k in STUDYID_RENAME:
                     if row['study_id'] == k:
-                        djPrj = Project.objects.filter(abase_study_id = STUDYI_RENAME_CHANGE[k]).first()    
+                        djPrj = Project.objects.filter(abase_study_id = STUDYID_RENAME[k]).first()    
             if djPrj:
                 djABaseCmpBatch.project_id = djPrj
             else:
@@ -247,7 +247,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             djABaseCmpBatch.supplier_batch = row['supplier_batch']        
             djABaseCmpBatch.date_recieved   = row['date_received']
             
-            print(f" {row['init_value']} {row['init_value_unit']} ")
+            #print(f" {row['init_value']} {row['init_value_unit']} ")
             djABaseCmpBatch.init_amount = row['init_value']
             djUnit = Dictionary.get(djABaseCmpBatch.DICTIONARY_FIELDS['init_amount_unit'],row['init_value_unit'])
             if djUnit:   
@@ -256,10 +256,12 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
                 logger.error(f" [Unit] {row['init_value_unit']} not found ")
 
             if row['lab_notebook_number'] is not None:
-                _lab = row['lab_notebook_number'].split(chr(160))    
+                _lab = str(row['lab_notebook_number']).split(chr(160))    
                 djABaseCmpBatch.labbook_no = _lab[0]  
                 djABaseCmpBatch.labbook_page = _lab[1]   
-                djABaseCmpBatch.labbook_page_line = _lab[2]  
+                djABaseCmpBatch.labbook_page_line = _lab[2]
+                
+                print(_lab)  
 
 
             # Chemist ---------------------------
