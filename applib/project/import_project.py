@@ -396,8 +396,8 @@ def create_minProject(pid,studyid,type,name,group='CGRP00002',org='CORG00001',up
         djPrj.project_id = pid
         djPrj.abase_study_id = studyid
         djPrj.project_name = name
-        djPrj.project_type = Dictionary(Project.DICTIONARY_FIELDS['project_type'],type)
-        djPrj.group_id = Collab_Group().get(group)
+        djPrj.project_type = Dictionary.get(Project.DICTIONARY_FIELDS['project_type'],type)
+        djPrj.group_id = Collab_Group.get(group)
         # djPrj.organi = Collab_Group().get(group)
         djPrj.set_defaults_model() 
         
