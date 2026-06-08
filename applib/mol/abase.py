@@ -18,7 +18,7 @@ from rdkit.Chem import Descriptors, rdMolDescriptors
 
 from apputil.models import Dictionary, ApplicationUser
 from applib.external.sql_oracle import Oracle
-from dsample.models import Compound_Batch, ABase_Compound_Batch, ABase_Compound
+from dsample.models import Compound_Batch, ABase_Compound_Batch, ABase_Compound, Project
 
 
 #-----------------------------------------------------------------------------
@@ -155,7 +155,8 @@ def get_Project_StudyID(StudyID):
     # '048_Cardiolipin' '047_TyrosinaseInhib' '051_FtsZ' '053_Selenium'        
     # }
     _sid_lst = StudyID.split('_')
-    print(StudyID)
+    djPrj = Project.objects.filter(abase_study_id = StudyID).first()
+    
     return(None)
 
 
@@ -167,8 +168,8 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
     
     print(f"[ABaseRegDict] {regDF.columns.tolist()} ")
         
-    for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc='AbaseRegView Upload'):
-    #for idx,row in regDF.iterrows():
+    #for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc='AbaseRegView Upload'):
+    for idx,row in regDF.iterrows():
         #print(row)
         OutNumbers['Processed'] += 1
         NewEntry = False
@@ -236,8 +237,12 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             # djABaseCmp.compound_id = djABaseCmp
 
             djABaseCmpBatch.library_id = row['library_id']
-            djABaseCmpBatch.project_id = get_Project_StudyID(row['study_id'])
-            
+            djPrj = Project.objects.filter(abase_study_id = row['study_id']).first()
+            if djPrj:
+                djABaseCmpBatch.project_id = djPrj
+            else:
+                logger.error(f" [Project] {row['study_id']} not found ")
+                
             djABaseCmpBatch.full_mw = row['full_mw']
             djABaseCmpBatch.full_mf = row['full_mf']   
             djABaseCmpBatch.salt_code = row['salt_id']   
@@ -257,6 +262,8 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             djUnit = Dictionary.get(djABaseCmpBatch.DICTIONARY_FIELDS['init_amount_unit'],row['init_value_unit'])
             if djUnit:   
                 djABaseCmpBatch.init_amount_unit = djUnit
+            else:
+                logger.error(f" [Unit] {row['init_value_unit']} not found ")
 
             if row['lab_notebook_number'] is not None:
                 _lab = row['lab_notebook_number'].split(chr(160))    

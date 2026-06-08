@@ -33,4 +33,4 @@ class Command(BaseCommand):
         
         dfABase = get_ABase_Batches(test=0)
         print(f' [upload_abase] Projects : {dfABase['study_id'].unique()}')
-        #upload_ABase_Batches(dfABase, upload=options['upload'], overwrite=options['overwrite'])
+        upload_ABase_Batches(dfABase, upload=options['upload'], overwrite=options['overwrite'])
