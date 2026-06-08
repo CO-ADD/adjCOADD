@@ -162,22 +162,36 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 
 
         # ABase Compound ----------------------------------------------------------------
+        NewEntry = False
         djABaseCmp = ABase_Compound.get(djCompound_id)
         if djABaseCmp  is None:
             NewEntry = True
+            OutNumbers['New ABase'] += 1
             djABaseCmp = ABase_Compound()
             djABaseCmp.compound_id = djCompound_id
-            _structList = get_ABaseChem_Structure(CompoundID=djCompound_id)
-            if _structList and len(_structList)>0: 
-                _struct = _structList[0]
-                djABaseCmp.reg_mf = _struct['objsmolformula']
-                djABaseCmp.reg_mw = _struct['objsmolmassvalue']
-                djABaseCmp.reg_molfile = _struct['molfile']            
-            OutNumbers['New ABase'] += 1
-        
+            
+        _structList = get_ABaseChem_Structure(CompoundID=djCompound_id)
+        if _structList and len(_structList)>0: 
+            _struct = _structList[0]
+            djABaseCmp.reg_mf = _struct['objsmolformula']
+            djABaseCmp.reg_mw = _struct['objsmolmassvalue']
+            djABaseCmp.reg_molfile = _struct['molfile']            
+            
+        # - Save -------------
+        djABaseCmp.set_defaults_model()
+        validDict = djABaseCmp.validate_fields()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                logger.warning('Warning',k,validDict[k],'-')
+        if validStatus:
+            if upload:
+                if NewEntry or overwrite:
+                    djABaseCmp.save()
 
 
         # Cmpound Batch ----------------------------------------------------------------
+        NewEntry = False
         djCmpBatch = Compound_Batch.get(djBatch_id)
         if djCmpBatch  is None:
             NewEntry = True
@@ -193,15 +207,13 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         if 'rgstdrugname' in row:
             djCmpBatch.batch_notes = row['drug_name']
 
+        # - Save -------------
         djCmpBatch.set_defaults_model()
         validDict = djCmpBatch.validate_fields()
         if validDict:
             validStatus = False
             for k in validDict:
-                logger.warning('Warning',k,validDict[k],'-')
-            #OutDict.append(row)
-        #print(f" {validStatus} {prgArgs.upload}")
-        
+                logger.warning('Warning',k,validDict[k],'-')        
         if validStatus:
             if upload:
                 if NewEntry or overwrite:
@@ -209,81 +221,89 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
                     djCmpBatch.save()
 
        # ABase Compound ----------------------------------------------------------------
+        NewEntry = False
         djABaseCmpBatch = ABase_Compound_Batch.get(djBatch_id)
         if djABaseCmpBatch  is None:
             NewEntry = True
+            OutNumbers['New ABase Batch'] += 1
             djABaseCmpBatch = ABase_Compound_Batch()
             djABaseCmpBatch.cmpbatch_id = djCmpBatch
-            # djABaseCmp.compound_id = djABaseCmp
 
-            djABaseCmpBatch.library_id = row['library_id']
-
-
-            # Study ID ---------------------------
-            STUDYID_RENAME = {
-               'G01_Antibact': '026_Antibiotic',
-            }
-            djPrj = Project.objects.filter(abase_study_id = row['study_id']).first()
-            if djPrj is None:
-                for k in STUDYID_RENAME:
-                    if row['study_id'] == k:
-                        djPrj = Project.objects.filter(abase_study_id = STUDYID_RENAME[k]).first()    
-            if djPrj:
-                djABaseCmpBatch.project_id = djPrj
-            else:
-                logger.error(f" [Project] {row['study_id']} not found ")
-                
-            djABaseCmpBatch.full_mw = row['full_mw']
-            djABaseCmpBatch.full_mf = row['full_mf']   
-            djABaseCmpBatch.salt_code = row['salt_id']   
-            djABaseCmpBatch.salt_equivalents  = row['salt_equiv']     
-            djABaseCmpBatch.solvate_code = row['solvate_id']      
-            djABaseCmpBatch.solvate_equivalents = row['solvate_equiv']      
-
-            # djABaseCmp.conv_factor = row['objdbatchref']
-
-            djABaseCmpBatch.supplier = row['supplier']        
-            djABaseCmpBatch.supplier_code  = row['supplier_catno']       
-            djABaseCmpBatch.supplier_batch = row['supplier_batch']        
-            djABaseCmpBatch.date_recieved   = row['date_received']
+        # Study ID ---------------------------
+        STUDYID_RENAME = {
+            'G01_Antibact': '026_Antibiotic',
+        }
+        djPrj = Project.objects.filter(abase_study_id = row['study_id']).first()
+        if djPrj is None:
+            for k in STUDYID_RENAME:
+                if row['study_id'] == k:
+                    djPrj = Project.objects.filter(abase_study_id = STUDYID_RENAME[k]).first()    
+        if djPrj:
+            djABaseCmpBatch.project_id = djPrj
+        else:
+            logger.error(f" [Project] {row['study_id']} not found ")
             
-            #print(f" {row['init_value']} {row['init_value_unit']} ")
-            djABaseCmpBatch.init_amount = row['init_value']
-            djUnit = Dictionary.get(djABaseCmpBatch.DICTIONARY_FIELDS['init_amount_unit'],row['init_value_unit'])
-            if djUnit:   
-                djABaseCmpBatch.init_amount_unit = djUnit
-            else:
-                djABaseCmpBatch.init_amount_unit = None
-                #logger.error(f" [Unit] {row['init_value_unit']} not found ")
+        djABaseCmpBatch.library_id = row['library_id']
+        djABaseCmpBatch.full_mw = row['full_mw']
+        djABaseCmpBatch.full_mf = row['full_mf']   
+        djABaseCmpBatch.salt_code = row['salt_id']   
+        djABaseCmpBatch.salt_equivalents  = row['salt_equiv']     
+        djABaseCmpBatch.solvate_code = row['solvate_id']      
+        djABaseCmpBatch.solvate_equivalents = row['solvate_equiv']      
 
-            if row['lab_notebook_number'] is not None:
-                _lab = str(row['lab_notebook_number']).split(chr(160))
-                djABaseCmpBatch.labbook_no = _lab[0]
-                if len(_lab) > 1:  
-                    djABaseCmpBatch.labbook_page = _lab[1]
-                    if len(_lab) > 2:   
-                        djABaseCmpBatch.labbook_page_line = _lab[2]
-                
-                
+        djABaseCmp.conv_factor = djABaseCmpBatch.full_mw / djABaseCmp.reg_mw
 
+        djABaseCmpBatch.supplier = row['supplier']        
+        djABaseCmpBatch.supplier_code  = row['supplier_catno']       
+        djABaseCmpBatch.supplier_batch = row['supplier_batch']        
+        djABaseCmpBatch.date_recieved   = row['date_received']
+        
+        #print(f" {row['init_value']} {row['init_value_unit']} ")
+        djABaseCmpBatch.init_amount = row['init_value']
+        djUnit = Dictionary.get(djABaseCmpBatch.DICTIONARY_FIELDS['init_amount_unit'],row['init_value_unit'])
+        if djUnit:   
+            djABaseCmpBatch.init_amount_unit = djUnit
+        else:
+            djABaseCmpBatch.init_amount_unit = None
+            #logger.error(f" [Unit] {row['init_value_unit']} not found ")
 
-            # Chemist ---------------------------
-            USER_RENAME_CHANGE = {
-               'X.Chemist': 'orgdb',
-               'A.BadilloVega': 'A.Kavanagh',
-               'Ciara.Davis':'C.Davis' 
-            }
-            djUser = ApplicationUser.get(row['originator'])
-            if djUser is None:
-                for k in USER_RENAME_CHANGE:
-                    if row['originator'] == k:
-                        djUser = ApplicationUser.get(USER_RENAME_CHANGE[k])           
-            if djUser is None:
-                logger.error(f" [Chemist] {row['originator']} not found")
-            else:
-                djABaseCmpBatch.chemist = djUser            
+        if row['lab_notebook_number'] is not None:
+            _lab = str(row['lab_notebook_number']).split(chr(160))
+            djABaseCmpBatch.labbook_no = _lab[0]
+            if len(_lab) > 1:  
+                djABaseCmpBatch.labbook_page = _lab[1]
+                if len(_lab) > 2:   
+                    djABaseCmpBatch.labbook_page_line = _lab[2]
             
-            OutNumbers['New ABase Batch'] += 1
+        # Chemist ---------------------------
+        USER_RENAME_CHANGE = {
+            'X.Chemist': 'orgdb',
+            'A.BadilloVega': 'A.Kavanagh',
+            'Ciara.Davis':'C.Davis' 
+        }
+        djUser = ApplicationUser.get(row['originator'])
+        if djUser is None:
+            for k in USER_RENAME_CHANGE:
+                if row['originator'] == k:
+                    djUser = ApplicationUser.get(USER_RENAME_CHANGE[k])           
+        if djUser is None:
+            logger.error(f" [Chemist] {row['originator']} not found")
+        else:
+            djABaseCmpBatch.chemist = djUser            
+        
+            
+        # - Save -------------
+        djABaseCmpBatch.set_defaults_model()
+        validDict = djABaseCmpBatch.validate_fields()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                logger.warning('Warning',k,validDict[k],'-')
+        if validStatus:
+            if upload:
+                if NewEntry or overwrite:
+                    djABaseCmpBatch.save()
+
 
     print(f"[ABaseRegDict] {OutNumbers}")
     
