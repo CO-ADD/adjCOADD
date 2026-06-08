@@ -271,21 +271,25 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             djABaseCmp.conv_factor = Decimal('0')
            
         djABaseCmpBatch.salt_code = row['salt_id']
-        if  pd.isna(row['salt_equiv']) :  
+        if pd.isna(row['salt_equiv']) :  
             djABaseCmpBatch.salt_equivalents  = Decimal('0')
         else:
             djABaseCmpBatch.salt_equivalents  = Decimal(row['salt_equiv'])
 
         djABaseCmpBatch.solvate_code = row['solvate_id']      
-        if  pd.isna(row['solvate_equiv']) :  
+        if pd.isna(row['solvate_equiv']) :  
             djABaseCmpBatch.solvate_equivalents = Decimal('0')
         else:
             djABaseCmpBatch.solvate_equivalents  = Decimal(row['solvate_equiv'])
 
         djABaseCmpBatch.supplier = row['supplier']        
         djABaseCmpBatch.supplier_code  = row['supplier_catno']       
-        djABaseCmpBatch.supplier_batch = row['supplier_batch']        
-        djABaseCmpBatch.date_recieved   = row['date_received']
+        djABaseCmpBatch.supplier_batch = row['supplier_batch']
+        
+        if pd.isna(row['date_received']):
+            djABaseCmpBatch.date_recieved = None
+        else:        
+            djABaseCmpBatch.date_recieved = row['date_received']
         
         #print(f" {row['init_value']} {row['init_value_unit']} ")
         djABaseCmpBatch.init_amount = row['init_value']
