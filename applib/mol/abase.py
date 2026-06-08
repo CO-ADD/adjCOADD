@@ -121,21 +121,24 @@ def get_ABaseChem_Structure(CompoundID=None, RDKit=False):
     
     if _structList and len(_structList)>0:
         for i in range(len(_structList)):
-            _molfile = _structList[i]['objsmolfile'].read()
-            _structList[i]['molfile'] = _molfile
+            if pd.isna(_structList[i]['objsmolfile']):
+                _structList[i]['molfile'] = ""
+            else:
+                _molfile = _structList[i]['objsmolfile'].read()
+                _structList[i]['molfile'] = _molfile
             
-            if RDKit:
-                try:
-                    aMol = Chem.MolFromMolBlock(_molfile)
-                    Chem.Kekulize(aMol)
-                except:
-                    aMol = None
-                if aMol is not None:
-                    #print(ObjdID," - ",aMol.GetNumAtoms())
-                    _structList[i]['rdkit_smiles'] = Chem.MolToSmiles(aMol)
-                    _structList[i]['rdlit_mf'] = rdMolDescriptors.CalcMolFormula(aMol)
-                    _structList[i]['rdkit_mass'] = Descriptors.ExactMolWt(aMol)
-                    _structList[i]['rdkit_mw'] = Descriptors.MolWt(aMol)
+                if RDKit:
+                    try:
+                        aMol = Chem.MolFromMolBlock(_molfile)
+                        Chem.Kekulize(aMol)
+                    except:
+                        aMol = None
+                    if aMol is not None:
+                        #print(ObjdID," - ",aMol.GetNumAtoms())
+                        _structList[i]['rdkit_smiles'] = Chem.MolToSmiles(aMol)
+                        _structList[i]['rdlit_mf'] = rdMolDescriptors.CalcMolFormula(aMol)
+                        _structList[i]['rdkit_mass'] = Descriptors.ExactMolWt(aMol)
+                        _structList[i]['rdkit_mw'] = Descriptors.MolWt(aMol)
                 
 
     ABaseDB.close()
