@@ -327,15 +327,15 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             
         # - Save -------------
         djABaseCmpBatch.set_defaults_model()
-        # validDict = djABaseCmpBatch.validate_fields()
-        # if validDict:
-        #     validStatus = False
-        #     for k in validDict:
-        #         logger.warning('Warning',k,validDict[k],'-')
-        # if validStatus:
-        if upload:
-            if NewEntry or overwrite:
-                djABaseCmpBatch.save()
+        validDict = djABaseCmpBatch.validate_fields()
+        if validDict:
+            validStatus = False
+            for k in validDict:
+                logger.warning('Warning',k,validDict[k],'-')
+        if validStatus:
+            if upload:
+                if NewEntry or overwrite:
+                    djABaseCmpBatch.save()
                 #OutNumbers['Uploaded Compounds'] += 1
 
 
