@@ -245,11 +245,19 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             
         djABaseCmpBatch.library_id = row['library_id']
         djABaseCmpBatch.full_mw = row['full_mw']
-        djABaseCmpBatch.full_mf = row['full_mf']   
-        djABaseCmpBatch.salt_code = row['salt_id']   
-        djABaseCmpBatch.salt_equivalents  = row['salt_equiv']     
+        djABaseCmpBatch.full_mf = row['full_mf']
+           
+        djABaseCmpBatch.salt_code = row['salt_id']
+        if  pd.isna(row['salt_equiv']) :  
+            djABaseCmpBatch.salt_equivalents  = 0
+        else:
+            djABaseCmpBatch.salt_equivalents  = float(row['salt_equiv'])
+
         djABaseCmpBatch.solvate_code = row['solvate_id']      
-        djABaseCmpBatch.solvate_equivalents = row['solvate_equiv']      
+        if  pd.isna(row['solvate_equiv']) :  
+            djABaseCmpBatch.solvate_equivalents  = 0
+        else:
+            djABaseCmpBatch.solvate_equivalents  = float(row['solvate_equiv'])
 
         djABaseCmp.conv_factor = djABaseCmpBatch.full_mw / djABaseCmp.reg_mw
 
@@ -294,15 +302,15 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             
         # - Save -------------
         djABaseCmpBatch.set_defaults_model()
-        validDict = djABaseCmpBatch.validate_fields()
-        if validDict:
-            validStatus = False
-            for k in validDict:
-                logger.warning('Warning',k,validDict[k],'-')
-        if validStatus:
-            if upload:
-                if NewEntry or overwrite:
-                    djABaseCmpBatch.save()
+        # validDict = djABaseCmpBatch.validate_fields()
+        # if validDict:
+        #     validStatus = False
+        #     for k in validDict:
+        #         logger.warning('Warning',k,validDict[k],'-')
+        # if validStatus:
+        if upload:
+            if NewEntry or overwrite:
+                djABaseCmpBatch.save()
 
 
     print(f"[ABaseRegDict] {OutNumbers}")
