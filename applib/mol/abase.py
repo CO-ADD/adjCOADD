@@ -148,7 +148,8 @@ def get_ABaseChem_Structure(CompoundID=None, RDKit=False):
 def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 #-----------------------------------------------------------------------------
 
-    OutNumbers = {'Processed':0,'New CmpBatch':0,'New ABase':0,'New ABase Batch':0,'Uploaded Entries':0}
+    OutNumbers = {'Processed':0,'New CmpBatch':0,'New ABase':0,'New ABase Batch':0,
+                  'Uploaded Batches':0, 'Uploaded Compounds':0}
     
     print(f"[ABaseBatchDict] {regDF.columns.tolist()} ")
     
@@ -201,6 +202,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             if upload:
                 if NewEntry or overwrite:
                     djABaseCmp.save()
+                    OutNumbers['Uploaded Compounds'] += 1
 
 
         # Cmpound Batch ----------------------------------------------------------------
@@ -234,7 +236,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         if validStatus:
             if upload:
                 if NewEntry or overwrite:
-                    OutNumbers['Upload Entries'] += 1
+                    OutNumbers['Uploaded Batches'] += 1
                     djCmpBatch.save()
 
        # ABase Compound ----------------------------------------------------------------
@@ -330,6 +332,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         if upload:
             if NewEntry or overwrite:
                 djABaseCmpBatch.save()
+                #OutNumbers['Uploaded Compounds'] += 1
 
 
     print(f"[ABaseBatchDict] {OutNumbers}")
