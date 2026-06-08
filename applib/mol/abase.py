@@ -182,15 +182,9 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             _struct = _structList[0]
             djABaseCmp.reg_mf = _struct['objsmolformula']
             
-            #print(f" * [{_struct['objsmolmassvalue']}] [{type(_struct['objsmolmassvalue'])}]")
-            # print(_struct['objsmolmassvalue'])
-            # print(type(_struct['objsmolmassvalue']))
             if pd.isna(_struct['objsmolmassvalue']):
-                #print(_struct['objsmolmassvalue'])
-                djABaseCmp.reg_mw = 0
+                djABaseCmp.reg_mw = Decimal('0')
             else:
-                #print(type(_struct['objsmolmassvalue']))
-                #djABaseCmp.reg_mw = round(Decimal(str(_struct['objsmolmassvalue'])),3)
                 djABaseCmp.reg_mw = Decimal(str(_struct['objsmolmassvalue']))
                 
             #print(f" * [{_struct['objsmolmassvalue']}] [{djABaseCmp.reg_mw}]")
@@ -220,7 +214,11 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             OutNumbers['New CmpBatch'] += 1
 
         djCmpBatch.full_mf = row['full_mf']
-        djCmpBatch.full_mw = round(Decimal(row['full_mw']),3)
+        if pd.isna(row['full_mw']):
+            djCmpBatch.full_mw = Decimal('0')
+        else:
+            djCmpBatch.full_mw = Decimal(row['full_mw'])
+            
         djCmpBatch.batch_source = 'ABASE'
         djCmpBatch.batch_code = f"{row['objdid']}:{row['objdbatchref']}"
         if 'rgstdrugname' in row:
@@ -263,26 +261,24 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             logger.error(f" [Project] {row['study_id']} not found ")
             
         djABaseCmpBatch.library_id = row['library_id']
-        djABaseCmpBatch.full_mw = round(Decimal(row['full_mw']),3)
+        djABaseCmpBatch.full_mw = djCmpBatch.full_mw
         djABaseCmpBatch.full_mf = row['full_mf']
+        if djABaseCmpBatch.full_mw > 0 and djABaseCmp.reg_mw > 0:
+            djABaseCmp.conv_factor = round(djABaseCmpBatch.full_mw / djABaseCmp.reg_mw,4)
+        else:
+            djABaseCmp.conv_factor = Decimal('0')
            
         djABaseCmpBatch.salt_code = row['salt_id']
         if  pd.isna(row['salt_equiv']) :  
-            djABaseCmpBatch.salt_equivalents  = 0
+            djABaseCmpBatch.salt_equivalents  = Decimal('0')
         else:
             djABaseCmpBatch.salt_equivalents  = Decimal(row['salt_equiv'])
 
         djABaseCmpBatch.solvate_code = row['solvate_id']      
         if  pd.isna(row['solvate_equiv']) :  
-            djABaseCmpBatch.solvate_equivalents  = 0
+            djABaseCmpBatch.solvate_equivalents = Decimal('0')
         else:
             djABaseCmpBatch.solvate_equivalents  = Decimal(row['solvate_equiv'])
-
-        if djABaseCmpBatch.full_mw > 0 and djABaseCmp.reg_mw > 0:
-            djABaseCmp.conv_factor = round(djABaseCmpBatch.full_mw / djABaseCmp.reg_mw,4)
-        else:
-            djABaseCmp.conv_factor = 0
-        #print(f" [{djABaseCmpBatch.full_mw}] [{djABaseCmp.reg_mw}] -> [{djABaseCmp.conv_factor}]")
 
         djABaseCmpBatch.supplier = row['supplier']        
         djABaseCmpBatch.supplier_code  = row['supplier_catno']       
