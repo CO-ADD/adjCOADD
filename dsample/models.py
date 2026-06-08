@@ -442,7 +442,8 @@ class Compound_Batch(AuditModel):
     smiles_extra = models.CharField(max_length=256, blank=True, verbose_name = "Smiles Salt")
     mw_extra = models.DecimalField(default=0, max_digits=12, decimal_places=3, verbose_name = "MW Salt")
     
-    full_mw = models.FloatField(default=0, blank=True, verbose_name = "Full MW")
+    full_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Full MW")
+    #models.FloatField(default=0, blank=True, verbose_name = "Full MW")
     full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
     
     class Meta:
@@ -736,7 +737,7 @@ class ABase_Compound_Batch(AuditModel):
     salt_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Salt Eq")
     solvate_code = models.CharField(max_length=50, blank=True, verbose_name = "Solvate Code")
     solvate_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvate Eq")
-    conv_factor = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Conv Factor")
+    conv_factor = models.DecimalField(max_digits=12, decimal_places=4, default=0, verbose_name = "Conv Factor")
     supplier = models.CharField(max_length=50, blank=True, verbose_name = "Supplier")
     supplier_code = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Code")
     supplier_batch = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Batch")

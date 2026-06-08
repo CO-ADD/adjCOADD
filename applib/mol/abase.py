@@ -3,6 +3,7 @@ import sys, os
 import datetime
 import numpy as np
 import pandas as pd
+from decimal import Decimal, getcontext
 from tqdm import tqdm
 
 import logging
@@ -146,8 +147,11 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 
     OutNumbers = {'Processed':0,'New CmpBatch':0,'New ABase':0,'New ABase Batch':0,'Uploaded Entries':0}
     
-    print(f"[ABaseRegDict] {regDF.columns.tolist()} ")
-        
+    print(f"[ABaseBatchDict] {regDF.columns.tolist()} ")
+    
+    # Set global precision to 6 significant digits
+    #getcontext().prec = 6
+    
     for idx,row in tqdm(regDF.iterrows(), total=regDF.shape[0], desc='Abase Batches Upload'):
     #for idx,row in regDF.iterrows():
         #print(row)
@@ -174,7 +178,19 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         if _structList and len(_structList)>0: 
             _struct = _structList[0]
             djABaseCmp.reg_mf = _struct['objsmolformula']
-            djABaseCmp.reg_mw = float(_struct['objsmolmassvalue'])
+            
+            #print(f" * [{_struct['objsmolmassvalue']}] [{type(_struct['objsmolmassvalue'])}]")
+            # print(_struct['objsmolmassvalue'])
+            # print(type(_struct['objsmolmassvalue']))
+            if pd.isna(_struct['objsmolmassvalue']):
+                #print(_struct['objsmolmassvalue'])
+                djABaseCmp.reg_mw = 0
+            else:
+                #print(type(_struct['objsmolmassvalue']))
+                #djABaseCmp.reg_mw = round(Decimal(str(_struct['objsmolmassvalue'])),3)
+                djABaseCmp.reg_mw = Decimal(str(_struct['objsmolmassvalue']))
+                
+            #print(f" * [{_struct['objsmolmassvalue']}] [{djABaseCmp.reg_mw}]")
             djABaseCmp.reg_molfile = _struct['molfile']            
             
         # - Save -------------
@@ -201,7 +217,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             OutNumbers['New CmpBatch'] += 1
 
         djCmpBatch.full_mf = row['full_mf']
-        djCmpBatch.full_mw = float(row['full_mw'])
+        djCmpBatch.full_mw = round(Decimal(row['full_mw']),3)
         djCmpBatch.batch_source = 'ABASE'
         djCmpBatch.batch_code = f"{row['objdid']}:{row['objdbatchref']}"
         if 'rgstdrugname' in row:
@@ -244,26 +260,26 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             logger.error(f" [Project] {row['study_id']} not found ")
             
         djABaseCmpBatch.library_id = row['library_id']
-        djABaseCmpBatch.full_mw = float(row['full_mw'])
+        djABaseCmpBatch.full_mw = round(Decimal(row['full_mw']),3)
         djABaseCmpBatch.full_mf = row['full_mf']
            
         djABaseCmpBatch.salt_code = row['salt_id']
         if  pd.isna(row['salt_equiv']) :  
             djABaseCmpBatch.salt_equivalents  = 0
         else:
-            djABaseCmpBatch.salt_equivalents  = float(row['salt_equiv'])
+            djABaseCmpBatch.salt_equivalents  = Decimal(row['salt_equiv'])
 
         djABaseCmpBatch.solvate_code = row['solvate_id']      
         if  pd.isna(row['solvate_equiv']) :  
             djABaseCmpBatch.solvate_equivalents  = 0
         else:
-            djABaseCmpBatch.solvate_equivalents  = float(row['solvate_equiv'])
+            djABaseCmpBatch.solvate_equivalents  = Decimal(row['solvate_equiv'])
 
-        #print(f" [{djABaseCmpBatch.full_mw}] [{djABaseCmp.reg_mw}] ")
         if djABaseCmpBatch.full_mw > 0 and djABaseCmp.reg_mw > 0:
-            djABaseCmp.conv_factor = djABaseCmpBatch.full_mw / djABaseCmp.reg_mw
+            djABaseCmp.conv_factor = round(djABaseCmpBatch.full_mw / djABaseCmp.reg_mw,4)
         else:
             djABaseCmp.conv_factor = 0
+        #print(f" [{djABaseCmpBatch.full_mw}] [{djABaseCmp.reg_mw}] -> [{djABaseCmp.conv_factor}]")
 
         djABaseCmpBatch.supplier = row['supplier']        
         djABaseCmpBatch.supplier_code  = row['supplier_catno']       
@@ -317,7 +333,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
                 djABaseCmpBatch.save()
 
 
-    print(f"[ABaseRegDict] {OutNumbers}")
+    print(f"[ABaseBatchDict] {OutNumbers}")
     
 #-----------------------------------------------------------------------------
 def get_ABase_Tests(db):
