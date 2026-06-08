@@ -31,7 +31,8 @@ def Load_Project_Process(Request, DirName, FileList, ProjectID=None,
     nUploads = 0
 
     valLog = Validation_Log("Upload_Project")
-
+    procDict = {}
+    
     if nFiles > 0:
         for i in range(nFiles):
             
@@ -60,7 +61,22 @@ def Load_Project_Process(Request, DirName, FileList, ProjectID=None,
                 
             if _dictSheets['Samples'] is not None:
                 _Samples = parse_SampleInfo_Sheet(_dictSheets['Samples'],valLog=valLog)
+            
+            # fToUpload_Contacts =(UploadContent['Contacts'] and _dictSheets['Contacts'] is not None)
+            # fToUpload_Samples = (UploadContent['Samples'] and _dictSheets['Samples'] is not None)
+            
+            # print(f" [Load_Project_Process] To Upload: Contacts: {fToUpload_Contacts}  Samples: {fToUpload_Samples}  [{djPrj}] ")
+            
+            # # - Create New Project ----------------------------------------------
+            # if (fToUpload_Contacts or fToUpload_Samples) and djPrj.project_id is None:
+            #     djPrj.project_name = _PrjTitle
                 
+            #     #djPrj.set_defaults_model()
+            #     djPrj.save()
+            #     procDict['pk'] = djPrj.project_id
+            #     valLog.add_info(f"Created Project",f"{djPrj}")
+            #     print(f" [Load_Project_Process] To Upload: Contacts: {fToUpload_Contacts}  Samples: {fToUpload_Samples}  New: [{djPrj}] ")
+                           
             # - Contacts and Project ----------------------------------------------
             if UploadContent['Contacts'] and _dictSheets['Contacts'] is not None:
                 #_Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)
@@ -74,13 +90,15 @@ def Load_Project_Process(Request, DirName, FileList, ProjectID=None,
                     _smp['project_id'] = str(djPrj)
                     Upload_COADD_Compound(_smp, upload=upload, overwrite=overwrite, valLog=valLog)
 
+            procDict['pk'] = djPrj.project_id
             #valLog.show()
                    
     else:
         print(f" [Upload_Project] No Xlsx to process in {DirName}  ")
 
     valLog.select_unique()
-    return(valLog)
+    print(f" [Load_Project_Process] : {procDict} ")
+    return(valLog, procDict)
 
 #-----------------------------------------------------------------------------------
 def Summary_Project_Process(Request, ProjectID, upload=False, overwrite=False, appuser=None):

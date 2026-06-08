@@ -51,8 +51,12 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     ]
     # define template
     template_name = None
+    
     # Define a file storage for handling file uploads
     file_storage = FileSystemStorage(location='/tmp/')
+    
+    # Define Redirect URL
+    redirect_url = None
     
     initial_dict = {
         'select_file': {'instructions':''},
@@ -70,6 +74,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         self.upload=False
         self.overwrite=False
         self.html_columns = Validation_Log.LOG_FIELDS
+        #print(f" [{self.process_name}] Init")
     
     # ----------------------------------------------------
     def get_object(self):
@@ -80,18 +85,19 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
 
     # ----------------------------------------------------
     def file_process_handler(self, request, *args, **kwargs):
-        print(f" [{self.process_name}] not implemented")
+        print(f" [{self.process_name}] Handler not implemented")
         
     # ----------------------------------------------------
     def file_process_finalizer(self, request, *args, **kwargs):
-        print(f" [{self.process_name}] not implemented")
+        print(f" [{self.process_name}] Finalizer not implemented")
 
     # ----------------------------------------------------
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
 
-        print(f" [{self.process_name}] process_step: {current_step} Request: {request} ")
+        print(f" [{self.process_name}] [{current_step}] on [{self.pk}]")
+        #print(f" [{self.process_name}] process_step: {current_step} Extra Data: {self.storage.extra_data} ")
         
         # First Step - Select File(s) -> self.filelist[{file_field as per select form}]
         if current_step == 'select_file':
@@ -109,7 +115,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                 self.pk = None
                 
             if form.is_valid():
-                print(f" [{self.process_name}] process_step: Valid Form {self.pk}")
+                #print(f" [{self.process_name}] process_step: Valid Form {self.pk}")
                 
                 # Get list of files for each select_file-{file-field}
                 for _key in request.FILES:
@@ -133,7 +139,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                         filename = fs.save(f.name, f)
                         self.file_list[_field].append(filename)
 
-                print(f" [{self.process_name}] process_step: file_list {self.file_list}")
+                #print(f" [{self.process_name}] process_step: file_list {self.file_list}")
                 # Parse and Validation
                 self.valLog=self.file_process_handler(request, 
                                                       self.file_dir, self.file_list, 
@@ -157,11 +163,11 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                 else:
                     dfLog = self.valLog.nLogs.get('Error') or 'No object exists, Is this a correct data file?'
 
-                self.storage.extra_data['validation_result'] = dfLog
                 self.storage.extra_data['validation_message']= f" File(s) checked for errors: {len(self.file_list)}" 
                 #self.storage.extra_data['validation_help']= self.message_html['upload']
                 self.storage.extra_data['file_list'] = self.file_list
                 self.storage.extra_data['file_dir'] = self.file_dir
+                self.storage.extra_data['validation_result'] = dfLog
             else:
                 self.storage.extra_data['validation_result']="No files selected"
                 #print(f" [{self.process_name}] process_step: No files selected")
@@ -171,7 +177,15 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
             if form.is_valid():
                 self.file_dir=self.storage.extra_data['file_dir'] #get file path
                 self.file_list=self.storage.extra_data['file_list'] #get files' name  
-                self.pk = self.storage.extra_data['object_pk']
+                
+                #self.pk = self.storage.extra_data['object_pk']
+                if 'object_pk' in self.storage.extra_data:
+                    # ProcessView for Existing Entry
+                    self.pk = self.storage.extra_data['object_pk']
+                else:
+                    # ProcessView for New Entry
+                    self.pk = None
+
                 
                 self.valLog=self.file_process_handler(request, 
                                                     self.file_dir, self.file_list, 
@@ -183,34 +197,41 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                 else:
                     dfLog = self.valLog.get_ashtml(columns=self.html_columns)
 
-                self.storage.extra_data['validation_result'] = dfLog  
+                self.storage.extra_data['object_pk'] = self.pk
                 self.storage.extra_data['validation_message']= f" File(s) uploaded: {len(self.file_list)} "
+                self.storage.extra_data['validation_result'] = dfLog  
                 #self.storage.extra_data['validation_help'] = "Done" 
 
         elif current_step == 'finalize':
             # self.file_dir=self.storage.extra_data['file_dir'] #get file path
             # self.file_list=self.storage.extra_data['file_list'] #get files' name  
             self.pk = self.storage.extra_data['object_pk']
-            print(f" [process_step] {current_step} PK: {self.pk}")
+            #print(f" [process_step] {current_step} PK: {self.pk}")
             self.file_process_finalizer(request, self.pk)
-                            
+
+        #print(f" [{self.process_name}] process_step: {current_step} Extra Data: {self.storage.extra_data} ")                    
         return self.get_form_step_data(form)
 
-    # ----------------------------------------------------
-    def done(self, form_list, **kwargs):
-        #print(f" [Process_View.done] ")
-        # Redirect to the desired page after finishing
+
+    #---------------------------------------------------------
+    def cleanup_filedir(self):
         file_dir=self.storage.extra_data['file_dir']
-        #print(file_dir)
         if file_dir:
             try:
                 shutil.rmtree(file_dir)
-                
             except FileNotFoundError as err:
                 print(err)
             except Exception as err:
                 print(err)
-        return redirect(self.request.META['HTTP_REFERER'])
+
+    # ----------------------------------------------------
+    def done(self, form_list, **kwargs):
+        #print(f" [Process_View.done] ")
+        self.cleanup_filedir()
+        if self.redirect_url is not None:
+            return redirect(self.redirect_url) 
+        else:
+            return redirect(self.request.META['HTTP_REFERER'])
 
 
     # ----------------------------------------------------
@@ -220,8 +241,8 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         self.pk = self.kwargs.get('pk',None)
         if self.pk:
             self.storage.extra_data['object_pk'] = self.pk
-        # else:
-        #     self.storage.extra_data['object_pk'] = None
+        else:
+            self.storage.extra_data['object_pk'] = None
         
         #print(f" [Process_View.get_context_data] PK: {self.pk} ")
         # save information to context,

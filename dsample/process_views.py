@@ -52,32 +52,44 @@ class Load_Project_ProcessView(Process_View):
         'finalize': {'instructions':''},
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        #self.project_id=None
-        print(f" [{self.process_name}] Init")
+    redirect_url = "project_list"
+    
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
     def file_process_handler(self, request, *args, **kwargs):    
         #print(" [Add_TestplateList_ProcessView.file_process_handler]")
 
-        self.samples = False
-        self.contacts = False
+        self.samples = True
+        self.contacts = True
         self.upload = False
         self.overwrite = False
 
         # Set Form Data        
         form_data=kwargs.get('form_data', None)
+        
+        if 'samples' in form_data:
+            self.samples = form_data['samples']
+        if 'contacts' in form_data:
+            self.contacts = form_data['contacts']
+
         if 'upload' in form_data:
             self.upload = form_data['upload']
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Load_Project_Process(request, self.file_dir, self.file_list['single_file'], ProjectID=None,
+        (valLog,procDict)=Load_Project_Process(request, self.file_dir, self.file_list['single_file'], ProjectID=None,
                                     UploadContent={'Samples':self.samples,'Contacts':self.contacts},
                                     upload=self.upload, overwrite=False,
                                     appuser=request.user)
-         
+        #print(procDict)
+        self.pk = procDict.get('pk', None)
+            
         return(valLog)
+           
+    # def done(self, form_list, **kwargs):
+    #     self.cleanup_filedir()
+    #     return redirect(self.request.META['HTTP_REFERER'])
     
 # --------------------------------------------------------------------------------------------------
 class Add_ProjectInfo_ProcessView(Process_View):
@@ -134,7 +146,7 @@ class Add_ProjectInfo_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Load_Project_Process(request, self.file_dir, self.file_list['single_file'], ProjectID=self.pk,
+        valLog,procDict=Load_Project_Process(request, self.file_dir, self.file_list['single_file'], ProjectID=self.pk,
                                     UploadContent={'Samples':self.samples,'Contacts':self.contacts},
                                     upload=self.upload, overwrite=self.overwrite,
                                     appuser=request.user)

@@ -277,6 +277,7 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
     
     if upload:
         djProject.save()
+        valLog.add_info("Project",f"{djProject}")
         
     for key in CollabDict:
         
@@ -347,14 +348,15 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
                         print('Warning',k,validDict[k],'-')
                 if validStatus:
                     if upload:
-                        djGrp.save()
-                        
-                if upload:
-                    #print(f" {djGrp} {djUsr}")
-                    djProject.group_id = djGrp
-                    djProject.save()
+                        djGrp.save()                        
             else:
                 valLog.add_info("Existing Group",f"{djGrp}")
+
+            if upload:
+                #print(f" [Upload_Project_Collab] {djGrp} {djUsr}")
+                djProject.group_id = djGrp
+                djProject.save()
+
         else:
             # -- Project Membership [PC,AC] -----------------------------
             djMemb = Project_Membership.get(djUsr,djProject)
