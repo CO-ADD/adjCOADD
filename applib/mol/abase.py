@@ -141,26 +141,6 @@ def get_ABaseChem_Structure(CompoundID=None, RDKit=False):
     return(_structList)
 
 #-----------------------------------------------------------------------------
-def get_Project_StudyID(StudyID):
-#-----------------------------------------------------------------------------
-
-    # ABASE_STUDYID = {
-    # '010_GPCR':'G0010_GPCR',
-    # 'C001_NR4A':'', 'G00_General':'', 'G03_ChemLib':'', 'C008_PSAA':'', 'C002_SOX':'',
-    # 'G01_Antibact':'', '026_Antibiotic':'', '011_DSB':'', '003_TB' 'G04_FragLib'
-    # '032_NLRP3' '001_Van' 'C014_IMPDH' '033_ClickAB' '800_CO-ADD' '002_Col'
-    # '016_Mirabilin' '013_FQHyb' '021_Carb' '005_Ess' '019_Friulimicin'
-    # '004_MembBind' 'C009_GHR' 'C004_GLI' 'C012_FIM' '029_Anaer' '999_Collab'
-    # '014_TransGlycInhibit' '027_FluoroProbes' '034_hBD2' '052_TargetDegard'
-    # '048_Cardiolipin' '047_TyrosinaseInhib' '051_FtsZ' '053_Selenium'        
-    # }
-    _sid_lst = StudyID.split('_')
-    djPrj = Project.objects.filter(abase_study_id = StudyID).first()
-    
-    return(None)
-
-
-#-----------------------------------------------------------------------------
 def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 #-----------------------------------------------------------------------------
 
@@ -237,7 +217,17 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             # djABaseCmp.compound_id = djABaseCmp
 
             djABaseCmpBatch.library_id = row['library_id']
+
+
+            # Study ID ---------------------------
+            STUDYI_RENAME_CHANGE = {
+               'G01_Antibact': 'G026_Antibact',
+            }
             djPrj = Project.objects.filter(abase_study_id = row['study_id']).first()
+            if djPrj is None:
+                for k in STUDYI_RENAME_CHANGE:
+                    if row['study_id'] == k:
+                        djPrj = Project.objects.filter(abase_study_id = STUDYI_RENAME_CHANGE[k]).first()    
             if djPrj:
                 djABaseCmpBatch.project_id = djPrj
             else:
