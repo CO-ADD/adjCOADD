@@ -221,7 +221,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 
             # Study ID ---------------------------
             STUDYID_RENAME = {
-               'G01_Antibact': '026_Antibact',
+               'G01_Antibact': '026_Antibiotic',
             }
             djPrj = Project.objects.filter(abase_study_id = row['study_id']).first()
             if djPrj is None:
@@ -256,12 +256,15 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
                 logger.error(f" [Unit] {row['init_value_unit']} not found ")
 
             if row['lab_notebook_number'] is not None:
-                _lab = str(row['lab_notebook_number']).split(chr(160))    
-                djABaseCmpBatch.labbook_no = _lab[0]  
-                djABaseCmpBatch.labbook_page = _lab[1]   
-                djABaseCmpBatch.labbook_page_line = _lab[2]
+                _lab = str(row['lab_notebook_number']).split(chr(160))
+                print(f" [labbook] {_lab}")      
+                djABaseCmpBatch.labbook_no = _lab[0]
+                if len(_lab) > 1:  
+                    djABaseCmpBatch.labbook_page = _lab[1]
+                    if len(_lab) > 2:   
+                        djABaseCmpBatch.labbook_page_line = _lab[2]
                 
-                print(_lab)  
+                
 
 
             # Chemist ---------------------------
