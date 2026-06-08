@@ -174,7 +174,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         if _structList and len(_structList)>0: 
             _struct = _structList[0]
             djABaseCmp.reg_mf = _struct['objsmolformula']
-            djABaseCmp.reg_mw = _struct['objsmolmassvalue']
+            djABaseCmp.reg_mw = float(_struct['objsmolmassvalue'])
             djABaseCmp.reg_molfile = _struct['molfile']            
             
         # - Save -------------
@@ -201,7 +201,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             OutNumbers['New CmpBatch'] += 1
 
         djCmpBatch.full_mf = row['full_mf']
-        djCmpBatch.full_mw = row['full_mw']
+        djCmpBatch.full_mw = float(row['full_mw'])
         djCmpBatch.batch_source = 'ABASE'
         djCmpBatch.batch_code = f"{row['objdid']}:{row['objdbatchref']}"
         if 'rgstdrugname' in row:
@@ -244,7 +244,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             logger.error(f" [Project] {row['study_id']} not found ")
             
         djABaseCmpBatch.library_id = row['library_id']
-        djABaseCmpBatch.full_mw = row['full_mw']
+        djABaseCmpBatch.full_mw = float(row['full_mw'])
         djABaseCmpBatch.full_mf = row['full_mf']
            
         djABaseCmpBatch.salt_code = row['salt_id']
@@ -259,7 +259,11 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         else:
             djABaseCmpBatch.solvate_equivalents  = float(row['solvate_equiv'])
 
-        djABaseCmp.conv_factor = djABaseCmpBatch.full_mw / djABaseCmp.reg_mw
+        #print(f" [{djABaseCmpBatch.full_mw}] [{djABaseCmp.reg_mw}] ")
+        if djABaseCmpBatch.full_mw > 0 and djABaseCmp.reg_mw > 0:
+            djABaseCmp.conv_factor = djABaseCmpBatch.full_mw / djABaseCmp.reg_mw
+        else:
+            djABaseCmp.conv_factor = 0
 
         djABaseCmpBatch.supplier = row['supplier']        
         djABaseCmpBatch.supplier_code  = row['supplier_catno']       
