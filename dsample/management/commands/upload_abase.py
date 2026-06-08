@@ -32,5 +32,5 @@ class Command(BaseCommand):
         #upload_Abase_RegView(dfABase, upload=options['upload'], overwrite=options['overwrite'])
         
         dfABase = get_ABase_Batches(test=0)
-        print(f' [upload_abase] Projects : {dfABase['study_id'].unique()}')
+        #print(f' [upload_abase] Projects : {dfABase['study_id'].unique()}')
         upload_ABase_Batches(dfABase, upload=options['upload'], overwrite=options['overwrite'])

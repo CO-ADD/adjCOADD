@@ -265,22 +265,27 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         djABaseCmpBatch.library_id = row['library_id']
         djABaseCmpBatch.full_mw = djCmpBatch.full_mw
         djABaseCmpBatch.full_mf = row['full_mf']
+        
         if djABaseCmpBatch.full_mw > 0 and djABaseCmp.reg_mw > 0:
-            djABaseCmp.conv_factor = round(djABaseCmpBatch.full_mw / djABaseCmp.reg_mw,4)
+            djABaseCmp.conv_factor = Decimal(str(djABaseCmpBatch.full_mw / djABaseCmp.reg_mw))
         else:
             djABaseCmp.conv_factor = Decimal('0')
            
-        djABaseCmpBatch.salt_code = row['salt_id']
+        
         if pd.isna(row['salt_equiv']) :  
             djABaseCmpBatch.salt_equivalents  = Decimal('0')
+            djABaseCmpBatch.salt_code = ""
         else:
             djABaseCmpBatch.salt_equivalents  = Decimal(row['salt_equiv'])
+            djABaseCmpBatch.salt_code = row['salt_id']
 
-        djABaseCmpBatch.solvate_code = row['solvate_id']      
+              
         if pd.isna(row['solvate_equiv']) :  
             djABaseCmpBatch.solvate_equivalents = Decimal('0')
+            djABaseCmpBatch.solvate_code = ""
         else:
             djABaseCmpBatch.solvate_equivalents  = Decimal(row['solvate_equiv'])
+            djABaseCmpBatch.solvate_code = row['solvate_id']
 
         djABaseCmpBatch.supplier = row['supplier']        
         djABaseCmpBatch.supplier_code  = row['supplier_catno']       
@@ -306,7 +311,10 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
             djABaseCmpBatch.init_amount_unit = None
             #logger.error(f" [Unit] {row['init_value_unit']} not found ")
 
-        if row['lab_notebook_number'] is not None:
+        djABaseCmpBatch.labbook_no = ''
+        djABaseCmpBatch.labbook_page = ''
+        djABaseCmpBatch.labbook_page_line = ''
+        if not pd.isna(row['lab_notebook_number']):
             _lab = str(row['lab_notebook_number']).split(chr(160))
             djABaseCmpBatch.labbook_no = _lab[0]
             if len(_lab) > 1:  
