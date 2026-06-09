@@ -153,6 +153,17 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
     
     print(f"[ABaseBatchDict] {regDF.columns.tolist()} ")
     
+    
+    InitDF = {
+     'objdname':'', 'analysis':'', 'compoisition':'', 'drug_name':'', 
+     'salt_id':'', 'salt_equiv':0, 'solvate_id':'', 'solvate_equiv':0, 
+     'full_mf':'', 'full_mw':0, 'mf':'', 'mw':0, 
+     'lab_notebook_number':'', 'supplier':'', 'supplier_catno':'', 'supplier_batch':'', 
+     'date_received':None, 'init_value':0, 'init_value_unit':''
+    }
+    # for k in InitDF:
+    #     regDF[k].fillna(InitDF[k],axis=1,inplace=True)
+        
     # Set global precision to 6 significant digits
     #getcontext().prec = 6
     
