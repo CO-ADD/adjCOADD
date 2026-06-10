@@ -254,9 +254,7 @@ class Filtered_ListView(ListView):
         # Check if the reset request is submitted
         # Remove the stored queryset from the session
         if self.request.GET.get('reset')=='True':
-            print(f" [Filtered_ListView.get_queryset] RESET: {self.request.session}")
             if 'cached_queryset' in self.request.session:
-                print(f" [Filtered_ListView.get_queryset] RESET: {self.request.session[f'{self.model}_cached_queryset']}")
                 del self.request.session[f'{self.model}_cached_queryset'] 
                 
         # Instantiate the filterset with either the stored queryset from the session or the default queryset
@@ -298,11 +296,8 @@ class Filtered_ListView(ListView):
         filter_record_dict = self.get_filter_record()
         filter_record = "Selected: "+ str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
 
-        print(f" [Filtered_ListView.get_context_data] FilterRecordDict: {filter_record_dict}")
-        print(f" [Filtered_ListView.get_context_data] FilterRecordDict: {filter_record}")
-
         # Pass the filterset to the template - it provides the form.
-        #self.filterset.update_choice_filters(filter_record_dict)
+        # self.filterset.update_choice_filters(filter_record_dict)
         
         context['filter'] = self.filterset
         context['paginate_by'] = self.get_paginate_by(self, **kwargs)

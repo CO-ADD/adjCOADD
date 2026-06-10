@@ -11,11 +11,12 @@ from django.db.models import CharField, Value
 from django.db.models.functions import Cast
 from django.contrib.postgres.fields import ArrayField
 from django.db.models.expressions import RawSQL
-from django.contrib.postgres.search import TrigramSimilarity
+from django.contrib.postgres.search import TrigramSimilarity, TrigramWordSimilarity 
 from django.db.models.functions import Greatest
 from django.core.validators import MinLengthValidator
 
 from django_filters import FilterSet, CharFilter, ChoiceFilter
+
 
 # -- create a function for search all fields--
 #--------------------------------------------------------------------------
@@ -150,6 +151,36 @@ class BaseStatus_Filter(Base_Filter):
         parent = super().qs
         return parent.filter(astatus__gte=0)
 
+
+
+#=================================================================================================
+# Similarity Filters 
+#=================================================================================================
+
+class TrigramFilter(CharFilter):
+    def __init__(self, *args, **kwargs):
+        # Set a default threshold or accept one as a kwarg
+        self.threshold = kwargs.pop('threshold', 0.6)
+        self.byword = kwargs.pop('byword', False)
+        super().__init__(*args, **kwargs)
+
+    def filter(self, qs, value):
+        if not value:
+            return qs
+
+        # 1. Annotate the queryset with similarity
+        # Use TrigramSimilarity for character matching or TrigramWordSimilarity for whole words
+        if self.byword:
+            qs = qs.annotate(
+                similarity=TrigramWordSimilarity(value, self.field_name)
+                )
+        else:                
+            qs = qs.annotate(
+                similarity=TrigramSimilarity(self.field_name, value)
+                )
+
+        # 2. Filter based on the threshold & order by best match
+        return qs.filter(similarity__gte=self.threshold).order_by('-similarity')
 
     
 # # utils for Filtered_ListView method def ordered_by

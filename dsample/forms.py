@@ -13,7 +13,7 @@ from django_countries.fields import CountryField
 
 from apputil.models import Dictionary, ApplicationUser, Document
 from adjcoadd.constants import PROJECT_COMPOUND_STATUS, PROJECT_SCREEN_STATUS, PROJECT_DATA_STATUS, PROJECT_REPORT_STATUS
-from applib.django.base.filters import BaseStatus_Filter
+from applib.django.base.filters import BaseStatus_Filter, TrigramFilter
  
 #dSample
 from dsample.models import  Project
@@ -26,7 +26,8 @@ class Project_Filter(BaseStatus_Filter):
     project_type=ChoiceFilter(field_name='project_type',widget=forms.RadioSelect, choices=[], empty_label=None)
     project_status=ChoiceFilter(field_name='project_status',widget=forms.RadioSelect, choices=[], empty_label=None)
     Country = ChoiceFilter(field_name='group_id__country', choices=CountryField().choices,)
-    Organisation = CharFilter(field_name='group_id__organisation_id__organisation_name', lookup_expr='icontains',label='Organisation')
+    #Organisation = CharFilter(field_name='group_id__organisation_id__organisation_name', lookup_expr='icontains',label='Organisation')
+    Organisation = TrigramFilter(field_name='group_id__organisation_id__organisation_name', label='Organisation', byword=True)
     
     
     def __init__(self, *args, **kwargs):
