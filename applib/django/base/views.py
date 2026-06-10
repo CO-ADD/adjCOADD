@@ -231,6 +231,18 @@ class Filtered_ListView(ListView):
                 return i
         return -1
   
+    #--------------------------------------------------------------------------
+    def get_filter_record(self):
+        EXCLUDE_KEYS = ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]
+    
+        # filter_record_dict = {}
+        # _Excluded_Keys = ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]
+        # for key in self.request.GET:
+        #     if key not in EXCLUDE_KEYS:
+        #         if self.request.GET.getlist(key)!=[""] :
+        #             filter_record_dict[key] = self.request.GET.getlist(key)
+    
+        return({key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in EXCLUDE_KEYS})
   
     #--------------------------------------------------------------------------
     def get_queryset(self):
@@ -242,7 +254,9 @@ class Filtered_ListView(ListView):
         # Check if the reset request is submitted
         # Remove the stored queryset from the session
         if self.request.GET.get('reset')=='True':
+            print(f" [Filtered_ListView.get_queryset] RESET: {self.request.session}")
             if 'cached_queryset' in self.request.session:
+                print(f" [Filtered_ListView.get_queryset] RESET: {self.request.session[f'{self.model}_cached_queryset']}")
                 del self.request.session[f'{self.model}_cached_queryset'] 
                 
         # Instantiate the filterset with either the stored queryset from the session or the default queryset
@@ -252,15 +266,8 @@ class Filtered_ListView(ListView):
         #     stored_queryset = queryset.filter(pk__in=stored_queryset_pks)
         # ----
         
-        # filter_record_dict = {}
-        # _Excluded_Keys = ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]
-        # for key in self.request.GET:
-        #     if key not in _Excluded_Keys:
-        #         if self.request.GET.getlist(key)!=[""] :
-        #             filter_record_dict[key] = self.request.GET.getlist(key)
-                
-        filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]}
-        
+        filter_record_dict = self.get_filter_record()
+                        
         if 'applymulti' in self.request.GET:
             kwargs={'deep': True}
             self.filterset = self.filterset_class(self.request.GET,  queryset = queryset, filterset_dict= filter_record_dict, **kwargs)
@@ -287,8 +294,12 @@ class Filtered_ListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.context_list = context['object_list']
-        filter_record_dict = {key: self.request.GET.getlist(key) for key in self.request.GET if self.request.GET.getlist(key)!=[""] and key not in ['paginate_by','page', 'csrfmiddlewaretoken', 'reset', "pivot", "applysingle", "applymulti"]}
+                
+        filter_record_dict = self.get_filter_record()
         filter_record = "Selected: "+ str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
+
+        print(f" [Filtered_ListView.get_context_data] FilterRecordDict: {filter_record_dict}")
+        print(f" [Filtered_ListView.get_context_data] FilterRecordDict: {filter_record}")
 
         # Pass the filterset to the template - it provides the form.
         #self.filterset.update_choice_filters(filter_record_dict)

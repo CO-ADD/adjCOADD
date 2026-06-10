@@ -51,6 +51,7 @@ class Organisation(AuditModel):
     class Meta:
         app_label = 'dcollab'
         db_table = 'organisation'
+        ordering = ['organisation_name']
 
     #------------------------------------------------
     def __repr__(self) -> str:

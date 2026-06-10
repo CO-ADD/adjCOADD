@@ -25,14 +25,14 @@ class Project_Filter(BaseStatus_Filter):
     
     project_type=ChoiceFilter(field_name='project_type',widget=forms.RadioSelect, choices=[], empty_label=None)
     project_status=ChoiceFilter(field_name='project_status',widget=forms.RadioSelect, choices=[], empty_label=None)
-    Organisation=ChoiceFilter(field_name='group_id__organisation_id__organisation_name', choices=[], empty_label=None)
     Country = ChoiceFilter(field_name='group_id__country', choices=CountryField().choices,)
+    Organisation = CharFilter(field_name='group_id__organisation_id__organisation_name', lookup_expr='icontains',label='Organisation')
+    
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.filters["project_type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['project_type'])]
         self.filters["project_status"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(Project.DICTIONARY_FIELDS['project_status'])]
-        self.filters['Organisation'].extra["choices"] = self.Meta.model.get_field_choices(field_name='group_id__organisation_id__organisation_name')
 
         # Set Filter label to the Fields VerboseName or Filter Name
         for i in self.filters:
@@ -40,9 +40,13 @@ class Project_Filter(BaseStatus_Filter):
                 self.filters[i].label=self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
             except:
                 self.filters[i].label=i
+                
     class Meta:
         model=Project
-        fields=[ 'project_id','project_name','project_type','project_status','Organisation','Country',]
+        fields=[ 'project_id','project_name','project_type','project_status','Country','Organisation']
+        exclude = ['group_id.organisation_id.organisation_name',
+                   ]
+
 
 # -----------------------------------------------------------------
 class Project_CreateForm(forms.ModelForm):
