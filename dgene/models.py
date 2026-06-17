@@ -659,7 +659,7 @@ class AMR_Genotype(AuditModel):
         db_column="gene_id", related_name="%(class)s_geneid")
 
     amr_method = models.CharField(max_length=25, blank=True,   verbose_name = "AMR Method")
-
+    mutation_method = models.CharField(max_length=50, blank=True,   verbose_name = "Mutation Method")
     seq_method = models.CharField(max_length=25, blank=True,    verbose_name = "Seq Method")
     ref_coverage = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Ref Coverage") 
     ref_identity = models.DecimalField(max_digits=9, decimal_places=2,default=0, blank=True, verbose_name ="Ref Identity")
