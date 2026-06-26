@@ -167,13 +167,16 @@ def regstructure_coadd(djCmpd, outdict={}, upload=False, overwrite=False):
             if djBatch is not None:
                 if djBatch.structure_id:
                     new_regchem = False
-
+                    outdict['Has ChemStructures'] = outdict.get("Has ChemStructures", 0) + 1
+                    if 'Reg' not in djCmpd.std_process:
+                        djCmpd.std_process += '; Reg'
+                        updatedStatus = True
+                    
             # Process only 'New' Structures 
             if overwrite or new_regchem:
                 updated_sample = True
                 validStatus = True
-                outdict['Updated Compounds'] = outdict.get("Updated Compounds", 0) + 1
-
+                
                 #------------------------------------------------------------
                 djChem = Chem_Structure.get_bySmiles(djCmpd.std_smiles)
                 if djChem is None:
@@ -191,12 +194,20 @@ def regstructure_coadd(djCmpd, outdict={}, upload=False, overwrite=False):
                             logger.warning(f"{k}: {validDict[k]}")
                             
                     if upload and validStatus:
-                        #djCmpd.std_process += ";ChemStructure"
                         djChem.save()
                         outdict['Updated ChemStructures'] = outdict.get("Updated ChemStructures", 0) + 1
+                        if 'Reg' not in djCmpd.std_process:
+                            djCmpd.std_process += '; Reg'
+                            updatedStatus = True
                 else:
                     outdict['Existing ChemStructures'] = outdict.get("Existing ChemStructures", 0) + 1
-                    #djCmpd.std_process += 'Reg'
+                    if 'Reg' not in djCmpd.std_process:
+                        djCmpd.std_process += '; Reg'
+                        updatedStatus = True
+
+                if upload and updatedStatus:
+                    djCmpd.save()
+                    outdict['Updated Compounds'] = outdict.get("Updated Compounds", 0) + 1
 
                 #------------------------------------------------------------
                 djBatch = Compound_Batch.get(djCmpd.compound_id)
@@ -204,10 +215,10 @@ def regstructure_coadd(djCmpd, outdict={}, upload=False, overwrite=False):
                     djBatch = Compound_Batch()
                     djBatch.compound_id = djCmpd.compound_id
                     djBatch.batch_source = 'COADD'
-                    new_sample = True
+                    djBatch.batch_code = djCmpd.compound_code
+
                     outdict['New Batches'] = outdict.get("New Batches", 0) + 1
 
-                djBatch.batch_code = djCmpd.compound_code
                 djBatch.structure_id = djChem
                 djBatch.structure_type = djCmpd.std_structure_type
                 _salt_code = []
