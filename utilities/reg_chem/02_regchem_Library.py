@@ -48,7 +48,7 @@ def main(prgArgs,djDir):
     # from apputil.utils.data import Dict_to_StrList
     from dsample.models import Library, Library_Compound, Compound_Batch
     from dchem.models import Chem_Structure,Chem_Salt
-    from applib.mol.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
+    from applib.mol.smi import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
     
     logger.info(f"Python         : {sys.version.split('|')[0]}")
     logger.info(f"Conda Env      : {os.environ['CONDA_DEFAULT_ENV']}")

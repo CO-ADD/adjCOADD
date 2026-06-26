@@ -55,7 +55,7 @@ def main(prgArgs,djDir):
     from dcell.models import Cell_Batch
     from dorganism.utils.utils  import reformat_OrganismID, reformat_OrgBatchID
     from update_utils import convert_castdb_compoundid_from_ora
-    from applib.mol.mol_std import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
+    from applib.mol.smi import get_Structure_Type, get_MF_Smiles, SaltDict_to_SaltCode, Smiles_to_Mol, SaltDictList_to_SaltCode
     from dsample.models import ABase_Compound,ABase_Compound_Batch,Compound_Batch
     from dchem.models import Chem_Structure,Chem_Salt
 
