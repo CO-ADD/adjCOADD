@@ -203,7 +203,7 @@ def parse_ContactInfo_Sheet(xSheet, *args, **kwargs):
                 else:
                     valLog.add_warning("New Group",f"{djUsr} at {djOrg}",f"[{_Contact['type']}] ","")
             else:
-                valLog.add_warning("New Group",f"{_Contact['first_name']} {_Contact['last_name']} at {_Contact['organisation']}",f"[{_Contact['type']}] ",f"")
+                valLog.add_warning("New Group",f"{_Contact['first_name']} {_Contact['last_name']} at {_Contact['organisation']}",f"as [{_Contact['type']}] ",f"")
                 
         if djUsr is not None:                                
             _Contacts[CONTACT_TYPES[c]] = _Contact
@@ -227,7 +227,7 @@ def parse_CollabUser(UserDict, upload=False, overwrite=False, **kwargs):
         if not (pd.isna(UserDict['first_name']) and pd.isna(UserDict['last_name'])):
             retUsr = Collab_User.get(None,None,UserDict['first_name'],UserDict['last_name'])
             if retUsr is not None:
-                valLog.add_warning("Existing Collaborator",f"{retUsr}",f"Using recorded email [{retUsr.email}]")  
+                valLog.add_warning("Existing Collaborator",f"{retUsr}",f"{UserDict['first_name']} {UserDict['last_name']} for [{UserDict['type']}]")  
             else:
                 valLog.add_error("EMail Missing",f"New Collaborator: {UserDict['first_name']} {UserDict['last_name']}",f" Email required for new Collaborators","Correct Contact Sheet") 
     else:
@@ -236,19 +236,19 @@ def parse_CollabUser(UserDict, upload=False, overwrite=False, **kwargs):
             validate_email(UserDict['email'])
             retUsr = Collab_User.get(None,UserDict['email'])
             if retUsr is not None:
-                valLog.add_info("Existing Collaborator",f"{retUsr}",f" [{UserDict['type']}]")  
+                valLog.add_info("Existing Collaborator",f"{retUsr}",f"{retUsr.email} for [{UserDict['type']}]")  
             else:
-                valLog.add_warning("New Collaborator",f"{UserDict['email']}",f"[{UserDict['type']}] ",f"")
+                valLog.add_warning("New Collaborator",f"{UserDict['email']}",f"For [{UserDict['type']}] ",f"")
                 retUsr = Collab_User()
                 retUsr.email = UserDict['email']
                 
         except ValidationError as e:
             if valLog:
                 valLog.add_error("Invalid EMail",UserDict['email'],f" Collaborator: {UserDict['first_name']} {UserDict['last_name']}","Correct Contact Sheet")   
-
+                
     return retUsr
 
-#-----------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
 def parse_Organisation(OrgDict, upload=False, overwrite=False, **kwargs):
 # --------------------------------------------------------------------------------
 
@@ -265,7 +265,7 @@ def parse_Organisation(OrgDict, upload=False, overwrite=False, **kwargs):
         if retOrg is None:
             valLog.add_warning("New Organisation",OrgDict['organisation'],f" [{OrgDict['type']}]","")
         else:
-            valLog.add_info("Existing Organisation",f"{retOrg}",f"[{OrgDict['type']}] ")
+            valLog.add_info("Existing Organisation",f"{retOrg}",f"For [{OrgDict['type']}] ")
             
     return retOrg
 #-----------------------------------------------------------------------------
@@ -301,7 +301,7 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
                 if upload:
                     djOrg.save()
         else:
-            valLog.add_info("Existing Organisation",f"{djOrg}")
+            valLog.add_info("Existing Organisation",f"{djOrg}",)
         
         # -- Collaborator -----------------------------
         djUsr = Collab_User.get(None,CollabDict[key]['email'])
@@ -336,7 +336,7 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
                 djGrp.group_code = f"{CollabDict[key]['last_name']}{CollabDict[key]['first_name'][0]}_{djOrg.organisation_code}"
                 djGrp.organisation_id = djOrg
                 djGrp.li_user_id = djUsr
-                valLog.add_warning("New Group",f"{djGrp} : LI {djUsr} at {djOrg}")
+                valLog.add_warning("New Group",f"{djGrp}",f"[LI] {djUsr} at {djOrg}")
 
                 # - Validation ----------------------------------------------------------
                 validStatus = True

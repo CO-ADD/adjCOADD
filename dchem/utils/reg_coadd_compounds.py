@@ -170,7 +170,9 @@ def regstructure_coadd(djCmpd, outdict={}, upload=False, overwrite=False):
                     outdict['Has ChemStructures'] = outdict.get("Has ChemStructures", 0) + 1
                     if 'Reg' not in djCmpd.std_process:
                         djCmpd.std_process += '; Reg'
-                        updatedStatus = True
+                        if upload :
+                            djCmpd.save()
+                            outdict['Updated Compounds'] = outdict.get("Updated Compounds", 0) + 1
                     
             # Process only 'New' Structures 
             if overwrite or new_regchem:

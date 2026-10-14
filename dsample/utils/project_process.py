@@ -48,12 +48,16 @@ def Load_Project_Process(Request, DirName, FileList, ProjectID=None,
                 if djPrj is None:
                     djPrj = Project()
                     djPrj.project_id = ProjectID
-                    valLog.add_warning(f"New Project",f"{ProjectID}")
+                    valLog.add_warning(f"New Project",f"{ProjectID}",f"{ProjectID} does not exist")
+                    # Requires Collaborator Information to create new Project
+                    UploadContent['Contacts'] = True
                 else:
                     valLog.add_info(f"Existing Project",f"{djPrj}")
             else:
                 djPrj = Project()
-                valLog.add_warning(f"New Project",f"{ProjectID}")
+                valLog.add_warning(f"New Project","<New ID>","ProjectID not provided")
+                # Requires Collaborator Information to create new Project
+                UploadContent['Contacts'] = True
 
             if _dictSheets['Contacts'] is not None:
                 _Contacts,_PrjTitle = parse_ContactInfo_Sheet(_dictSheets['Contacts'],valLog=valLog)

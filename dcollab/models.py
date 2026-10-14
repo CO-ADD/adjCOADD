@@ -189,7 +189,10 @@ class Collab_User(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name} ({self.organisation_id.organisation_code}) [{self.user_id}]"
+        if self.organisation_id is None:
+            return f"{self.first_name} {self.last_name} [No Organisation] [{self.user_id}]"
+        else:
+            return f"{self.first_name} {self.last_name} ({self.organisation_id.organisation_code}) [{self.user_id}]"
 
     #------------------------------------------------
     @classmethod

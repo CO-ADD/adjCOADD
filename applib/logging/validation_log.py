@@ -29,7 +29,7 @@ class Validation_Log():
         self.logs  = {}
         #self.info  = {}
         self.verbose = verbose
-        #self.logInfo = ['Process','Filename','Item','Note','Help']
+        self.logInfo = ('Process','Filename','Item','Note','Help')
 
         for t in self.log_types:
             self.n_logs[t] = 0
@@ -49,9 +49,10 @@ class Validation_Log():
             }
         logType = logType[0].upper()+logType[1:].lower()
         if logType in self.log_types:
-            self.logs[logType].append(lDict)
             self.n_logs[logType] = self.n_logs[logType] + 1
-
+            lDict['N'] = self.n_logs[logType]
+            self.logs[logType].append(lDict)
+    
     #-----------------------------------------------------
     def add_error(self,logAction, logItem, logNote="", logHelp=""):
         self.add_log('Error',logAction,logItem,logNote,logHelp)
@@ -65,7 +66,7 @@ class Validation_Log():
     #-----------------------------------------------------
     # Remove duplicate log enties
     #-----------------------------------------------------
-    def select_unique(self,logTypes= LOG_TYPES):
+    def _select_unique_all(self,logTypes= LOG_TYPES):
         uLogs={}
         for t in logTypes:
             uLogs[t]=[]
@@ -81,6 +82,23 @@ class Validation_Log():
                 if flAdd:
                     uLogs[t].append(l)
         self.logs = uLogs
+
+    #-----------------------------------------------------
+    # Remove duplicate log enties
+    #-----------------------------------------------------
+    def select_unique(self,logTypes= LOG_TYPES):
+        uniqueLogs={}
+        
+        for t in logTypes:
+            uniqueLogs[t]=[]
+            seenLogs=set()
+            
+            for ldata in self.logs[t]:
+                ldata_tuple = tuple(ldata[field] for field in self.LOG_FIELDS)
+                if ldata_tuple not in seenLogs:
+                    uniqueLogs[t].append(ldata)
+                    seenLogs.add(ldata_tuple)
+        self.logs = uniqueLogs
 
     #-----------------------------------------------------
     # Reset the log entries to 0

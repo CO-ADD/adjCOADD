@@ -14,15 +14,15 @@ from applib.process.process_stepforms import SelectSingleFile_StepForm, Finalize
 class UploadSelect_StepForm(Upload_StepForm):
 # --------------------------------------------------------------------------------------------------
     
-    contacts = forms.BooleanField(initial=False, required=False, help_text="Upload Contact Information for Project")
-    samples = forms.BooleanField(initial=False, required=False, help_text="Upload Compound Information for Project")
+    contacts = forms.BooleanField(initial=False, required=False, help_text="Upload Contacts/Group for Project")
+    samples = forms.BooleanField(initial=False, required=False, help_text="Upload Compounds for Project")
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.Process_fields = ['samples','contacts']
-        self.fields['contacts'].label = "Contact/Collaborator Information"
-        self.fields['samples'].label = "Compound/Sample Information"
+        self.fields['contacts'].label = "Group/Contacts"
+        self.fields['samples'].label = "Compounds/Samples"
 
 # --------------------------------------------------------------------------------------------------
 class Load_Project_ProcessView(Process_View):
@@ -86,7 +86,10 @@ class Load_Project_ProcessView(Process_View):
         self.pk = procDict.get('pk', None)
             
         return(valLog)
-           
+    
+    def file_process_finalizer(self, request, pk):
+        Summary_Project_Process(request, pk)
+
     # def done(self, form_list, **kwargs):
     #     self.cleanup_filedir()
     #     return redirect(self.request.META['HTTP_REFERER'])
