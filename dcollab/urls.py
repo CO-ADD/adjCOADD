@@ -12,28 +12,25 @@ from dcollab.views import  (Organisation_ListView, Organisation_CreateView, Orga
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
                     ) 
 urlpatterns = [
-    #-- Organisations 
+    #-- Organisations --------
     # path('organisation_card', Organisation_CardView.as_view(), name="organisation_card"),
     path('organisation_list', Organisation_ListView.as_view(), name="organisation_list"),
-    #path('organisation/<str:pk>', Organisation_DetailView, name="organisation_detail"),
     path('createOrganisation/', Organisation_CreateView, name="organisation_create"),
     path('updateOrganisation/<str:pk>', Organisation_UpdateView.as_view(), name="organisation_update"),
     #path('deleteOrganisation/<str:pk>', Organisationt_RemoveView.as_view(), name="organisation_delete"),
     #path('organisation/report/<str:pk>', Organisation_ReportView, name="organisation_report"),
 
-    #-- Collab Group 
+    #-- Collab Group --------
     # path('collabgroup_card', CollabGroup_CardView.as_view(), name="collabgroup_card"),
     path('collabgroup_list', CollabGroup_ListView.as_view(), name="collabgroup_list"),
-    #path('organisation/<str:pk>', CollabGroup_DetailView, name="collabgroup_detail"),
     path('createCollabGroup/', CollabGroup_CreateView, name="collabgroup_create"),
-    #path('updateCollabGroup/<str:pk>', CollabGroup_UpdateView, name="collabgroup_update"),
+    path('updateCollabGroup/<str:pk>', CollabGroup_UpdateView.as_view(), name="collabgroup_update"),
     #path('deleteCollabGroup/<str:pk>', CollabGroup_RemoveView.as_view(), name="collabgroup_delete"),
     #path('collabgroup/report/<str:pk>', CollabGroup_ReportView, name="collabgroup_report"),
 
-    #-- Collab Group 
+    #-- Collab Group --------
     # path('collabuser_card', CollabUser_CardView.as_view(), name="collabuser_card"),
     path('collabuser_list', CollabUser_ListView.as_view(), name="collabuser_list"),
-    #path('organisation/<str:pk>', CollabUser_DetailView, name="collabuser_detail"),
     path('createCollabUser/', CollabUser_CreateView, name="collabuser_create"),
     path('updateCollabUser/<str:pk>', CollabUser_UpdateView, name="collabuser_update"),
     #path('deleteCollabUser/<str:pk>', CollabUser_RemoveView.as_view(), name="collabuser_delete"),
