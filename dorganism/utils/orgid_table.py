@@ -51,7 +51,7 @@ def get_org_identification_summary(OrgID):
         aDict = {}
         aDict['Batch ID'] = c.seq_id.orgbatch_id.batch_id
         aDict['Identification'] = f"{c.marker_lineage} (completness: {c.completeness}% contamination: {c.contamination}%)"
-        aDict['Method'] = f"WGS CheckM {c.assembly}"
+        aDict['Method'] = f"WGS CheckM {c.assembler}"
         aDict['Run'] = f"{c.seq_id.run_id} [{c.seq_id}]"
         orgID.append(aDict)
 

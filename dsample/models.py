@@ -10,6 +10,7 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.indexes import GinIndex
+from django.db.models.functions import Substr, Concat
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List
@@ -34,11 +35,12 @@ class Project(AuditModel):
 #=================================================================================================
     LIST_VIEW_FIELDS = {
         "project_id":{'Project ID': {'project_id':URL_LINKS['project_id']}},
-        "group_id.group_code":"Group",
+        "project_name":"Project Name",
+        "collaborator":"Collaborator",
+        "group_id.organisation_id.organisation_name":"Organisation",
         "group_id.country.name":"Country",
         #"project_type":"Type",s",
         "project_status":"Status",
-        "project_name":"Project Name",
         #"process_status":"Screening",
         'n_compounds':"#Cmpds",
         'n_structures':"#Struct",
@@ -61,12 +63,14 @@ class Project(AuditModel):
     ID_PAD = 5
 
     VIEW_GROUPS = [
-        ['project_type','project_name','process_status','project_status','project_comment','received','completed',],
+        ['project_type','project_name','process_status','project_status','project_comment','received','completed','group_id',],
         ['provided_container','provided_comment','stock_status','stock_comment','stock_container','stock_conc','stock_conc_unit', ],
         ['compound_status','compound_comment','screen_status','screen_comment','data_status','data_comment',],
         ['report_status','report_comment','pub_status','pub_date','pub_name','source','source_code','reference']
     ]
 
+    EMPTY_GROUP = 'CGRP00000'
+    EMPTY_USER = 'CUSR00000'
     # Add Project Upload File Name
 
 # Waiting for Compounds
@@ -79,7 +83,7 @@ class Project(AuditModel):
 # Reports completed
 # Continous Screening
 
-    project_id = models.CharField(max_length=15,primary_key=True, verbose_name = "Project ID")
+    project_id = models.CharField(max_length=25,primary_key=True, verbose_name = "Project ID")
     project_name = models.CharField(max_length=150, blank=True, verbose_name = "Project Name")
     project_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Project Type", on_delete=models.DO_NOTHING,
         db_column="project_type", related_name="%(class)s_project_type")
@@ -127,6 +131,9 @@ class Project(AuditModel):
         db_column="group_id", related_name="%(class)s_group_id")
     project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
                              verbose_name = "Project Contacts", null=True, blank=True)
+    project_members = models.ManyToManyField(Collab_User, through='Project_Membership',through_fields=('project_id', 'user_id'),
+                                             blank=True, null=True, related_name="project_members")
+    
     #owner_users = models.ManyToManyField(Collab_User)
          
     source = models.CharField(max_length=250, blank=True, verbose_name = "Source")
@@ -141,10 +148,12 @@ class Project(AuditModel):
         db_column="pub_status", related_name="%(class)s_pub_statust")
     pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
 
+    abase_study_id = models.CharField(max_length=50, blank=True, verbose_name = "ABase Study ID")
+
     # -- Oracle-CastDB data ------------------------------------------------------------
     ORACLE_FIELDS = ['ora_project_id','ora_group_id','ora_contact_ids','ora_organisation','ora_psreport_date','ora_hcreport_date','ora_hvreport_date']
 
-    ora_project_id = models.CharField(max_length=15, null=True, blank=True, unique=True, verbose_name = "Old Project ID")
+    ora_project_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Project ID")
     ora_group_id = models.CharField(max_length=10, blank=True, verbose_name = "Old GroupID")
     ora_contact_ids = ArrayField(models.CharField(max_length=10, null=True, blank=True), size=2, 
                                  verbose_name = "Old ContactsUser", null=True, blank=True)
@@ -177,14 +186,32 @@ class Project(AuditModel):
     n_tox_hits = models.IntegerField(default=0, blank=True, verbose_name = "#Tox Hits")
     screen_date = models.DateField(null=True, blank=True, verbose_name="Screen Date")
 
-
+    # -- Generated Fields - Property ------------------------------------------
+    @property
+    def collaborator(self):
+        _retList = []
+        _pc = self.get_members(role='PC')
+        _li = self.group_id.li_user_id
+        #_li = self.get_members(role='LI')
+        
+        if _pc:
+            _retList.append(_pc[0]['full_name'])
+        if _li :
+            if _li.full_name not in _retList:
+                _retList.append(_li.full_name)
+        # if _li:
+        #     if _li[0]['full_name'] not in _retList:
+        #         _retList.append(_li[0]['full_name'])
+        
+        return(f"{'\n'.join(_retList)}")
+    
     class Meta:
         app_label = 'dsample'
         db_table = 'project'
         ordering=['project_id']
         indexes = [
             models.Index(name="prj_pname_idx", fields=['project_name']),
-            models.Index(name="prj_opid_idx", fields=['ora_project_id']),
+            #models.Index(name="prj_opid_idx", fields=['ora_project_id']),
             models.Index(name="prj_ncmp_idx", fields=['n_compounds']),
             models.Index(name="prj_nbc_idx", fields=['n_barcodes']),
             models.Index(name="prj_nstr_idx", fields=['n_structures']),
@@ -196,6 +223,19 @@ class Project(AuditModel):
     #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.project_id}  {self.source}"
+
+    #------------------------------------------------
+    def get_members(self,role=None):
+        if role:
+            _qry_members = self.project_memberships.filter(role=role)
+        else:
+            _qry_members = self.project_memberships.all()
+        
+        _members = []   
+        for member in _qry_members:
+            _members.append({"full_name":member.user_id.full_name, "role" :member.role, "status":member.status})
+            
+        return(_members)
 
     #------------------------------------------------
     @classmethod
@@ -219,14 +259,22 @@ class Project(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
+        #print(f" [Project Save] ")
         if not self.project_id:
+            #print(f" [Project Save] Next ID")
             self.project_id = self.next_id()
-            
+        
         if not self.group_id:
-            self.group_id = Collab_Group.get('CGRP00000')
+           self.group_id = Collab_Group.get('CGRP00000')
             
-        if self.project_id: 
+        #print(f" [Project Save] {self.project_id} ")
+        if self.project_id is not None:
             super(Project, self).save(*args, **kwargs)
+
+    #------------------------------------------------
+    def init_group(self):
+        if self.group_id is None:
+            self.group_id = Collab_Group.get(self.EMPTY_GROUP)
 
 #=================================================================================================
 class Project_Membership(models.Model):
@@ -234,23 +282,35 @@ class Project_Membership(models.Model):
     List of Project Membership
     """
     MEMBERSHIP_CHOICES = [ 
-            ("LI","Lead Investigator"),
+    #        ("LI","Lead Investigator"),
             ("PC","Primary Contact"),
-            ("AC","Alternative Contact")
+            ("AC","Alternative Contact"),
+            ("VC","Virtual Contact")
         ]
 
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE)
+    MEMBERSTATUS_CHOICES = [ 
+            ("C","Current"),
+            ("P","Past"),
+            ("V","Virtual"),
+       ]
+
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="project_memberships")
+    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE, related_name="project_memberships")
     #date_joined = models.DateField()
     role = models.CharField(max_length=2,
             choices=MEMBERSHIP_CHOICES,
             default='AC')
+    status = models.CharField(max_length=1,
+            choices=MEMBERSTATUS_CHOICES,
+            default='C')
 
     class Meta:
         app_label = 'dsample'
         db_table = 'project_membership'
+        unique_together = ('user_id', 'project_id','role')
         indexes = [
             models.Index(name="pmem_role_idx",fields=['role']),
+            models.Index(name="pmem_status_idx",fields=['status']),
         ]
 
     #------------------------------------------------------------------
@@ -382,7 +442,8 @@ class Compound_Batch(AuditModel):
     smiles_extra = models.CharField(max_length=256, blank=True, verbose_name = "Smiles Salt")
     mw_extra = models.DecimalField(default=0, max_digits=12, decimal_places=3, verbose_name = "MW Salt")
     
-    full_mw = models.FloatField(default=0, blank=True, verbose_name = "Full MW")
+    full_mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Full MW")
+    #models.FloatField(default=0, blank=True, verbose_name = "Full MW")
     full_mf = models.CharField(max_length=100, blank=True, verbose_name = "Full MF")
     
     class Meta:
@@ -676,7 +737,7 @@ class ABase_Compound_Batch(AuditModel):
     salt_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Salt Eq")
     solvate_code = models.CharField(max_length=50, blank=True, verbose_name = "Solvate Code")
     solvate_equivalents = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name = "Solvate Eq")
-    conv_factor = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Conv Factor")
+    conv_factor = models.DecimalField(max_digits=12, decimal_places=4, default=0, verbose_name = "Conv Factor")
     supplier = models.CharField(max_length=50, blank=True, verbose_name = "Supplier")
     supplier_code = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Code")
     supplier_batch = models.CharField(max_length=50, blank=True, verbose_name = "Supplier Batch")

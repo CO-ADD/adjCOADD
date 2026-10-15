@@ -88,8 +88,8 @@ def get_AMRGenes_byOrgID(OrgID):
         aDict['Gene SubType'] = m.gene_id.gene_subtype
         aDict['AMR Class'] = m.gene_id.amr_class
         aDict['Method'] = m.amr_method
-        aDict['Coverage'] = m.seq_coverage
-        aDict['Identity'] = m.seq_identity
+        aDict['Coverage'] = m.ref_coverage
+        aDict['Identity'] = m.ref_identity
         orgGene.append(aDict)
 
 

@@ -60,7 +60,7 @@ def main():
     django.setup()
 
     from dsample.models import Project, COADD_Sample    
-    from applib.mol.mol_std import get_atomclass_list,list_metalatoms
+    from applib.mol.smi import get_atomclass_list,list_metalatoms
     # Logger ----------------------------------------------------------------
     logTime= datetime.datetime.now()
     logName = "UploadOrgDB"

@@ -3,6 +3,7 @@ from django.apps import apps
 
 from django.db.models import ForeignKey, Model
 from django.db.models.base import ModelBase
+from tqdm import tqdm
 
 #-----------------------------------------------------------------------------------
 def get_Models_byForeignKey(fkModel):
@@ -33,9 +34,9 @@ def get_Models_byForeignKey(fkModel):
 
 
 #-----------------------------------------------------------------------------------
-def rename_ForeignKey(fkModel, oldPK, newPK, use_temp_pk=False, upload=False, remove=True):
+def rename_ForeignKey(fkModel, oldPK, newPK, use_temp_pk=False, upload=False, delete=True):
 #-----------------------------------------------------------------------------------
-    print(f" [rename_ForeignKey] {fkModel.__name__} {oldPK} -> {newPK} [Upload:{upload} Remove:{remove}]")
+    print(f" [rename_ForeignKey] {fkModel.__name__} {oldPK} -> {newPK} [Upload:{upload} Remove:{delete}]")
     djOld = fkModel.get(oldPK)
     djNew = fkModel.get(newPK)
     
@@ -54,18 +55,20 @@ def rename_ForeignKey(fkModel, oldPK, newPK, use_temp_pk=False, upload=False, re
                 # For each fkModel get objects with foreignkey = oldPK
                 filter_params = {fkModel['Field']: oldPK}
                 qryFK = fkModel['Model'].objects.filter(**filter_params)
-                print(f" [rename_ForeignKey] { fkModel['Model'].__name__} -> {qryFK.count()} ") 
-                for fkObj in qryFK:
+                _nqry = qryFK.count()
+                
+                print(f" [rename_ForeignKey] { fkModel['Model'].__name__} -> {_nqry} ") 
+                for fkObj in tqdm(qryFK, total=_nqry, desc=fkModel['Model'].__name__):
                     setattr(fkObj,fkModel['Field'],djNew)
                     if upload:
                         fkObj.save()
                         
             # Remove/Delete OldPK
             if upload:
-                if remove:
-                    djOld.remove()
-                else:
+                if delete:
                     djOld.delete()
+                else:
+                    djOld.remove()
                     
         else:
             print(f' [rename_ForeignKey] Error: NewPK {newPK} Exists')

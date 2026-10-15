@@ -62,11 +62,11 @@
         </div>
 
         <!-- COADD Compounds -->
-        <div class="accordion bg-transparent w-100" id="screenrun-plates">
+        <div class="accordion bg-transparent w-100" id="project-compounds">
             <div class="accordion-item">
             <h2 class="accordion-header" id="heading_02">
                 <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-                    data-bs-target="#collapseRunPlates" aria-expanded="true" aria-controls="collapse_02">
+                    data-bs-target="#collapsePrjCompounds" aria-expanded="true" aria-controls="collapse_02">
                 <h5 class="fs-6 my-0">
                     CO-ADD Compounds
                 </h5>
@@ -74,8 +74,8 @@
                 <!-- prettier-ignore -->
                 </button>
             </h2>
-            <div id="collapseRunPlates" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
-                data-bs-parent="#screenrun-plates">
+            <div id="collapsePrjCompounds" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
+                data-bs-parent="#project-compounds">
                 <div class="accordion-body">
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
@@ -86,6 +86,30 @@
             </div>
         </div>
 
+       <!-- Project Contacts -->
+        <div class="accordion bg-transparent w-100" id="project-collabs">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_03">
+                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                    data-bs-target="#collapsePrjCollabs" aria-expanded="true" aria-controls="collapse_03">
+                <h5 class="fs-6 my-0">
+                    Collaborators
+                </h5>
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=collab_count %}
+                <!-- prettier-ignore -->
+                </button>
+            </h2>
+            <div id="collapsePrjCollabs" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_03"
+                data-bs-parent="#project-collabs">
+                <div class="accordion-body">
+                <div class="table-responsive">
+                    <!-- prettier-ignore -->
+                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_collab' objects=collab_objs data_fields=collab_fields %}
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
 
 
 

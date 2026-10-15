@@ -20,8 +20,7 @@
             <p>{{field | safe}}</p>
           {% endif %}
 
-
-          <span class="badge bg-info text-light">{{field.help_text}}</span>
+          <h3><span class="badge bg-danger text-light">{{field.help_text}}</span></h3>
           {% for error in field.errors%} 
             <span class="badge text-info text-warning">{{error}}</span>
           {% endfor %}
@@ -35,7 +34,7 @@
 
     <!-- Needs to be within </form> for 'submit' to post -->
     <div class="modal-footer d-flex justify-content-center align-center">
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary">New</button>
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
     </div>
   </form>

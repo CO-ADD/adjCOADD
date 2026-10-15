@@ -51,6 +51,30 @@ AtomType['Organic']     = ['C','N','O','P','S','Se']
 AtomType_Order = ['MetalTrans','MetalLanAct','Metal','Alkali','AlkaliEarth','Halogen','Metalloids','Organic']
 Metal_SMI = ['MetalTrans','MetalLanAct','Metal']
 
+
+#-----------------------------------------------------------------------------
+def is_atomtype(at,atype):
+#-----------------------------------------------------------------------------
+    if atype in AtomType:
+        aSymbol = at.GetSymbol()
+        return (aSymbol in AtomType[atype])
+    return()
+
+#-----------------------------------------------------------------------------
+def list_atomtype_in_mol(mol,atype,unique=True):
+#-----------------------------------------------------------------------------
+    if atype in AtomType:
+        if mol:
+            alst = []
+            for atom in mol.GetAtoms():
+                atSym = atom.GetSymbol()
+                if atSym in AtomType[atype]:
+                    alst.append(atSym)
+            if unique:
+                alst = list(set(alst))
+            return(alst)
+    return()
+
 #-----------------------------------------------------------------------------
 def list_mftype(mf,unique=True):
 #-----------------------------------------------------------------------------

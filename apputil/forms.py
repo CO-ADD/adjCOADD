@@ -139,4 +139,4 @@ class AppLog_Filter(Base_Filter):
         model=ApplicationLog
         fields=list(model.LIST_VIEW_FIELDS.keys())
 
-
+    

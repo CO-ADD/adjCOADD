@@ -2,44 +2,25 @@ import os
 import json
 import datetime
 
-#from rdkit import Chem
-#from django_filters.views import FilterView
-
-# from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
-# from django.contrib.auth.mixins import LoginRequiredMixin
-# from django.contrib import messages
-# from django.core.exceptions import ValidationError
-# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from django.db import transaction, IntegrityError
-# from django.db.models import Count
-# from django.http import JsonResponse
-# from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
-# from django.urls import reverse_lazy
-# from django.utils.functional import SimpleLazyObject
 from django.utils.safestring import mark_safe
 from django import forms
 
-# from apputil.models import ApplicationLog
-# from apputil.forms import Document_Form
-# from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_RemoveView, Filtered_ListView
 
 from adjcoadd.constants import *
 from dscreen.models import Screen_Run
 from dscreen.utils.screenrun_process import (Summary_ScreenRun_Process, 
                                             Upload_ReadOuts_Process, Upload_Motherplates_Process,Upload_TestplateList_Process,
-                                            Gen_Masterplates_Process)
-# from dsample.models import Project
-# from dplate.models import MasterPlate, TestPlate
+                                            Gen_Masterplates_Process,
+                                            Upload_Sequences_Process)
 
 from applib.process.process_forms import Process_View
 from applib.process.process_stepforms import (SelectSingleFile_StepForm, SelectSingleFileFolder_StepForm,
                                               Upload_StepForm, Generate_StepForm,  Finalize_StepForm, Download_StepForm)
-#from apputil.utils.form_wizard_tools import ImportHandler_View
-#from apputil.utils.form_wizard_tools import SelectSingleFile_StepForm, Upload_StepForm, Finalize_StepForm 
 
 
 # --------------------------------------------------------------------------------------------------
 class PlatePrep_SelectForm(SelectSingleFile_StepForm):
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['single_file'].label = 'PlatePrep Workbook [XLSX] containing [MotherPlates, TestPlateList, Assays] sheets'
@@ -63,6 +44,11 @@ class Readout_SelectForm(SelectSingleFile_StepForm):
         super().__init__(*args, **kwargs)
         self.fields['single_file'].label = 'Tecan/BioTek reader [XLSX] files'
 
+# --------------------------------------------------------------------------------------------------
+class XLSX_SelectForm(SelectSingleFile_StepForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['single_file'].label = '[XLSX] File'
 
 # --------------------------------------------------------------------------------------------------
 class Load_Readouts_ProcessView(Process_View):
@@ -85,11 +71,11 @@ class Load_Readouts_ProcessView(Process_View):
     upload_html += '\n Make sure the IDs are unique and reflect the IDs in <b>TestPLateList</b>'
     upload_html += '\n In case, correct the IDs in the <b>Readout</b> file and repeat the upload'
 
-    message_html =[
-       ('select_file',select_html),
-       ('upload',upload_html),
-       ('finalize','') 
-    ]
+    initial_dict = {
+        'select_file': {'instructions':select_html},
+        'upload': {'instructions':upload_html},
+        'finalize': {'instructions':''},
+        }
 
     # Customize Function to validate and upload files:
     def file_process_handler(self, request, *args, **kwargs):
@@ -249,11 +235,6 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
         form_data=kwargs.get('form_data', None)
         if 'generate' in form_data:
             self.generate = form_data['generate']
-
-        #print(" [Gen_MotherPlates_PSR.file_process_handler]")
-        #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileDir: {self.file_dir}")
-        #print(f" [Gen_MotherPlates_PSR.file_process_handler] FileList: {self.file_list}")
-        
         
         valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
                                            generate=self.generate,
@@ -268,13 +249,23 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
         ('upload', Generate_StepForm),
-        ('finalize', Finalize_StepForm),
+        ('download', PlatePrep_DownloadForm),
     ]
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_hcr.html'
 
     def file_process_handler(self, request, *args, **kwargs):    
         print(" [Gen_MotherPlates_HCR.file_process_handler]")
+        self.generate = False
+
+        # Set Form Data        
+        form_data=kwargs.get('form_data', None)
+        if 'generate' in form_data:
+            self.generate = form_data['generate']
+
+        valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
+                                           generate=self.generate,
+                                           appuser=request.user)
 
 # --------------------------------------------------------------------------------------------------
 class Load_Sequences_ProcessView(Process_View):
@@ -283,25 +274,28 @@ class Load_Sequences_ProcessView(Process_View):
 
     #name_step1="Upload"
     form_list = [
-        ('select_file', Readout_SelectForm),
+        ('select_file', XLSX_SelectForm),
         ('upload', Upload_StepForm),
         ('finalize', Finalize_StepForm),
     ]
 
     template_name = 'dscreen/screenrun_process/load_sequences.html'
 
-    select_html  = 'Please select a Excel [xlsx] file from Tecan/BioTek readers'
-    select_html += '\n Make sure file contains correct  <b>TestPlate IDs</b>'
+    select_html  = '<b>Please select a Excel [xlsx] file with Sequencing information</b><br>'
+    select_html += 'Make sure [DNA] sheet contains: <br> [RunSample_File, OrgBatch_ID, SeqRun_ID, SeqRun_Files, RunSample_Dir, RunSample_Name]'
 
     upload_html  = 'Please check the TestPlate IDs [<i>Item</i>] for any "New Testplate" [<i>Action</i>]'
     upload_html += '\n Make sure the IDs are unique and reflect the IDs in <b>TestPLateList</b>'
     upload_html += '\n In case, correct the IDs in the <b>Readout</b> file and repeat the upload'
 
-    message_html =[
-       ('select_file',select_html),
-       ('upload',upload_html),
-       ('finalize','') 
-    ]
+    initial_dict = {
+        'select_file': {'instructions':select_html},
+        'upload': {'instructions':upload_html},
+        'finalize': {'instructions':''},
+        }
+
+    upload = False
+    overwrite = False
 
     # Customize Function to validate and upload files:
     def file_process_handler(self, request, *args, **kwargs):
@@ -313,7 +307,7 @@ class Load_Sequences_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
+        valLog=Upload_Sequences_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
                                        upload=self.upload, overwrite=self.overwrite,appuser=request.user)
 
         return(valLog)

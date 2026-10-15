@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
-{% block title%}COADD{% endblock %}
+{% block title %}COADD{% endblock %}
 
-{% block content%}
+{% block content %}
 <div class="d-flex vh-100">
 
     <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
@@ -18,7 +18,7 @@
                 <h2 class="accordion-header" id="heading_00">
                 <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
                     data-bs-target="#collapse_01" aria-expanded="true" aria-controls="collapse_00">
-                    <h5 class="fs-4 my-0"><b>{{object.pk}}</b>
+                    <h5 class="fs-4 my-0"><b>{{object.pk}} [{{process.type}}]</b>
                     </h5>
                 </button>
                 </h2>
@@ -86,7 +86,33 @@
                 </div>
             </div>
 
-        {% elif process.type == "Sequence" %}
+            <!-- Projects -->
+            <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_03">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunProjects" aria-expanded="true" aria-controls="collapse_04">
+                    <h5 class="fs-6 my-0">
+                        Projects
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=project_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunProjects" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
+                    data-bs-parent="#screenrun-projects">
+                    <div class="accordion-body">
+                    <div class="table-responsive">
+                        <!-- prettier-ignore -->
+                        {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_projects' objects=project_objs data_fields=project_fields %}
+                        
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+        {% elif process.type == "Sequencing" %}
 
             <!-- Processing -->
             <div class="accordion bg-transparent w-100" id="screenrun-process">
@@ -105,7 +131,32 @@
                     data-bs-parent="#screenrun-process">
                     <div class="accordion-body">
                     <div class="table-responsive">
-                        {% comment %} {% include 'dscreen/screenrun/screenrun_process.html' with summary=summary process_status="" %} {% endcomment %}
+                        {% include 'dscreen/screenrun/seqrun_process.html' with summary=summary process_status="" %} 
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Sequences -->
+            <div class="accordion bg-transparent w-100" id="screenrun-sequences">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_02">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunSequences" aria-expanded="true" aria-controls="collapse_02">
+                    <h5 class="fs-6 my-0">
+                        Sequences
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=sequence_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunSequences" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
+                    data-bs-parent="#screenrun-sequences">
+                    <div class="accordion-body">
+                    <div class="table-responsive">
+                        <!-- prettier-ignore -->
+                        {% include 'datatable/subtable_pag_action.html' with table_id='datatable_sequence' objects=sequence_objs data_fields=sequence_fields %}
                     </div>
                     </div>
                 </div>
@@ -114,31 +165,6 @@
 
         {% endif %}
 
-        <!-- Projects -->
-        <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_03">
-                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-                    data-bs-target="#collapseRunProjects" aria-expanded="true" aria-controls="collapse_04">
-                <h5 class="fs-6 my-0">
-                    Projects
-                </h5>
-                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=project_count %}
-                <!-- prettier-ignore -->
-                </button>
-            </h2>
-            <div id="collapseRunProjects" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
-                data-bs-parent="#screenrun-projects">
-                <div class="accordion-body">
-                <div class="table-responsive">
-                    <!-- prettier-ignore -->
-                    {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_projects' objects=project_objs data_fields=project_fields %}
-                    
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
 
     </div>
 </div>

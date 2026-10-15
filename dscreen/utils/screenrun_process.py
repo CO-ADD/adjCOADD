@@ -5,14 +5,20 @@ from django.core.cache import cache
 from applib.logging.validation_log import Validation_Log
 from dscreen.models import Screen_Run
 from dplate.models import Labware, TestPlate, TestWell, MasterPlate
+from dorganism.models import Organism_Batch
+from dgene.models import Genome_Sequence
 
 from applib.plate.multimode_reader import multimodereader_xls
 #from applib.plate.masterplates import read_motherplate_prepsheet_xls
-from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans, gen_Motherplates_PSPrep
+from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans, gen_Motherplates_PSPrep, gen_Motherplates_HCPrep
 from applib.plate.testplates import add_mother_to_testplate
 from applib.bio.doseresponse import process_testplate_doseresponse
+from applib.data.dfutils import get_Xlxs_Sheets
+from applib.data.set_fielddata import set_model_from_dict
 from dscreen.utils.summary import update_screenrun_summary
 from adjcoadd.constants import DR_CLASSES
+
+import pandas as pd
 
 from django.conf import settings
 import logging
@@ -360,28 +366,104 @@ def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID
     djRun = Screen_Run.get(RunID)
     valLog = Validation_Log("Gen_Masterplates")
 
-    logNumbers = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
-                  'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
-                  'Processed AssayData':0,'Uploaded AssayData':0,
-                  'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0, 
-                  'Empty':0}
+    # logNumbers = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
+    #               'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
+    #               'Processed AssayData':0,'Uploaded AssayData':0,
+    #               'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0, 
+    #               'Empty':0}
 
     if nRacks > 0:
         Barcodes = get_BarcodeScans(DirName, RackFileList, valLog=valLog)
     
-    if nFiles > 0 :
-        dfMP = gen_Motherplates_PSPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
-
-        if generate and len(dfMP)>0:
+    if djRun is not None and nFiles > 0:
+        dfMP = pd.DataFrame()
+        
+        if djRun.run_id == 'PSR': 
+            dfMP = gen_Motherplates_PSPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
             xlsFile = f"{RunID}_PS_Motherplates.xlsx"
+        elif djRun.run_id == 'HCR': 
+            dfMP = gen_Motherplates_HCPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
+            xlsFile = f"{RunID}_HC_Motherplates.xlsx"
+
+        if generate and len(dfMP)>0:            
             print(f" Generate Download {DirName} {xlsFile}")
             dfMP.to_excel(os.path.join(DirName,xlsFile))
-
-            # req = HttpResponse(content_type='application/vnd.ms-excel')
-            # req['Content-Disposition'] = f'attachment; filename={_xls_name}'
-            # dfMP.to_excel(req)
-
 
     valLog.select_unique()
     
     return(valLog)
+
+#-----------------------------------------------------------------------------------
+def Upload_Sequences_Process(Request, DirName, FileList, RunID=None, 
+                                Sheets=None,
+                                upload=False,  overwrite=False, appuser=None):
+#-----------------------------------------------------------------------------------
+
+    # Xlsx Definitions
+    SeqRun_Sheets = {'Seq': None,}
+    SeqRun_List_Fields = ['runsample_file','runsample_dir','runsample_name',]
+    SeqRun_List_Dicts = ['seq_type','seq_method']
+    unqSeqCodes = set()
+
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+    nUploads = 0
+    
+    djRun = Screen_Run.get(RunID)
+    valLog = Validation_Log("Upload_Sequences")
+
+    if nFiles > 0 :
+        get_Xlxs_Sheets(DirName,FileList[0],SeqRun_Sheets,FillNA=None,valLog=valLog)
+        
+        df = SeqRun_Sheets['Seq']
+        df = df[ df['run_id'] == str(djRun)]
+        if len(df)>0:
+            nSeq = 0
+            for idx,row in df.iterrows():
+                
+                # Check OrgBatch
+                djOrgBatch = Organism_Batch.get(row['orgbatch_id'])
+                if djOrgBatch is None:
+                    valLog.add_error('OrgBatch not found',row['orgbatch_id'],f"Correct OrgBatch_ID or Import new OrgBatch")
+                else:
+                    nSeq += 1
+                
+                # SeqCode - Check Duplicates
+                if pd.isna(row['seq_code']):
+                    row['seq_code'] = Genome_Sequence.gen_seq_code(row['orgbatch_id'],str(djRun))
+                
+                if row['seq_code'] in unqSeqCodes:
+                    valLog.add_error('Duplicate SeqCode',f"{row['seq_code']} - {row['orgbatch_id']} {str(djRun)} ",f"Correct SeqCode with unique values")
+                else:
+                    unqSeqCodes.add(row['seq_code'])
+                
+                # New Seq - Check SeqCode        
+                djSeq = Genome_Sequence.get(SeqCode=row['seq_code'])
+                if djSeq is None:
+                    djSeq = Genome_Sequence()
+                    djSeq.orgbatch_id = djOrgBatch
+                    djSeq.run_id = djRun
+                    djSeq.seq_code = row['seq_code']
+                else:
+                    valLog.add_error('SeqCode exists already',f"{row['seq_code']} ",f"Correct SeqCode with unique values")
+                
+                # Set SeqAttributes    
+                validStatus = set_model_from_dict(djSeq,row,
+                                                list_Fields=SeqRun_List_Fields, 
+                                                list_Dicts=SeqRun_List_Dicts,
+                                                valLog=valLog)                
+                # Uploading  
+                if upload and validStatus:
+                    if settings.DEBUG:
+                        print(f" [Upload Sequence] {djSeq} ")
+                    djSeq.save()
+
+                
+            valLog.add_info('Reading SeqRun file',f"{nSeq} Sequences","")
+        else:
+           valLog.add_error('[Seq] no sequences for RunID',str(RunID),f"Correct Run_ID in [Seq].SeqRun_ID")  
+        
+    return(valLog)
+

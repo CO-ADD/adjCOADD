@@ -44,6 +44,7 @@
               <br>
             {% endfor %}
           </div>
+          <div> {{instructions|safe}} </div>
  
         <!-- Step 1 Upload -->
         {% elif wizard.steps.current == 'upload' %}
@@ -63,12 +64,14 @@
               </tbody>
             </table>
           </div>        
+          <div> {{instructions|safe}} </div>
 
         <!-- Step 2 Finalize -->
         {% elif wizard.steps.current == 'finalize' %}
           <div class="p-3 m-auto">
             Finalize Upload
           </div>
+          <div> {{instructions|safe}} </div>
         <!-- Step 2 Download -->
         {% elif wizard.steps.current == 'download' %}
           <div class="p-3 m-auto">
@@ -78,6 +81,7 @@
               </tbody>
             </table>
           </div>
+          <div> {{minstructions|safe}} </div>
         {% endif %}
 
       </div>

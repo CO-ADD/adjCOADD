@@ -8,6 +8,7 @@ from django.contrib.postgres.fields import ArrayField
 from django.contrib.postgres.indexes import GistIndex
 from django.contrib.postgres.search import TrigramSimilarity
 from django.db import transaction, IntegrityError
+from django.db.models.functions import Substr, Concat
 
 from adjcoadd.constants import *
 from apputil.models import AuditModel, Dictionary
@@ -44,11 +45,13 @@ class Organisation(AuditModel):
     organisation_type = models.ForeignKey(Dictionary, blank=False, verbose_name = "Organisation Type", on_delete=models.DO_NOTHING,
         db_column="organisation_type", related_name="%(class)s_organisation_type")
     country = CountryField(default='AU',verbose_name = "Country")
+    previous_names = models.CharField(max_length=250, blank=False, verbose_name = "Former")
 
     #------------------------------------------------
     class Meta:
         app_label = 'dcollab'
         db_table = 'organisation'
+        ordering = ['organisation_name']
 
     #------------------------------------------------
     def __repr__(self) -> str:
@@ -77,14 +80,18 @@ class Organisation(AuditModel):
     @classmethod
     def get_bysimilarity(cls, OrganisationName=None, Similarity=0.6, verbose=0):
     # Returns an instance if found by ImageNAme
-        try:
-            retInstance = cls.objects.annotate(
-                            similarity=TrigramSimilarity('organisation_name', OrganisationName),
-                        ).filter(similarity__gt=Similarity).order_by('-similarity').first()
-        except:
-            if verbose:
-                print(f"[Organisation Not Found] {OrganisationName} [by Similarity] ")
-            retInstance = None
+    
+        if cls.exists(None,OrganisationName=OrganisationName):
+            retInstance = cls.get(None,OrganisationName=OrganisationName)
+        else:
+            try:
+                retInstance = cls.objects.annotate(
+                                similarity=TrigramSimilarity('organisation_name', OrganisationName),
+                            ).filter(similarity__gt=Similarity).order_by('-similarity').first()
+            except:
+                if verbose:
+                    print(f"[Organisation Not Found] {OrganisationName} [by Similarity] ")
+                retInstance = None
         return(retInstance)
 
     #------------------------------------------------
@@ -137,7 +144,7 @@ class Collab_User(AuditModel):
     first_name = models.CharField(max_length=50, blank=True, verbose_name = "First Name")
     last_name = models.CharField(max_length=50, blank=True, verbose_name = "Last Name")
     position = models.CharField(max_length=100, blank=True, verbose_name = "Position")
-
+    
     email = models.EmailField(max_length=254, blank=True, verbose_name = "EMail")
     email2 = models.EmailField(max_length=254, blank=True, verbose_name = "EMail 2nd")
     active_email = models.SmallIntegerField(default=0, blank=True, verbose_name ="Active")
@@ -161,6 +168,11 @@ class Collab_User(AuditModel):
 
     ora_user_id = models.CharField(max_length=15, blank=True, verbose_name = "Old User ID")
     ora_group_id = models.CharField(max_length=15, blank=True, verbose_name = "Old Group ID")
+
+    # Generated fields - Properties
+    @property    
+    def full_name(self):
+        return(f"{self.first_name} {self.last_name}")
     
     #------------------------------------------------
     class Meta:
@@ -177,7 +189,10 @@ class Collab_User(AuditModel):
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.first_name} {self.last_name} ({self.organisation_id.organisation_code}) [{self.user_id}]"
+        if self.organisation_id is None:
+            return f"{self.first_name} {self.last_name} [No Organisation] [{self.user_id}]"
+        else:
+            return f"{self.first_name} {self.last_name} ({self.organisation_id.organisation_code}) [{self.user_id}]"
 
     #------------------------------------------------
     @classmethod
@@ -208,7 +223,7 @@ class Collab_User(AuditModel):
                 retValue = cls.objects.filter(first_name=FirstName, last_name=LastName).exists()
         except:
             if verbose:
-                print(f"[Data Not Found] {DataID} ")
+                print(f"[Data Not Found] {ID} - {EMail} - {FirstName} {LastName}")
             retValue = False
         return(retValue)
 
@@ -264,9 +279,9 @@ class Collab_Group(AuditModel):
     postal_address = models.CharField(max_length=250, blank=True, verbose_name = "Postal Address")
     city = models.CharField(max_length=250, blank=True, verbose_name = "City")
     country = CountryField(default='AU', verbose_name = "Country")
-    pi_user_id = models.CharField(max_length=10, blank=True, verbose_name = "PI ID")
-    # pi = models.ForeignKey(Collab_User, null=True, blank=True, verbose_name = "Principal Investigator", on_delete=models.DO_NOTHING,
-    #     db_column="pi", related_name="%(class)s_pi")
+    # pi_user_id = models.CharField(max_length=10, blank=True, verbose_name = "PI ID")
+    li_user_id = models.ForeignKey(Collab_User, null=True, blank=True, verbose_name = "Lead Investigator", on_delete=models.DO_NOTHING,
+        db_column="li_user_id", related_name="%(class)s_li_user_id")
     mta_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "MTA Status", on_delete=models.DO_NOTHING,
         db_column="mta_status", related_name="%(class)s_mta_status")
     mta_document = models.CharField(max_length=150, blank=True, verbose_name = "MTA Document")
@@ -282,6 +297,7 @@ class Collab_Group(AuditModel):
             models.Index(name="cgrp_code_idx",fields=['group_code']),
             models.Index(name="cgrp_email_idx",fields=['email']),
         ]
+        ordering = ['group_code']
 
     #------------------------------------------------
     def __repr__(self) -> str:
@@ -291,20 +307,44 @@ class Collab_Group(AuditModel):
     def __str__(self) -> str:
         return f"{self.group_code} ({self.group_id})"
 
+
+    #------------------------------------------------
+    def get_members(self,role=None):
+        if role:
+            _qry_members = self.group_memberships.filter(role=role)
+        else:
+            _qry_members = self.group_memberships.all()
+        
+        _members = []   
+        for member in _qry_members:
+            _members.append({"full_name":member.user_id.full_name,"role":member.role, "status":member.status})
+            
+        return(_members)
+    
     #------------------------------------------------
     @classmethod
-    def get(cls, ID, Code=None, PI_ID=None, Organisation_ID=None, verbose=0):
+    def get(cls, ID, Code=None, verbose=0):
     # Returns an instance if found by ImageNAme
         try:
             if ID is not None:
                 retInstance = cls.objects.get(group_id=ID)
             elif Code is not None:
                 retInstance = cls.objects.get(group_code=Code)
-            elif PI_ID is not None:
-                retInstance = cls.objects.get(pi_user_id=PI_ID, organisation_id=Organisation_ID)
         except:
             if verbose:
-                print(f"[Group Not Found] {ID} {Code} {Organisation_ID} {PI_ID}")
+                print(f"[Group Not Found] {ID} {Code}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def get_byLI(cls, LI_ID, Organisation_ID, verbose=0):
+    # Returns an instance if found by ImageNAme
+        try:
+            retInstance = cls.objects.get(li_user_id=LI_ID, organisation_id=Organisation_ID)
+        except:
+            if verbose:
+                print(f"[Group Not Found] {LI_ID} {Organisation_ID} ")
             retInstance = None
         return(retInstance)
 
@@ -328,13 +368,20 @@ class Collab_Membership(models.Model):
             ("LI","Lead Investigator"),
             ("M","Member")
         ]
+    MEMBERSTATUS_CHOICES = [ 
+            ("C","Current"),
+            ("P","Past"),
+       ]
 
-    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE, related_name="memberships")
-    group_id = models.ForeignKey(Collab_Group, on_delete=models.CASCADE, related_name="memberships")
+    user_id = models.ForeignKey(Collab_User, on_delete=models.CASCADE, related_name="group_memberships")
+    group_id = models.ForeignKey(Collab_Group, on_delete=models.CASCADE, related_name="group_memberships")
     #date_joined = models.DateField()
     role = models.CharField(max_length=2,
             choices=MEMBERSHIP_CHOICES,
             default='M')
+    status = models.CharField(max_length=1,
+            choices=MEMBERSTATUS_CHOICES,
+            default='C')
 
     class Meta:
         app_label = 'dcollab'
@@ -342,6 +389,7 @@ class Collab_Membership(models.Model):
         unique_together = ('user_id', 'group_id')
         indexes = [
             models.Index(name="cmem_role_idx",fields=['role']),
+            models.Index(name="cmem_status_idx",fields=['status']),
         ]
 
     #------------------------------------------------------------------

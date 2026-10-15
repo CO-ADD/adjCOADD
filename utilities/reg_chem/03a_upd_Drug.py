@@ -48,7 +48,7 @@ def main(prgArgs,djDir):
     from applib.data.str_lists import Dict_to_StrList
     from dsample.models import Project, COADD_Compound, Sample, Convert_ProjectID, Convert_CompoundID, Library, Library_Compound
     from dchem.models import Chem_Structure, Chem_Salt
-    from applib.mol.mol_std import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
+    from applib.mol.smi import get_Structure_Type_Smiles, get_MF_Smiles, SaltDict_to_SaltCode
     from ddrug.models import Drug
 
     

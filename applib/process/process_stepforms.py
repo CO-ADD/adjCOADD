@@ -71,7 +71,6 @@ class SingleFileField(forms.FileField):
 #             result = single_file_clean(data, initial)
 #         return result
 
-    
 # =================================================================
 # Process Step Forms
 # -----------------------------------------------------------------
@@ -147,6 +146,7 @@ class SelectMultipleFiles_StepForm(WriteUserRequiredMixin, forms.Form):
             raise forms.ValidationError("No files selected")
         return cleaned_data
 
+# --------------------------------------------------------------------------------------------------
 class SelectSingleFileFolder_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
     single_file = SingleFileField(label='Select Single File', 
@@ -196,11 +196,20 @@ class SelectSingleFileFolder_StepForm(WriteUserRequiredMixin, forms.Form):
 # --------------------------------------------------------------------------------------------------
 class Upload_StepForm(forms.Form):
 # --------------------------------------------------------------------------------------------------
+
+    # Process Fields
+    #
+    Process_fields = []
+    
+    # Upload Fields
+    Upload_fields = ['upload','overwrite']
     upload = forms.BooleanField(initial=False, required=False, help_text="Upload New Data to Database")
     overwrite = forms.BooleanField(initial=False, required=False, help_text="Overwrite Existing Data as well")
-    
+
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        #empty_field = models.CharField(max_length=100, blank=True)
         self.fields['upload'].label = "Upload New Data"
         self.fields['overwrite'].label = "Overwrite Existing Data"
         # self.fields['upload'].error_messages = {'required': 'File(s) contain Errors. Please correct the content of the files'}

@@ -40,7 +40,7 @@ PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
 
-VERSION = '1.6.3'
+VERSION = '1.8.3'
 
 #........................................................................
 if DEVELOPMENT:
@@ -166,8 +166,8 @@ INSTALLED_APPS = [
     'dplate.apps.dPlateConfig',
     'dpeptide.apps.dPeptideConfig',
     'dsummary.apps.dSummaryConfig',
-    #'rest_framework',
-    #'rest_framework.authtoken',
+    'rest_framework',
+    'rest_framework.authtoken',
     'formtools',
     'pgtrigger',
 ]
@@ -259,7 +259,7 @@ if DEVELOPMENT:
 
     elif DEVELOPMENT == 'Test':
         HOST_NAME = 'localhost'
-        DBHOST_NAME = 'imb-coadd-app.imb.uq.edu.au'
+        DBHOST_NAME = 'imb-coadd-test.imb.uq.edu.au'
 
     elif DEVELOPMENT == 'Meran':
         HOST_NAME = 'schlern'
