@@ -12,7 +12,11 @@
       {% include 'utils/miscellaneous/selectbox.html' with datatype=datatype object_id=object.pk %}
     </div>
 
-    <p class="card-text m-auto" style="font-size: xx-small; width: 95%">
+    <div class="card-text m-auto" style="width: 95%">
+      {% if object_smiles %}
+        <div id="structure{{object.pk}}" class="molecule-structure-svg d-flex justify-content-center" data-smiles="{{ object_smiles }}"></div>
+      {% endif %}
+
       {%if object_img%}
       <a id="drug_detail{{object.pk}}" class="card-link">
         {% load static %}
@@ -44,7 +48,7 @@
 
     </script>
     {%endif%}
-  </p>
+  </div>
   <p class="card-text m-0 fst-normal"> <strong>{{object_var2_label}}</strong> {{object_var2}}</p>
   <p class="card-text m-0 fst-normal"> <strong>{{object_var2b_label}}</strong> {{object_var2b}}</p>
   <p class="card-text m-0 fst-normal"> <strong>{{object_var3_label}}</strong>{{object_var3}}</p>
