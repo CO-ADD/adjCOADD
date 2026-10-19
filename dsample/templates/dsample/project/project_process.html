@@ -15,7 +15,13 @@
   </button>
 
   <button type="button" class="btn btn-outline-success {% if process_status < 9 %} disabled {% endif %}"> 
-    <a href="{% url 'project_report' pk=object.pk %}" style="color:inherit"> Generate Report</a>
+    <a href="#"
+       hx-get="{% url 'project_report' pk=object.pk %}"
+       hx-target="#info-body"
+       hx-swap="innerHTML"
+       data-bs-toggle="modal"
+       data-bs-target="#infoModal"
+       style="color:inherit"> Generate Report</a>
   </button>
 
 </div>

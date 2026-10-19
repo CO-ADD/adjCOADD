@@ -8,6 +8,7 @@ from django_filters.views import FilterView
 
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -255,34 +256,81 @@ class Project_RemoveView(Base_RemoveView):
 # -----------------------------------------------------------------
 @login_required
 def Project_ReportView(req, pk):
-    print(f" [Report] Project: {req}")
-    
-    if req.method=='GET':
+    _object=get_object_or_404(Project, project_id=pk)
 
-        _object=get_object_or_404(Project, project_id=pk)
-        _now = datetime.datetime.now()
-        _xls_name = f'Project_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+    if req.method == 'POST':
+        # Collect the selected report options from the modal form
+        options = {
+            'Storage_Info':   'Storage_Info' in req.POST,
+            'Structure_Info': 'Structure_Info' in req.POST,
+            'Run_Info':       'Run_Info' in req.POST,
+            'WithStats':      'WithStats' in req.POST,
+            'WithRunID':      'WithRunID' in req.POST,
+        }
+        report_name, report_url = _generate_project_report(pk, options)
 
-        cReport = Report_Screening()
-        cReport.qry_by_ProjectID(_object)
-        if cReport.n_compounds>0:
-            cReport.get_dataframe()
-            cReport.get_sample_info(Storage_Info=False, Structure_Info=True, Run_Info=False)
-            cReport.get_assay_info()
-            cReport.get_testplate_info(WithStats=False,WithRunID=True)
-            cReport.gen_pivot_tables(PivRows=['sample_class','sample_code','sample_id'])
+        if report_url:
+            message = {
+                'status': 'generated',
+                'report_name': report_name,
+                'report_url': report_url,
+            }
+        else:
+            message = {
+                'status': 'error',
+                'text': 'No screening data available for this project.',
+            }
+        return render(req, 'dsample/project/project_report_modal.html', {'message': message, 'object': _object})
 
-            print(f" [Report] Project: {pk} [{cReport.n_compounds} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
-            
-            if cReport.n_samples>0:
-                print(f" [Report] Project: {cReport.n_samples}")
-                req = HttpResponse(content_type='application/vnd.ms-excel')
-                req['Content-Disposition'] = f'attachment; filename={_xls_name}'
-                print(f" [Report] Project: {req['Content-Disposition']}")
-                cReport.to_excel(req)
-                print(f" [Report] Project: done {req}")
+    # GET - render the report options for the modal
+    options = {
+        'Storage_Info':   False,
+        'Structure_Info': True,
+        'Run_Info':       False,
+        'WithStats':      False,
+        'WithRunID':      True,
+    }
+    message = {'status': 'options'}
+    return render(req, 'dsample/project/project_report_modal.html', {'message': message, 'options': options, 'object': _object})
 
-        return(req)
+
+def _generate_project_report(pk, options):
+    """
+    Generate the Project screening report xlsx using the selected options.
+    Saves the report under MEDIA_ROOT/reports/ and returns (report_name, report_url).
+    Returns (None, None) when there is no screening data to report.
+    """
+    _object = get_object_or_404(Project, project_id=pk)
+    _now = datetime.datetime.now()
+    report_name = f'Project_{pk}_Summary_{_now:%Y%m%d%H%M%S}.xlsx'
+
+    cReport = Report_Screening()
+    cReport.qry_by_ProjectID(_object)
+
+    if cReport.n_compounds == 0:
+        return None, None
+
+    cReport.get_dataframe()
+    cReport.get_sample_info(Storage_Info=options['Storage_Info'],
+                            Structure_Info=options['Structure_Info'],
+                            Run_Info=options['Run_Info'])
+    cReport.get_assay_info()
+    cReport.get_testplate_info(WithStats=options['WithStats'],
+                               WithRunID=options['WithRunID'])
+    cReport.gen_pivot_tables(PivRows=['sample_class','sample_code','sample_id'])
+
+    print(f" [Report] Project: {pk} [{cReport.n_compounds} {cReport.n_assays} {cReport.n_testplates} {cReport.n_screenruns} {cReport.n_sc} {cReport.n_dr}]")
+
+    if cReport.n_samples == 0:
+        return None, None
+
+    report_dir = os.path.join(settings.MEDIA_ROOT, 'reports')
+    os.makedirs(report_dir, exist_ok=True)
+    report_path = os.path.join(report_dir, report_name)
+    cReport.to_excel(report_path)
+
+    report_url = f"/{settings.MEDIA_URL.strip('/')}/reports/{report_name}"
+    return report_name, report_url
     
 # -----------------------------------------------------------------
 
