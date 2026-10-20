@@ -28,6 +28,20 @@ logger = logging.getLogger(__name__)
 
 
 #=================================================================================================
+class Project_Member:
+    """
+    Lightweight collaborator representation returned by Project.get_members().
+    Provides a get_values() method so it renders in the generic datatable templates.
+    """
+    def __init__(self, full_name, role, status):
+        self.full_name = full_name
+        self.role = role
+        self.status = status
+
+    def get_values(self):
+        return [self.full_name, self.role, self.status]
+
+#=================================================================================================
 class Project(AuditModel):
     """
     List of Projects
@@ -191,11 +205,11 @@ class Project(AuditModel):
     def collaborator(self):
         _retList = []
         _pc = self.get_members(role='PC')
-        _li = self.group_id.li_user_id
+        _li = self.group_id.li_user_id if self.group_id else None
         #_li = self.get_members(role='LI')
         
         if _pc:
-            _retList.append(_pc[0]['full_name'])
+            _retList.append(_pc[0].full_name)
         if _li :
             if _li.full_name not in _retList:
                 _retList.append(_li.full_name)
@@ -233,7 +247,7 @@ class Project(AuditModel):
         
         _members = []   
         for member in _qry_members:
-            _members.append({"full_name":member.user_id.full_name, "role" :member.role, "status":member.status})
+            _members.append(Project_Member(member.user_id.full_name, member.role, member.status))
             
         return(_members)
 
