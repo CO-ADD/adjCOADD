@@ -70,31 +70,6 @@
             </div>
         </div>
 
-        <!-- COADD Compounds -->
-        <div class="accordion bg-transparent w-100" id="project-compounds">
-            <div class="accordion-item">
-            <h2 class="accordion-header" id="heading_02">
-                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
-                    data-bs-target="#collapsePrjCompounds" aria-expanded="true" aria-controls="collapse_02">
-                <h5 class="fs-6 my-0">
-                    CO-ADD Compounds
-                </h5>
-                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=coadd_count %}
-                <!-- prettier-ignore -->
-                </button>
-            </h2>
-            <div id="collapsePrjCompounds" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
-                data-bs-parent="#project-compounds">
-                <div class="accordion-body">
-                <div class="table-responsive">
-                    <!-- prettier-ignore -->
-                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields page_obj=coadd_page_obj querycount=coadd_count %}
-                </div>
-                </div>
-            </div>
-            </div>
-        </div>
-
        <!-- Project Contacts -->
         <div class="accordion bg-transparent w-100" id="project-collabs">
             <div class="accordion-item">
@@ -114,6 +89,31 @@
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
                     {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_collab' objects=collab_objs data_fields=collab_fields %}
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- COADD Compounds -->
+        <div class="accordion bg-transparent w-100" id="project-compounds">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_02">
+                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                    data-bs-target="#collapsePrjCompounds" aria-expanded="true" aria-controls="collapse_02">
+                <h5 class="fs-6 my-0">
+                    CO-ADD Compounds
+                </h5>
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=coadd_count %}
+                <!-- prettier-ignore -->
+                </button>
+            </h2>
+            <div id="collapsePrjCompounds" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
+                data-bs-parent="#project-compounds">
+                <div class="accordion-body">
+                <div class="table-responsive">
+                    <!-- prettier-ignore -->
+                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields page_obj=coadd_page_obj querycount=coadd_count %}
                 </div>
                 </div>
             </div>

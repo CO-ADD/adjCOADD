@@ -205,17 +205,13 @@ class Project(AuditModel):
     def collaborator(self):
         _retList = []
         _pc = self.get_members(role='PC')
-        _li = self.group_id.li_user_id if self.group_id else None
-        #_li = self.get_members(role='LI')
+        _li = self.get_members(role='LI')
         
         if _pc:
             _retList.append(_pc[0].full_name)
-        if _li :
-            if _li.full_name not in _retList:
-                _retList.append(_li.full_name)
-        # if _li:
-        #     if _li[0]['full_name'] not in _retList:
-        #         _retList.append(_li[0]['full_name'])
+        if _li:
+            if _li[0].full_name not in _retList:
+                _retList.append(_li[0].full_name)
         
         return(f"{'\n'.join(_retList)}")
     
@@ -239,16 +235,30 @@ class Project(AuditModel):
         return f"{self.project_id}  {self.source}"
 
     #------------------------------------------------
-    def get_members(self,role=None):
-        if role:
+    def get_members(self, role=None):
+    #
+    # Returns Project_Member objects. The Lead Investigator (LI) is derived
+    # on the fly from self.group_id.li_user_id (not stored in project_member).
+    #
+        _members = []
+
+        # Lead Investigator (derived)
+        if role in (None, 'LI'):
+            _li_user = self.group_id.li_user_id if self.group_id else None
+            if _li_user:
+                _members.append(Project_Member(_li_user.full_name, 'LI', 'C'))
+
+        # Stored memberships (PC, AC, VC)
+        if role == 'LI':
+            _qry_members = Project_Membership.objects.none()
+        elif role:
             _qry_members = self.project_memberships.filter(role=role)
         else:
             _qry_members = self.project_memberships.all()
-        
-        _members = []   
+
         for member in _qry_members:
             _members.append(Project_Member(member.user_id.full_name, member.role, member.status))
-            
+
         return(_members)
 
     #------------------------------------------------
@@ -295,8 +305,9 @@ class Project_Membership(models.Model):
     """
     List of Project Membership
     """
+    # NOTE: The Lead Investigator (LI) is derived from Project.group_id.li_user_id
+    # and is not stored in project_member - see Project.get_members().
     MEMBERSHIP_CHOICES = [ 
-    #        ("LI","Lead Investigator"),
             ("PC","Primary Contact"),
             ("AC","Alternative Contact"),
             ("VC","Virtual Contact")
