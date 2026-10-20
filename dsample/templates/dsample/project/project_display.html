@@ -1,0 +1,16 @@
+<div class="row">
+  {% for group in display_groups %}
+    <div class="col-md-3">
+      <table class="table table-hover table-sm align-middle table-bordered">
+        <tbody>
+          {% for row in group %}
+            <tr>
+              <th scope="row">{{ row.label }}</th>
+              <td>{{ row.value }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endfor %}
+</div>

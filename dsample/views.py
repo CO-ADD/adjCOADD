@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required, per
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import ValidationError
+from django.core.exceptions import FieldDoesNotExist, ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
 from django.db.models import Count
@@ -179,15 +179,9 @@ def Project_DetailView(req, pk):
     - data visual table: dataframe and pivot- table
     """
     context={}
-    # try:
     _object=get_object_or_404(Project, project_id=pk)
-    form=Project_UpdateForm(instance=_object)
-    # form=Project_UpdateForm(initial={'project_type':_object.project_type, 
-    #                                   'project_status':_object.project_status,}, 
-    #                                 instance=_object)
     context["object"]=_object
-    context["form"]=form
-
+    context["display_groups"] = _project_display_groups(_object)
 
     # Paginated and filtered list
     paginate_by = 50
@@ -200,7 +194,6 @@ def Project_DetailView(req, pk):
     context["collab_objs"] = _collab
     context["collab_count"] = len(_collab)
     context["collab_fields"] = ['full_name','role','status']
-
 
     # plate_data_df = get_screenrun_plates(_object.run_id)
     # context["org_id_obj_count"] = len(id_data_df)
@@ -215,38 +208,57 @@ def Project_DetailView(req, pk):
     return render(req, "dsample/project/project_detail.html", context)
 
 # -----------------------------------------------------------------
+def _project_display_groups(instance):
+    """
+    Build read-only label/value rows for the Project detail view,
+    grouped according to Project.VIEW_GROUPS.
+    """
+    groups = []
+    for field_names in Project.VIEW_GROUPS:
+        rows = []
+        for name in field_names:
+            try:
+                field = Project._meta.get_field(name)
+            except FieldDoesNotExist:
+                continue
+            value = getattr(instance, name, None)
+            if value is None or value == '':
+                value = ''
+            elif isinstance(value, (list, tuple)):
+                value = ', '.join(str(v) for v in value)
+            else:
+                value = str(value)
+            rows.append({'label': field.verbose_name, 'value': value})
+        groups.append(rows)
+    return groups
+
+# -----------------------------------------------------------------
 @login_required
 def Project_UpdateView(req, pk):
     _object=get_object_or_404(Project, project_id=pk)
-    kwargs={}
-    kwargs['user']=req.user
-    form=Project_UpdateForm(initial={'project_type':_object.project_type, 
-                                      'project_status':_object.project_status,}, 
-                                    instance=_object)
+
     if req.method=='POST':
-        try:
-            with transaction.atomic(using='dsample'):
-                obj = Project.objects.select_for_update().get(project_id=pk)
-                form=Project_UpdateForm(req.POST, instance=obj)    
-                if form.is_valid():       
+        form=Project_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dsample'):
                     instance=form.save(commit=False)
                     update_project_summary(instance)
-                    instance.save(**kwargs)
+                    instance.save(user=req.user)
                     ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update Project','Completed')
-                    # form.save_m2m() 
-                    return redirect(req.META['HTTP_REFERER'])
-                else:
-                    messages.warning(req, f'Update failed due to {form.errors} error')
-                    
-        except Exception as err:
-            messages.warning(req, f'Update failed due to {err} error')
-            return redirect(req.META['HTTP_REFERER'])
+                return redirect('project_detail', pk=pk)
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('project_detail', pk=pk)
 
+    # GET - render the editable form for the modal
+    form=Project_UpdateForm(instance=_object)
     context={}
     context["object"]=_object
     context["form"]=form
-   
-    return render(req, "dsample/project/project_update.html", context)
+    return render(req, "dsample/project/project_update_modal.html", context)
 
 # -----------------------------------------------------------------
 class Project_RemoveView(Base_RemoveView):

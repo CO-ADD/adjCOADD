@@ -5,8 +5,17 @@
 <div class="d-flex vh-100">
 
     <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
-        <div class="d-flex flex-column p-0">          
-            {% include 'utils/miscellaneous/update_btn.html' with model_name=model_name %} 
+        <div class="d-flex flex-column p-0">
+            <a href="#"
+               class="border-0 text-success bg-transparent"
+               data-bs-toggle="modal"
+               data-bs-target="#infoModal"
+               hx-get="{% url 'project_update' object.pk %}"
+               hx-target="#info-body"
+               hx-swap="innerHTML"
+               title="Update Project">
+               <i class="fa-regular fa-pen-to-square"></i>
+            </a>
         </div>
     </div>
 
@@ -26,8 +35,8 @@
                 <div id="collapse_01" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
                         data-bs-parent="#run-detail">
                 <div class="accordion-body bg-transparent">
-                    <!-- <b> {%include 'utils/message.html'%} </b> -->
-                    {% include 'dsample/project/project_update.html' %}
+                    <b> {%include 'utils/message.html'%} </b>
+                    {% include 'dsample/project/project_display.html' %}
                     <hr>
                     {% include 'detailview/audit_status.html' %}
                 </div>
