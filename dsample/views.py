@@ -193,7 +193,8 @@ def Project_DetailView(req, pk):
     context["coadd_count"] = _coadd_compounds.count()
     context["coadd_fields"] = COADD_Compound.get_fields()
 
-    _collab = _object.get_members() 
+    _collab = _object.get_members()
+    print(_collab) 
     context["collab_objs"] = _collab
     context["collab_count"] = len(_collab)
     context["collab_fields"] = ['full_name','role','status']
