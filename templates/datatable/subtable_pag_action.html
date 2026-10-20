@@ -3,9 +3,11 @@
 
 <div class="d-flex flex-column w-100">
 
+    {% if page_obj %}
     <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
       {% include 'grid/base/pagination.html'%}
     </div>
+    {% endif %}
 
   <table id="{{table_id}}" class="table-bg" style="width: 100%">
     <thead>

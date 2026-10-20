@@ -88,7 +88,7 @@
                 <div class="accordion-body">
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
-                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields %}
+                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields page_obj=coadd_page_obj querycount=coadd_count %}
                 </div>
                 </div>
             </div>

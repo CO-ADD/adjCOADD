@@ -184,9 +184,12 @@ def Project_DetailView(req, pk):
     context["display_groups"] = _project_display_groups(_object)
 
     # Paginated and filtered list
-    paginate_by = 50
     _coadd_compounds = COADD_Compound.objects.filter(project_id=_object, )
-    context["coadd_objs"] = _coadd_compounds
+    _coadd_paginator = Paginator(_coadd_compounds, 50)
+    _coadd_page = _coadd_paginator.get_page(req.GET.get('page'))
+
+    context["coadd_objs"] = _coadd_page
+    context["coadd_page_obj"] = _coadd_page
     context["coadd_count"] = _coadd_compounds.count()
     context["coadd_fields"] = COADD_Compound.get_fields()
 
