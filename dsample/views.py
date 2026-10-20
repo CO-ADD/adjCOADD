@@ -184,17 +184,20 @@ def Project_DetailView(req, pk):
     context["display_groups"] = _project_display_groups(_object)
 
     # Paginated and filtered list
+    _view = req.GET.get('view', 'table')
+    _per_page = 15 if _view == 'card' else 50
+
     _coadd_compounds = COADD_Compound.objects.filter(project_id=_object, )
-    _coadd_paginator = Paginator(_coadd_compounds, 50)
+    _coadd_paginator = Paginator(_coadd_compounds, _per_page)
     _coadd_page = _coadd_paginator.get_page(req.GET.get('page'))
 
+    context["view"] = _view
     context["coadd_objs"] = _coadd_page
     context["coadd_page_obj"] = _coadd_page
     context["coadd_count"] = _coadd_compounds.count()
     context["coadd_fields"] = COADD_Compound.get_fields()
 
     _collab = _object.get_members()
-    print(_collab)
     context["collab_objs"] = _collab
     context["collab_count"] = len(_collab)
     context["collab_fields"] = ['Name','Role','Status']
