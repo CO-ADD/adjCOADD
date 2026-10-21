@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}COADD{% endblock %}
+
+{% block content %}
+<div class="d-flex vh-100">
+
+  <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
+    <div class="d-flex flex-column p-0">
+      <a href="{% url 'abase_list' %}" class="border-0 text-success bg-transparent"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="Back to List">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="w-100">
+
+    <!-- Compound -->
+    <div class="accordion bg-transparent" id="abase-detail">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_00">
+          <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapse_00" aria-expanded="true" aria-controls="collapse_00">
+            <h5 class="fs-4 my-0">
+              <b>{{ object.compound_id }}</b> | <i>{{ object.compound_name }}</i>
+            </h5>
+          </button>
+        </h2>
+        <div id="collapse_00" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
+             data-bs-parent="#abase-detail">
+          <div class="accordion-body bg-transparent">
+            {% include 'dsample/abase/abase_display.html' %}
+            <hr>
+            {% include 'detailview/audit_status.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Batches -->
+    <div class="accordion bg-transparent w-100" id="abase-batches">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_01">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapseBatches" aria-expanded="true" aria-controls="collapse_01">
+            <h5 class="fs-6 my-0">ABase Compound Batches</h5>
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_count %}
+          </button>
+        </h2>
+        <div id="collapseBatches" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_01"
+             data-bs-parent="#abase-batches">
+          <div class="accordion-body">
+            <div class="table-responsive">
+              <!--prettier-ignore-->
+              {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_abasebatch' objects=batch_objs data_fields=batch_fields %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% include 'utils/molecule_structure.html' %}
+
+{% endblock %}

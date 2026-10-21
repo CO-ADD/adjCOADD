@@ -16,7 +16,7 @@ from adjcoadd.constants import PROJECT_COMPOUND_STATUS, PROJECT_SCREEN_STATUS, P
 from applib.django.base.filters import BaseStatus_Filter, TrigramFilter
  
 #dSample
-from dsample.models import  Project
+from dsample.models import  Project, ABase_Compound
 
 #=================================================================================================
 # Project
@@ -144,3 +144,29 @@ class Project_UpdateForm(Project_CreateForm):
     class Meta:
         model=Project
         exclude=['project_id','project_members'] + Project.ORACLE_FIELDS 
+
+#=================================================================================================
+# ABase Compound
+#=================================================================================================
+class ABase_Filter(BaseStatus_Filter):
+
+    compound_id = CharFilter(field_name='compound_id', lookup_expr='icontains')
+    compound_code = CharFilter(field_name='compound_code', lookup_expr='icontains')
+    compound_name = CharFilter(field_name='compound_name', lookup_expr='icontains')
+    reg_mf = CharFilter(field_name='reg_mf', lookup_expr='icontains')
+    structure_type = CharFilter(field_name='structure_type', lookup_expr='icontains')
+    structure_metal = CharFilter(field_name='structure_metal', lookup_expr='icontains')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set Filter label to the Fields VerboseName or Filter Name
+        for i in self.filters:
+            try:
+                self.filters[i].label = self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+            except Exception:
+                self.filters[i].label = i
+
+    class Meta:
+        model = ABase_Compound
+        fields = ['compound_id', 'compound_code', 'compound_name',
+                  'reg_mf', 'structure_type', 'structure_metal']

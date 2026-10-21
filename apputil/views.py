@@ -23,7 +23,7 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 from dscreen.models import Screen_Run
-from dsample.models import Project
+from dsample.models import Project, ABase_Compound
 from dcell.models import Cell
 
 from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
@@ -63,7 +63,8 @@ def index(req):
         'nDrug':   str(Drug.objects.count()) + ' Drugs',
         # CastDB
         'nRun':    str(Screen_Run.objects.count()) + ' Runs',
-        'nProject':    str(Project.objects.count()) + ' Projects'
+        'nProject':    str(Project.objects.count()) + ' Projects',
+        'nABase':      str(ABase_Compound.objects.count()) + ' MCC Compounds'
     }
     return render(req, 'home.html', nDict)
 

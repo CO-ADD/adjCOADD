@@ -698,6 +698,16 @@ class ABase_Compound(AuditModel):
     List of Abase Compounds as per Registration
     """
 #-------------------------------------------------------------------------------------------------
+    LIST_VIEW_FIELDS = {
+        'compound_id': {'ID': {'compound_id': URL_LINKS['abase_compound_id']}},
+        'compound_code':'Code',
+        'compound_name':'Name',
+        'reg_mw':'MW',
+        'reg_mf':'MF',
+        'structure_type':'Type',
+        'structure_metal':'Metal',
+    }
+
     DICTIONARY_FIELDS = {
     }
 
@@ -740,6 +750,19 @@ class ABase_Compound(AuditModel):
     List of Abase CmmpBatches as per Registration
     """
 class ABase_Compound_Batch(AuditModel):
+
+    LIST_VIEW_FIELDS = {
+        'cmpbatch_id':'CmpBatch ID',
+        'library_id':'Library',
+        'project_id':'Project',
+        'full_mw':'Full MW',
+        'full_mf':'Full MF',
+        'salt_code':'Salt',
+        'supplier':'Supplier',
+        'supplier_code':'Supplier Code',
+        'date_recieved':'Received',
+        'init_amount':'Amount',
+    }
 
     DICTIONARY_FIELDS = {
         'init_amount_unit':'Unit_Amount',

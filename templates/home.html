@@ -9,25 +9,25 @@
 
     <div id="Label-OrganismModel" class="card-body d-flex justify-content-center">   
         {% url 'org_list' as org_url %}
-        {% include 'button/land_btn_primary.html' with title='ORGANISM' url=org_url totalnumber=nOrg %}
+        {% include 'button/land_btn_orgdb.html' with title='ORGANISM' url=org_url totalnumber=nOrg %}
     </div>
  
     <div id="Cells" class="card-body d-flex justify-content-center">
         {% url 'cell_list' as cell_url %}
-        {% include 'button/land_btn_primary.html' with title='CELL' url=cell_url totalnumber=nCell %}
+        {% include 'button/land_btn_orgdb.html' with title='CELL' url=cell_url totalnumber=nCell %}
     </div>
 
     <div id="Label-Sequence" class="card-body d-flex justify-content-center">
         
         {% url 'genomeseq_list' as genomeseq_url %}
-        {% include 'button/land_btn_primary.html' with title='SEQUENCE' url=genomeseq_url totalnumber=nSeq %}
+        {% include 'button/land_btn_orgdb.html' with title='SEQUENCE' url=genomeseq_url totalnumber=nSeq %}
     </div>
 
 
     <div id="Label-DrugModel" class="card-body d-flex justify-content-center">
         <!--  -->
         {% url 'drug_card' as drug_url %}
-        {% include 'button/land_btn_primary.html' with title='DRUG' url=drug_url totalnumber=nDrug %}
+        {% include 'button/land_btn_orgdb.html' with title='DRUG' url=drug_url totalnumber=nDrug %}
     </div>
 
 </div>
@@ -35,12 +35,19 @@
 
     <div id="Label-Projects" class="card-body d-flex justify-content-center">
         {% url 'project_list' as prj_url %}
-        {% include 'button/land_btn_secondary.html' with title='PROJECT' url=prj_url totalnumber=nProject %} 
+        {% include 'button/land_btn_castdb.html' with title='PROJECT' url=prj_url totalnumber=nProject %} 
     </div> 
 
     <div id="Label-Screens" class="card-body d-flex justify-content-center">        
         {% url 'screenrun_list' as seq_url %}
-        {% include 'button/land_btn_secondary.html' with title='SCREEN' url=seq_url totalnumber=nRun %}
+        {% include 'button/land_btn_castdb.html' with title='SCREEN' url=seq_url totalnumber=nRun %}
+    </div>
+</div>
+
+<div class="container d-flex flex-wrap justify-content-around">
+    <div id="Label-ABase" class="card-body d-flex justify-content-center">
+        {% url 'abase_list' as abase_url %}
+        {% include 'button/land_btn_abase.html' with title='MCC COMPOUND' url=abase_url totalnumber=nABase %}
     </div>
 </div>
 
