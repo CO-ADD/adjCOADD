@@ -1125,4 +1125,5 @@ form p {
 .table-label-col {
   width: 1%;
   white-space: nowrap;
+  padding-right: 0.75rem !important;
 }
