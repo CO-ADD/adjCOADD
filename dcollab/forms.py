@@ -252,10 +252,11 @@ class CollabMembership_Form(forms.ModelForm):
             
     class Meta:
         model=Collab_Membership
-        fields = ['user_id', 'role']
+        fields = ['user_id', 'role', 'status']
         widgets = {
             'user_id': forms.Select(attrs={'class': 'form-select'}),
             'role': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
 
@@ -264,7 +265,7 @@ CollabMembership_FormSet = inlineformset_factory(
     Collab_Group,
     Collab_Membership,
     form=CollabMembership_Form,
-    fields=['user_id', 'role'],
+    fields=['user_id', 'role', 'status'],
     extra=1,
     can_delete=True,
 )
