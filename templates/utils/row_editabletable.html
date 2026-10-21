@@ -1,6 +1,6 @@
 {% load custom_filters %}
 
-<th scope="row" class="movable">{{form_label}}</th>
+<th scope="row" class="movable table-label-col">{{form_label}}</th>
 
 <td class="editable" data-id="{{object.pk}}" data-type="">
   {% if field.name|get_linkname:field.initial %}

@@ -10,7 +10,7 @@
           <tbody>
             {% for field in group %}
               <tr>
-                <th scope="row" class="align-middle w-25">{{ field.label }}</th>
+                <th scope="row" class="align-middle table-label-col">{{ field.label }}</th>
                 <td class="align-middle">
                   {{ field }}
                   {% for error in field.errors %}

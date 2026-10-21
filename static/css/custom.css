@@ -1118,3 +1118,11 @@ form p {
     /* transform: rotateX(90deg); */
   }
 }
+
+/* --------------------------- Vertical (label/value) tables --------------------------*/
+/* Keep the label column as narrow as the longest label, giving the value column the
+   remaining width - even when the values are empty or small. */
+.table-label-col {
+  width: 1%;
+  white-space: nowrap;
+}
