@@ -78,7 +78,7 @@ def get_AMRGenes_byOrgID(OrgID):
     OrgObj = Organism.objects.get(organism_id=OrgID)
 
     vAMR = AMR_Genotype.objects.filter(seq_id__orgbatch_id__organism_id=OrgObj, astatus__gte=0 )
-    #print(f"Getting {len(vMIC)} Vitek AST data for {OrgID} ")
+    print(f"Getting {len(vAMR)} AMR Gene data for {OrgID} ")
     for m in vAMR:
         aDict = {}
         OrgBatchID = str(m.seq_id.orgbatch_id)
@@ -91,7 +91,6 @@ def get_AMRGenes_byOrgID(OrgID):
         aDict['Coverage'] = m.ref_coverage
         aDict['Identity'] = m.ref_identity
         orgGene.append(aDict)
-
 
     if len(orgGene) > 0:
         df = pd.DataFrame(orgGene)
