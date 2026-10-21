@@ -81,7 +81,7 @@ class Organisation_UpdateForm(Organisation_CreateForm):
         model=Organisation
         exclude=[]
 
-    field_order = list(Organisation.LIST_VIEW_FIELDS.keys())
+    field_order = ['organisation_id', 'organisation_code', 'organisation_name', 'country', 'organisation_type', 'previous_names']
 
 #=================================================================================================
 # Collab User
