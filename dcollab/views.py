@@ -355,38 +355,23 @@ def CollabUser_CreateView(req):
 # -----------------------------------------------------------------
 @login_required
 def CollabUser_UpdateView(req, pk):
+    _object = get_object_or_404(Collab_User, user_id=pk)
 
-    _object=get_object_or_404(Collab_User, assay_id=pk)
+    if req.method == 'POST':
+        form = CollabUser_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dcollab'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Collaborator', 'Completed')
+                return redirect('collabuser_list')
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('collabuser_list')
 
-    kwargs={}
-    kwargs['user']=req.user
-    message={'status':'update','text':''}
-    
-    form=CollabUser_UpdateForm(instance=_object)
-    
-    if req.method=='POST':
-        try:
-            with transaction.atomic(using='dscreen'):
-                obj = Collab_User.objects.select_for_update().get(assay_id=pk)
-                form= CollabUser_UpdateForm(req.POST, instance=obj)    
-                if form.is_valid():
-                    instance=form.save(commit=False)
-                    #update_screenrun_summary(instance)
-                    instance.save(**kwargs)
-
-                    ApplicationLog.add('Update',str(instance.pk),'Info',req.user,str(instance.pk),'Update CollabUser','Completed')
-                    message={'status':'saved','text':f'CollabUser [{pk}] Updated'}
-                    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
-                else:
-                    messages.warning(req, f'Update failed due to {form.errors} error')
-                    
-        except Exception as err:
-            messages.warning(req, f'Update failed due to {err} error')
-            message={'status':'update','text':'Input Error'}
-            return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
-
-    context={}
-    context["object"]=_object
-    context["form"]=form
-    
-    return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
+    form = CollabUser_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form}
+    return render(req, 'dcollab/collabuser/collabuser_update_modal.html', context)

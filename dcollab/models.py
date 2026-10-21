@@ -135,6 +135,8 @@ class Collab_User(AuditModel):
     DICTIONARY_FIELDS = {
     }
 
+    VIEW_GROUPS = []
+
     ID_SEQUENCE = 'Collab_User'
     ID_PREFIX = 'CUSR'
     ID_PAD = 5

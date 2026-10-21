@@ -157,8 +157,7 @@ class CollabUser_CreateForm(forms.ModelForm):
         
     class Meta:
         model=Collab_User
-        exclude=['assay_id']
-        #exclude=Screen_Run.CALCULATED_FIELDS
+        exclude=['portal_pw']
 
     def create_field_groups(self):
         if len(Collab_User.VIEW_GROUPS) > 0:
@@ -169,6 +168,8 @@ class CollabUser_CreateForm(forms.ModelForm):
 # -----------------------------------------------------------------
 class CollabUser_UpdateForm(CollabUser_CreateForm):
 
+    user_id = forms.CharField(disabled=True)
+
     def __init__(self, *args, **kwargs): 
         super(CollabUser_UpdateForm, self).__init__(*args, **kwargs)
 
@@ -177,7 +178,11 @@ class CollabUser_UpdateForm(CollabUser_CreateForm):
         #     self.fields[field].widget.attrs['readonly'] = True
     class Meta:
         model=Collab_User
-        exclude=['assay_id']
+        exclude=['portal_pw']
+
+    field_order = ['user_id', 'title', 'first_name', 'last_name', 'position', 'email', 'email2',
+                   'organisation_id', 'department', 'postal_address', 'city', 'country', 'phone',
+                   'subscribed', 'active_email', 'portal_userid', 'pi', 'ora_user_id', 'ora_group_id']
 
 #=================================================================================================
 # Collab Group
