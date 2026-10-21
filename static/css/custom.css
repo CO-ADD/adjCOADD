@@ -40,6 +40,7 @@ Animation)
   --brand-bg: #2c7a84;
   --info-bg: #bdcaca;
   --border-color: #a6b6b6;
+  --bs-border-color: var(--border-color);
   --bs-table-hover-bg: #ebebeb !important;
 }
 
@@ -146,14 +147,11 @@ body {
 }
 
 /*-------------- Change Border style here ---------------*/
-.border,
-table,
-th {
-  border: 2px solid var(--border-color) !important;
-}
-
-td {
-  border: 1px solid var(--border-color) !important;
+/* Scoped to data tables only. Bootstrap borders (e.g. .table-bordered)
+   are themed globally via --bs-border-color in :root. */
+.table-bg th,
+.table-bg td {
+  border: 1px solid var(--border-color);
 }
 
 /* -------------------- Change Bg and text color here -------------*/
@@ -169,7 +167,7 @@ td {
 .text-info,
 .page-link,
 .card-link,
-a {
+a:not(.btn):not(.nav-link):not(.dropdown-item) {
   color: var(--brand-bg) !important;
 }
 
@@ -1122,5 +1120,5 @@ form p {
 .table-label-col {
   width: 1%;
   white-space: nowrap;
-  padding: 0.35rem 1rem 0.35rem 0.35rem !important;
+  padding-right: 0.75rem !important;
 }
