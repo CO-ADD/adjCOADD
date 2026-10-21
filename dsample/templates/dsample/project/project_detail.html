@@ -17,17 +17,6 @@
                <i class="fa-regular fa-pen-to-square"></i>
             </a>
         </div>
-        <div class="d-flex flex-column p-0">
-            {% if view == 'card' %}
-            <a href="?view=table" class="border-0 text-success bg-transparent" title="Table View">
-                <i class="fa-solid fa-table-list fs-5"></i>
-            </a>
-            {% else %}
-            <a href="?view=card" class="border-0 text-success bg-transparent" title="Card View">
-                <i class="fa-solid fa-grip fs-5"></i>
-            </a>
-            {% endif %}
-        </div>
     </div>
 
     <div class="w-100">
@@ -124,11 +113,11 @@
                 <div class="accordion-body">
                 {% if view == 'card' %}
                     <!-- prettier-ignore -->
-                    {% include 'dsample/project/compound_card.html' with page_obj=coadd_page_obj querycount=coadd_count %}
+                    {% include 'dsample/project/compound_card.html' with page_obj=coadd_page_obj querycount=coadd_count view=view view_switch=True %}
                 {% else %}
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
-                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields page_obj=coadd_page_obj querycount=coadd_count %}
+                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields page_obj=coadd_page_obj querycount=coadd_count view=view view_switch=True %}
                 </div>
                 {% endif %}
                 </div>

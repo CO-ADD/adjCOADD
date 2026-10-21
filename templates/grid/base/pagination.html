@@ -1,6 +1,8 @@
 {% load pagination_url %}
 <!--prettier-ignore-->
-<div class="d-flex p-0 ps-2 m-0 align-items-baseline">
+<div class="d-flex flex-wrap justify-content-between p-0 ps-2 m-0 align-items-baseline">
+
+  <div class="d-flex align-items-baseline">
 
     <ul class="pagination">
         <!-- <span class="step-links"> -->
@@ -63,5 +65,18 @@
     <span class="text-info">&nbsp;  
      | <strong> {{querycount|intcomma}} </strong> entries
     </span>
+
+  </div>
+
+  {% if view_switch %}
+  <div class="btn-group btn-group-sm mb-1" role="group" aria-label="View toggle">
+    <a href="{% view_url 'table' request.GET.urlencode %}"
+       class="btn btn-outline-success {% if view != 'card' %}active{% endif %}"
+       title="Table view"><i class="fa-solid fa-table-list"></i></a>
+    <a href="{% view_url 'card' request.GET.urlencode %}"
+       class="btn btn-outline-success {% if view == 'card' %}active{% endif %}"
+       title="Card view"><i class="fa-solid fa-grip"></i></a>
+  </div>
+  {% endif %}
 
 </div>
