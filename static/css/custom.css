@@ -167,7 +167,7 @@ body {
 .text-info,
 .page-link,
 .card-link,
-a:not(.btn):not(.nav-link):not(.dropdown-item) {
+a {
   color: var(--brand-bg) !important;
 }
 
@@ -246,6 +246,7 @@ i {
   background-color: rgba(var(--plain-text-bg), 0.5) !important;
   color: var(--brand-bg) !important;
   font-weight: normal;
+  box-shadow: none !important;
 }
 
 .accordion-item {
