@@ -1,3 +1,5 @@
+<span hx-swap-oob="innerHTML:#info-title"><i class="bi bi-file-earmark-spreadsheet me-2"></i>Generate Report <small class="text-muted">/ {{ object.pk }}</small></span>
+
 {% if message.status == 'options' %}
   <form
     hx-post="{% url 'project_report' pk=object.pk %}"
@@ -5,14 +7,6 @@
     hx-swap="innerHTML"
   >
     {% csrf_token %}
-
-    <div class="d-flex align-items-center pb-3 mb-3 border-bottom">
-      <i class="bi bi-file-earmark-spreadsheet text-success me-2"></i>
-      <div class="lh-sm">
-        <div class="fw-bold">Generate Report</div>
-        <div class="text-muted small">Select the sections to include in <span class="text-break">{{ object.pk }}</span></div>
-      </div>
-    </div>
 
     <div class="small">
       <div class="form-check form-switch">

@@ -1,13 +1,7 @@
+<span hx-swap-oob="innerHTML:#info-title"><i class="bi bi-pencil-square me-2"></i>Update Project <small class="text-muted">/ {{ object.pk }}</small></span>
+
 <form method="POST" action="{% url 'project_update' object.pk %}">
   {% csrf_token %}
-
-  <div class="d-flex align-items-center pb-3 mb-3 border-bottom">
-    <i class="bi bi-pencil-square text-primary me-2"></i>
-    <div class="lh-sm">
-      <div class="fw-bold">Update Project</div>
-      <div class="text-muted small text-break">{{ object.pk }}</div>
-    </div>
-  </div>
 
   <div style="max-height: 55vh; overflow-y: auto; padding-right: .25rem;">
     {% for group in form.groups %}
