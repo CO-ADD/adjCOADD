@@ -16,7 +16,7 @@ urlpatterns = [
     # path('organisation_card', Organisation_CardView.as_view(), name="organisation_card"),
     path('organisation_list', Organisation_ListView.as_view(), name="organisation_list"),
     path('createOrganisation/', Organisation_CreateView, name="organisation_create"),
-    path('updateOrganisation/<str:pk>', Organisation_UpdateView.as_view(), name="organisation_update"),
+    path('updateOrganisation/<str:pk>', Organisation_UpdateView, name="organisation_update"),
     #path('deleteOrganisation/<str:pk>', Organisationt_RemoveView.as_view(), name="organisation_delete"),
     #path('organisation/report/<str:pk>', Organisation_ReportView, name="organisation_report"),
 

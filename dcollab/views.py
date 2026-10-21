@@ -87,12 +87,29 @@ def Organisation_CreateView(req):
     return render(req, 'dcollab/organisation/organisation_create.html', { 'form':form, }) 
 
 # -----------------------------------------------------------------
-class Organisation_UpdateView(Htmx_UpdateView):
+@login_required
+def Organisation_UpdateView(req, pk):
+    _object = get_object_or_404(Organisation, organisation_id=pk)
 
-    form_class = Organisation_UpdateForm
-    template_name = "dcollab/organisation/organisation_update.html"
-    template_htmx = "dcollab/organisation/organisation_update_htmx.html"
-    model = Organisation
+    if req.method == 'POST':
+        form = Organisation_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dcollab'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Organisation', 'Completed')
+                return redirect('organisation_list')
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('organisation_list')
+
+    # GET - render the editable form for the modal
+    form = Organisation_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form}
+    return render(req, 'dcollab/organisation/organisation_update_modal.html', context)
 
 #=================================================================================================
 # Collaborator Group

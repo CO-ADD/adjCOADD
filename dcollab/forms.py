@@ -49,8 +49,7 @@ class Organisation_CreateForm(forms.ModelForm):
     # PK to add help text
     organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    country = CountryField()
-    organisation_type=ChoiceFilter(field_name='organisation_type',choices=[], empty_label=None)
+    organisation_type = forms.ModelChoiceField(queryset=Dictionary.objects.all(), required=False)
 
     def __init__(self, *args, **kwargs): 
         super(Organisation_CreateForm, self).__init__(*args, **kwargs)
@@ -82,7 +81,7 @@ class Organisation_UpdateForm(Organisation_CreateForm):
         model=Organisation
         exclude=[]
 
-    field_order = Organisation.LIST_VIEW_FIELDS
+    field_order = list(Organisation.LIST_VIEW_FIELDS.keys())
 
 #=================================================================================================
 # Collab User
