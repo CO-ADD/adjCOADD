@@ -25,7 +25,7 @@ class Organisation(AuditModel):
         "organisation_id":"ID",
         "organisation_code":"Code",
         "organisation_name":"Name",
-        "country":"Country",
+        "country.name":"Country",
         "organisation_type":"Type",        
     }
     
