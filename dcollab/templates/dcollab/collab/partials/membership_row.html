@@ -1,11 +1,9 @@
 
-<div class="membership-row row align-items-end mb-3 border-bottom pb-2" 
-  id="{{ form.prefix }}">
-  <!-- Hidden management fields (required for formset tracking) -->
+<div class="membership-row row align-items-end mb-3 border-bottom pb-2" id="{{ form.prefix }}">
+  {% if new_total %}
+  <input type="hidden" name="memberships-TOTAL_FORMS" value="{{ new_total }}" id="id_memberships-TOTAL_FORMS" hx-swap-oob="true">
+  {% endif %}
   {{ form.id }}
-  {{ form.group_id }}
- 
-  <input type="hidden" name="{{ form.DELETE.html_name }}" id="id_{{ form.prefix }}-DELETE" value="">
 
   <!-- <div class="row align-items-end mb-2 border-bottom pb-2"> -->
     <div class="col-md-6">
@@ -40,8 +38,14 @@
 
     <div class="col-md-2 text-end">
       {% if form.instance.pk %}
-        {{ form.DELETE }}
-        <button type="button" class="btn btn-sm btn-outline-danger" hx-get="{% url 'add-member' object.pk %}" hx-swap="outerHTML" hx-target="closest .row">Remove</button>
+        <span class="d-none">{{ form.DELETE }}</span>
+        <button type="button" class="btn btn-sm btn-outline-danger"
+          onclick="document.getElementById('id_{{ form.prefix }}-DELETE').checked = true; this.closest('.membership-row').style.display = 'none';">
+          Remove
+        </button>
+      {% else %}
+        <button type="button" class="btn btn-sm btn-outline-danger"
+          onclick="this.closest('.membership-row').remove();">Remove</button>
       {% endif %}
     </div>
 

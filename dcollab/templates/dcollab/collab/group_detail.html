@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}COADD - Collab Group{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Collab Group: {{ object.group_code }}</h2>
+    <div>
+      <a href="{% url 'collabgroup_list' %}" class="btn btn-outline-secondary me-2">
+        <i class="bi bi-arrow-left me-1"></i>Back to List
+      </a>
+      <a class="btn btn-outline-primary"
+         data-bs-toggle="modal"
+         data-bs-target="#infoModal"
+         hx-get="{% url 'collabgroup_update' object.pk %}"
+         hx-target="#info-body"
+         hx-swap="innerHTML"
+         title="Update Collab Group">
+        <i class="fa-regular fa-pen-to-square me-1"></i>Edit Group
+      </a>
+    </div>
+  </div>
+
+  <!-- Group Information -->
+  <div class="card mb-4">
+    <div class="card-header">Group Information</div>
+    <div class="card-body">
+      <table class="table table-sm table-bordered align-middle mb-0">
+        <tbody>
+          <tr><th class="table-label-col">Group ID</th><td>{{ object.group_id }}</td></tr>
+          <tr><th class="table-label-col">Code</th><td>{{ object.group_code }}</td></tr>
+          <tr><th class="table-label-col">Organisation</th><td>{{ object.organisation_id|default:"—" }}</td></tr>
+          <tr><th class="table-label-col">Lead Investigator</th><td>{{ object.li_user_id|default:"—" }}</td></tr>
+          <tr><th class="table-label-col">EMail</th><td>{{ object.email|default:"—" }}</td></tr>
+          <tr><th class="table-label-col">Department</th><td>{{ object.department|default:"—" }}</td></tr>
+          <tr><th class="table-label-col">Postal Address</th><td>{{ object.postal_address|default:"—" }}</td></tr>
+          <tr><th class="table-label-col">City</th><td>{{ object.city|default:"—" }}</td></tr>
+          <tr><th class="table-label-col">Country</th><td>{{ object.country.name }}</td></tr>
+          <tr><th class="table-label-col">MTA Status</th><td>{{ object.mta_status|default:"—" }}</td></tr>
+          <tr><th class="table-label-col">MTA Document</th><td>{{ object.mta_document|default:"—" }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Group Members -->
+  <form method="post" action="{% url 'collabgroup_detail' object.pk %}">
+    {% csrf_token %}
+    <div id="membership-list">
+      {% include "dcollab/collab/partials/membership_list.html" %}
+    </div>
+
+    <div class="mt-3 text-end">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-save me-1"></i>Save Members
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

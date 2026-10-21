@@ -33,7 +33,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 from dcollab.models import Organisation, Collab_Group, Collab_User
 from dcollab.forms import (Organisation_Filter, Organisation_CreateForm, Organisation_UpdateForm,
                         CollabGroup_Filter, CollabGroup_CreateForm, CollabGroup_UpdateForm,
-                        CollabGroup_Form, CollabMembership_FormSet,
+                        CollabMembership_FormSet,
                         CollabUser_Filter,  CollabUser_CreateForm,  CollabUser_UpdateForm,
                         )
 # from dscreen.models import Screen_Run
@@ -199,79 +199,65 @@ def CollabGroup_XUpdateView_old(req, pk):
 
 
 #=================================================================================================
-class CollabGroup_UpdateView(LoginRequiredMixin, UpdateView):
-    
-    model = Collab_Group
-    form_class = CollabGroup_Form
-    template_name = "dcollab/collab/group_update.html"
-    success_url = reverse_lazy("collabgroup_list")
+@login_required
+def CollabGroup_UpdateView(req, pk):
+    _object = get_object_or_404(Collab_Group, group_id=pk)
 
-    # redirect unauthenticated users
-    login_url = "login"              # your login URL name (can be path like '/accounts/login/')
-    redirect_field_name = "next"     # optional, controls ?next= param
-        
-    def get_user_queryset(self):
-        """Preload all users efficiently once."""
-        return Collab_User.objects.select_related("organisation_id").order_by("last_name", "first_name")
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user_query_set = self.get_user_queryset()
-        
-        if self.request.POST:
-            context["membership_formset"] = CollabMembership_FormSet(
-                self.request.POST, instance=self.object
-            )
+    if req.method == 'POST':
+        form = CollabGroup_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dcollab'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Collab Group', 'Completed')
+                return redirect('collabgroup_detail', pk=pk)
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
         else:
-            context["membership_formset"] = CollabMembership_FormSet(instance=self.object)
-        return context
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('collabgroup_detail', pk=pk)
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        formset = CollabMembership_FormSet(self.request.POST, instance=self.object)
-        print(f" [CollabGroup_UpdateView] POST {form.is_valid()} {formset.is_valid()}")
-        if form.is_valid() and formset.is_valid():
-            print(f" [CollabGroup_UpdateView] Valid Forms")
-            
-            print(f" [CollabGroup_UpdateView] {self.request.POST}")
-            group = form.save()
-            formset.instance = group
-            formset.save()
-            messages.success(request, f"Group '{group.group_code}' and memberships saved successfully!")
-            return redirect(reverse("collabgroup-update", kwargs={"pk": group.pk}))
+    form = CollabGroup_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form}
+    return render(req, 'dcollab/collabgroup/collabgroup_update_modal.html', context)
 
+
+#=================================================================================================
+class CollabGroup_DetailView(LoginRequiredMixin, View):
+    login_url = '/'
+    template_name = 'dcollab/collab/group_detail.html'
+
+    def get(self, req, pk):
+        group = get_object_or_404(Collab_Group, group_id=pk)
+        formset = CollabMembership_FormSet(instance=group, prefix='memberships')
+        context = {'object': group, 'membership_formset': formset}
+        return render(req, self.template_name, context)
+
+    def post(self, req, pk):
+        group = get_object_or_404(Collab_Group, group_id=pk)
+        formset = CollabMembership_FormSet(req.POST, instance=group, prefix='memberships')
+        if formset.is_valid():
+            try:
+                with transaction.atomic(using='dcollab'):
+                    formset.save()
+                    ApplicationLog.add('Update', str(group.pk), 'Info', req.user, str(group.pk), 'Update Group Members', 'Completed')
+                messages.success(req, f"Group '{group.group_code}' members updated successfully!")
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
         else:
-            print(f" [CollabGroup_UpdateView] Update failed due to {form.errors} error")
-            print(f" [CollabGroup_UpdateView] Update failed due to {formset.errors} error")
-            print(self.request.POST)
-        
-    def form_valid(self, form):
-        context = self.get_context_data()
-        membership_formset = context["membership_formset"]
+            messages.warning(req, f'Update failed due to {formset.errors} error')
+        return redirect('collabgroup_detail', pk=pk)
 
-        if membership_formset.is_valid():
-            self.object = form.save()
-            membership_formset.instance = self.object
-            membership_formset.save()
-            messages.success(self.request, "Group and members updated successfully.")
-            if self.request.htmx:
-                context["membership_formset"] = CollabMembership_FormSet(instance=self.object)
-                return render(self.request, "dcollab/collab/partials/membership_list.html", context)
-            return redirect(self.success_url)
-        else:
-            if self.request.htmx:
-                return render(self.request, "dcollab/collab/partials/membership_list.html", context)
-            return self.form_invalid(form)  
-        
+
 class AddMembershipRow_View(View):
     def get(self, request, pk):
         group = get_object_or_404(Collab_Group, pk=pk)
-        form_count = int(request.GET.get("form_count",0))
-        formset = CollabMembership_FormSet(instance=group)
+        form_count = int(request.GET.get("form_count", 0))
+        formset = CollabMembership_FormSet(instance=group, prefix='memberships')
         new_form = formset.empty_form
         new_form.prefix = f"memberships-{form_count}"
-        context = {"form": new_form}
+        context = {"form": new_form, "new_total": form_count + 1}
         print(f" [AddMembershipRow_View.get] {form_count}")
         return render(request, "dcollab/collab/partials/membership_row.html", context)
 

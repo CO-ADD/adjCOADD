@@ -5,7 +5,7 @@ from django.urls import path, include, re_path
 from dcollab.views import  (Organisation_ListView, Organisation_CreateView, Organisation_UpdateView,
                             CollabGroup_ListView,  CollabGroup_CreateView, 
                             CollabUser_ListView, CollabUser_CreateView, CollabUser_UpdateView,
-                            CollabGroup_UpdateView, AddMembershipRow_View, CollabUser_SearchView
+                            CollabGroup_UpdateView, CollabGroup_DetailView, AddMembershipRow_View, CollabUser_SearchView
                             # Project_CreateView, Project_DetailView, Project_UpdateView, Project_ReportView,
                             # Project_RemoveView,
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
@@ -24,7 +24,8 @@ urlpatterns = [
     # path('collabgroup_card', CollabGroup_CardView.as_view(), name="collabgroup_card"),
     path('collabgroup_list', CollabGroup_ListView.as_view(), name="collabgroup_list"),
     path('createCollabGroup/', CollabGroup_CreateView, name="collabgroup_create"),
-    path('updateCollabGroup/<str:pk>', CollabGroup_UpdateView.as_view(), name="collabgroup_update"),
+    path('updateCollabGroup/<str:pk>', CollabGroup_UpdateView, name="collabgroup_update"),
+    path('collabgroup/<str:pk>', CollabGroup_DetailView.as_view(), name="collabgroup_detail"),
     #path('deleteCollabGroup/<str:pk>', CollabGroup_RemoveView.as_view(), name="collabgroup_delete"),
     #path('collabgroup/report/<str:pk>', CollabGroup_ReportView, name="collabgroup_report"),
 
@@ -36,7 +37,6 @@ urlpatterns = [
     #path('deleteCollabUser/<str:pk>', CollabUser_RemoveView.as_view(), name="collabuser_delete"),
     #path('collabuser/report/<str:pk>', CollabUser_ReportView, name="collabuser_report"),
     
-    path('collabgroup/<str:pk>/edit/', CollabGroup_UpdateView.as_view(), name='group-update'),
     path('collabgroup/<str:pk>/add-member/', AddMembershipRow_View.as_view(), name='add-member'),
     path("collabuser/search/", CollabUser_SearchView.as_view(), name="collabuser-search"),
     

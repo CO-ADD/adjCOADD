@@ -91,7 +91,7 @@ URL_LINKS={
     
     'organisation_id':  '/dcollab/organisation/{VALUE1}',
     'user_id':          '/dcollab/collaborator/{VALUE1}',
-    'group_id':         '/dcollab/organisation/{VALUE1}',
+    'group_id':         '/dcollab/collabgroup/{VALUE1}',
     
     'gene_id':          '/dgene/gene/',
     'seq_id':           '/dgene/seq/',

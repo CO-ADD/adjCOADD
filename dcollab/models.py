@@ -245,7 +245,7 @@ class Collab_Group(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        'group_id':'ID',
+        'group_id': {'ID': {'group_id': URL_LINKS['group_id']}},
         'group_code':'Code',
         # 'first_name':'First Name',
         # 'last_name':'Last Name',

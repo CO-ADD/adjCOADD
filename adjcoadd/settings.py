@@ -40,7 +40,7 @@ PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
 
-VERSION = '1.8.3'
+VERSION = '1.9.0'
 
 #........................................................................
 if DEVELOPMENT:
