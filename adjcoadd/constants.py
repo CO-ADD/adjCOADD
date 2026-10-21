@@ -82,6 +82,7 @@ URL_LINKS={
     'project_id':       '/dsample/project/{VALUE1}',
     
     'abase_compound_id':'/dsample/abase/{VALUE1}',
+    'coadd_compound_id':'/dsample/coadd/{VALUE1}',
     
     'testplate_id':     '/dplate/testplate/{VALUE1}',
     'masterplate_id':   '/dplate/masterplate/{VALUE1}',

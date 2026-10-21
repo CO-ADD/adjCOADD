@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from dsample.views import  (Project_ListView, Project_CreateView, Project_CreateMinimalView, Project_DetailView, Project_UpdateView, Project_ReportView,
                             Project_StockPrepView, Project_MembersEditView,
-                            ABase_ListView, ABase_DetailView,
+                            ABase_ListView, ABase_DetailView, COADD_ListView, COADD_DetailView,
                             # Project_RemoveView,
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
@@ -31,4 +31,8 @@ urlpatterns = [
     # ABase Compound
     path('abase/list', ABase_ListView.as_view(), name="abase_list"),
     path('abase/<str:pk>', ABase_DetailView, name="abase_detail"),
+
+    # COADD Compound
+    path('coadd/list', COADD_ListView.as_view(), name="coadd_list"),
+    path('coadd/<str:pk>', COADD_DetailView, name="coadd_detail"),
 ]

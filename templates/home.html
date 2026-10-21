@@ -49,6 +49,10 @@
         {% url 'abase_list' as abase_url %}
         {% include 'button/land_btn_chem.html' with title='MCC COMPOUND' url=abase_url totalnumber=nABase %}
     </div>
+    <div id="Label-COADD" class="card-body d-flex justify-content-center">
+        {% url 'coadd_list' as coadd_url %}
+        {% include 'button/land_btn_chem.html' with title='COMPOUND' url=coadd_url totalnumber=nCOADD %}
+    </div>
 </div>
 
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"

@@ -29,7 +29,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 # from adjcoadd.constants import *
 
 from dsample.models import Project, COADD_Compound, ABase_Compound_Batch, Project_Membership, ABase_Compound
-from dsample.forms import Project_Filter, Project_CreateForm, Project_CreateMinimalForm, Project_UpdateForm, ABase_Filter
+from dsample.forms import Project_Filter, Project_CreateForm, Project_CreateMinimalForm, Project_UpdateForm, ABase_Filter, COADD_Filter
 from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
@@ -512,4 +512,92 @@ def ABase_DetailView(req, pk):
         'batch_fields': ABase_Compound_Batch.get_fields(),
     }
     return render(req, "dsample/abase/abase_detail.html", context)
+
+
+#=================================================================================================
+# COADD Compound
+#=================================================================================================
+
+COADD_DETAIL_FIELDS = ['compound_id','compound_code','compound_name','compound_desc',
+                       'project_id','compound_type','compound_source',
+                       'std_status','std_process','std_issues','std_nfrag',
+                       'std_salt','std_ion','std_solvent','std_metal','std_structure_type',
+                       'std_mw','std_mf','pub_status','pub_date']
+
+
+class COADD_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = COADD_Compound
+    template_name = 'dsample/coadd/coadd_list.html'
+    filterset_class = COADD_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'COADD_Compound'
+    app_name = 'dsample'
+    ordering = ['compound_id']
+    paginate_by = 50
+
+    def get_queryset(self):
+        # Filter-first: do not evaluate the (very large) queryset until
+        # at least one filter/search term has been supplied.
+        if not self.get_filter_record():
+            self.filterset = self.filterset_class(self.request.GET,
+                                                  queryset=self.model.objects.none(),
+                                                  filterset_dict={}, deep=False)
+            self.filter_count = 0
+            return self.model.objects.none()
+        return super().get_queryset()
+
+    def get_context_data(self, **kwargs):
+        # Replicate Filtered_ListView.get_context_data() but avoid the
+        # full-table COUNT() (expensive for very large tables).
+        context = super(Filtered_ListView, self).get_context_data(**kwargs)
+
+        filter_record_dict = self.get_filter_record()
+        filter_record = "Selected: " + str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
+
+        context['filter'] = self.filterset
+        context['paginate_by'] = self.request.GET.get("paginate_by", self.paginate_by)
+        context['fields'] = self.model.get_fields(fields=self.model_fields)
+        context['filterset'] = filter_record
+        context['querycount'] = self.filter_count
+        context['Count'] = None
+        context['has_filters'] = bool(filter_record_dict)
+        return context
+
+
+# -----------------------------------------------------------------
+@login_required
+def COADD_DetailView(req, pk):
+    """
+    Detail view for a COADD_Compound entry:
+      - read-only field groups (no subtables for now)
+      - chemical structure rendering from std_smiles on the left
+    """
+    _object = get_object_or_404(COADD_Compound, compound_id=pk)
+
+    _rows = []
+    for name in COADD_DETAIL_FIELDS:
+        try:
+            field = COADD_Compound._meta.get_field(name)
+        except FieldDoesNotExist:
+            continue
+        value = getattr(_object, name, None)
+        if value is None or value == '':
+            value = ''
+        else:
+            value = str(value)
+        _rows.append({'label': field.verbose_name, 'value': value})
+
+    # Split rows into column groups for the display template
+    _groups = []
+    _chunk = 7
+    for i in range(0, len(_rows), _chunk):
+        _groups.append(_rows[i:i+_chunk])
+
+    context = {
+        'object': _object,
+        'display_groups': _groups,
+    }
+    return render(req, "dsample/coadd/coadd_detail.html", context)
+
 

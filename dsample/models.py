@@ -524,7 +524,7 @@ class COADD_Compound(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     LIST_VIEW_FIELDS ={
-        'compound_id':'ID',
+        'compound_id': {'ID': {'compound_id': URL_LINKS['coadd_compound_id']}},
         'compound_code':'Code',
         'compound_name':'Name',
         'reg_mw':'MW', 
