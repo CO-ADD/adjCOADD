@@ -28,7 +28,7 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 
 # from adjcoadd.constants import *
 
-from dsample.models import Project, COADD_Compound, ABase_Compound_Batch
+from dsample.models import Project, COADD_Compound, ABase_Compound_Batch, Project_Membership
 from dsample.forms import Project_Filter, Project_CreateForm, Project_CreateMinimalForm, Project_UpdateForm
 from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
@@ -266,6 +266,58 @@ def Project_UpdateView(req, pk):
     context["object"]=_object
     context["form"]=form
     return render(req, "dsample/project/project_update_modal.html", context)
+
+# -----------------------------------------------------------------
+@login_required
+def Project_MembersEditView(req, pk):
+    """
+    Manage the project_members (PC/AC/VC). The Lead Investigator (LI) is
+    excluded - it is derived from Project.group_id.li_user_id.
+    """
+    _object=get_object_or_404(Project, project_id=pk)
+
+    if req.method == 'POST':
+        _roles = dict(Project_Membership.MEMBERSHIP_CHOICES)
+
+        # 1) Remove selected memberships
+        for user_id in req.POST.getlist('remove'):
+            Project_Membership.objects.filter(project_id=_object, user_id=user_id).delete()
+
+        # 2) Change roles for remaining memberships
+        for _memb in Project_Membership.objects.filter(project_id=_object):
+            _role = req.POST.get(f'role_{_memb.user_id_id}')
+            if _role in _roles and _role != _memb.role:
+                _memb.role = _role
+                _memb.save()
+
+        # 3) Add a new member
+        _add_user = req.POST.get('add_user')
+        _add_role = req.POST.get('add_role')
+        if _add_user and _add_role in _roles:
+            _user = Collab_User.objects.filter(user_id=_add_user).first()
+            if _user:
+                _memb = Project_Membership.objects.filter(project_id=_object, user_id=_user).first()
+                if _memb:
+                    _memb.role = _add_role
+                    _memb.save()
+                else:
+                    Project_Membership.objects.create(project_id=_object, user_id=_user, role=_add_role, status='C')
+
+        ApplicationLog.add('Update', 'Project_Members', 'Info', req.user, str(_object.pk), 'Update Project Members', 'Completed')
+        return redirect('project_detail', pk=pk)
+
+    # GET - render the collaborator edit modal
+    _memberships = Project_Membership.objects.filter(project_id=_object).select_related('user_id')
+    _member_ids = list(_memberships.values_list('user_id_id', flat=True))
+    _available = Collab_User.objects.exclude(user_id__in=_member_ids).order_by('first_name', 'last_name')
+
+    context = {
+        'object': _object,
+        'memberships': _memberships,
+        'roles': Project_Membership.MEMBERSHIP_CHOICES,
+        'available_users': _available,
+    }
+    return render(req, "dsample/project/project_members_modal.html", context)
 
 # -----------------------------------------------------------------
 class Project_RemoveView(Base_RemoveView):

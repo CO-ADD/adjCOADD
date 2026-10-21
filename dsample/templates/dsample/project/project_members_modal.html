@@ -1,0 +1,74 @@
+<form method="POST" action="{% url 'project_members_edit' object.pk %}">
+  {% csrf_token %}
+
+  <div class="d-flex align-items-center pb-3 mb-3 border-bottom">
+    <i class="bi bi-people text-primary me-2"></i>
+    <div class="lh-sm">
+      <div class="fw-bold">Edit Collaborators</div>
+      <div class="text-muted small text-break">{{ object.pk }}</div>
+    </div>
+  </div>
+
+  <div style="max-height: 45vh; overflow-y: auto; padding-right: .25rem;">
+
+    <!-- Current members -->
+    <table class="table table-hover table-sm align-middle table-bordered mb-3">
+      <thead>
+        <tr>
+          <th>Collaborator</th>
+          <th style="width: 12rem;">Role</th>
+          <th class="text-center" style="width: 5rem;">Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for memb in memberships %}
+          <tr>
+            <td>{{ memb.user_id }}</td>
+            <td>
+              <select name="role_{{ memb.user_id_id }}" class="form-select form-select-sm">
+                {% for value, label in roles %}
+                  <option value="{{ value }}" {% if value == memb.role %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td class="text-center">
+              <input class="form-check-input" type="checkbox" name="remove" value="{{ memb.user_id_id }}">
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="3" class="text-muted text-center">No collaborators assigned</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Add member -->
+    <div class="border rounded p-3">
+      <div class="fw-bold mb-2">Add Collaborator</div>
+      <div class="row g-2">
+        <div class="col">
+          <select name="add_user" class="form-select form-select-sm">
+            <option value="">-- Select a collaborator --</option>
+            {% for cuser in available_users %}
+              <option value="{{ cuser.user_id }}">{{ cuser }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-auto">
+          <select name="add_role" class="form-select form-select-sm">
+            {% for value, label in roles %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="d-flex justify-content-center gap-2 pt-3 mt-3 border-top">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+  </div>
+</form>

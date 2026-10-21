@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from dsample.views import  (Project_ListView, Project_CreateView, Project_CreateMinimalView, Project_DetailView, Project_UpdateView, Project_ReportView,
-                            Project_StockPrepView,
+                            Project_StockPrepView, Project_MembersEditView,
                             # Project_RemoveView,
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
@@ -20,6 +20,7 @@ urlpatterns = [
     path('project/update/<str:pk>', Project_UpdateView, name="project_update"),
     #path('deleteProject/<str:pk>', Project_RemoveView.as_view(), name="project_delete"),
     path('project/report/<str:pk>', Project_ReportView, name="project_report"),
+    path('project/members/<str:pk>', Project_MembersEditView, name="project_members_edit"),
 
     path('Project/load_submission', Load_Project_ProcessView.as_view(), name='load_submission'),
     path('project/add_projectinfo/<str:pk>', Add_ProjectInfo_ProcessView.as_view(), name="add_projectinfo"),
