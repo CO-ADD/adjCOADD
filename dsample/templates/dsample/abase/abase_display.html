@@ -1,8 +1,11 @@
 <div class="row">
   <div class="col-md-3">
-    {% if object.reg_smiles %}
-      <div id="structure{{ object.pk }}" class="molecule-structure-svg d-flex justify-content-center"
-           data-smiles="{{ object.reg_smiles }}"></div>
+    {% if object.reg_molfile %}
+      {% with molblock_id="molblock-"|add:object.pk %}
+        {{ object.reg_molfile|json_script:molblock_id }}
+        <div id="structure{{ object.pk }}" class="molecule-structure-molblock d-flex justify-content-center"
+             data-molblock-id="{{ molblock_id }}"></div>
+      {% endwith %}
     {% else %}
       <div class="text-muted small text-center py-3">No structure</div>
     {% endif %}

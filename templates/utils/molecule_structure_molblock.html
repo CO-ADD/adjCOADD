@@ -1,0 +1,67 @@
+{% comment %}
+  Reusable rdkit.js structure rendering from a MOL block / SDF (CTAB) string.
+  Include this once per page, after the elements with class 'molecule-structure-molblock'.
+
+  Each such element carries a data-molblock-id attribute pointing to a
+  <script type="application/json"> tag whose textContent is a JSON-encoded
+  molblock string, e.g.:
+
+    {{ object.reg_molfile|json_script:"molblock-1" }}
+    <div class="molecule-structure-molblock" data-molblock-id="molblock-1"></div>
+
+  RDKit.get_mol() auto-detects the molblock (CTAB) format, so no SMILES
+  conversion is required.
+{% endcomment %}
+
+<script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
+
+<style>
+  .molecule-structure-molblock svg {
+    width: 100%;
+    height: auto;
+  }
+  .molecule-structure-molblock svg rect:first-of-type {
+    fill: transparent !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var targets = document.querySelectorAll('.molecule-structure-molblock');
+    if (!targets.length) return;
+
+    if (typeof initRDKitModule !== 'function') {
+      targets.forEach(function (el) {
+        el.innerHTML = '<span class="text-muted fst-italic small">Structure unavailable</span>';
+      });
+      return;
+    }
+
+    initRDKitModule().then(function (RDKit) {
+      targets.forEach(function (el) {
+        var src = document.getElementById(el.getAttribute('data-molblock-id'));
+        if (!src) return;
+
+        var molblock;
+        try {
+          molblock = JSON.parse(src.textContent);
+        } catch (e) {
+          molblock = src.textContent;
+        }
+        if (!molblock) return;
+
+        var mol = RDKit.get_mol(molblock);
+        if (mol) {
+          el.innerHTML = mol.get_svg();
+          mol.delete();
+        } else {
+          el.innerHTML = '<span class="text-muted fst-italic small">No structure</span>';
+        }
+      });
+    }).catch(function () {
+      targets.forEach(function (el) {
+        el.innerHTML = '<span class="text-muted fst-italic small">Structure unavailable</span>';
+      });
+    });
+  });
+</script>
