@@ -21,7 +21,6 @@ class Command(BaseCommand):
         
         print(f" [Rename ABase Batches] [{options['csvfile']}] - Upload : {options['upload']} Delete Old: {options['delete']}")
         
-        
         _abase_batch = ABase_Compound_Batch.objects.all()
         
         for _b in _abase_batch:
