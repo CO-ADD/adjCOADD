@@ -177,8 +177,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
         
         # ------------------------------------------------------
         djCompound_id = f"{row['objdid']}"
-        djBatch_id = f"{row['objdid']}_{row['objdbatchref']}"
-
+        djBatch_id = ABase_Compound_Batch.str_BatchID(row['objdid'],row['objdbatchref'])
 
         # ABase Compound ----------------------------------------------------------------
         NewEntry = False

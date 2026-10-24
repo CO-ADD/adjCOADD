@@ -833,6 +833,22 @@ class ABase_Compound_Batch(AuditModel):
         retValue = cls.objects.filter(cmpbatch_id=CompoundBatch).exists()
         return(retValue)
 
+    #------------------------------------------------
+    @staticmethod
+    def str_BatchID(CompoundID, CompoundBatchRef):
+        return(f'{CompoundID}{COMPOUNDBATCH_SEP}{CompoundBatchRef}')
+
+    #------------------------------------------------
+    @staticmethod
+    def split_BatchID(CompoundBatchID):
+        if COMPOUNDBATCH_SEP in CompoundBatchID:
+            _parts = CompoundBatchID.split(COMPOUNDBATCH_SEP)
+            CompoundID = _parts[0]
+            CompoundBatchRef = _parts[1]
+        else:
+            CompoundID = CompoundBatchID
+            CompoundBatchRef = ''
+        return(CompoundID, CompoundBatchRef)
 
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):
