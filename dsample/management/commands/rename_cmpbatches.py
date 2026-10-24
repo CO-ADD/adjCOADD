@@ -17,7 +17,7 @@ class Command(BaseCommand):
         
     def handle(self, *args, **options):
         
-        valLog = Validation_Log("Rename_ABase_Batch",logfile="Rename_ABase_Batch.log")
+        valLog = Validation_Log("Rename_ABase_Batch")
         
         print(f" [Rename ABase Batches] [{options['csvfile']}] - Upload : {options['upload']} Delete Old: {options['delete']}")
         
