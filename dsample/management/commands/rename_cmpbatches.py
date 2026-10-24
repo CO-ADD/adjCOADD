@@ -22,13 +22,17 @@ class Command(BaseCommand):
         print(f" [Rename ABase Batches] [{options['csvfile']}] - Upload : {options['upload']} Delete Old: {options['delete']}")
         
         
-        oldid = 'MCC_000001_001'
+        _abase_batch = ABase_Compound_Batch.objects.all()
         
-        _p = oldid.split('_')
-        if len(_p) == 3:
-            newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
-
-            print(f"ABase Batch OldID: {oldid} NewID: {newid}")
+        for _b in _abase_batch:
+            oldid = _b.batch_id
+            _p = oldid.split('_')
+            if len(_p) == 3:
+                newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
+                print(f"ABase Batch OldID: {oldid} NewID: {newid}")
+                # rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+                # rename_ForeignKey(Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+        
             
             # rename_ForeignKey(ABase_Compound_Batch,row['oldid'],row['newid'],upload=options['upload'],delete=options['delete'])
             # rename_ForeignKey(Compound_Batch,row['oldid'],row['newid'],upload=options['upload'],delete=options['delete'])
