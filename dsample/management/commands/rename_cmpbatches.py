@@ -30,8 +30,8 @@ class Command(BaseCommand):
             if len(_p) == 3:
                 newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
                 print(f"ABase Batch OldID: {oldid} NewID: {newid}")
-                # rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
-                # rename_ForeignKey(Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+                rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+                rename_ForeignKey(Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
         
             
             # rename_ForeignKey(ABase_Compound_Batch,row['oldid'],row['newid'],upload=options['upload'],delete=options['delete'])
