@@ -15,27 +15,53 @@ class Command(BaseCommand):
         parser.add_argument("--upload",action="store_true",default=False)
         parser.add_argument("--delete",action="store_true",default=False)
         
+    def _single_rename(self, oldid,  upload=False, delete=True):
+        _p = oldid.split('_')
+        if len(_p) == 3:
+            newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
+            print(f"--- ABase Batch OldID: {oldid} NewID: {newid}")
+            rename_ForeignKey(Compound_Batch,oldid,newid,upload=upload,delete=delete)
+            #rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+            
+            # Clean up ABase_Compound_Batch
+            if upload:
+                _objAbase = ABase_Compound_Batch.get(oldid)    
+                if _objAbase:
+                    if delete:
+                        _objAbase.delete()
+                    else:
+                        _objAbase.remove()
+        
     def handle(self, *args, **options):
         
         valLog = Validation_Log("Rename_ABase_Batch")
         
         print(f" [Rename ABase Batches] - Upload : {options['upload']} Delete Old: {options['delete']}")
         
-        oldid = 'MCC_000177'
-        _p = oldid.split('_')
-        if len(_p) == 3:
-            newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
-            print(f"ABase Batch OldID: {oldid} NewID: {newid}")
-            rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
-            rename_ForeignKey(Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+        qryABase = ABase_Compound_Batch.objects.all()
+        
+        for _obj in qryABase:
+            oldid = str(_obj.cmpbatch_id)
+            self._single_rename(oldid, upload=options['upload'], delete=options['delete'])
+        
+        #oldid = 'MCC_006442_011'
+        #self._single_rename(oldid, upload=options['upload'], delete=options['delete'])
+        
+        # _p = oldid.split('_')
+        # if len(_p) == 3:
+        #     newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
+        #     print(f"--- ABase Batch OldID: {oldid} NewID: {newid}")
+        #     rename_ForeignKey(Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+        #     #rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
+            
+        #     # Clean up ABase_Compound_Batch
+        #     if options['upload']:
+        #         _objAbase = ABase_Compound_Batch.get(oldid)
+        #         if _objAbase:
+        #             _objAbase.cmpbatch_id = newid
+        #             if options['delete']:
+        #                 _objAbase.delete()
+        #             else:
+        #                 _objAbase.remove()
 
-        # _abase_batch = ABase_Compound_Batch.objects.all()     
-        # for _b in _abase_batch:
-        #     oldid = str(_b.cmpbatch_id)
-        #     _p = oldid.split('_')
-        #     if len(_p) == 3:
-        #         newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
-        #         print(f"ABase Batch OldID: {oldid} NewID: {newid}")
-        #         rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
-        #         rename_ForeignKey(Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])
                     
