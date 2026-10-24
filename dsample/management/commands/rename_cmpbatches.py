@@ -25,7 +25,7 @@ class Command(BaseCommand):
         _abase_batch = ABase_Compound_Batch.objects.all()
         
         for _b in _abase_batch:
-            oldid = _b.batch_id
+            oldid = _b.cmpbatch_id
             _p = oldid.split('_')
             if len(_p) == 3:
                 newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
