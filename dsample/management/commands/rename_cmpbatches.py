@@ -19,7 +19,7 @@ class Command(BaseCommand):
         
         valLog = Validation_Log("Rename_ABase_Batch")
         
-        print(f" [Rename ABase Batches] [{options['csvfile']}] - Upload : {options['upload']} Delete Old: {options['delete']}")
+        print(f" [Rename ABase Batches] - Upload : {options['upload']} Delete Old: {options['delete']}")
         
         oldid = 'MCC_000177'
         _p = oldid.split('_')
