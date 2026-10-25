@@ -13,6 +13,8 @@ from apputil.utils.flex_pivottable import flex_pivottable
 from apputil.test_app import Test_View
 from applib.process.process_forms import  Start_Progress
 
+from apputil.task_views import Task_UpdateABaseView, Task_CurrentView, Task_CurrentTableView
+
 urlpatterns = [
     path('index/', index, name="index"),
     path('user_list/', AppUser_ListView.as_view(), name="userslist"),
@@ -36,6 +38,11 @@ urlpatterns = [
 
     path('progress/', Start_Progress, name='start_progress'),
     path('info/', SystemInfoView, name='system_info'),
+
+    # Background tasks (django.tasks)
+    path('tasks/update-abase/', Task_UpdateABaseView, name='task_update_abase'),
+    path('tasks/current/', Task_CurrentView, name='task_current'),
+    path('tasks/current/table/', Task_CurrentTableView, name='task_current_table'),
     
     path('exportData/', DataExportView.as_view(), name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),

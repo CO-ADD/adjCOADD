@@ -225,6 +225,26 @@
           </div>
         {% endif %}
 
+        <!-- Tasks Menu -->
+        {% if user.is_superuser or user.permission == 'Admin' %}
+          <div class="dropdown d-inline-block">
+            <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <p class="nav-title">Tasks</p>
+            </a>
+            <ul class="dropdown-menu">
+              <a class="dropdown-item"
+                 data-bs-toggle="modal"
+                 data-bs-target="#infoModal"
+                 hx-get="{% url 'task_update_abase' %}"
+                 hx-target="#info-body"
+                 hx-swap="innerHTML">
+                Update ABase
+              </a>
+              <a class="dropdown-item" href="{% url 'task_current' %}">Current</a>
+            </ul>
+          </div>
+        {% endif %}
+
       </div>
       {% endif %}
 

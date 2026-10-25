@@ -1,0 +1,61 @@
+{% if task_results %}
+<div class="table-responsive">
+  <table class="table table-hover table-sm align-middle table-bordered table-bg">
+    <thead>
+      <tr>
+        <th class="table-label-col">ID</th>
+        <th class="table-label-col">Task</th>
+        <th class="table-label-col">Status</th>
+        <th class="table-label-col">Enqueued</th>
+        <th class="table-label-col">Started</th>
+        <th class="table-label-col">Finished</th>
+        <th>Result</th>
+        <th>Error</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in task_results %}
+      <tr>
+        <td class="text-nowrap"><small class="text-muted">{{ result.id|stringformat:".8s" }}</small></td>
+        <td class="text-nowrap">{{ result.short_name }}</td>
+        <td>
+          {% if result.status == 'RUNNING' %}
+            <span class="badge bg-info">Running</span>
+          {% elif result.status == 'SUCCESSFUL' %}
+            <span class="badge bg-success">Succeeded</span>
+          {% elif result.status == 'FAILED' %}
+            <span class="badge bg-danger">Failed</span>
+          {% else %}
+            <span class="badge bg-secondary">Queued</span>
+          {% endif %}
+        </td>
+        <td class="text-nowrap"><small>{{ result.enqueued_at|date:"Y-m-d H:i:s" }}</small></td>
+        <td class="text-nowrap"><small>{{ result.started_at|date:"Y-m-d H:i:s"|default:"—" }}</small></td>
+        <td class="text-nowrap"><small>{{ result.finished_at|date:"Y-m-d H:i:s"|default:"—" }}</small></td>
+        <td>
+          {% if result.return_value %}
+            <small><code>{{ result.return_value }}</code></small>
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td>
+          {% if result.status == 'FAILED' and result.traceback %}
+            <details>
+              <summary class="text-danger small">View traceback</summary>
+              <pre class="small text-danger" style="max-height: 200px; overflow: auto;">{{ result.traceback }}</pre>
+            </details>
+          {% else %}
+            —
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="text-muted py-4 text-center">
+  No background tasks have been enqueued yet.
+</div>
+{% endif %}

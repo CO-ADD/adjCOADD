@@ -173,6 +173,29 @@ INSTALLED_APPS = [
 ]
 
 #--------------------------------------------------------------------
+# Background tasks (django.tasks, Django 6.1+)
+#--------------------------------------------------------------------
+# Django core only ships development/test backends (Immediate/Dummy).
+# For a durable queue + worker use the third-party ORM backend:
+#   pip install django-tasks-db
+#   python manage.py migrate              # creates django_tasks_db tables
+#   python manage.py db_worker            # run the worker process
+# Until django-tasks-db is installed, tasks run immediately (synchronously).
+try:
+    import django_tasks_db  # noqa: F401
+    INSTALLED_APPS.append("django_tasks_db")
+    _TASKS_BACKEND = "django_tasks_db.DatabaseBackend"
+except ImportError:
+    _TASKS_BACKEND = "django.tasks.backends.immediate.ImmediateBackend"
+
+TASKS = {
+    "default": {
+        "BACKEND": _TASKS_BACKEND,
+        "QUEUES": ["default"],
+    }
+}
+
+#--------------------------------------------------------------------
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',

@@ -364,6 +364,7 @@ def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 
 
     print(f"[ABaseBatchDict] {OutNumbers}")
+    return OutNumbers
     
 #-----------------------------------------------------------------------------
 def get_ABase_Tests(db):
