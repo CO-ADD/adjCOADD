@@ -7,6 +7,8 @@ Background task management (django.tasks, Django 6.1+).
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import ValidationError
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import render, redirect
 
 from django_filters import ChoiceFilter, CharFilter, DateTimeFromToRangeFilter
@@ -143,6 +145,36 @@ def Task_UpdateABaseView(req):
         'backend_configured': _task_backend_configured(),
     }
     return render(req, 'modal/task_update_abase_modal.html', context)
+
+
+#-------------------------------------------------------------------------------------------------
+@login_required(login_url='/')
+@admin_required
+def Task_RemoveView(req, pk):
+    """
+    Remove a queued (READY) task from the database queue.
+
+    A running (RUNNING) task cannot be cancelled with django-tasks-db, so only
+    queued tasks are removed here.
+    """
+    if req.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    try:
+        task = DBTaskResult.objects.get(id=pk)
+    except (DBTaskResult.DoesNotExist, ValidationError, ValueError):
+        messages.warning(req, f'Task {pk} does not exist')
+        return redirect('task_current')
+
+    if task.status == 'READY':
+        task.delete()
+        messages.success(req, f'Task {pk} removed from the queue')
+    else:
+        messages.warning(req, f'Task {pk} can no longer be removed (status: {task.status})')
+
+    if req.headers.get('HX-Request'):
+        return HttpResponse(status=200)
+    return redirect('task_current')
 
 
 #-------------------------------------------------------------------------------------------------

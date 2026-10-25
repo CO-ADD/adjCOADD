@@ -20,19 +20,9 @@
       </button>
     </h2>
 
-    <!-- Pagination + Run Task button -->
+    <!-- Pagination -->
     <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
       {% include 'grid/base/pagination.html' %}
-      <div>
-        <a class="btn btn-outline-primary"
-           data-bs-toggle="modal"
-           data-bs-target="#infoModal"
-           hx-get="{% url 'task_update_abase' %}"
-           hx-target="#info-body"
-           hx-swap="innerHTML">
-          <i class="bi bi-arrow-repeat me-1"></i>Update ABase
-        </a>
-      </div>
     </div>
 
     <!-- Task table -->
@@ -40,6 +30,7 @@
       <table class="table table-hover sorting_table table-sm align-middle table-bordered table-bg" style="width: 100%">
         <thead>
           <tr>
+            <th class="text-center" style="width: 0%"><i class="bi bi-app-indicator text-body"></i></th>
             <th class="order_field" style="width: fit-content" data-name="ID">ID</th>
             <th class="order_field" style="width: fit-content" data-name="Task">Task</th>
             <th class="order_field" style="width: fit-content" data-name="Status">Status</th>
@@ -53,6 +44,22 @@
         <tbody>
           {% for object in page_obj %}
           <tr>
+            <td class="text-center p-0">
+              {% if object.status == 'READY' %}
+              <form method="POST"
+                    action="{% url 'task_remove' object.id %}"
+                    hx-post="{% url 'task_remove' object.id %}"
+                    hx-target="closest tr"
+                    hx-swap="outerHTML"
+                    hx-confirm="Remove this task from the queue?"
+                    class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="border-0 text-danger bg-transparent" title="Remove queued task">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </form>
+              {% endif %}
+            </td>
             <td class="text-nowrap"><small class="text-muted">{{ object.id|stringformat:".8s" }}</small></td>
             <td class="text-nowrap">{{ object.task_path|basename }}</td>
             <td>
@@ -89,7 +96,7 @@
           </tr>
           {% empty %}
           <tr>
-            <td colspan="8" class="text-muted text-center py-4">No background tasks found.</td>
+            <td colspan="9" class="text-muted text-center py-4">No background tasks found.</td>
           </tr>
           {% endfor %}
         </tbody>
