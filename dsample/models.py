@@ -146,7 +146,7 @@ class Project(AuditModel):
     project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
                              verbose_name = "Project Contacts", null=True, blank=True)
     project_members = models.ManyToManyField(Collab_User, through='Project_Membership',through_fields=('project_id', 'user_id'),
-                                             blank=True, null=True, related_name="project_members")
+                                             blank=True, related_name="project_members")
     
     #owner_users = models.ManyToManyField(Collab_User)
          
