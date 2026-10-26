@@ -371,5 +371,27 @@ class Peptide_Batch(AuditModel):
         
 # ================================================================================================
 
+#=================================================================================================
+class AminoAcid_Dictionary(AuditModel):
+    """
+    Amino Acid Dictionary
+    """
+#=================================================================================================
+
+
+    aa_id = models.CharField(primary_key=True, max_length=15, verbose_name = "AA ID")
+    aa_code = models.CharField(max_length=5, verbose_name = "AA Code")
+    aa_letter = models.CharField(max_length=1, verbose_name = "AA Letter")
+
+    smiles = models.CharField(max_length=200, blank=True, verbose_name = "SMILES")
+    mf = models.CharField(max_length=50, blank=True, verbose_name = "Formula")
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+
+    link_cterm = models.CharField(max_length=200, blank=True, verbose_name = "C-Term")
+    link_nterm = models.CharField(max_length=200, blank=True, verbose_name = "N-Term")
+    link_sidechain = models.CharField(max_length=200, blank=True, verbose_name = "Side Chain")
+    link_disulphide = models.CharField(max_length=200, blank=True, verbose_name = "Disulphide Bridge")
+
+
 
 # Create your models here.
