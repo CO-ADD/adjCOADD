@@ -105,9 +105,9 @@ class Project_CreateForm(forms.ModelForm):
         exclude=Project.ORACLE_FIELDS
 
     def create_field_groups(self):
-        if len(Project.VIEW_GROUPS) > 0:
+        if len(Project.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Project.VIEW_GROUPS:
+            for grp in Project.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------

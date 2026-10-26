@@ -453,10 +453,18 @@ AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
     "django.contrib.auth.backends.ModelBackend",
     ]
-AUTH_LDAP_SERVER_URI = "ldap://ldap.uq.edu.au"
-AUTH_LDAP_BIND_DN = ""
-AUTH_LDAP_BIND_PASSWORD = ""
-AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+
+# Old UQ LDAP server settings
+# AUTH_LDAP_SERVER_URI = "ldap://ldap.uq.edu.au"
+# AUTH_LDAP_BIND_DN = ""
+# AUTH_LDAP_BIND_PASSWORD = ""
+# AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+
+# UQ AD server settings
+AUTH_LDAP_SERVER_URI = "ldap://ad.uq.edu.au:389"
+AUTH_LDAP_BIND_DN = "uqcoadd@uq.edu.au"
+AUTH_LDAP_BIND_PASSWORD = "Bri$myc1n@2009"
+AUTH_LDAP_USER_SEARCH = LDAPSearch("DC=uq,DC=edu,DC=au", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
 
 # Security Setting
 #--------------------------------------------------------------------

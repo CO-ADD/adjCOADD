@@ -158,8 +158,14 @@ class AuditModel(models.Model):
 
     VALID_STATUS    = False
     VALID_DICT      = {}
+
+    # Helpers for displaying model fields in list view, detail view and cards
     LIST_VIEW_FIELDS   = {}
+    DETAIL_VIEW_GROUPS   = []
     CARDS_FIELDS   = {}
+
+    # Helpers for defining foreign key relationships to the DICTIONARY table for choices and lookups
+    DICTIONARY_FIELDS = {}
 
     ID_SEQUENCE = "General"
     ID_PREFIX = "AAA"

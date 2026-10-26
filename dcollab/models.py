@@ -33,7 +33,7 @@ class Organisation(AuditModel):
         'organisation_type':'Organisation_Type',
     }
 
-    VIEW_GROUPS = []
+    DETAIL_VIEW_GROUPS = []
     
     ID_SEQUENCE = 'Organisation'
     ID_PREFIX = 'CORG'
@@ -135,7 +135,7 @@ class Collab_User(AuditModel):
     DICTIONARY_FIELDS = {
     }
 
-    VIEW_GROUPS = []
+    DETAIL_VIEW_GROUPS = []
 
     ID_SEQUENCE = 'Collab_User'
     ID_PREFIX = 'CUSR'
@@ -263,7 +263,7 @@ class Collab_Group(AuditModel):
     }
 
 
-    VIEW_GROUPS = []
+    DETAIL_VIEW_GROUPS = []
 
     ID_SEQUENCE = 'Collab_Group'
     ID_PREFIX = 'CGRP'

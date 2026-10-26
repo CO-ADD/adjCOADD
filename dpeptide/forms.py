@@ -92,9 +92,9 @@ class Peptide_CreateForm(forms.ModelForm):
 
 
     def create_field_groups(self):
-        if len(Peptide.VIEW_GROUPS) > 0:
+        if len(Peptide.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Peptide.VIEW_GROUPS:
+            for grp in Peptide.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
     
     class Meta:

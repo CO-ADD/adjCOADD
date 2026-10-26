@@ -76,7 +76,7 @@ class Project(AuditModel):
     ID_PREFIX = 'P'
     ID_PAD = 5
 
-    VIEW_GROUPS = [
+    DETAIL_VIEW_GROUPS = [
         ['project_type','project_name','process_status','project_status','project_comment','received','completed','group_id',],
         ['provided_container','provided_comment','stock_status','stock_comment','stock_container','stock_conc','stock_conc_unit', ],
         ['compound_status','compound_comment','screen_status','screen_comment','data_status','data_comment',],

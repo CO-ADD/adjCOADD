@@ -68,9 +68,9 @@ class Organisation_CreateForm(forms.ModelForm):
         exclude=['organisation_id']
 
     def create_field_groups(self):
-        if len(Organisation.VIEW_GROUPS) > 0:
+        if len(Organisation.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Organisation.VIEW_GROUPS:
+            for grp in Organisation.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
@@ -159,9 +159,9 @@ class CollabUser_CreateForm(forms.ModelForm):
         exclude=['portal_pw']
 
     def create_field_groups(self):
-        if len(Collab_User.VIEW_GROUPS) > 0:
+        if len(Collab_User.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Collab_User.VIEW_GROUPS:
+            for grp in Collab_User.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
@@ -297,9 +297,9 @@ class CollabGroup_CreateForm(forms.ModelForm):
         exclude=['group_id', 'group_members', 'ora_group_id', 'ora_pi_id']
 
     def create_field_groups(self):
-        if len(Collab_Group.VIEW_GROUPS) > 0:
+        if len(Collab_Group.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Collab_Group.VIEW_GROUPS:
+            for grp in Collab_Group.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
@@ -338,9 +338,9 @@ class CollabGroup_UpdateForm(CollabGroup_CreateForm):
 #         exclude=['group_id']
 
 #     def create_field_groups(self):
-#         if len(Collab_Group.VIEW_GROUPS) > 0:
+#         if len(Collab_Group.DETAIL_VIEW_GROUPS) > 0:
 #             self.groups = []
-#             for grp in Collab_Group.VIEW_GROUPS:
+#             for grp in Collab_Group.DETAIL_VIEW_GROUPS:
 #                 self.groups.append([self[name] for name in grp])   
 
 

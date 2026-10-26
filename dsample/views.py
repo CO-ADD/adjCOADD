@@ -218,10 +218,10 @@ def Project_DetailView(req, pk):
 def _project_display_groups(instance):
     """
     Build read-only label/value rows for the Project detail view,
-    grouped according to Project.VIEW_GROUPS.
+    grouped according to Project.DETAIL_VIEW_GROUPS.
     """
     groups = []
-    for field_names in Project.VIEW_GROUPS:
+    for field_names in Project.DETAIL_VIEW_GROUPS:
         rows = []
         for name in field_names:
             try:

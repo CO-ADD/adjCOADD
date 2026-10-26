@@ -17,6 +17,15 @@ from adjcoadd.constants import *
 
 #-------------------------------------------------------------------------------------------------
 # Peptide Application Model
+# Peptide 
+#  -> 
+#    Peptide_Isoform <- Peptide_Modification
+#     -> 
+#       Peptide_Batch
+#
+# AminoAcid - List of Amino Acids for Peptide Sequences, including modified and non-natural amino acids
+# Peptide_Modification - List of Peptide Modifications, including modified and non-natural amino acids
+#
 
 #-------------------------------------------------------------------------------------------------
 
@@ -51,7 +60,7 @@ class Peptide(AuditModel):
     #     "gen_property": "Genotype",
     }
 
-    VIEW_GROUPS = [
+    DETAIL_VIEW_GROUPS = [
         ['peptide_name', 'peptide_type', 'peptide_panel', 'peptide_notes'],
         ['seq','bilm','helm'],
         ['peptide_origin','source', 'source_code','reference'],
@@ -73,9 +82,12 @@ class Peptide(AuditModel):
         db_column="peptide_type", related_name="%(class)s_peptide_type")
     #peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
     peptide_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Peptide")
+
     bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
     helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
     seq= models.CharField(max_length=200, blank=True, verbose_name = "Seq") 
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+    nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 
@@ -182,6 +194,41 @@ class Peptide(AuditModel):
         else:
             super(Peptide, self).save(*args, **kwargs) 
 
+
+#=================================================================================================
+class Peptide_Isoform(AuditModel):
+    """
+    Isoform
+    
+    """
+#=================================================================================================
+
+
+    isoform_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Isoform ID") 
+    isoform_name= models.CharField(max_length=200, blank=True, verbose_name = "Isoform Name") 
+    isoform_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Isoform Notes")
+    peptide_id = models.ForeignKey(Peptide, null=False, blank=False, verbose_name = "Peptide ID", on_delete=models.DO_NOTHING,
+        db_column="peptide_id", related_name="%(class)s_peptide_id")
+
+    peptide_modifications = models.CharField(max_length=80, blank=True, verbose_name = "Tags")
+    # Expression system	
+    # Expression cell ID	
+    # Vector ID	Free form ID 1	Free form ID 2	
+  
+    # batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
+    #     db_column="batch_quality", related_name="%(class)s_batchquality")
+
+    bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
+    helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
+    seq= models.CharField(max_length=200, blank=True, verbose_name = "Seq") 
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+    nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
+
+    assoc_documents = models.ManyToManyField(Document,verbose_name = "Documents", blank=True,
+        db_table = "isoform_doc", related_name="%(class)s_document")
+    biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
+        db_column="biologist", related_name="%(class)s_biologist")
+
 #=================================================================================================
 class Peptide_Batch(AuditModel):
     """
@@ -213,9 +260,9 @@ class Peptide_Batch(AuditModel):
 
 
 
-    pepbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "PepBatch ID")
-    peptide_id = models.ForeignKey(Peptide, null=False, blank=False, verbose_name = "Peptide ID", on_delete=models.DO_NOTHING,
-        db_column="peptide_id", related_name="%(class)s_peptide_id")
+    isoformbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "IsoFormBatch ID")
+    isoform_id = models.ForeignKey(Peptide_Isoform, null=False, blank=False, verbose_name = "Isoform ID", on_delete=models.DO_NOTHING,
+        db_column="isoform_id", related_name="%(class)s_isoform_id")
     #previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous peptideBatch ID")
     #passage_number= models.CharField(max_length=20, blank=True, verbose_name = "Passage Number")
     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
@@ -225,14 +272,6 @@ class Peptide_Batch(AuditModel):
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
     source_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Source Type", on_delete=models.DO_NOTHING,
         db_column="source_type", related_name="%(class)s_source_type")
-
-    peptide_tags = 	models.CharField(max_length=80, blank=True, verbose_name = "Tags")
-    # Expression system	
-    # Expression cell ID	
-    # Vector ID	Free form ID 1	Free form ID 2	
-  
-    # batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
-    #     db_column="batch_quality", related_name="%(class)s_batchquality")
 
     quality_source = models.CharField(max_length=150, blank=True, verbose_name = "QC Source")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,

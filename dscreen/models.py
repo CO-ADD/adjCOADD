@@ -68,7 +68,7 @@ class Screen_Run(AuditModel):
         'run_status':'Process_Status',
     }
 
-    VIEW_GROUPS = [
+    DETAIL_VIEW_GROUPS = [
         ['run_type','run_status','run_name','run_source','run_project','run_date'],
         ['run_conditions','assay_note','run_issues'],
         ['n_compounds', 'n_structure','n_motherplates','n_testplates','n_testplates_valid','n_qc','n_seq'],
@@ -227,7 +227,7 @@ class Assay(AuditModel):
     }
 
     CALCULATED_FIELDS = []
-    VIEW_GROUPS=[]
+    DETAIL_VIEW_GROUPS=[]
 
     assay_id = models.CharField(max_length=100,primary_key=True, verbose_name = "Assay ID")
     ora_assay_id = models.CharField(max_length=100,blank=True, verbose_name = "Ora Assay ID")

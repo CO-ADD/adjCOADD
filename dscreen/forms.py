@@ -93,9 +93,9 @@ class ScreenRun_CreateForm(forms.ModelForm):
         #exclude=Screen_Run.CALCULATED_FIELDS
 
     def create_field_groups(self):
-        if len(Screen_Run.VIEW_GROUPS) > 0:
+        if len(Screen_Run.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Screen_Run.VIEW_GROUPS:
+            for grp in Screen_Run.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
@@ -166,9 +166,9 @@ class Assay_CreateForm(forms.ModelForm):
         #exclude=Screen_Run.CALCULATED_FIELDS
 
     def create_field_groups(self):
-        if len(Assay.VIEW_GROUPS) > 0:
+        if len(Assay.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Assay.VIEW_GROUPS:
+            for grp in Assay.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
