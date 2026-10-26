@@ -146,7 +146,7 @@ class Project(AuditModel):
     project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
                              verbose_name = "Project Contacts", null=True, blank=True)
     project_members = models.ManyToManyField(Collab_User, through='Project_Membership',through_fields=('project_id', 'user_id'),
-                                             blank=True, null=True, related_name="project_members")
+                                             blank=True, related_name="project_members")
     
     #owner_users = models.ManyToManyField(Collab_User)
          
@@ -833,6 +833,22 @@ class ABase_Compound_Batch(AuditModel):
         retValue = cls.objects.filter(cmpbatch_id=CompoundBatch).exists()
         return(retValue)
 
+    #------------------------------------------------
+    @staticmethod
+    def str_BatchID(CompoundID, CompoundBatchRef):
+        return(f'{CompoundID}{COMPOUNDBATCH_SEP}{CompoundBatchRef}')
+
+    #------------------------------------------------
+    @staticmethod
+    def split_BatchID(CompoundBatchID):
+        if COMPOUNDBATCH_SEP in CompoundBatchID:
+            _parts = CompoundBatchID.split(COMPOUNDBATCH_SEP)
+            CompoundID = _parts[0]
+            CompoundBatchRef = _parts[1]
+        else:
+            CompoundID = CompoundBatchID
+            CompoundBatchRef = ''
+        return(CompoundID, CompoundBatchRef)
 
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):

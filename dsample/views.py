@@ -187,7 +187,7 @@ def Project_DetailView(req, pk):
     _view = req.GET.get('view', 'table')
     _per_page = 15 if _view == 'card' else 50
 
-    _coadd_compounds = COADD_Compound.objects.filter(project_id=_object, )
+    _coadd_compounds = COADD_Compound.objects.filter(project_id=_object, astatus__gt=0)
     _coadd_paginator = Paginator(_coadd_compounds, _per_page)
     _coadd_page = _coadd_paginator.get_page(req.GET.get('page'))
 

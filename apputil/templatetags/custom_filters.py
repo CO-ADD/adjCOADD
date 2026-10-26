@@ -34,6 +34,13 @@ def to_int(value):
         return 0
 
 @register.filter
+def basename(value):
+    """Return the last component of a dotted path (e.g. module.func -> func)."""
+    value = str(value or "")
+    return value.rsplit(".", 1)[-1]
+
+
+@register.filter
 def get_linkname(value, arg1=None, arg2=None):
     if value in URL_LINKS.keys():        
         arg1_str = str(arg1) if arg1 else ''

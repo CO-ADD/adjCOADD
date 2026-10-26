@@ -42,6 +42,7 @@ SEQRUN_SEP = "-"
 #SAMPLE_SEP = "_"
 #SAMPLEBATCH_SEP = "_"
 SAMPLEBATCH_SEP = "."
+COMPOUNDBATCH_SEP = ":"
 COMPOUND_SEP = '|'
 
 # -dScreen Settings ---------------------------------------------------

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title %}COADD - Tasks{% endblock %}
+{% block content %}
+
+<div class="d-flex flex-row vh-100">
+  <!-- Sidebar View/Buttons -->
+  {% include 'grid/base/left_navbar.html' with list_url='task_current' %}
+  <!-- Filterbar View/Filter -->
+  {% include "utils/sidebar.html" %}
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+
+    <!-- Table Title -->
+    <h2 class="accordion-header" id="headingOne">
+      <button class="collapsed accordion-button mt-0" style="max-height: fit-content" type="button"
+        data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <h5 class="fs-4 my-0"><b>Background Tasks</b></h5>
+      </button>
+    </h2>
+
+    <!-- Pagination -->
+    <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+      {% include 'grid/base/pagination.html' %}
+    </div>
+
+    <!-- Task table -->
+    <div class="contain-fluid data-contain" style="height: 90vh; overflow: auto">
+      <table class="table table-hover sorting_table table-sm align-middle table-bordered table-bg" style="width: 100%">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 0%"><i class="bi bi-app-indicator text-body"></i></th>
+            <th class="order_field" style="width: fit-content" data-name="ID">ID</th>
+            <th class="order_field" style="width: fit-content" data-name="Task">Task</th>
+            <th class="order_field" style="width: fit-content" data-name="Status">Status</th>
+            <th class="order_field" style="width: fit-content" data-name="Queued">Queued</th>
+            <th class="order_field" style="width: fit-content" data-name="Started">Started</th>
+            <th class="order_field" style="width: fit-content" data-name="Finished">Finished</th>
+            <th>Result</th>
+            <th>Error</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in page_obj %}
+          <tr>
+            <td class="text-center p-0">
+              {% if object.status == 'READY' %}
+              <form method="POST"
+                    action="{% url 'task_remove' object.id %}"
+                    hx-post="{% url 'task_remove' object.id %}"
+                    hx-target="closest tr"
+                    hx-swap="outerHTML"
+                    hx-confirm="Remove this task from the queue?"
+                    class="m-0">
+                {% csrf_token %}
+                <button type="submit" class="border-0 text-danger bg-transparent" title="Remove queued task">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
+              </form>
+              {% endif %}
+            </td>
+            <td class="text-nowrap"><small class="text-muted">{{ object.id|stringformat:".8s" }}</small></td>
+            <td class="text-nowrap">{{ object.task_path|basename }}</td>
+            <td>
+              {% if object.status == 'RUNNING' %}
+                <span class="badge bg-info">Running</span>
+              {% elif object.status == 'SUCCESSFUL' %}
+                <span class="badge bg-success">Succeeded</span>
+              {% elif object.status == 'FAILED' %}
+                <span class="badge bg-danger">Failed</span>
+              {% else %}
+                <span class="badge bg-secondary">Queued</span>
+              {% endif %}
+            </td>
+            <td class="text-nowrap"><small>{{ object.enqueued_at|date:"Y-m-d H:i:s" }}</small></td>
+            <td class="text-nowrap"><small>{{ object.started_at|date:"Y-m-d H:i:s"|default:"—" }}</small></td>
+            <td class="text-nowrap"><small>{{ object.finished_at|date:"Y-m-d H:i:s"|default:"—" }}</small></td>
+            <td>
+              {% if object.return_value %}
+                <small><code>{{ object.return_value }}</code></small>
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td>
+              {% if object.status == 'FAILED' and object.traceback %}
+                <details>
+                  <summary class="text-danger small">View traceback</summary>
+                  <pre class="small text-danger" style="max-height: 200px; overflow: auto;">{{ object.traceback }}</pre>
+                </details>
+              {% else %}
+                —
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="9" class="text-muted text-center py-4">No background tasks found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
