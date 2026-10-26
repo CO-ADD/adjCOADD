@@ -389,8 +389,8 @@ class AminoAcid_Dictionary(AuditModel):
 
     link_cterm = models.CharField(max_length=200, blank=True, verbose_name = "C-Term")
     link_nterm = models.CharField(max_length=200, blank=True, verbose_name = "N-Term")
-    link_sidechain = models.CharField(max_length=200, blank=True, verbose_name = "Side Chain")
-    link_disulphide = models.CharField(max_length=200, blank=True, verbose_name = "Disulphide Bridge")
+    link_ester = models.CharField(max_length=200, blank=True, verbose_name = "Ester")
+    link_disulphide = models.CharField(max_length=200, blank=True, verbose_name = "Disulphide")
 
 
 
