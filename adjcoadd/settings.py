@@ -461,10 +461,23 @@ AUTHENTICATION_BACKENDS = [
 # AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
 
 # UQ AD server settings
-AUTH_LDAP_SERVER_URI = "ldap://ad.uq.edu.au:389"
+#>ldapsearch -x -ZZ -H 'ldap://ad.cc.uq.edu.au:389' -D 'uqcoadd@uq.edu.au' -W -b 'DC=uq,DC=edu,DC=au' '(sAMAccountName=uqjzuegg)' dn sAMAccountName userPrincipalName
+#
+AUTH_LDAP_SERVER_URI = "ldap://ad.uq.edu.au"
+#AUTH_LDAP_START_TLS = True
+AUTH_LDAP_BASE_DN = "DC=uq,DC=edu,DC=au"
 AUTH_LDAP_BIND_DN = "uqcoadd@uq.edu.au"
 AUTH_LDAP_BIND_PASSWORD = "Bri$myc1n@2009"
-AUTH_LDAP_USER_SEARCH = LDAPSearch("DC=uq,DC=edu,DC=au", ldap.SCOPE_SUBTREE, "(sAMAccountName=%(user)s)")
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    AUTH_LDAP_BASE_DN,
+    ldap.SCOPE_SUBTREE, 
+    "(sAMAccountName=%(user)s)")
+
+AUTH_LDAP_CONNECTION_OPTIONS = {
+    ldap.OPT_PROTOCOL_VERSION: 3,
+    ldap.OPT_REFERRALS: 0,          # important for AD
+    #ldap.OPT_X_TLS_NEWCTX: 0,   # keep this last
+}
 
 # Security Setting
 #--------------------------------------------------------------------
@@ -536,7 +549,12 @@ LOGGING = {
     
         'user_log': {
             'handlers': ['user'],
-            'level': 'INFO',
+            'level': 'DEBUG',
+        },
+        'django_auth_ldap': {
+            'handlers': ['user'],
+            'level': 'DEBUG',
+            "propagate": True,
         },
     },
 }

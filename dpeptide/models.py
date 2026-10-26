@@ -289,9 +289,9 @@ class Peptide_Batch(AuditModel):
     class Meta:
         app_label = 'dpeptide'
         db_table = 'pepbatch'
-        ordering=['pepbatch_id']
+        ordering=['isoformbatch_id']
         indexes = [
-            models.Index(name="pepbatch_pepbatch_idx",fields=['peptide_id','batch_id']),
+            models.Index(name="pepbatch_pepbatch_idx",fields=['isoform_id','batch_id']),
             models.Index(name="pepbatch_qc_idx",fields=['qc_status']),
             models.Index(name="pepbatch_sdate_idx",fields=['stock_date']),
             models.Index(name="pepbatch_slevel_idx",fields=['stock_level']),
