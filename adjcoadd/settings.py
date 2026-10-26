@@ -424,7 +424,7 @@ AUTH_USER_MODEL = 'apputil.ApplicationUser'
 LOGOUT_REDIRECT_URL="/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#LDAP Autherntications
+#LDAP Authentication Settings - OLD
 #--------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
