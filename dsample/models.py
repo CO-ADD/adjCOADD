@@ -757,11 +757,14 @@ class ABase_Compound_Batch(AuditModel):
         'project_id':'Project',
         'full_mw':'Full MW',
         'full_mf':'Full MF',
-        'salt_code':'Salt',
+        'salt_equivalents':'Salt Eq',
+        'salt_code':'Salt Code',
+        'chemist':'Chemist',
+        'labbook': 'Labbook',
         'supplier':'Supplier',
         'supplier_code':'Supplier Code',
         'date_recieved':'Received',
-        'init_amount':'Amount',
+        'init_amount':'Amount [mg]',
     }
 
     DICTIONARY_FIELDS = {
@@ -804,7 +807,7 @@ class ABase_Compound_Batch(AuditModel):
     class Meta:
         app_label = 'dsample'
         db_table = 'abase_cmpbatch'
-        ordering=['compound_id']
+        ordering=['cmpbatch_id']
         indexes = [
             models.Index(name="abcmpb_cmpb_idx", fields=['cmpbatch_id']),
             models.Index(name="abcmpb_salt_idx", fields=['salt_code']),
@@ -849,6 +852,19 @@ class ABase_Compound_Batch(AuditModel):
             CompoundID = CompoundBatchID
             CompoundBatchRef = ''
         return(CompoundID, CompoundBatchRef)
+        
+    # -- Generated Fields - Property ------------------------------------------
+    @property
+    def labbook(self):
+        retStr = ''
+        if self.labbook_no:
+            retStr += f"{self.labbook_no}"
+            if self.labbook_page:
+                retStr += f"-{self.labbook_page}"
+                if self.labbook_page_line:        
+                    retStr += f"-{self.labbook_page_line}"
+        return(retStr)
+
 
 #-------------------------------------------------------------------------------------------------
 class Library_Compound(AuditModel):
