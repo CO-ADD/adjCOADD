@@ -128,6 +128,14 @@ class AppUser_ListView(LoginRequiredMixin, Filtered_ListView):
     model_fields=model.LIST_VIEW_FIELDS
     ordering =['-is_active','-is_appuser','first_name','last_name']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = 'AppUser'
+        context['list_url'] = 'userslist'
+        context['create_url'] = 'createAppUser'
+        context['update_url'] = 'updateAppUser'
+        return context
+
 
 #-------------------------------------------------------------------------------------------------
 class AppUser_DetailView(DetailView):
@@ -149,7 +157,7 @@ def userprofile(req, id):
 class AppUser_CreateView(SuperUserRequiredMixin, Base_CreateView):
     
     form_class = AppUser_Form
-    template_name = 'apputil/appUsersCreate.html'
+    template_name = 'apputil/appuser_form_modal.html'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
