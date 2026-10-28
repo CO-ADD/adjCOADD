@@ -1098,6 +1098,7 @@ class Menu(AuditModel):
         'menu_id': 'Menu ID',
         'menu_name': 'Name',
         'menu_label': 'Label',
+        'icon': 'Icon',
         'order': 'Order',
         'permission': 'Permission',
     }
@@ -1178,9 +1179,12 @@ class Menu_Item(AuditModel):
         'parent': 'Parent',
         'label': 'Label',
         'url_name': 'URL Name',
+        'url_path': 'URL Path',
+        'icon': 'Icon',
         'order': 'Order',
         'separator': 'Separator',
         'disabled': 'Disabled',
+        'modal': 'Modal',
         'permission': 'Permission',
     }
 

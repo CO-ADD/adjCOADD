@@ -18,9 +18,19 @@ class Command(BaseCommand):
     #----------------------------------------------------------------
     def _single_rename(self, oldid,nTotal, nCurrent, upload=False, delete=True):
     #----------------------------------------------------------------
-        _p = oldid.split('_')
-        if len(_p) == 3:
-            newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
+        # 001 - Changing from MCC_NNNNNN_BBB to MCC_NNNNNN:BBB
+        #_p = oldid.split('_')
+        #if len(_p) == 3:
+
+        # 002 - Changing from MCC_NNNNNN:BBB to MCC_NNNNNN.BBB
+        _p = oldid.split(':')
+        if len(_p) == 2:
+            # 001
+            #newid = ABase_Compound_Batch.str_BatchID("_".join(_p[:2]), _p[2])
+            
+            # 002
+            newid = ABase_Compound_Batch.str_BatchID(_p[0], _p[1])
+            
             print(f"--- ABase Batch OldID: {oldid} NewID: {newid} --- {nCurrent:8d}/{nTotal:8d}")
             rename_ForeignKey(Compound_Batch,oldid,newid,upload=upload,delete=False)
             #rename_ForeignKey(ABase_Compound_Batch,oldid,newid,upload=options['upload'],delete=options['delete'])

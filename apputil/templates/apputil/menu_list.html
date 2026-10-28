@@ -28,7 +28,7 @@
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
     <div class="contain-fluid data-contain">
-      {% include 'datatable/datatable_pag_action.html' with model_name=model_name update_url=update_url modal_id='infoModal' modal_body_id='info-body' %}
+      {% include 'datatable/datatable_pag_action_inrow.html' with model_name=model_name update_url=update_url row_template=row_template %}
     </div>
   </div>
 </div>

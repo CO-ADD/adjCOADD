@@ -94,6 +94,14 @@ class Dictionary_Form(forms.ModelForm):
         model=Dictionary
         fields='__all__'
 
+
+class Dictionary_UpdateForm(forms.ModelForm):
+    dict_value = forms.CharField(disabled=True)
+
+    class Meta:
+        model = Dictionary
+        fields = ['dict_value', 'dict_class', 'dict_desc', 'dict_sort', 'dict_app']
+
 #------------------------------------------------------------------------
 class Dictionary_Filter(BaseStatus_Filter):
     dict_class = ChoiceFilter(choices=[])
@@ -166,6 +174,7 @@ class Menu_UpdateForm(Menu_Form):
     class Meta:
         model = Menu
         exclude = []
+        field_order = ['menu_id', 'menu_name', 'menu_label', 'icon', 'order', 'permission']
 
 
 # -----------------------------------------------------------------
@@ -209,5 +218,7 @@ class Menu_Item_UpdateForm(Menu_Item_Form):
     class Meta:
         model = Menu_Item
         exclude = []
+        field_order = ['item_id', 'menu_id', 'parent', 'label', 'url_name', 'url_path', 'icon', 'order',
+                       'separator', 'disabled', 'modal', 'permission']
 
     
