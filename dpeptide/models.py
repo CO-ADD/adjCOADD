@@ -7,6 +7,7 @@ from sequences import Sequence
 from django.core.validators import RegexValidator
 
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.indexes import GinIndex
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
@@ -15,16 +16,17 @@ from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from dorganism.models import Taxonomy 
 from adjcoadd.constants import *
 
+import logging
+logger = logging.getLogger(__name__)
+
 #-------------------------------------------------------------------------------------------------
 # Peptide Application Model
-# Peptide 
-#  -> 
-#    Peptide_Isoform <- Peptide_Modification
-#     -> 
-#       Peptide_Batch
+# Peptide
+#  -> Peptide_Isoform  <- Modification_Dictionary (via Isoform_Modification)
+#     -> Isoform_Batch
 #
-# AminoAcid - List of Amino Acids for Peptide Sequences, including modified and non-natural amino acids
-# Peptide_Modification - List of Peptide Modifications, including modified and non-natural amino acids
+# AminoAcid_Dictionary - List of Amino Acids for Peptide Sequences, including modified and non-natural amino acids
+# Modification_Dictionary - List of Peptide Modifications/Tags, including modified and non-natural amino acids
 #
 
 #-------------------------------------------------------------------------------------------------
@@ -77,7 +79,7 @@ class Peptide(AuditModel):
     peptide_name= models.CharField(max_length=200, blank=True, verbose_name = "Peptide Name") 
     peptide_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Peptide Notes")
     #peptide_code= models.CharField(max_length=30, blank=True, verbose_name = "Peptide Code")
-    peptide_panel=ArrayField(models.CharField(max_length=100, null=True, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
+    peptide_panel=ArrayField(models.CharField(max_length=100, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
     peptide_type=models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Peptide Type", on_delete=models.DO_NOTHING,
         db_column="peptide_type", related_name="%(class)s_peptide_type")
     #peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
@@ -122,7 +124,7 @@ class Peptide(AuditModel):
             models.Index(name="pep_bilm_idx", fields=['bilm']),
             #models.Index(name="pep_code_idx", fields=['peptide_code']),
             models.Index(name="pep_type_idx", fields=['peptide_type']),
-            models.Index(name="pep_panel_idx", fields=['peptide_panel']),
+            GinIndex(name="pep_panel_idx", fields=['peptide_panel']),
             #models.Index(name="pep_source_idx", fields=['source']),
             # models.Index(name="org_taxid_idx", fields=['tax_id']),
         ]
@@ -130,6 +132,10 @@ class Peptide(AuditModel):
     #------------------------------------------------
     def __repr__(self) -> str:
         return f"{self.peptide_id} ({self.peptide_name})"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.peptide_id} {self.peptide_name}".strip()
 
     #------------------------------------------------
     @classmethod
@@ -147,7 +153,7 @@ class Peptide(AuditModel):
         if PeptideID:
             # Returns an instance by peptide_id
             try:
-                retInstance = cls.objects.get(peptide_ID=PeptideID)
+                retInstance = cls.objects.get(peptide_id=PeptideID)
             except:
                 if verbose:
                     print(f"[PeptideID Not Found] {PeptideID} ")
@@ -187,9 +193,10 @@ class Peptide(AuditModel):
 
      #------------------------------------------------
     def save(self, *args, **kwargs):
-        if not self.peptide_id: 
-            self.peptide_id = self.find_Next_PeptideID()
-            if self.peptide_id: 
+        if not self.peptide_id:
+            _class = str(self.peptide_type.dict_value) if self.peptide_type else 'PEP'
+            self.peptide_id = self.find_Next_PeptideID(_class)
+            if self.peptide_id:
                 super(Peptide, self).save(*args, **kwargs)
         else:
             super(Peptide, self).save(*args, **kwargs) 
@@ -198,25 +205,43 @@ class Peptide(AuditModel):
 #=================================================================================================
 class Peptide_Isoform(AuditModel):
     """
-    Isoform
+    Isoform - a modified variant of a Peptide
     
     """
 #=================================================================================================
+    LIST_VIEW_FIELDS = {
+        'isoform_id': 'Isoform ID',
+        'isoform_name': 'Isoform Name',
+        'peptide_id': 'Peptide',
+        'seq': 'Sequence',
+        'mw': 'MW',
+        'biologist': 'Biologist',
+    }
 
+    DETAIL_VIEW_GROUPS = [
+        ['isoform_id', 'isoform_name', 'isoform_notes'],
+        ['peptide_id'],
+        ['seq', 'bilm', 'helm', 'mw', 'nseq'],
+        ['biologist'],
+    ]
+
+    DICTIONARY_FIELDS = {}
 
     isoform_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Isoform ID") 
     isoform_name= models.CharField(max_length=200, blank=True, verbose_name = "Isoform Name") 
     isoform_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Isoform Notes")
+    
     peptide_id = models.ForeignKey(Peptide, null=False, blank=False, verbose_name = "Peptide ID", on_delete=models.DO_NOTHING,
-        db_column="peptide_id", related_name="%(class)s_peptide_id")
+        db_column="peptide_id", related_name="isoforms")
 
-    peptide_modifications = models.CharField(max_length=80, blank=True, verbose_name = "Tags")
-    # Expression system	
-    # Expression cell ID	
-    # Vector ID	Free form ID 1	Free form ID 2	
-  
-    # batch_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Quality", on_delete=models.DO_NOTHING,
-    #     db_column="batch_quality", related_name="%(class)s_batchquality")
+    peptide_modifications = models.ManyToManyField(
+        'Modification_Dictionary',
+        through='Isoform_Modification',
+        through_fields=('isoform_id', 'pepmod_id'),
+        blank=True,
+        related_name='isoforms',
+        verbose_name = "Modifications",
+    )
 
     bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
     helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
@@ -229,13 +254,82 @@ class Peptide_Isoform(AuditModel):
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 
-#=================================================================================================
-class Peptide_Batch(AuditModel):
-    """
-    Peptide Batch Collection
-    """
-#=================================================================================================
+    class Meta:
+        app_label = 'dpeptide'
+        db_table = 'peptide_isoform'
+        ordering=['isoform_id']
+        indexes = [
+            models.Index(name="pepiso_bilm_idx", fields=['bilm']),
+            models.Index(name="pepiso_pep_idx", fields=['peptide_id']),
+        ]
 
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.isoform_id} ({self.isoform_name})"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.isoform_id} {self.isoform_name}".strip()
+
+    #------------------------------------------------
+    @classmethod
+    def str_IsoformID(cls, PeptideID, IsoformNo) -> str:
+        return(f"{PeptideID}{PEPISO_SEP}I{IsoformNo:02d}")
+
+    #------------------------------------------------
+    def find_Next_IsoformID(self) -> str:
+        peptide_id = self.peptide_id.peptide_id
+        next_no = 1
+        next_iso = self.str_IsoformID(peptide_id, next_no)
+        while self.exists(next_iso):
+            next_no += 1
+            next_iso = self.str_IsoformID(peptide_id, next_no)
+        return(next_iso)
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, IsoformID, verbose=0):
+        try:
+            retInstance = cls.objects.get(isoform_id=IsoformID)
+        except:
+            if verbose:
+                print(f"[Isoform Not Found] {IsoformID} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls, IsoformID, verbose=0):
+        return cls.objects.filter(isoform_id=IsoformID).exists()
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.isoform_id:
+            self.isoform_id = self.find_Next_IsoformID()
+            if self.isoform_id:
+                super(Peptide_Isoform, self).save(*args, **kwargs)
+        else:
+            super(Peptide_Isoform, self).save(*args, **kwargs)
+
+    #------------------------------------------------
+    @property
+    def nterm_modifications(self):
+        return self.modification_links.filter(mod_position='N').order_by('mod_order')
+
+    @property
+    def cterm_modifications(self):
+        return self.modification_links.filter(mod_position='C').order_by('mod_order')
+
+    @property
+    def internal_modifications(self):
+        return self.modification_links.filter(mod_position='I').order_by('mod_order')
+
+#=================================================================================================
+class Isoform_Batch(AuditModel):
+    """
+    Peptide Isoform Batch Collection
+    """
+#=================================================================================================
     LIST_VIEW_FIELDS = {
         "batch_id":"Batch ID",
         "batch_notes":"Batch Notes",
@@ -255,16 +349,12 @@ class Peptide_Batch(AuditModel):
     }
     
     FORM_GROUPS = {
-       'Group1': ["batch_id", "batch_notes", "previous_batch_id", "passage_number", "qc_status", "batch_quality", "quality_source", "stock_date", "stock_level", "biologist" ]
+       'Group1': ["batch_id", "batch_notes", "qc_status", "quality_source", "stock_date", "stock_level", "biologist", "source", "source_code", "source_type" ]
        }
-
-
 
     isoformbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "IsoFormBatch ID")
     isoform_id = models.ForeignKey(Peptide_Isoform, null=False, blank=False, verbose_name = "Isoform ID", on_delete=models.DO_NOTHING,
-        db_column="isoform_id", related_name="%(class)s_isoform_id")
-    #previous_batch_id= models.CharField(max_length=20, blank=True, verbose_name = "Previous peptideBatch ID")
-    #passage_number= models.CharField(max_length=20, blank=True, verbose_name = "Passage Number")
+        db_column="isoform_id", related_name="batches")
     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
 
@@ -283,23 +373,21 @@ class Peptide_Batch(AuditModel):
     biologist = models.ForeignKey(ApplicationUser, null=True, blank=True, verbose_name = "Biologist", on_delete=models.DO_NOTHING, 
         db_column="biologist", related_name="%(class)s_biologist")
 
-
-  
     #------------------------------------------------
     class Meta:
         app_label = 'dpeptide'
-        db_table = 'pepbatch'
+        db_table = 'isoform_batch'
         ordering=['isoformbatch_id']
         indexes = [
-            models.Index(name="pepbatch_pepbatch_idx",fields=['isoform_id','batch_id']),
-            models.Index(name="pepbatch_qc_idx",fields=['qc_status']),
-            models.Index(name="pepbatch_sdate_idx",fields=['stock_date']),
-            models.Index(name="pepbatch_slevel_idx",fields=['stock_level']),
+            models.Index(name="isobatch_isobatch_idx",fields=['isoform_id','batch_id']),
+            models.Index(name="isobatch_qc_idx",fields=['qc_status']),
+            models.Index(name="isobatch_sdate_idx",fields=['stock_date']),
+            models.Index(name="isobatch_slevel_idx",fields=['stock_level']),
         ]
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.pepbatch_id}"
+        return f"{self.isoformbatch_id}"
 
     #------------------------------------------------
     @classmethod
@@ -308,12 +396,12 @@ class Peptide_Batch(AuditModel):
         return(f"{BatchNo:02d}")
     #------------------------------------------------
     @classmethod
-    # Formats PeptideID:str,BatchID:str -> PepBatchID:str
-    def str_PepBatchID(self,PeptideID:str,BatchID:str) -> str:
-        return(f"{PeptideID}{PEPBATCH_SEP}{BatchID}")
+    # Formats IsoformID:str,BatchID:str -> IsoBatchID:str
+    def str_IsoBatchID(self,IsoformID:str,BatchID:str) -> str:
+        return(f"{IsoformID}{PEPBATCH_SEP}{BatchID}")
 
     #------------------------------------------------
-    def find_Next_BatchID(self, PeptideID:str, BatchID:str=None) -> str:
+    def find_Next_BatchID(self, IsoformID:str, BatchID:str=None) -> str:
         # Check for given BatchID    
         if BatchID:
             # Clean up BatchID - remove non alphanumeric character and make uppercase
@@ -323,51 +411,49 @@ class Peptide_Batch(AuditModel):
             if BatchID.isnumeric():
                 BatchID = self.str_BatchID(int(BatchID))
 
-            next_PepBatch = self.str_PepBatchID(PeptideID,BatchID)
-            if not self.exists(next_PepBatch):
+            if not self.exists(self.str_IsoBatchID(IsoformID, BatchID)):
                 return(BatchID)
 
         # Find new BatchID    
         next_BatchNo = 1
-        next_PepBatch = self.str_PepBatchID(PeptideID,self.str_BatchID(next_BatchNo))
-        while self.exists(next_PepBatch):
+        next_IsoBatch = self.str_IsoBatchID(IsoformID, self.str_BatchID(next_BatchNo))
+        while self.exists(next_IsoBatch):
             next_BatchNo = next_BatchNo + 1
-            next_PepBatch = self.str_PepBatchID(PeptideID,self.str_BatchID(next_BatchNo))
+            next_IsoBatch = self.str_IsoBatchID(IsoformID, self.str_BatchID(next_BatchNo))
         return(self.str_BatchID(next_BatchNo))    
 
     #------------------------------------------------
     @classmethod
-    def get(cls,PepBatchID,verbose=0):
-    # Returns an instance if found by pepbatch_id
+    def get(cls,IsoBatchID,verbose=0):
+    # Returns an instance if found by isoformbatch_id
         try:
-            retInstance = cls.objects.get(pepbatch_id=PepBatchID)
+            retInstance = cls.objects.get(isoformbatch_id=IsoBatchID)
         except:
             if verbose:
-                print(f"[PepBatch Not Found] {PepBatchID} ")
+                print(f"[IsoBatch Not Found] {IsoBatchID} ")
             retInstance = None
         return(retInstance)
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,PepBatchID,verbose=0):
+    def exists(cls,IsoBatchID,verbose=0):
     # Returns if instance exists
-        return cls.objects.filter(pepbatch_id=PepBatchID).exists()
+        return cls.objects.filter(isoformbatch_id=IsoBatchID).exists()
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        if not self.pepbatch_id: 
-            # creates new PepBatchID
-            PeptideID = self.peptide_id.peptide_id
-            BatchID = self.find_Next_BatchID(PeptideID,self.batch_id)
+        if not self.isoformbatch_id: 
+            # creates new IsoBatchID
+            IsoformID = self.isoform_id.isoform_id
+            BatchID = self.find_Next_BatchID(IsoformID, self.batch_id)
             if BatchID:
                 self.batch_id = BatchID
-                self.pepbatch_id = self.str_PepBatchID(PeptideID,BatchID)
-                super(Peptide_Batch,self).save(*args, **kwargs)
+                self.isoformbatch_id = self.str_IsoBatchID(IsoformID, BatchID)
+                super(Isoform_Batch, self).save(*args, **kwargs)
         else:
-            # confirms Batch_ID from PepBatchID
-            self.batch_id = str(self.pepbatch_id).replace(str(self.peptide_id.peptide_id),"").split(PEPBATCH_SEP)[1]
-            super(Peptide_Batch,self).save(*args, **kwargs)
-            #print(f"[PepBatch.save]: {self.pepbatch_id}")
+            # confirms Batch_ID from IsoBatchID
+            self.batch_id = str(self.isoformbatch_id).split(PEPBATCH_SEP)[-1]
+            super(Isoform_Batch, self).save(*args, **kwargs)
         
 # ================================================================================================
 
@@ -377,6 +463,9 @@ class AminoAcid_Dictionary(AuditModel):
     Amino Acid Dictionary
     """
 #=================================================================================================
+    ID_SEQUENCE = 'AminoAcid_Dictionary'
+    ID_PREFIX = 'AA'
+    ID_PAD = 6
 
 
     aa_id = models.CharField(primary_key=True, max_length=15, verbose_name = "AA ID")
@@ -392,6 +481,161 @@ class AminoAcid_Dictionary(AuditModel):
     link_ester = models.CharField(max_length=200, blank=True, verbose_name = "Ester")
     link_disulphide = models.CharField(max_length=200, blank=True, verbose_name = "Disulphide")
 
+   #------------------------------------------------
+    class Meta:
+        app_label = 'dpeptide'
+        db_table = 'aa_dictionary'
+        ordering=['aa_code']
+        indexes = [
+            models.Index(name="aa_id_idx",fields=['aa_id']),
+            models.Index(name="aa_code_idx",fields=['aa_code']),
+        ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,AAID, AACode=None, verbose=0):
+    # Returns an instance by compound_id
+        try:
+            if AAID:
+                retInstance = cls.objects.get(aa_id=AAID)
+            elif AACode:
+                retInstance = cls.objects.get(aa_code=AACode)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                if AAID:
+                    logger.warning(f"[AminoAcid Not Found] {AAID} ")
+                elif AACode :
+                    logger.warning(f"[AminoAcid Not Found] {AACode}  ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,AAID, AACode=None, verbose=0):
+    # Returns if an instance exists by compound_id
+        if AAID:
+            retValue = cls.objects.filter(aa_id=AAID).exists()
+        elif AACode:
+            retValue = cls.objects.filter(aa_code=AACode).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.aa_id:
+            self.aa_id = self.next_id()
+            if self.aa_id:
+                #self.save_batch() 
+                super(AminoAcid_Dictionary, self).save(*args, **kwargs)
+        else:
+            #self.save_batch()
+            super(AminoAcid_Dictionary, self).save(*args, **kwargs) 
+            
+#=================================================================================================
+class Modification_Dictionary(AuditModel):
+    """
+    Peptide Modification Dictionary
+    """
+#=================================================================================================
+
+    ID_SEQUENCE = 'PepMod_Dictionary'
+    ID_PREFIX = 'PEPMOD'
+    ID_PAD = 6
+
+    pepmod_id = models.CharField(primary_key=True, max_length=15, verbose_name = "PepMod ID")
+    pepmod_code = models.CharField(max_length=5, verbose_name = "PepMod Code")
+
+    smiles = models.CharField(max_length=200, blank=True, verbose_name = "SMILES")
+    mf = models.CharField(max_length=50, blank=True, verbose_name = "Formula")
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+
+    class Meta:
+        app_label = 'dpeptide'
+        db_table = 'pepmod_dictionary'
+        ordering=['pepmod_code']
+        indexes = [
+            models.Index(name="pepmod_id_idx",fields=['pepmod_id']),
+            models.Index(name="pepmod_code_idx",fields=['pepmod_code']),
+        ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PEPMODID, PEPMODCode=None, verbose=0):
+    # Returns an instance by compound_id
+        try:
+            if PEPMODID:
+                retInstance = cls.objects.get(pepmod_id=PEPMODID)
+            elif PEPMODCode:
+                retInstance = cls.objects.get(pepmod_code=PEPMODCode)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                if PEPMODID:
+                    logger.warning(f"[AminoAcid Not Found] {PEPMODID} ")
+                elif PEPMODCode :
+                    logger.warning(f"[AminoAcid Not Found] {PEPMODCode}  ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,PEPMODID, PEPMODCode=None, verbose=0):
+    # Returns if an instance exists by compound_id
+        if PEPMODID:
+            retValue = cls.objects.filter(pepmod_id=PEPMODID).exists()
+        elif PEPMODCode:
+            retValue = cls.objects.filter(pepmod_code=PEPMODCode).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.pepmod_id:
+            self.pepmod_id = self.next_id()
+            if self.pepmod_id:
+                #self.save_batch() 
+                super(Modification_Dictionary, self).save(*args, **kwargs)
+        else:
+            #self.save_batch()
+            super(Modification_Dictionary, self).save(*args, **kwargs) 
 
 
-# Create your models here.
+#=================================================================================================
+class Isoform_Modification(models.Model):
+    """
+    Ordered modification link between a Peptide_Isoform and a
+    Modification_Dictionary entry, split by terminal position.
+    """
+#=================================================================================================
+    MOD_POSITION_CHOICES = [
+        ('N', 'N-Terminal'),
+        ('C', 'C-Terminal'),
+        ('I', 'Internal'),
+    ]
+
+    isoform_id = models.ForeignKey(Peptide_Isoform, null=False, blank=False, verbose_name = "Isoform ID", on_delete=models.CASCADE,
+        db_column="isoform_id", related_name="modification_links")
+    pepmod_id = models.ForeignKey(Modification_Dictionary, null=False, blank=False, verbose_name = "Modification", on_delete=models.CASCADE,
+        db_column="pepmod_id", related_name="isoform_links")
+    mod_position = models.CharField(max_length=1, choices=MOD_POSITION_CHOICES, default='I', verbose_name = "Position")
+    mod_order = models.PositiveSmallIntegerField(default=0, verbose_name = "Order")
+
+    class Meta:
+        app_label = 'dpeptide'
+        db_table = 'isoform_modification'
+        ordering = ['mod_position', 'mod_order']
+        unique_together = ('isoform_id', 'mod_position', 'mod_order')
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.isoform_id} <-[{self.mod_position}:{self.mod_order}]- {self.pepmod_id}"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.pepmod_id} ({self.get_mod_position_display()} {self.mod_order})"
+

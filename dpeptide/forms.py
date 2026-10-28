@@ -11,7 +11,7 @@ from dorganism.models import  Taxonomy
 from apputil.models import Dictionary, ApplicationUser, Document
 from applib.django.base.filters import BaseStatus_Filter
 from adjcoadd.constants import ORGANISM_CLASSES, CELL_CLASSES 
-from dpeptide.models import Peptide, Peptide_Batch
+from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch
 
 #=================================================================================================
 # Peptide

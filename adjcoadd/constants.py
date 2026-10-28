@@ -32,6 +32,7 @@ CELLBATCH_SEP = "_"
 # -dPeptide Settings 
 PEPTIDE_CLASSES = ['NB','MAB','PEP']
 PEPID_SEP = "_"
+PEPISO_SEP = "_"
 PEPBATCH_SEP = "."
 
 # -dGene Settings 

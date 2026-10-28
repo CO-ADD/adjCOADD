@@ -25,7 +25,7 @@ from apputil.forms import Document_Form
 from adjcoadd.constants import *
 
 from dorganism.models import Taxonomy
-from dpeptide.models import  Peptide, Peptide_Batch
+from dpeptide.models import  Peptide, Peptide_Isoform, Isoform_Batch
 from dpeptide.forms import (Peptide_Filter, Peptide_CreateForm, Peptide_UpdateForm)
 # , , Cell_UpdateForm, 
 #                          CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
