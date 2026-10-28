@@ -173,10 +173,21 @@ class Menu_Item_Filter(BaseStatus_Filter):
     label = CharFilter(field_name='label', lookup_expr='icontains', label='Label')
     url_name = CharFilter(field_name='url_name', lookup_expr='icontains', label='URL Name')
     permission = CharFilter(field_name='permission', lookup_expr='icontains', label='Permission')
+    menu_id = ChoiceFilter(field_name='menu_id', choices=[], label='Menu')
+    parent = ChoiceFilter(field_name='parent', choices=[], label='Parent')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['menu_id'].extra['choices'] = [
+            (m.menu_id, f"[{m.menu_id}] {m.menu_name}") for m in Menu.objects.all().order_by('order', 'menu_name')
+        ]
+        self.filters['parent'].extra['choices'] = [
+            (i.item_id, f"[{i.item_id}] {i.label}") for i in Menu_Item.objects.select_related('menu_id').all().order_by('menu_id', 'order', 'label')
+        ]
 
     class Meta:
         model = Menu_Item
-        fields = ['label', 'url_name', 'permission']
+        fields = ['label', 'url_name', 'permission', 'menu_id', 'parent']
 
 
 class Menu_Item_Form(forms.ModelForm):
