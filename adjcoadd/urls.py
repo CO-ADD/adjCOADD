@@ -39,7 +39,7 @@ urlpatterns = [
     path('dscreen/', include('dscreen.urls')),
     path('dsample/', include('dsample.urls')),
     path('dcollab/', include('dcollab.urls')),
-
+]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
