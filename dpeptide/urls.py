@@ -3,7 +3,6 @@
 from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_DetailView, Peptide_UpdateView, Peptide_RemoveView,
                             Isoform_ListView, Isoform_CreateView, Isoform_DetailView, Isoform_UpdateView, Isoform_RemoveView,
                             IsoBatch_CreateView, IsoBatch_UpdateView, IsoBatch_RemoveView,
-                            AminoAcid_ListView, AminoAcid_CreateView, AminoAcid_UpdateView,
                             Modification_ListView, Modification_CreateView, Modification_UpdateView)
 
 
@@ -26,11 +25,6 @@ urlpatterns = [
     path('createIsoBatch/<str:isoform_id>', IsoBatch_CreateView, name="isobatch_create"),
     path('updateIsoBatch/<str:pk>', IsoBatch_UpdateView, name="isobatch_update"),
     path('deleteIsoBatch/<str:pk>', IsoBatch_RemoveView.as_view(), name="isobatch_delete"),
-
-    # AminoAcid Dictionary
-    path('aminoacid_list', AminoAcid_ListView.as_view(), name="aminoacid_list"),
-    path('createAminoAcid/', AminoAcid_CreateView, name="aminoacid_create"),
-    path('updateAminoAcid/<str:pk>', AminoAcid_UpdateView, name="aminoacid_update"),
 
     # Modification Dictionary
     path('modification_list', Modification_ListView.as_view(), name="modification_list"),

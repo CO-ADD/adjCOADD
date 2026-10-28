@@ -53,6 +53,10 @@
         {% url 'coadd_list' as coadd_url %}
         {% include 'button/land_btn_chem.html' with title='COMPOUND' url=coadd_url totalnumber=nCOADD %}
     </div>
+    <div id="Label-Isoform" class="card-body d-flex justify-content-center">
+        {% url 'isoform_list' as isoform_url %}
+        {% include 'button/land_btn_chem.html' with title='PEPTIDE' url=isoform_url totalnumber=nIsoform %}
+    </div>
 </div>
 
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"

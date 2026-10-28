@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 #  -> Peptide_Isoform  <- Modification_Dictionary (via Isoform_Modification)
 #     -> Isoform_Batch
 #
-# AminoAcid_Dictionary - List of Amino Acids for Peptide Sequences, including modified and non-natural amino acids
+# AminoAcid (dchem.models) - List of Amino Acids for Peptide Sequences, including modified and non-natural amino acids
 # Modification_Dictionary - List of Peptide Modifications/Tags, including modified and non-natural amino acids
 #
 
@@ -455,97 +455,6 @@ class Isoform_Batch(AuditModel):
             super(Isoform_Batch, self).save(*args, **kwargs)
         
 # ================================================================================================
-
-#=================================================================================================
-class AminoAcid_Dictionary(AuditModel):
-    """
-    Amino Acid Dictionary
-    """
-#=================================================================================================
-    ID_SEQUENCE = 'AminoAcid_Dictionary'
-    ID_PREFIX = 'AA'
-    ID_PAD = 6
-
-    LIST_VIEW_FIELDS = {
-        'aa_id': 'AA ID',
-        'aa_code': 'AA Code',
-        'aa_letter': 'Letter',
-        'smiles': 'SMILES',
-        'mf': 'Formula',
-        'mw': 'MW',
-    }
-
-    DETAIL_VIEW_GROUPS = [
-        ['aa_id', 'aa_code', 'aa_letter'],
-        ['smiles', 'mw', 'mw'],
-        ['link_cterm', 'link_nterm', 'link_disulphide','link_ester', ],
-    ]
-
-    aa_id = models.CharField(primary_key=True, max_length=15, verbose_name = "AA ID")
-    aa_code = models.CharField(max_length=5, verbose_name = "AA Code")
-    aa_letter = models.CharField(max_length=1, verbose_name = "AA Letter")
-
-    smiles = models.CharField(max_length=200, blank=True, verbose_name = "SMILES")
-    mf = models.CharField(max_length=50, blank=True, verbose_name = "Formula")
-    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
-
-    link_cterm = models.CharField(max_length=200, blank=True, verbose_name = "C-Term")
-    link_nterm = models.CharField(max_length=200, blank=True, verbose_name = "N-Term")
-    link_ester = models.CharField(max_length=200, blank=True, verbose_name = "Ester")
-    link_disulphide = models.CharField(max_length=200, blank=True, verbose_name = "Disulphide")
-
-   #------------------------------------------------
-    class Meta:
-        app_label = 'dpeptide'
-        db_table = 'aminoacid_dictionary'
-        ordering=['aa_code']
-        indexes = [
-            models.Index(name="aa_id_idx",fields=['aa_id']),
-            models.Index(name="aa_code_idx",fields=['aa_code']),
-        ]
-
-    #------------------------------------------------
-    @classmethod
-    def get(cls,AAID, AACode=None, verbose=0):
-    # Returns an instance by compound_id
-        try:
-            if AAID:
-                retInstance = cls.objects.get(aa_id=AAID)
-            elif AACode:
-                retInstance = cls.objects.get(aa_code=AACode)
-            else:
-                retInstance = None
-        except:
-            retInstance = None
-            if verbose:
-                if AAID:
-                    logger.warning(f"[AminoAcid Not Found] {AAID} ")
-                elif AACode :
-                    logger.warning(f"[AminoAcid Not Found] {AACode}  ")
-        return(retInstance)
-
-    #------------------------------------------------
-    @classmethod
-    def exists(cls,AAID, AACode=None, verbose=0):
-    # Returns if an instance exists by compound_id
-        if AAID:
-            retValue = cls.objects.filter(aa_id=AAID).exists()
-        elif AACode:
-            retValue = cls.objects.filter(aa_code=AACode).exists()
-        else:
-            retValue = False
-        return(retValue)
-
-    #------------------------------------------------
-    def save(self, *args, **kwargs):
-        if not self.aa_id:
-            self.aa_id = self.next_id()
-            if self.aa_id:
-                #self.save_batch() 
-                super(AminoAcid_Dictionary, self).save(*args, **kwargs)
-        else:
-            #self.save_batch()
-            super(AminoAcid_Dictionary, self).save(*args, **kwargs) 
             
 #=================================================================================================
 class Modification_Dictionary(AuditModel):
@@ -555,7 +464,7 @@ class Modification_Dictionary(AuditModel):
 #=================================================================================================
 
     ID_SEQUENCE = 'PepMod_Dictionary'
-    ID_PREFIX = 'PEPMOD'
+    ID_PREFIX = 'PMOD'
     ID_PAD = 6
 
     LIST_VIEW_FIELDS = {
@@ -567,10 +476,11 @@ class Modification_Dictionary(AuditModel):
     }
 
     pepmod_id = models.CharField(primary_key=True, max_length=15, verbose_name = "PepMod ID")
-    pepmod_code = models.CharField(max_length=5, verbose_name = "PepMod Code")
+    pepmod_code = models.CharField(max_length=25, verbose_name = "PepMod Code")
 
-    smiles = models.CharField(max_length=200, blank=True, verbose_name = "SMILES")
-    mf = models.CharField(max_length=50, blank=True, verbose_name = "Formula")
+    bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
+    helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
+    seq= models.CharField(max_length=200, blank=True, verbose_name = "Seq") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
 
     class Meta:
@@ -597,9 +507,9 @@ class Modification_Dictionary(AuditModel):
             retInstance = None
             if verbose:
                 if PEPMODID:
-                    logger.warning(f"[AminoAcid Not Found] {PEPMODID} ")
+                    logger.warning(f"[Peptide Modification Not Found] {PEPMODID} ")
                 elif PEPMODCode :
-                    logger.warning(f"[AminoAcid Not Found] {PEPMODCode}  ")
+                    logger.warning(f"[Peptide Modification Not Found] {PEPMODCode}  ")
         return(retInstance)
 
     #------------------------------------------------

@@ -195,13 +195,26 @@
                   <a class="dropdown-item" href="{% url 'isoform_list' %}"> Isoforms</a>
                   <a class="dropdown-item" href="{% url 'peptide_list' %}"> Peptides</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{% url 'aminoacid_list' %}"> Amino Acids</a>
                   <a class="dropdown-item" href="{% url 'modification_list' %}"> Modifications</a>
                 </ul>
               </div>
               </li>
 
             </ul>
+        </div>
+
+        <!-- Structures Menu -->
+        <div class="dropdown d-inline-block">
+          <a type="button" class="nav-link active" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <p class="nav-title">Structures</p>
+          </a>
+          <ul class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'aminoacid_list' %}"> Amino Acid</a>
+            <a class="dropdown-item" href="{% url 'chemstructure_list' %}"> Chemical Structure</a>
+            <a class="dropdown-item" href="{% url 'chemsalt_list' %}"> Salt</a>
+            <a class="dropdown-item" href="{% url 'chemgroup_list' %}"> Chemical Group</a>
+            <a class="dropdown-item" href="{% url 'chemreaction_list' %}"> Chemical Reaction</a>
+          </ul>
         </div>
 
         <!-- Import Menu -->

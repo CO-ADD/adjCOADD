@@ -11,8 +11,7 @@ from dorganism.models import  Taxonomy
 from apputil.models import Dictionary, ApplicationUser, Document
 from applib.django.base.filters import BaseStatus_Filter
 from adjcoadd.constants import ORGANISM_CLASSES, CELL_CLASSES 
-from dpeptide.models import (Peptide, Peptide_Isoform, Isoform_Batch,
-                             AminoAcid_Dictionary, Modification_Dictionary)
+from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary
 
 #=================================================================================================
 # Peptide
@@ -185,33 +184,8 @@ class IsoBatch_UpdateForm(IsoBatch_CreateForm):
 
 
 #=================================================================================================
-# Dictionaries
+# Modification Dictionary
 #=================================================================================================
-class AminoAcid_Filter(BaseStatus_Filter):
-    aa_code = CharFilter(field_name='aa_code', lookup_expr='icontains', label='Code')
-    aa_letter = CharFilter(field_name='aa_letter', lookup_expr='icontains', label='Letter')
-
-    class Meta:
-        model = AminoAcid_Dictionary
-        fields = ['aa_id', 'aa_code', 'aa_letter']
-
-
-class AminoAcid_Form(forms.ModelForm):
-    class Meta:
-        model = AminoAcid_Dictionary
-        exclude = ['aa_id']
-        field_order = ['aa_id', 'aa_code', 'aa_letter', 'smiles', 'mf', 'mw']
-
-
-class AminoAcid_UpdateForm(AminoAcid_Form):
-    aa_id = forms.CharField(disabled=True)
-
-    class Meta:
-        model = AminoAcid_Dictionary
-        exclude = []
-
-
-# -----------------------------------------------------------------
 class Modification_Filter(BaseStatus_Filter):
     pepmod_code = CharFilter(field_name='pepmod_code', lookup_expr='icontains', label='Code')
 

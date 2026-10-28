@@ -15,6 +15,9 @@ from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 
 from adjcoadd.constants import *
 
+import logging
+logger = logging.getLogger(__name__)
+
 #-------------------------------------------------------------------------------------------------
 # Chemical Structures with Salt, Reactions and Alerts
 #-------------------------------------------------------------------------------------------------
@@ -31,6 +34,23 @@ class Chem_Structure(AuditModel):
     ID_SEQUENCE = 'ChemStructure'
     ID_PREFIX = 'CS'
     ID_PAD = 9
+
+    LIST_VIEW_FIELDS = {
+        'structure_id': {'Structure ID': {'structure_id': URL_LINKS['structure_id']}},
+        'structure_code': 'Code',
+        'structure_name': 'Name',
+        'structure_type': 'Type',
+        'mf': 'Formula',
+        'mw': 'MW',
+        'natoms': 'nAtoms',
+        'charge': 'Charge',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['structure_id', 'structure_code', 'structure_name', 'structure_type'],
+        ['mf', 'mw', 'natoms', 'charge', 'nfrag'],
+        ['inchikey'],
+    ]
 
     structure_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Structure ID")
     structure_code = models.CharField(max_length=15, blank=True, verbose_name = "Structure Code")
@@ -289,6 +309,21 @@ class Chem_Salt(AuditModel):
         'salt_type':'Salt_Type',
     }
 
+    LIST_VIEW_FIELDS = {
+        'salt_id': {'Salt ID': {'salt_id': URL_LINKS['salt_id']}},
+        'salt_name': 'Name',
+        'salt_type': 'Type',
+        'smiles': 'Smiles',
+        'mf': 'Formula',
+        'mw': 'MW',
+        'charge': 'Charge',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['salt_id', 'salt_name', 'salt_type'],
+        ['smiles', 'mf', 'mw', 'natoms', 'charge', 'h_equiv'],
+    ]
+
     salt_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Salt ID")
     salt_name = models.CharField(max_length=100, blank=True, verbose_name = "Salt Name")
     salt_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
@@ -363,6 +398,23 @@ class Chem_Group(AuditModel):
         'chemgroup_type':'ChemGroup_Type',
     }
 
+    LIST_VIEW_FIELDS = {
+        'chemgroup_id': {'ChemGroup ID': {'chemgroup_id': URL_LINKS['chemgroup_id']}},
+        'chemgroup_code': 'Code',
+        'chemgroup_name': 'Name',
+        'chemgroup_set': 'Set',
+        'chemgroup_type': 'Type',
+        'allowed_min': 'Min',
+        'allowed_max': 'Max',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['chemgroup_id', 'chemgroup_code', 'chemgroup_name'],
+        ['chemgroup_set', 'chemgroup_type'],
+        ['allowed_min', 'allowed_max'],
+        ['smarts'],
+    ]
+
     chemgroup_id = models.CharField(max_length=15, primary_key=True, verbose_name = "ChemGroup ID")
     chemgroup_code = models.CharField(max_length=15, unique=True, verbose_name = "ChemGroup Code")
     chemgroup_name = models.CharField(max_length=150, blank=True, verbose_name = "ChemGroup Name")
@@ -436,6 +488,20 @@ class Chem_Reaction(AuditModel):
         'alert_type':'Alert_Type',
     }
 
+    LIST_VIEW_FIELDS = {
+        'reaction_id': {'Reaction ID': {'reaction_id': URL_LINKS['reaction_id']}},
+        'reaction_code': 'Code',
+        'reaction_name': 'Name',
+        'reaction_type': 'Type',
+        'run_status': 'Run Status',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['reaction_id', 'reaction_code', 'reaction_name', 'reaction_type'],
+        ['run_status'],
+        ['smarts'],
+    ]
+
     reaction_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Reaction ID")
     reaction_code = models.CharField(max_length=15, blank=True, verbose_name = "Reaction Code")
     reaction_name = models.CharField(max_length=50, blank=True, verbose_name = "Reaction Name")
@@ -457,3 +523,94 @@ class Chem_Reaction(AuditModel):
             # GistIndex(name="cstruct_mfp2_idx",fields=['mfp2']),
             # GistIndex(name="cstruct_tfp2_idx",fields=['tfp2'])
         ]
+
+#=================================================================================================
+class AminoAcid(AuditModel):
+    """
+    Amino Acid  - could actually be in dChem
+    """
+#=================================================================================================
+    ID_SEQUENCE = 'AminoAcid'
+    ID_PREFIX = 'AA'
+    ID_PAD = 6
+
+    LIST_VIEW_FIELDS = {
+        'aa_id': {'AA ID': {'aa_id': URL_LINKS['aa_id']}},
+        'aa_code': 'AA Code',
+        'aa_letter': 'Letter',
+        'smiles': 'SMILES',
+        'mf': 'Formula',
+        'mw': 'MW',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['aa_id', 'aa_code', 'aa_letter'],
+        ['smiles', 'mf', 'mw'],
+        ['link_cterm', 'link_nterm', 'link_disulphide', 'link_ester'],
+    ]
+
+    aa_id = models.CharField(primary_key=True, max_length=15, verbose_name = "AA ID")
+    aa_code = models.CharField(max_length=5, verbose_name = "AA Code")
+    aa_letter = models.CharField(max_length=1, verbose_name = "AA Letter")
+
+    smiles = models.CharField(max_length=200, blank=True, verbose_name = "SMILES")
+    mf = models.CharField(max_length=50, blank=True, verbose_name = "Formula")
+    mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+
+    link_cterm = models.CharField(max_length=200, blank=True, verbose_name = "C-Term")
+    link_nterm = models.CharField(max_length=200, blank=True, verbose_name = "N-Term")
+    link_ester = models.CharField(max_length=200, blank=True, verbose_name = "Ester")
+    link_disulphide = models.CharField(max_length=200, blank=True, verbose_name = "Disulphide")
+
+   #------------------------------------------------
+    class Meta:
+        app_label = 'dchem'
+        db_table = 'aminoacid'
+        ordering=['aa_code']
+        indexes = [
+            models.Index(name="aa_id_idx",fields=['aa_id']),
+            models.Index(name="aa_code_idx",fields=['aa_code']),
+        ]
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls,AA_ID, AA_Code=None, verbose=0):
+    # Returns an instance by compound_id
+        try:
+            if AA_ID:
+                retInstance = cls.objects.get(aa_id=AA_ID)
+            elif AA_Code:
+                retInstance = cls.objects.get(aa_code=AA_Code)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                if AA_ID:
+                    logger.warning(f"[AminoAcid Not Found] {AA_ID} ")
+                elif AA_Code :
+                    logger.warning(f"[AminoAcid Not Found] {AA_Code}  ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls,AA_ID, AA_Code=None, verbose=0):
+    # Returns if an instance exists by compound_id
+        if AA_ID:
+            retValue = cls.objects.filter(aa_id=AA_ID).exists()
+        elif AA_Code:
+            retValue = cls.objects.filter(aa_code=AA_Code).exists()
+        else:
+            retValue = False
+        return(retValue)
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.aa_id:
+            self.aa_id = self.next_id()
+            if self.aa_id:
+                #self.save_batch() 
+                super(AminoAcid, self).save(*args, **kwargs)
+        else:
+            #self.save_batch()
+            super(AminoAcid, self).save(*args, **kwargs) 

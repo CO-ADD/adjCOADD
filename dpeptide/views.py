@@ -14,12 +14,10 @@ from applib.django.base.views import Base_RemoveView, Filtered_ListView
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 
-from dpeptide.models import (Peptide, Peptide_Isoform, Isoform_Batch,
-                             AminoAcid_Dictionary, Modification_Dictionary)
+from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary
 from dpeptide.forms import (Peptide_Filter, Peptide_CreateForm, Peptide_UpdateForm,
                             Isoform_Filter, Isoform_CreateForm, Isoform_UpdateForm,
                             IsoBatch_CreateForm, IsoBatch_UpdateForm,
-                            AminoAcid_Filter, AminoAcid_Form, AminoAcid_UpdateForm,
                             Modification_Filter, Modification_Form, Modification_UpdateForm)
 
 #=================================================================================================
@@ -282,73 +280,6 @@ def IsoBatch_UpdateView(req, pk):
 class IsoBatch_RemoveView(Base_RemoveView):
     model = Isoform_Batch
     transaction_use = 'dpeptide'
-
-
-#=================================================================================================
-# AminoAcid Dictionary
-#=================================================================================================
-class AminoAcid_ListView(LoginRequiredMixin, Filtered_ListView):
-    login_url = '/'
-    model = AminoAcid_Dictionary
-    template_name = 'dpeptide/dict/dictionary_list.html'
-    filterset_class = AminoAcid_Filter
-    model_fields = model.LIST_VIEW_FIELDS
-    model_name = 'AminoAcid_Dictionary'
-    app_name = 'dpeptide'
-    ordering = ['aa_code']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Amino Acids'
-        context['model_name'] = self.model_name
-        context['list_url'] = 'aminoacid_list'
-        context['create_url'] = 'aminoacid_create'
-        context['update_url'] = 'aminoacid_update'
-        return context
-
-
-@login_required
-def AminoAcid_CreateView(req):
-    form = AminoAcid_Form(req.POST or None)
-    if req.method == 'POST':
-        if form.is_valid():
-            try:
-                with transaction.atomic(using='dpeptide'):
-                    instance = form.save(commit=False)
-                    instance.save(user=req.user)
-                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Amino Acid', 'Completed')
-                return redirect('aminoacid_list')
-            except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-        else:
-            messages.warning(req, f'Create failed due to {form.errors} error')
-        return redirect('aminoacid_list')
-
-    context = {'form': form, 'modal_title': 'Create Amino Acid', 'form_action': 'aminoacid_create'}
-    return render(req, 'dpeptide/dpeptide_form_modal.html', context)
-
-
-@login_required
-def AminoAcid_UpdateView(req, pk):
-    _object = get_object_or_404(AminoAcid_Dictionary, aa_id=pk)
-    if req.method == 'POST':
-        form = AminoAcid_UpdateForm(req.POST, instance=_object)
-        if form.is_valid():
-            try:
-                with transaction.atomic(using='dpeptide'):
-                    instance = form.save(commit=False)
-                    instance.save(user=req.user)
-                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Amino Acid', 'Completed')
-                return redirect('aminoacid_list')
-            except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-        else:
-            messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect('aminoacid_list')
-
-    form = AminoAcid_UpdateForm(instance=_object)
-    context = {'object': _object, 'form': form, 'modal_title': 'Update Amino Acid', 'modal_subtitle': pk, 'form_action': 'aminoacid_update'}
-    return render(req, 'dpeptide/dpeptide_form_modal.html', context)
 
 
 #=================================================================================================

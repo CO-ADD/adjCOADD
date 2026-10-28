@@ -25,6 +25,7 @@ from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, I
 from dscreen.models import Screen_Run
 from dsample.models import Project, ABase_Compound, COADD_Compound
 from dcell.models import Cell
+from dpeptide.models import Peptide_Isoform
 
 from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
@@ -65,7 +66,8 @@ def index(req):
         'nRun':    str(Screen_Run.objects.count()) + ' Runs',
         'nProject':    str(Project.objects.count()) + ' Projects',
         'nABase':      str(ABase_Compound.objects.count()) + ' MCC Compounds',
-        'nCOADD':      str(COADD_Compound.objects.count()) + ' Compounds'
+        'nCOADD':      str(COADD_Compound.objects.count()) + ' Compounds',
+        'nIsoform':    str(Peptide_Isoform.objects.count()) + ' Isoforms',
     }
     return render(req, 'home.html', nDict)
 
