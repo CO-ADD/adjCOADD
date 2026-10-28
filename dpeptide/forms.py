@@ -22,7 +22,7 @@ class Peptide_Filter(BaseStatus_Filter):
     peptide_id = CharFilter(field_name='peptide_id', lookup_expr='icontains')
     peptide_name = CharFilter(field_name='peptide_name', lookup_expr='icontains')
     peptide_notes = CharFilter(field_name='peptide_notes', lookup_expr='icontains')
-    peptide_type = MultipleChoiceFilter(field_name='peptide_type', method='multichoices_filter', 
+    peptide_class = MultipleChoiceFilter(field_name='peptide_class', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
     peptide_panel = MultipleChoiceFilter(field_name='peptide_panel', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
@@ -31,7 +31,7 @@ class Peptide_Filter(BaseStatus_Filter):
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["peptide_type"].extra["choices"]=Dictionary.get_aschoices(Peptide.DICTIONARY_FIELDS['peptide_type'], showDesc = False)
+        self.filters["peptide_class"].extra["choices"]=Dictionary.get_aschoices(Peptide.DICTIONARY_FIELDS['peptide_class'], showDesc = False)
         self.filters["peptide_panel"].extra["choices"]=Dictionary.get_aschoices(Peptide.DICTIONARY_FIELDS['peptide_panel'], showDesc = False)
 
         # Set Filter label to the Fields VerboseName or Filter Name
@@ -42,7 +42,7 @@ class Peptide_Filter(BaseStatus_Filter):
                 self.filters[i].label=i
     class Meta:
         model=Peptide
-        fields=[ 'peptide_id', 'peptide_name','peptide_notes', 'peptide_type', 'peptide_panel', 'mta_status' ]
+        fields=[ 'peptide_id', 'peptide_name','peptide_notes', 'peptide_class', 'peptide_panel', 'mta_status' ]
 
 # -----------------------------------------------------------------
 class Peptide_CreateForm(forms.ModelForm):
@@ -59,7 +59,7 @@ class Peptide_CreateForm(forms.ModelForm):
         super(Peptide_CreateForm, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-        self.fields['peptide_type'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Peptide.DICTIONARY_FIELDS['peptide_type'])]
+        self.fields['peptide_class'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Peptide.DICTIONARY_FIELDS['peptide_class'])]
 
         self.fields['peptide_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Peptide.DICTIONARY_FIELDS['peptide_panel'], showDesc=False),)
         self.fields['peptide_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
@@ -107,7 +107,7 @@ class Peptide_UpdateForm(Peptide_CreateForm):
     class Meta:
         model=Peptide
         exclude=['assoc_documents']
-        field_order = ['peptide_id', 'peptide_name', 'peptide_notes', 'peptide_type', 'peptide_panel',
+        field_order = ['peptide_id', 'peptide_name', 'peptide_notes', 'peptide_class', 'peptide_panel',
                        'seq', 'bilm', 'helm', 'mw', 'nseq', 'peptide_origin', 'reference',
                        'mta_status', 'mta_notes', 'mta_document', 'biologist']
 

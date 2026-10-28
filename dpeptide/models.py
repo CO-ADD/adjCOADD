@@ -41,8 +41,8 @@ class Peptide(AuditModel):
     LIST_VIEW_FIELDS = {
 #       'organism_name':{"VerboseName":'Peptide Name','Updatable':False}
         'peptide_id':{'Peptide ID': {'peptide_id':URL_LINKS['peptide_id']}}, 
-        'peptide_name':'Peptide Name',
-        'peptide_type':'Peptide Type',
+        'peptide_name':'Name',
+        'peptide_class':'Type',
         # 'peptide_panel':'Panel',
         'peptide_notes':'Notes',
         # 'peptide_code':'Peptide Code',
@@ -57,13 +57,13 @@ class Peptide(AuditModel):
 
     CARDS_FIELDS= {
         "source" : "Source",
-        "peptide_type": "Type",
+        "peptide_class": "Class",
     #     "res_property": "Phenotype",
     #     "gen_property": "Genotype",
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['peptide_name', 'peptide_type', 'peptide_panel', 'peptide_notes'],
+        ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes'],
         ['seq','bilm','helm'],
         ['peptide_origin','source', 'source_code','reference'],
         ['mta_status','mta_notes','mta_document','biologist'],
@@ -71,7 +71,7 @@ class Peptide(AuditModel):
 
     DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
-        'peptide_type':'Peptide_Type',
+        'peptide_class':'Peptide_Class',
         'peptide_panel':'Peptide_Panel',
     }
 
@@ -80,8 +80,8 @@ class Peptide(AuditModel):
     peptide_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Peptide Notes")
     #peptide_code= models.CharField(max_length=30, blank=True, verbose_name = "Peptide Code")
     peptide_panel=ArrayField(models.CharField(max_length=100, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
-    peptide_type=models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Peptide Type", on_delete=models.DO_NOTHING,
-        db_column="peptide_type", related_name="%(class)s_peptide_type")
+    peptide_class=models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="peptide_class", related_name="%(class)s_peptide_class")
     #peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
     peptide_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Peptide")
 
@@ -123,7 +123,7 @@ class Peptide(AuditModel):
         indexes = [
             models.Index(name="pep_bilm_idx", fields=['bilm']),
             #models.Index(name="pep_code_idx", fields=['peptide_code']),
-            models.Index(name="pep_type_idx", fields=['peptide_type']),
+            models.Index(name="pep_type_idx", fields=['peptide_class']),
             GinIndex(name="pep_panel_idx", fields=['peptide_panel']),
             #models.Index(name="pep_source_idx", fields=['source']),
             # models.Index(name="org_taxid_idx", fields=['tax_id']),
@@ -194,7 +194,7 @@ class Peptide(AuditModel):
      #------------------------------------------------
     def save(self, *args, **kwargs):
         if not self.peptide_id:
-            _class = str(self.peptide_type.dict_value) if self.peptide_type else 'PEP'
+            _class = str(self.peptide_class.dict_value) if self.peptide_class else 'PEP'
             self.peptide_id = self.find_Next_PeptideID(_class)
             if self.peptide_id:
                 super(Peptide, self).save(*args, **kwargs)
