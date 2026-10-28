@@ -541,9 +541,11 @@ LOGGING = {
         },    
     },
     'loggers': {
+        ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
+
         'django': {
             'handlers': ['file'],
-            'level': 20, ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
+            'level': 'INFO', 
             'propagate': False,
         },
     

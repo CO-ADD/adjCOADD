@@ -484,7 +484,7 @@ class AminoAcid_Dictionary(AuditModel):
    #------------------------------------------------
     class Meta:
         app_label = 'dpeptide'
-        db_table = 'aa_dictionary'
+        db_table = 'aminoacid_dictionary'
         ordering=['aa_code']
         indexes = [
             models.Index(name="aa_id_idx",fields=['aa_id']),
