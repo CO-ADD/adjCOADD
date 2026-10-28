@@ -67,7 +67,7 @@ class Command(BaseCommand):
         for _obj in qryABase:
             oldid = str(_obj.cmpbatch_id)
             nCmp += 1
-            if len(oldid.split('_')) == 3:
+            if len(oldid.split(':')) == 2:
                 self._single_rename(oldid, nQry,nCmp, upload=options['upload'], delete=options['delete'])
         
         #oldid = 'MCC_006442_011'
