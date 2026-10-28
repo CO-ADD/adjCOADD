@@ -7,7 +7,9 @@ from apputil.views import (index, userprofile,
                            AppLog_ListView, 
                            Dictionary_ListView, Dictionary_CreateView,updateDictionary, removeDictionary,
                            DataExportView, Importhandler_apputils, CreatedocumentView, DocDeleteView,
-                           SystemInfoView)
+                           SystemInfoView,
+                           Menu_ListView, Menu_CreateView, Menu_UpdateView,
+                           Menu_Item_ListView, Menu_Item_CreateView, Menu_Item_UpdateView)
 
 from apputil.utils.flex_pivottable import flex_pivottable
 from apputil.test_app import Test_View
@@ -29,6 +31,14 @@ urlpatterns = [
     path('dict_create/', Dictionary_CreateView.as_view(), name='dict_create' ),
     path('dict_update/', updateDictionary, name='dict_update' ),
     path('dict_delete/', removeDictionary, name='dict_delete' ),
+
+    # Navigation Menu
+    path('menu_list/', Menu_ListView.as_view(), name='menu_list'),
+    path('menu_create/', Menu_CreateView, name='menu_create'),
+    path('menu_update/<str:pk>', Menu_UpdateView, name='menu_update'),
+    path('menuitem_list/', Menu_Item_ListView.as_view(), name='menuitem_list'),
+    path('menuitem_create/', Menu_Item_CreateView, name='menuitem_create'),
+    path('menuitem_update/<str:pk>', Menu_Item_UpdateView, name='menuitem_update'),
  
     # path('img/<str:pk>', CreateimageView.as_view(), name="addimg"),
     path('doc/<str:pk>', CreatedocumentView.as_view(), name="adddoc"),

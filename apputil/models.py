@@ -1086,3 +1086,164 @@ class Document(AuditModel):
                 super(Document, self).save(*args, **kwargs)
         else:
             super(Document, self).save(*args, **kwargs) 
+
+
+#=================================================================================================
+class Menu(AuditModel):
+    """
+    Top-level navigation menu (dropdown) - e.g. OrgDB, CastDB, Structures.
+    """
+#=================================================================================================
+    LIST_VIEW_FIELDS = {
+        'menu_id': 'Menu ID',
+        'menu_name': 'Name',
+        'menu_label': 'Label',
+        'order': 'Order',
+        'permission': 'Permission',
+    }
+
+    ID_SEQUENCE = 'Menu'
+    ID_PREFIX = 'MNU'
+    ID_PAD = 4
+
+    menu_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Menu ID")
+    menu_name = models.CharField(max_length=30, unique=True, verbose_name = "Menu Name")
+    menu_label = models.CharField(max_length=50, verbose_name = "Label")
+    icon = models.CharField(max_length=30, blank=True, verbose_name = "Icon")
+    order = models.PositiveSmallIntegerField(default=0, verbose_name = "Order")
+    # permission: '' (all users), 'Admin' (has_permission('Admin')), 'Superuser' (is_superuser)
+    permission = models.CharField(max_length=10, blank=True, verbose_name = "Permission")
+
+    class Meta:
+        app_label = 'apputil'
+        db_table = 'app_menu'
+        ordering = ['order', 'menu_name']
+        indexes = [
+            models.Index(name="menu_name_idx", fields=['menu_name']),
+            models.Index(name="menu_order_idx", fields=['order']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"[{self.menu_id}] {self.menu_name}"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.menu_name}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, MenuID, MenuName=None, verbose=0):
+        try:
+            if MenuID:
+                retInstance = cls.objects.get(menu_id=MenuID)
+            elif MenuName:
+                retInstance = cls.objects.get(menu_name=MenuName)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Menu Not Found] {MenuID} {MenuName} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls, MenuID=None, MenuName=None, verbose=0):
+        if MenuID:
+            return cls.objects.filter(menu_id=MenuID).exists()
+        elif MenuName:
+            return cls.objects.filter(menu_name=MenuName).exists()
+        return False
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.menu_id:
+            self.menu_id = self.next_id()
+            if self.menu_id:
+                super(Menu, self).save(*args, **kwargs)
+        else:
+            super(Menu, self).save(*args, **kwargs)
+
+
+#=================================================================================================
+class Menu_Item(AuditModel):
+    """
+    Navigation link inside a Menu, optionally nested one level (submenu).
+    """
+#=================================================================================================
+    LIST_VIEW_FIELDS = {
+        'item_id': 'Item ID',
+        'menu_id': 'Menu',
+        'parent': 'Parent',
+        'label': 'Label',
+        'url_name': 'URL Name',
+        'order': 'Order',
+        'separator': 'Separator',
+        'disabled': 'Disabled',
+        'permission': 'Permission',
+    }
+
+    ID_SEQUENCE = 'Menu_Item'
+    ID_PREFIX = 'MNI'
+    ID_PAD = 4
+
+    item_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Item ID")
+    menu_id = models.ForeignKey(Menu, null=False, blank=False, verbose_name = "Menu ID", on_delete=models.DO_NOTHING,
+        db_column="menu_id", related_name="items")
+    parent = models.ForeignKey('self', null=True, blank=True, verbose_name = "Parent Item", on_delete=models.DO_NOTHING,
+        db_column="parent", related_name="children")
+
+    label = models.CharField(max_length=50, blank=True, verbose_name = "Label")
+    url_name = models.CharField(max_length=60, blank=True, verbose_name = "URL Name")
+    url_path = models.CharField(max_length=200, blank=True, verbose_name = "URL Path")
+    icon = models.CharField(max_length=30, blank=True, verbose_name = "Icon")
+    order = models.PositiveSmallIntegerField(default=0, verbose_name = "Order")
+    separator = models.BooleanField(default=False, verbose_name = "Separator")
+    disabled = models.BooleanField(default=False, verbose_name = "Disabled")
+    modal = models.BooleanField(default=False, verbose_name = "Modal")
+    # permission: '' (all users), 'Admin', 'Superuser'
+    permission = models.CharField(max_length=10, blank=True, verbose_name = "Permission")
+
+    class Meta:
+        app_label = 'apputil'
+        db_table = 'app_menu_item'
+        ordering = ['menu_id', 'order', 'label']
+        indexes = [
+            models.Index(name="mitem_menu_idx", fields=['menu_id']),
+            models.Index(name="mitem_parent_idx", fields=['parent']),
+            models.Index(name="mitem_order_idx", fields=['order']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"[{self.item_id}] {self.label} ({self.menu_id})"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.label}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, ItemID, verbose=0):
+        try:
+            retInstance = cls.objects.get(item_id=ItemID)
+        except:
+            if verbose:
+                print(f"[Menu Item Not Found] {ItemID} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls, ItemID, verbose=0):
+        return cls.objects.filter(item_id=ItemID).exists()
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.item_id:
+            self.item_id = self.next_id()
+            if self.item_id:
+                super(Menu_Item, self).save(*args, **kwargs)
+        else:
+            super(Menu_Item, self).save(*args, **kwargs)

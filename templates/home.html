@@ -23,13 +23,6 @@
         {% include 'button/land_btn_orgdb.html' with title='SEQUENCE' url=genomeseq_url totalnumber=nSeq %}
     </div>
 
-
-    <div id="Label-DrugModel" class="card-body d-flex justify-content-center">
-        <!--  -->
-        {% url 'drug_card' as drug_url %}
-        {% include 'button/land_btn_orgdb.html' with title='DRUG' url=drug_url totalnumber=nDrug %}
-    </div>
-
 </div>
 <div class="container d-flex flex-wrap justify-content-around">
 
@@ -45,13 +38,18 @@
 </div>
 
 <div class="container d-flex flex-wrap justify-content-around">
+    <div id="Label-DrugModel" class="card-body d-flex justify-content-center">
+        <!--  -->
+        {% url 'drug_card' as drug_url %}
+        {% include 'button/land_btn_chem.html' with title='DRUG' url=drug_url totalnumber=nDrug %}
+    </div>
     <div id="Label-ABase" class="card-body d-flex justify-content-center">
         {% url 'abase_list' as abase_url %}
-        {% include 'button/land_btn_chem.html' with title='MCC COMPOUND' url=abase_url totalnumber=nABase %}
+        {% include 'button/land_btn_chem.html' with title='ABASE COMPOUND' url=abase_url totalnumber=nABase %}
     </div>
     <div id="Label-COADD" class="card-body d-flex justify-content-center">
         {% url 'coadd_list' as coadd_url %}
-        {% include 'button/land_btn_chem.html' with title='COMPOUND' url=coadd_url totalnumber=nCOADD %}
+        {% include 'button/land_btn_chem.html' with title='CO-ADD COMPOUND' url=coadd_url totalnumber=nCOADD %}
     </div>
     <div id="Label-Isoform" class="card-body d-flex justify-content-center">
         {% url 'isoform_list' as isoform_url %}

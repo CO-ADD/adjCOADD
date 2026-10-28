@@ -27,8 +27,9 @@ from dsample.models import Project, ABase_Compound, COADD_Compound
 from dcell.models import Cell
 from dpeptide.models import Peptide_Isoform
 
-from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
-from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
+from apputil.forms import (Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form,
+                           Menu_Filter, Menu_Form, Menu_UpdateForm, Menu_Item_Filter, Menu_Item_Form, Menu_Item_UpdateForm)
+from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document, Menu, Menu_Item
 from applib.django.base.views import (SuperUserRequiredMixin, permission_not_granted, 
                                       Base_CreateView, Base_UpdateView, Base_RemoveView,
                                       Filtered_ListView, 
@@ -368,4 +369,133 @@ def deleteImage(req, pk):
 #     file_field = 'image_file'
 #     related_name = 'assoc_images'
 #     transaction_use_manytomany = 'dorganism'
+
+#=================================================================================================
+# Navigation Menu
+#=================================================================================================
+class Menu_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Menu
+    template_name = 'apputil/menu_list.html'
+    filterset_class = Menu_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Menu'
+    app_name = 'apputil'
+    ordering = ['order', 'menu_name']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['create_url'] = 'menu_create'
+        context['update_url'] = 'menu_update'
+        context['list_url'] = 'menu_list'
+        return context
+
+
+@login_required(login_url='/')
+def Menu_CreateView(req):
+    form = Menu_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='default'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Menu', 'Completed')
+                return redirect('menu_list')
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+        else:
+            messages.warning(req, f'Create failed due to {form.errors} error')
+        return redirect('menu_list')
+
+    context = {'form': form, 'modal_title': 'Create Menu'}
+    return render(req, 'apputil/menu_form_modal.html', context)
+
+
+@login_required(login_url='/')
+def Menu_UpdateView(req, pk):
+    _object = get_object_or_404(Menu, menu_id=pk)
+    if req.method == 'POST':
+        form = Menu_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='default'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Menu', 'Completed')
+                return redirect('menu_list')
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('menu_list')
+
+    form = Menu_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Menu', 'modal_subtitle': pk}
+    return render(req, 'apputil/menu_form_modal.html', context)
+
+
+# -----------------------------------------------------------------
+class Menu_Item_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Menu_Item
+    template_name = 'apputil/menu_list.html'
+    filterset_class = Menu_Item_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Menu Item'
+    app_name = 'apputil'
+    ordering = ['menu_id', 'order', 'label']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['create_url'] = 'menuitem_create'
+        context['update_url'] = 'menuitem_update'
+        context['list_url'] = 'menuitem_list'
+        return context
+
+
+@login_required(login_url='/')
+def Menu_Item_CreateView(req):
+    form = Menu_Item_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='default'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Menu Item', 'Completed')
+                return redirect('menuitem_list')
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+        else:
+            messages.warning(req, f'Create failed due to {form.errors} error')
+        return redirect('menuitem_list')
+
+    context = {'form': form, 'modal_title': 'Create Menu Item'}
+    return render(req, 'apputil/menu_form_modal.html', context)
+
+
+@login_required(login_url='/')
+def Menu_Item_UpdateView(req, pk):
+    _object = get_object_or_404(Menu_Item, item_id=pk)
+    if req.method == 'POST':
+        form = Menu_Item_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='default'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Menu Item', 'Completed')
+                return redirect('menuitem_list')
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('menuitem_list')
+
+    form = Menu_Item_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Menu Item', 'modal_subtitle': pk}
+    return render(req, 'apputil/menu_form_modal.html', context)
 

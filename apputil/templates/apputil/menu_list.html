@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}COADD{% endblock %}
+{% block content %}
+
+<div class="d-flex flex-row vh-100">
+  <!-- Sidebar View/Buttons -->
+  <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+    <div class="d-flex flex-column p-0">
+      <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
+        <i class="bi bi-funnel fs-5"></i>
+      </a>
+
+      <a href="{% url list_url %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+
+      <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"
+         hx-get="{% url create_url %}" hx-target="#info-body" hx-swap="innerHTML"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="New Entry">
+        <i class="bi bi-file-earmark-plus fs-5 text-success"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Filterbar View/Filter -->
+  {% include "utils/sidebar.html" %}
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    <div class="contain-fluid data-contain">
+      {% include 'datatable/datatable_pag_action.html' with model_name=model_name update_url=update_url modal_id='infoModal' modal_body_id='info-body' %}
+    </div>
+  </div>
+</div>
+{% endblock %}

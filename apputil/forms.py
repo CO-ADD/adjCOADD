@@ -1,6 +1,6 @@
 #import django_filters
 from django import forms
-from .models import  ApplicationUser, ApplicationLog, Dictionary, Document
+from .models import  ApplicationUser, ApplicationLog, Dictionary, Document, Menu, Menu_Item
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
@@ -138,5 +138,65 @@ class AppLog_Filter(Base_Filter):
     class Meta:
         model=ApplicationLog
         fields=list(model.LIST_VIEW_FIELDS.keys())
+
+
+#=================================================================================================
+# Navigation Menu
+#=================================================================================================
+class Menu_Filter(BaseStatus_Filter):
+    menu_name = CharFilter(field_name='menu_name', lookup_expr='icontains', label='Name')
+    menu_label = CharFilter(field_name='menu_label', lookup_expr='icontains', label='Label')
+    permission = CharFilter(field_name='permission', lookup_expr='icontains', label='Permission')
+
+    class Meta:
+        model = Menu
+        fields = ['menu_name', 'menu_label', 'permission']
+
+
+class Menu_Form(forms.ModelForm):
+    class Meta:
+        model = Menu
+        exclude = ['menu_id']
+        field_order = ['menu_name', 'menu_label', 'icon', 'order', 'permission']
+
+
+class Menu_UpdateForm(Menu_Form):
+    menu_id = forms.CharField(disabled=True)
+
+    class Meta:
+        model = Menu
+        exclude = []
+
+
+# -----------------------------------------------------------------
+class Menu_Item_Filter(BaseStatus_Filter):
+    label = CharFilter(field_name='label', lookup_expr='icontains', label='Label')
+    url_name = CharFilter(field_name='url_name', lookup_expr='icontains', label='URL Name')
+    permission = CharFilter(field_name='permission', lookup_expr='icontains', label='Permission')
+
+    class Meta:
+        model = Menu_Item
+        fields = ['label', 'url_name', 'permission']
+
+
+class Menu_Item_Form(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(Menu_Item_Form, self).__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
+
+    class Meta:
+        model = Menu_Item
+        exclude = ['item_id']
+        field_order = ['menu_id', 'parent', 'label', 'url_name', 'url_path', 'icon', 'order',
+                       'separator', 'disabled', 'modal', 'permission']
+
+
+class Menu_Item_UpdateForm(Menu_Item_Form):
+    item_id = forms.CharField(disabled=True)
+
+    class Meta:
+        model = Menu_Item
+        exclude = []
 
     

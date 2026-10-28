@@ -40,7 +40,7 @@ PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
 
-VERSION = '1.9.2'
+VERSION = '1.10.0'
 
 #........................................................................
 if DEVELOPMENT:
@@ -249,7 +249,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apputil.context_processors.global_settings'
+                'apputil.context_processors.global_settings',
+                'apputil.context_processors.navbar_menus'
             ],
         },
     },

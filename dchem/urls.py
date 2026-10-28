@@ -1,4 +1,4 @@
-﻿from django.urls import path
+rom django.urls import path
 
 from dchem.views import (Compound_ListAPI, Chem_ListView, Chem_DetailView, Chem_CreateView, Chem_UpdateView)
 
