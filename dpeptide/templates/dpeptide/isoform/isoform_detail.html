@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %}COADD{% endblock %}
+
+{% block content %}
+<div class="d-flex vh-100">
+
+  <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
+    <div class="d-flex flex-column p-0">
+      <a href="#"
+         class="border-0 text-success bg-transparent"
+         data-bs-toggle="modal"
+         data-bs-target="#infoModal"
+         hx-get="{% url 'isoform_update' object.pk %}"
+         hx-target="#info-body"
+         hx-swap="innerHTML"
+         title="Update Isoform">
+         <i class="fa-regular fa-pen-to-square"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="w-100">
+
+    <!-- Isoform -->
+    <div class="accordion bg-transparent" id="isoform-detail">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_00">
+          <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapse_01" aria-expanded="true" aria-controls="collapse_00">
+            <h5 class="fs-4 my-0"><b>{{object.pk}}</b> | <i>{{object.isoform_name}}</i></h5>
+          </button>
+        </h2>
+        <div id="collapse_01" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
+             data-bs-parent="#isoform-detail">
+          <div class="accordion-body bg-transparent">
+            <b> {% include 'utils/message.html' %} </b>
+            <div class="row">
+              {% for group in display_groups %}
+                <div class="col-md-3">
+                  <table class="table table-hover table-sm align-middle table-bordered">
+                    <tbody>
+                      {% for row in group %}
+                        <tr>
+                          <th scope="row" class="table-label-col">{{ row.label }}</th>
+                          <td>{{ row.value }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% endfor %}
+            </div>
+            <hr>
+            {% include 'detailview/audit_status.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Peptide -->
+    <div class="accordion bg-transparent w-100" id="isoform-peptide">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_01">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapsePeptide" aria-expanded="true" aria-controls="collapse_01">
+            <h5 class="fs-6 my-0">Peptide: {{peptide.pk}} | {{peptide.peptide_name}}</h5>
+          </button>
+        </h2>
+        <div id="collapsePeptide" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_01"
+             data-bs-parent="#isoform-peptide">
+          <div class="accordion-body">
+            <div class="d-flex justify-content-end mb-2">
+              <a href="#"
+                 class="btn btn-sm btn-outline-primary"
+                 data-bs-toggle="modal"
+                 data-bs-target="#infoModal"
+                 hx-get="{% url 'peptide_update' peptide.pk %}"
+                 hx-target="#info-body"
+                 hx-swap="innerHTML">
+                <i class="fa-regular fa-pen-to-square me-1"></i>Edit Peptide
+              </a>
+            </div>
+            <div class="row">
+              {% for group in peptide_groups %}
+                <div class="col-md-3">
+                  <table class="table table-hover table-sm align-middle table-bordered">
+                    <tbody>
+                      {% for row in group %}
+                        <tr>
+                          <th scope="row" class="table-label-col">{{ row.label }}</th>
+                          <td>{{ row.value }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Isoform Batches -->
+    <div class="accordion bg-transparent w-100" id="isoform-batches">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_02">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapseBatches" aria-expanded="true" aria-controls="collapse_02">
+            <h5 class="fs-6 my-0">Isoform Batches</h5>
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_count %}
+          </button>
+        </h2>
+        <div id="collapseBatches" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
+             data-bs-parent="#isoform-batches">
+          <div class="accordion-body">
+            <div class="d-flex justify-content-end mb-2">
+              <a href="#"
+                 class="btn btn-sm btn-outline-primary"
+                 data-bs-toggle="modal"
+                 data-bs-target="#infoModal"
+                 hx-get="{% url 'isobatch_create' object.pk %}"
+                 hx-target="#info-body"
+                 hx-swap="innerHTML">
+                <i class="bi bi-file-earmark-plus me-1"></i>New Batch
+              </a>
+            </div>
+            <div class="table-responsive">
+              {% include 'dpeptide/isoform/isobatch_subtable.html' with objects=batch_objs data_fields=batch_fields page_obj=batch_page_obj querycount=batch_count %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock content %}

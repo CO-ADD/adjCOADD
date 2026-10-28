@@ -90,6 +90,7 @@ URL_LINKS={
     'masterplate_id':   '/dplate/masterplate/{VALUE1}',
     
     'peptide_id':       '/dpeptide/peptide/{VALUE1}',
+    'isoform_id':       '/dpeptide/isoform/{VALUE1}',
     
     'organisation_id':  '/dcollab/organisation/{VALUE1}',
     'user_id':          '/dcollab/collaborator/{VALUE1}',

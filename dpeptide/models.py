@@ -41,14 +41,14 @@ class Peptide(AuditModel):
     LIST_VIEW_FIELDS = {
 #       'organism_name':{"VerboseName":'Peptide Name','Updatable':False}
         'peptide_id':{'Peptide ID': {'peptide_id':URL_LINKS['peptide_id']}}, 
-        'seq':'Peptide Sequence',
-        # 'peptide_name':'Peptide Name',
-        # 'peptide_type':'Peptide Type',
+        'peptide_name':'Peptide Name',
+        'peptide_type':'Peptide Type',
         # 'peptide_panel':'Panel',
-        # 'peptide_notes':'Notes',
+        'peptide_notes':'Notes',
         # 'peptide_code':'Peptide Code',
         # 'peptide_identification':'Identification',
         # 'peptide_origin':'Origin',
+        'seq':'Peptide Sequence',
         # 'source':"Source",
         # 'source_code':"Source Code",
         # 'reference': "Reference",
@@ -210,19 +210,18 @@ class Peptide_Isoform(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        'isoform_id': 'Isoform ID',
+        'isoform_id': {'Isoform ID': {'isoform_id': URL_LINKS['isoform_id']}},
         'isoform_name': 'Isoform Name',
         'peptide_id': 'Peptide',
-        'seq': 'Sequence',
+        #'seq': 'Sequence',
         'mw': 'MW',
         'biologist': 'Biologist',
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['isoform_id', 'isoform_name', 'isoform_notes'],
-        ['peptide_id'],
-        ['seq', 'bilm', 'helm', 'mw', 'nseq'],
-        ['biologist'],
+        ['isoform_id', 'isoform_name', 'isoform_notes', 'biologist'],
+        ['peptide_id', 'mw', 'nseq'],
+        ['seq', 'bilm', 'helm', ],
     ]
 
     DICTIONARY_FIELDS = {}
@@ -257,7 +256,7 @@ class Peptide_Isoform(AuditModel):
     class Meta:
         app_label = 'dpeptide'
         db_table = 'peptide_isoform'
-        ordering=['isoform_id']
+        ordering=['peptide_id','isoform_id']
         indexes = [
             models.Index(name="pepiso_bilm_idx", fields=['bilm']),
             models.Index(name="pepiso_pep_idx", fields=['peptide_id']),
@@ -467,6 +466,20 @@ class AminoAcid_Dictionary(AuditModel):
     ID_PREFIX = 'AA'
     ID_PAD = 6
 
+    LIST_VIEW_FIELDS = {
+        'aa_id': 'AA ID',
+        'aa_code': 'AA Code',
+        'aa_letter': 'Letter',
+        'smiles': 'SMILES',
+        'mf': 'Formula',
+        'mw': 'MW',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['aa_id', 'aa_code', 'aa_letter'],
+        ['smiles', 'mw', 'mw'],
+        ['link_cterm', 'link_nterm', 'link_disulphide','link_ester', ],
+    ]
 
     aa_id = models.CharField(primary_key=True, max_length=15, verbose_name = "AA ID")
     aa_code = models.CharField(max_length=5, verbose_name = "AA Code")
@@ -544,6 +557,14 @@ class Modification_Dictionary(AuditModel):
     ID_SEQUENCE = 'PepMod_Dictionary'
     ID_PREFIX = 'PEPMOD'
     ID_PAD = 6
+
+    LIST_VIEW_FIELDS = {
+        'pepmod_id': 'PepMod ID',
+        'pepmod_code': 'PepMod Code',
+        'smiles': 'SMILES',
+        'mf': 'Formula',
+        'mw': 'MW',
+    }
 
     pepmod_id = models.CharField(primary_key=True, max_length=15, verbose_name = "PepMod ID")
     pepmod_code = models.CharField(max_length=5, verbose_name = "PepMod Code")

@@ -1,40 +1,39 @@
-from django.conf import settings
-from django.conf.urls.static import static
-from django.urls import path, include, re_path
+﻿from django.urls import path
 
-
-from dpeptide.views import  (Peptide_ListView,Peptide_CreateView, Peptide_DetailView, Peptide_UpdateView, Peptide_RemoveView,
-                    #  PepBatch_ListView, PepBatch_CreateView, PepBatch_RemoveView, PepBatch_UpdateView, 
-                    #  CellBatchStock_ListView, CellBatchStock_CreateView, CellBatchStock_UpdateView, CellBatchStock_DetailView, CellBatchStock_RemoveView,
-                    #  Cell_Upload_HandlerView
-                     )
+from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_DetailView, Peptide_UpdateView, Peptide_RemoveView,
+                            Isoform_ListView, Isoform_CreateView, Isoform_DetailView, Isoform_UpdateView, Isoform_RemoveView,
+                            IsoBatch_CreateView, IsoBatch_UpdateView, IsoBatch_RemoveView,
+                            AminoAcid_ListView, AminoAcid_CreateView, AminoAcid_UpdateView,
+                            Modification_ListView, Modification_CreateView, Modification_UpdateView)
 
 
 urlpatterns = [
-
     # Peptide
-    #path('peptide_card', Peptide_CardView.as_view(), name="peptide_card"),
     path('peptide_list', Peptide_ListView.as_view(), name="peptide_list"),
     path('peptide/<str:pk>', Peptide_DetailView, name="peptide_detail"),
     path('createPeptide/', Peptide_CreateView, name="peptide_create"),
     path('updatePeptide/<str:pk>', Peptide_UpdateView, name="peptide_update"),
     path('deletePeptide/<str:pk>', Peptide_RemoveView.as_view(), name="peptide_delete"),
 
-    # PepBatch
-    # path('pepbatch_list', PepBatch_ListView.as_view(), name="pepbatch_list"),
-    # path('createBatch/<str:pep_id>/', PepBatch_CreateView, name="pep_batch_create"),
-    # path('updateBat/<str:pk>', PepBatch_UpdateView.as_view(), name="pep_batch_update"),
-    # path('deleteBat/<str:pk>', PepBatch_RemoveView.as_view(), name="pep_batch_delete"),
+    # Peptide Isoform
+    path('isoform_list', Isoform_ListView.as_view(), name="isoform_list"),
+    path('isoform/<str:pk>', Isoform_DetailView, name="isoform_detail"),
+    path('createIsoform/', Isoform_CreateView, name="isoform_create"),
+    path('updateIsoform/<str:pk>', Isoform_UpdateView, name="isoform_update"),
+    path('deleteIsoform/<str:pk>', Isoform_RemoveView.as_view(), name="isoform_delete"),
 
-    # PepBatch Stock
-    # path('stocklist/<str:pk>', PepBatchStock_DetailView, name="pep_stock_list"),
-    # path('stocklist', PepBatchStock_ListView.as_view(), name="pep_stock_list_overview"),
-    # path('createStock/<str:pepbatch_id>/', PepBatchStock_CreateView, name="pep_stock_create"),
-    # path('updateStock/<str:pk>/', PepBatchStock_UpdateView, name="pep_stock_update"),
-    # path('deleteStock/<str:pk>/', PepBatchStock_RemoveView.as_view(), name="pep_stock_delete"),
+    # Isoform Batch
+    path('createIsoBatch/<str:isoform_id>', IsoBatch_CreateView, name="isobatch_create"),
+    path('updateIsoBatch/<str:pk>', IsoBatch_UpdateView, name="isobatch_update"),
+    path('deleteIsoBatch/<str:pk>', IsoBatch_RemoveView.as_view(), name="isobatch_delete"),
 
-    # path('import-pep/', Pep_Upload_HandlerView.as_view(), name='import-pep'),
+    # AminoAcid Dictionary
+    path('aminoacid_list', AminoAcid_ListView.as_view(), name="aminoacid_list"),
+    path('createAminoAcid/', AminoAcid_CreateView, name="aminoacid_create"),
+    path('updateAminoAcid/<str:pk>', AminoAcid_UpdateView, name="aminoacid_update"),
 
-    # path('pivottable/<str:pk>', pivottable, name="pivottable"),
-  
+    # Modification Dictionary
+    path('modification_list', Modification_ListView.as_view(), name="modification_list"),
+    path('createModification/', Modification_CreateView, name="modification_create"),
+    path('updateModification/<str:pk>', Modification_UpdateView, name="modification_update"),
 ]

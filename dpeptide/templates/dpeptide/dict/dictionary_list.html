@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block title %}COADD{% endblock %}
+{% block content %}
+
+<div class="d-flex flex-row vh-100">
+  <!-- Sidebar View/Buttons -->
+  <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+    <div class="d-flex flex-column p-0">
+      <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
+        <i class="bi bi-funnel fs-5"></i>
+      </a>
+
+      <a href="{% url list_url %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+
+      <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"
+         hx-get="{% url create_url %}" hx-target="#info-body" hx-swap="innerHTML"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="New Entry">
+        <i class="bi bi-file-earmark-plus fs-5 text-success"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Filterbar View/Filter -->
+  {% include "utils/sidebar.html" %}
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    {% include 'datatable/base/datatable_top.html' with title=title model_name=model_name application='dpeptide' %}
+
+    <div class="contain-fluid data-contain" style="height: 90vh; overflow: auto">
+      <table class="table table-hover sorting_table table-sm align-middle table-bordered table-bg" style="width: 100%">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 0%"><i class="bi bi-app-indicator text-body"></i></th>
+            {% for field in fields %}
+              {% if field|is_dict %}
+                {% for key in field.keys %}
+                  <th class="order_field" style="width: fit-content" data-name="{{key}}">{{key}}</th>
+                {% endfor %}
+              {% else %}
+                <th class="order_field" style="width: fit-content" data-name="{{field}}">{{field}}</th>
+              {% endif %}
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for object in page_obj %}
+          <tr>
+            <td class="text-center p-0">
+              <a class="btn btn-sm"
+                 hx-get="{% url update_url object.pk %}"
+                 hx-target="#info-body"
+                 hx-swap="innerHTML"
+                 data-bs-toggle="modal"
+                 data-bs-target="#infoModal"
+                 title="Update Entry">
+                <i class="fa-regular fa-pen-to-square"></i>
+              </a>
+            </td>
+            {% for item in object.get_values %}
+              <td>
+                {% if item|is_dict %}
+                  {% for key, value in item.items %}
+                    <a href="{{value}}" target="_blank">{{ key }}</a>
+                  {% endfor %}
+                {% else %}
+                  {{item}}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

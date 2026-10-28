@@ -1,31 +1,37 @@
 {% extends "base.html" %}
-<!--  -->
-{% block title%}COADD{% endblock %}
-<!--  -->
+{% block title %}COADD{% endblock %}
 {% block content %}
-<!--  -->
+
 <div class="d-flex flex-row vh-100">
-  {% url 'pivoted-table' app_model='dpeptide-Peptide' as pivot_url%}
-  {% include 'grid/base/left_navbar.html' with list_url='peptide_list' card_url='' create_object='createPeptide' create_objectModal='createPeptideModal' pivot_url='' %}
-  <!-- Sidebar View -->
+  <!-- Sidebar View/Buttons -->
+  <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+    <div class="d-flex flex-column p-0">
+      <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
+        <i class="bi bi-funnel fs-5"></i>
+      </a>
+
+      <a href="{% url 'peptide_list' %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+
+      <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"
+         hx-get="{% url 'peptide_create' %}" hx-target="#info-body" hx-swap="innerHTML"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="New Peptide">
+        <i class="bi bi-file-earmark-plus fs-5 text-success"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Filterbar View/Filter -->
   {% include "utils/sidebar.html" %}
-  
 
   <!-- Main View -->
-  <div class="d-flex flex-column w-100"> 
+  <div class="d-flex flex-column w-100">
+    {% include 'datatable/base/datatable_top.html' with title='Peptides' model_name='Peptide' application='dpeptide' %}
 
-    <!-- prettier-ignore -->
-    {% include 'datatable/base/datatable_top.html' with title='Peptide'  model_name='Peptide' application='dpeptide' %}
-    <!-- prettier-ignore -->
-    <!--  -->
-
-
-    <!-- list View Content -->
-   <div class="contain-fluid data-contain">
-      <!-- prettier-ignore --> <!-- Here include datatable_general --> 
+    <div class="contain-fluid data-contain">
       {% include 'datatable/base/datatable_base.html' with modelname='Peptide' %}
     </div>
-    </div>
-
+  </div>
 </div>
 {% endblock %}

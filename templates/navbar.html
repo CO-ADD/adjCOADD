@@ -192,7 +192,11 @@
                   Peptide &raquo;
                 </a>
                 <ul class="dropdown-menu2">
-                  <a class="dropdown-item disabled" href="{% url 'peptide_list' %}"> Peptide</a>
+                  <a class="dropdown-item" href="{% url 'isoform_list' %}"> Isoforms</a>
+                  <a class="dropdown-item" href="{% url 'peptide_list' %}"> Peptides</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'aminoacid_list' %}"> Amino Acids</a>
+                  <a class="dropdown-item" href="{% url 'modification_list' %}"> Modifications</a>
                 </ul>
               </div>
               </li>
