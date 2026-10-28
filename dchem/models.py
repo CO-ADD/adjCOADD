@@ -310,7 +310,7 @@ class Chem_Salt(AuditModel):
     }
 
     LIST_VIEW_FIELDS = {
-        'salt_id': {'Salt ID': {'salt_id': URL_LINKS['salt_id']}},
+        'salt_id': 'Salt ID',
         'salt_name': 'Name',
         'salt_type': 'Type',
         'smiles': 'Smiles',
@@ -399,7 +399,7 @@ class Chem_Group(AuditModel):
     }
 
     LIST_VIEW_FIELDS = {
-        'chemgroup_id': {'ChemGroup ID': {'chemgroup_id': URL_LINKS['chemgroup_id']}},
+        'chemgroup_id': 'ChemGroup ID',
         'chemgroup_code': 'Code',
         'chemgroup_name': 'Name',
         'chemgroup_set': 'Set',
@@ -489,7 +489,7 @@ class Chem_Reaction(AuditModel):
     }
 
     LIST_VIEW_FIELDS = {
-        'reaction_id': {'Reaction ID': {'reaction_id': URL_LINKS['reaction_id']}},
+        'reaction_id': 'Reaction ID',
         'reaction_code': 'Code',
         'reaction_name': 'Name',
         'reaction_type': 'Type',

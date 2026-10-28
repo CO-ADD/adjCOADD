@@ -93,9 +93,6 @@ URL_LINKS={
     'isoform_id':       '/dpeptide/isoform/{VALUE1}',
 
     'structure_id':     '/dchem/structure/{VALUE1}',
-    'salt_id':          '/dchem/salt/{VALUE1}',
-    'chemgroup_id':     '/dchem/chemgroup/{VALUE1}',
-    'reaction_id':      '/dchem/reaction/{VALUE1}',
     'aa_id':            '/dchem/aminoacid/{VALUE1}',
     
     'organisation_id':  '/dcollab/organisation/{VALUE1}',

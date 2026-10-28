@@ -60,6 +60,9 @@ CHEM_VIEWS = {
         'singular': 'Chemical Structure',
         'list_name': 'chemstructure_list',
         'detail_name': 'chemstructure_detail',
+        'list_template': 'dchem/chem_filter_list.html',
+        'filter_first': True,
+        'has_detail': True,
     },
     'salt': {
         'model': Chem_Salt,
@@ -70,9 +73,11 @@ CHEM_VIEWS = {
         'title': 'Salts',
         'singular': 'Salt',
         'list_name': 'chemsalt_list',
-        'detail_name': 'chemsalt_detail',
         'create_name': 'chemsalt_create',
         'update_name': 'chemsalt_update',
+        'list_template': 'dchem/chem_pag_action.html',
+        'filter_first': False,
+        'has_detail': False,
     },
     'group': {
         'model': Chem_Group,
@@ -83,9 +88,11 @@ CHEM_VIEWS = {
         'title': 'Chemical Groups',
         'singular': 'Chemical Group',
         'list_name': 'chemgroup_list',
-        'detail_name': 'chemgroup_detail',
         'create_name': 'chemgroup_create',
         'update_name': 'chemgroup_update',
+        'list_template': 'dchem/chem_pag_action.html',
+        'filter_first': False,
+        'has_detail': False,
     },
     'reaction': {
         'model': Chem_Reaction,
@@ -96,9 +103,11 @@ CHEM_VIEWS = {
         'title': 'Chemical Reactions',
         'singular': 'Chemical Reaction',
         'list_name': 'chemreaction_list',
-        'detail_name': 'chemreaction_detail',
         'create_name': 'chemreaction_create',
         'update_name': 'chemreaction_update',
+        'list_template': 'dchem/chem_pag_action.html',
+        'filter_first': False,
+        'has_detail': False,
     },
     'aminoacid': {
         'model': AminoAcid,
@@ -112,6 +121,9 @@ CHEM_VIEWS = {
         'detail_name': 'aminoacid_detail',
         'create_name': 'aminoacid_create',
         'update_name': 'aminoacid_update',
+        'list_template': 'dchem/chem_list.html',
+        'filter_first': False,
+        'has_detail': True,
     },
 }
 
@@ -144,7 +156,6 @@ def _display_groups(instance, group_defs):
 #-------------------------------------------------------------------------------------------------
 class Chem_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
-    template_name = 'dchem/chem_list.html'
     app_name = 'dchem'
     key = None
 
@@ -156,8 +167,38 @@ class Chem_ListView(LoginRequiredMixin, Filtered_ListView):
         self.model_fields = self.model.LIST_VIEW_FIELDS
         self.model_name = self.model.__name__
         self.ordering = ['-acreated_at']
+        self.template_name = self.cfg['list_template']
+
+    def get_queryset(self):
+        # Filter-first for very large tables (e.g. Chem_Structure):
+        # don't evaluate the queryset until a filter/search is supplied.
+        if self.cfg.get('filter_first') and not self.get_filter_record():
+            self.filterset = self.filterset_class(self.request.GET,
+                                                  queryset=self.model.objects.none(),
+                                                  filterset_dict={}, deep=False)
+            self.filter_count = 0
+            return self.model.objects.none()
+        return super().get_queryset()
 
     def get_context_data(self, **kwargs):
+        if self.cfg.get('filter_first'):
+            # Replicate Filtered_ListView.get_context_data() but skip the
+            # full-table COUNT() (very expensive for large tables).
+            context = super(Filtered_ListView, self).get_context_data(**kwargs)
+            filter_record_dict = self.get_filter_record()
+            filter_record = "Selected: " + str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
+            context['filter'] = self.filterset
+            context['paginate_by'] = self.request.GET.get("paginate_by", self.paginate_by)
+            context['fields'] = self.model.get_fields(fields=self.model_fields)
+            context['filterset'] = filter_record
+            context['querycount'] = self.filter_count
+            context['Count'] = None
+            context['has_filters'] = bool(filter_record_dict)
+            context['title'] = self.cfg['title']
+            context['model_name'] = self.model_name
+            context['list_url'] = self.cfg['list_name']
+            return context
+
         context = super().get_context_data(**kwargs)
         context['title'] = self.cfg['title']
         context['model_name'] = self.model_name
@@ -196,7 +237,9 @@ def Chem_CreateView(req, key):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), f'Create {cfg["singular"]}', 'Completed')
-                return redirect(cfg['detail_name'], pk=instance.pk)
+                if cfg.get('has_detail'):
+                    return redirect(cfg['detail_name'], pk=instance.pk)
+                return redirect(cfg['list_name'])
             except IntegrityError as err:
                 messages.error(req, f'IntegrityError {err} happens, record may be existed!')
         else:
@@ -223,12 +266,14 @@ def Chem_UpdateView(req, key, pk):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), f'Update {cfg["singular"]}', 'Completed')
-                return redirect(cfg['detail_name'], pk=instance.pk)
+                if cfg.get('has_detail'):
+                    return redirect(cfg['detail_name'], pk=instance.pk)
+                return redirect(cfg['list_name'])
             except Exception as err:
                 messages.warning(req, f'Update failed due to {err} error')
         else:
             messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect(cfg['detail_name'], pk=pk)
+        return redirect(cfg['list_name'])
 
     form = form_class(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': f'Update {cfg["singular"]}', 'modal_subtitle': pk}
