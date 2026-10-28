@@ -77,10 +77,15 @@
                 <div id="collapseRunPlates" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
                     data-bs-parent="#screenrun-plates">
                     <div class="accordion-body">
+                    {% if view == 'card' %}
+                        <!-- prettier-ignore -->
+                        {% include 'dscreen/screenrun/testplate_card.html' with page_obj=testplate_page_obj querycount=testplate_count view=view view_switch=True %}
+                    {% else %}
                     <div class="table-responsive">
                         <!-- prettier-ignore -->
-                        {% include 'datatable/subtable_pag_action.html' with table_id='datatable_testplate' objects=testplate_objs data_fields=testplate_fields %}
+                        {% include 'datatable/subtable_pag_action.html' with table_id='datatable_testplate' objects=testplate_objs data_fields=testplate_fields page_obj=testplate_page_obj querycount=testplate_count view=view view_switch=True %}
                     </div>
+                    {% endif %}
                     </div>
                 </div>
                 </div>

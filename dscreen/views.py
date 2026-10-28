@@ -131,11 +131,16 @@ def ScreenRun_DetailView(req, pk):
         context["process_status"] = _object.process_status
         
         # Paginated and filtered list
-        paginate_by = 50
-        _testplates = TestPlate.objects.filter(run_id=_object, )
-        context["testplate_objs"] = _testplates
+        _view = req.GET.get('view', 'table')
+        _per_page = 15 if _view == 'card' else 50
+        _testplates = TestPlate.objects.filter(run_id=_object, astatus__gt=-1)
+        _testplate_paginator = Paginator(_testplates, _per_page)
+        _testplate_page = _testplate_paginator.get_page(req.GET.get('page'))
+        context["view"] = _view
+        context["testplate_objs"] = _testplate_page
+        context["testplate_page_obj"] = _testplate_page
         context["testplate_count"] = _testplates.count()
-        context["testplate_fields"]=TestPlate.get_fields()
+        context["testplate_fields"] = TestPlate.get_fields()
         
         # Single page list
         _prj_dict = get_projects_screenrun(_object)
