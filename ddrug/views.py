@@ -25,7 +25,8 @@ from apputil.utils.api_class import API_ListView
 from ddrug.models import  Drug, VITEK_AST, VITEK_Card, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from ddrug.utils.molecules import molecule_to_svg, get_mfp2_neighbors
 from ddrug.forms import Drug_form, Drug_filter, VitekCard_Filter, VitekAST_Filter, VitekID_Filter,MIC_COADDfilter, MIC_Pubfilter, Breakpointfilter
-from ddrug.serializers import Drug_Serializer, VITEK_ASTSerializer
+from ddrug.serializers import Drug_Serializer, VITEK_ASTSerializer, AppUserTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 # ===================================================================
 @login_required   
@@ -209,6 +210,11 @@ class BreakpointListView(LoginRequiredMixin, Filtered_ListView):
     model_fields=model.LIST_VIEW_FIELDS  
 
 # --API Views--
+## Token
+class AppUserTokenObtainPairView(TokenObtainPairView):
+    serializer_class = AppUserTokenObtainPairSerializer
+
+
 ## Drug
 class API_Drug_List(API_ListView):
     queryset = Drug.objects.all()
@@ -221,10 +227,12 @@ class API_VITEK_ASTList(API_ListView):
     serializer_class = VITEK_ASTSerializer
 
 from rest_framework import generics
+from applib.django.restapi import IsAppUser
 class API_Drug_Detail(generics.RetrieveAPIView):
     lookup_field = 'pk'
     queryset = Drug.objects.all()
     serializer_class = Drug_Serializer
+    permission_classes = [IsAppUser]
  
 # class VITEK_ASTCreate(generics.CreateAPIView):
 #     queryset = VITEK_AST.objects.all()

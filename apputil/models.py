@@ -1179,12 +1179,12 @@ class Menu_Item(AuditModel):
         'parent': 'Parent',
         'label': 'Label',
         'url_name': 'URL Name',
-        'url_path': 'URL Path',
-        'icon': 'Icon',
+        #'url_path': 'URL Path',
+        #'icon': 'Icon',
         'order': 'Order',
         'separator': 'Separator',
         'disabled': 'Disabled',
-        'modal': 'Modal',
+        #'modal': 'Modal',
         'permission': 'Permission',
     }
 

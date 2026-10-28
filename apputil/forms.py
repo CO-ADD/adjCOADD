@@ -17,6 +17,7 @@ class Login_Form(AuthenticationForm):
     password= forms.CharField(widget=forms.PasswordInput(
     attrs={'class':'form-control', 'id': 'password-input','type':'password', 'name': 'password', 'autocomplete':'new-password'}),
     label='password-input')
+    
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
@@ -38,7 +39,7 @@ class Login_Form(AuthenticationForm):
 					code='user is not appuser',
 					params={'username': self.username_field.verbose_name},
 				)
-
+        
         return self.cleaned_data
 
 

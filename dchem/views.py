@@ -9,6 +9,8 @@ from rest_framework import viewsets, filters
 from django_rdkit.models import MOL_FROM_SMILES
 #TANIMOTO_SMILES
 
+from applib.django.restapi import IsAppUser
+
 from applib.django.base.views import Filtered_ListView
 from apputil.models import ApplicationLog
 
@@ -25,6 +27,7 @@ class Compound_ListAPI(viewsets.ModelViewSet):
 # -----------------------------------------------------------------
     queryset = Chem_Structure.objects.all()
     serializer_class = ChemStructure_Serializer
+    permission_classes = [IsAppUser]
 
     def get_queryset(self):
         queryset = Chem_Structure.objects.all()

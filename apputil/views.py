@@ -201,7 +201,7 @@ class AppUser_RemoveView(SuperUserRequiredMixin, UpdateView):
     fields=['is_appuser']
 
     def form_valid(self, form):
-        form.instance.is_appuser==False
+        form.instance.is_appuser=False
         return super().form_valid(form)
 
 #=================================================================================================

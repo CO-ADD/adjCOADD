@@ -17,8 +17,9 @@ from django.utils.functional import SimpleLazyObject
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+
+from applib.django.restapi import IsAppUser
 
 
 from adjcoadd.constants import *
@@ -287,12 +288,13 @@ class Organism_ListAPI(viewsets.ModelViewSet):
     serializer_class = Organism_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['organism_id','organism_name','pub_id','strain_ids','strain_code',]
+    permission_classes = [IsAppUser]
     
 class Organism_UpdateAPI(viewsets.ModelViewSet):
     queryset = Organism.objects.all()
     serializer_class = Organism_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     def update(self, request, *args, **kwargs):
         obj= Organism.objects.get(organism_id=self.kwargs['pk'])
@@ -365,12 +367,13 @@ class OrgBatch_ListAPI(viewsets.ModelViewSet):
     serializer_class = OrgBatch_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['orgbatch_id', 'batch_quality', 'qc_status', 'stock_date']
+    permission_classes = [IsAppUser]
     
 class OrgBatch_UpdateAPI(viewsets.ModelViewSet):
     queryset = Organism_Batch.objects.all()
     serializer_class = OrgBatch_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     def update(self, request, *args, **kwargs):
         obj= Organism_Batch.objects.get(orgbatch_id=self.kwargs['pk'])

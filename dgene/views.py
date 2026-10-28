@@ -15,8 +15,9 @@ from django.views.generic.detail import DetailView
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+
+from applib.django.restapi import IsAppUser
 
 from apputil.models import Dictionary, ApplicationUser
 from applib.django.base.views import permission_not_granted, Base_CreateView, Base_UpdateView, Filtered_ListView
@@ -65,13 +66,14 @@ class GenomeSeq_ListAPI(viewsets.ModelViewSet):
     serializer_class = GenomeSeq_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['seq_id','run_id','orgbatch_id','seq_code',]
+    permission_classes = [IsAppUser]
 
 
 class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
     queryset = Genome_Sequence.objects.all()
     serializer_class = GenomeSeq_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     def update(self, request, *args, **kwargs):
         obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
@@ -102,13 +104,14 @@ class IDSeq_ListAPI(viewsets.ModelViewSet):
     serializer_class = IDSeq_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['seq_id','seq_file']
+    permission_classes = [IsAppUser]
 
 
 class IDSeq_UpdateAPI(viewsets.ModelViewSet):
     queryset = ID_Sequence.objects.all()
     serializer_class = IDSeq_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     def update(self, request, *args, **kwargs):
         
@@ -193,12 +196,13 @@ class WGS_CheckM_ListAPI(viewsets.ModelViewSet):
     serializer_class = WGS_CheckM_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['seq_id','assembler','fasta_type']
+    permission_classes = [IsAppUser]
 
 class WGS_CheckM_UpdateAPI(viewsets.ModelViewSet):
     queryset = WGS_CheckM.objects.all()
     serializer_class = WGS_CheckM_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     #print(f" [WGS_CheckM_UpdateAPI]")
     # def get_queryset(self):
@@ -282,12 +286,13 @@ class Gene_ListAPI(viewsets.ModelViewSet):
     serializer_class = Gene_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['gene_id','gene_code']
+    permission_classes = [IsAppUser]
 
 class Gene_UpdateAPI(viewsets.ModelViewSet):
     queryset = Gene.objects.all()
     serializer_class = Gene_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     def update(self, request, *args, **kwargs):
         
@@ -348,12 +353,13 @@ class AMRGenotype_ListAPI(viewsets.ModelViewSet):
     serializer_class = AMRGenotype_Serializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['seq_id','gene_id','amr_method']
+    permission_classes = [IsAppUser]
 
 class AMRGenotype_UpdateAPI(viewsets.ModelViewSet):
     queryset = Gene.objects.all()
     serializer_class = AMRGenotype_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     def update(self, request, *args, **kwargs):
         
