@@ -9,7 +9,7 @@ from tqdm import tqdm
 import logging
 
 from apputil.models import AuditModel
-from dchem.models import Chem_Structure
+from dchem.models import Chem_Structure, Chem_Salt
 logger = logging.getLogger(__name__)
 
 #-----------------------------------------------------------------------------
@@ -29,7 +29,7 @@ def openABase():
     return(db)
 #-----------------------------------------------------------------------------
 
-
+    
 #-----------------------------------------------------------------------------
 def get_ABase_Batches(test=0):
 #-----------------------------------------------------------------------------
@@ -145,6 +145,40 @@ def get_ABaseChem_Structure(CompoundID=None, RDKit=False):
     return(_structList)
 
 #-----------------------------------------------------------------------------
+def fix_salt_id(salt_code):
+#-----------------------------------------------------------------------------
+
+
+    SALT_ABASE_RENAME = {
+        'Br':'HBr',
+        'Cl':'HCl',
+        'I':'HI',
+        'Ag':'Ag[1]',
+        'Ca':'Ca[2]',
+        'K':'K[1]',
+        'Li':'Li[1]',
+        'Na':'Na[1]',
+        'CoH2Cl5':'CoCl3.2HCl',
+        'EN':'EDA',
+        'HCl2':'HCl.Cl[-1]',
+        'PrSO3':'PrSO3H',
+        'Tartarate':'Tartarate(+)',
+        '246NO2BenzA':'3NO2BenzA',
+        'Besylate':'BenzS04',
+    }
+
+    djSalt = Chem_Salt.get(salt_code)
+    if djSalt is None:
+        if salt_code in SALT_ABASE_RENAME:
+            salt_code = SALT_ABASE_RENAME[salt_code]
+            djSalt = Chem_Salt.get(salt_code)
+
+            # To Check if Cl[-1] or HCl
+
+
+    return(djSalt)
+ 
+ #-----------------------------------------------------------------------------
 def upload_ABase_Batches(regDF,upload=False,overwrite=False):
 #-----------------------------------------------------------------------------
 
