@@ -1,4 +1,4 @@
-rom django.urls import path
+from django.urls import path
 
 from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_DetailView, Peptide_UpdateView, Peptide_RemoveView,
                             Isoform_ListView, Isoform_CreateView, Isoform_DetailView, Isoform_UpdateView, Isoform_RemoveView,
