@@ -6,7 +6,8 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db import transaction, IntegrityError
 
 from rest_framework import viewsets, filters
-from django_rdkit.models import MOL_FROM_SMILES, TANIMOTO_SMILES
+from django_rdkit.models import MOL_FROM_SMILES
+#TANIMOTO_SMILES
 
 from applib.django.base.views import Filtered_ListView
 from apputil.models import ApplicationLog

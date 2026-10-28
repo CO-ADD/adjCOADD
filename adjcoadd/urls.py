@@ -39,7 +39,9 @@ urlpatterns = [
     path('dscreen/', include('dscreen.urls')),
     path('dsample/', include('dsample.urls')),
     path('dcollab/', include('dcollab.urls')),
-]
+    #========================Chem/Structure model views URL====View, Create, Updata, Delete================================
+    path('dchem/',  include('dchem.urls')),
+ ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
