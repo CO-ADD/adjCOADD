@@ -21,6 +21,13 @@ export default defineConfig({
   build: {
     outDir: fileURLToPath(new URL('../../static/js/ketcher3', import.meta.url)),
     emptyOutDir: true,
+    // ketcher-core ships ESM chunks that still contain conditional
+    // `require("raphael")` calls (guarded by `typeof window`). By default the
+    // CommonJS plugin skips files that mix import/export with require, leaving
+    // a bare `require` in the browser bundle. This forces those to be converted.
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
     lib: {
       entry: fileURLToPath(new URL('src/main.jsx', import.meta.url)),
       name: 'KetcherApp',
@@ -31,8 +38,8 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Ketcher uses dynamic imports internally; a single-file IIFE bundle
-        // requires inlining them.
+        // Ketcher uses dynamic imports internally; inlining them keeps the
+        // whole editor in a single file.
         inlineDynamicImports: true,
       },
     },
