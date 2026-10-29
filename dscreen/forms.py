@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -42,7 +43,7 @@ class ScreenRun_Filter(BaseStatus_Filter):
         fields=[ 'run_id', 'run_name','run_type','run_status']
 
 # -----------------------------------------------------------------
-class ScreenRun_CreateForm(forms.ModelForm):
+class ScreenRun_CreateForm(Base_ModelForm):
 
     # PK to add help text
     run_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next PSR/HCR/.. number")
@@ -136,7 +137,7 @@ class Assay_Filter(BaseStatus_Filter):
         fields=[ 'assay_id', 'assay_subtype','assay_code']
 
 #----------------------------------------------------------------
-class Assay_CreateForm(forms.ModelForm):
+class Assay_CreateForm(Base_ModelForm):
 
     def __init__(self, *args, **kwargs): 
         super().__init__(*args, **kwargs)

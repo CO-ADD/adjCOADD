@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm, inlineformset_factory
@@ -44,7 +45,7 @@ class Organisation_Filter(BaseStatus_Filter):
         fields=[ 'organisation_id','organisation_name','organisation_type','organisation_code','Country',]
 
 # -----------------------------------------------------------------
-class Organisation_CreateForm(forms.ModelForm):
+class Organisation_CreateForm(Base_ModelForm):
 
     # PK to add help text
     organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
@@ -130,7 +131,7 @@ class CollabUser_Filter(BaseStatus_Filter):
 
 
 # -----------------------------------------------------------------
-class CollabUser_CreateForm(forms.ModelForm):
+class CollabUser_CreateForm(Base_ModelForm):
 
     def __init__(self, *args, **kwargs): 
         super().__init__(*args, **kwargs)
@@ -219,7 +220,7 @@ class CollabGroup_Filter(BaseStatus_Filter):
         fields=['group_code','Organisation','Country','mta_status']
 
 # -----------------------------------------------------------------
-class CollabGroup_Form(forms.ModelForm):
+class CollabGroup_Form(Base_ModelForm):
 
     class Meta:
         model=Collab_Group
@@ -237,7 +238,7 @@ class CollabGroup_Form(forms.ModelForm):
         }
 
 # -----------------------------------------------------------------
-class CollabMembership_Form(forms.ModelForm):
+class CollabMembership_Form(Base_ModelForm):
 
     def __init__(self, *args, **kwargs):
         user_queryset = kwargs.pop('user_queryset', None)
@@ -271,7 +272,7 @@ CollabMembership_FormSet = inlineformset_factory(
 )
         
 # -----------------------------------------------------------------
-class CollabGroup_CreateForm(forms.ModelForm):
+class CollabGroup_CreateForm(Base_ModelForm):
 
     def __init__(self, *args, **kwargs): 
         super().__init__(*args, **kwargs)
@@ -313,7 +314,7 @@ class CollabGroup_UpdateForm(CollabGroup_CreateForm):
         field_order = ['group_id', 'group_code', 'organisation_id', 'email', 'department',
                        'postal_address', 'city', 'country', 'li_user_id', 'mta_status', 'mta_document']
                 
-# class CollabGroup_CreateForm(forms.ModelForm):
+# class CollabGroup_CreateForm(Base_ModelForm):
 
 #     # PK to add help text
 #     organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)

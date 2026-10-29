@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -44,7 +45,7 @@ class Peptide_Filter(BaseStatus_Filter):
         fields=[ 'peptide_id', 'peptide_name','peptide_notes', 'peptide_class', 'peptide_panel', 'mta_status' ]
 
 # -----------------------------------------------------------------
-class Peptide_CreateForm(forms.ModelForm):
+class Peptide_CreateForm(Base_ModelForm):
 
     peptide_name= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     peptide_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
@@ -127,7 +128,7 @@ class Isoform_Filter(BaseStatus_Filter):
 
 
 # -----------------------------------------------------------------
-class Isoform_CreateForm(forms.ModelForm):
+class Isoform_CreateForm(Base_ModelForm):
     isoform_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False)
     isoform_notes = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False)
     biologist = forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False)
@@ -156,7 +157,7 @@ class Isoform_UpdateForm(Isoform_CreateForm):
 #=================================================================================================
 # Isoform Batch
 #=================================================================================================
-class IsoBatch_CreateForm(forms.ModelForm):
+class IsoBatch_CreateForm(Base_ModelForm):
     batch_notes = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False)
     biologist = forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False)
 
@@ -194,7 +195,7 @@ class Modification_Filter(BaseStatus_Filter):
         fields = ['pepmod_id', 'pepmod_code']
 
 
-class Modification_Form(forms.ModelForm):
+class Modification_Form(Base_ModelForm):
     class Meta:
         model = Modification_Dictionary
         exclude = ['pepmod_id']

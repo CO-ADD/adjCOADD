@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -90,7 +91,7 @@ class Labware_Filter(BaseStatus_Filter):
 #=================================================================================================
 # Update Forms
 #=================================================================================================
-class TestPlate_UpdateForm(forms.ModelForm):
+class TestPlate_UpdateForm(Base_ModelForm):
     plate_id = forms.CharField(disabled=True)
 
     def __init__(self, *args, **kwargs):
@@ -107,7 +108,7 @@ class TestPlate_UpdateForm(forms.ModelForm):
                        'plate_quality', 'test_date', 'control_layout', 'plate_comment', 'zfactor', 'process_status']
 
 
-class MasterPlate_UpdateForm(forms.ModelForm):
+class MasterPlate_UpdateForm(Base_ModelForm):
     plate_id = forms.CharField(disabled=True)
 
     def __init__(self, *args, **kwargs):
@@ -123,7 +124,7 @@ class MasterPlate_UpdateForm(forms.ModelForm):
                        'plating', 'dilution_layout', 'master_solvent', 'master_conc', 'master_volume', 'plate_comment', 'process_status']
 
 
-class Labware_Form(forms.ModelForm):
+class Labware_Form(Base_ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

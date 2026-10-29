@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -50,7 +51,7 @@ class Cell_Filter(BaseStatus_Filter):
         fields=[ 'cell_id', 'cell_names','cell_line',  'cell_notes', 'cell_type', 'cell_panel', 'mta_status' ]
 
 # -----------------------------------------------------------------
-class Cell_CreateForm(forms.ModelForm):
+class Cell_CreateForm(Base_ModelForm):
 
     cell_line= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     cell_names= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
@@ -119,7 +120,7 @@ class Cell_UpdateForm(Cell_CreateForm):
 #=================================================================================================
 # Cell Batch
 #=================================================================================================
-class CellBatch_Form(forms.ModelForm):
+class CellBatch_Form(Base_ModelForm):
 
     #alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
@@ -144,7 +145,7 @@ class CellBatch_Form(forms.ModelForm):
         exclude=['cellbatch_id', 'stock_level', 'cell_id']
         
 
-class CellBatch_UpdateForm(forms.ModelForm):
+class CellBatch_UpdateForm(Base_ModelForm):
 
     cellbatch_id = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}),)
     batch_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -188,7 +189,7 @@ class CellBatch_Filter(BaseStatus_Filter):
 #=================================================================================================
 
 # -----------------------------------------------------------------------------------    
-class CellBatchStock_CreateForm(forms.ModelForm):
+class CellBatchStock_CreateForm(Base_ModelForm):
 
     field_order = ['cellbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
 

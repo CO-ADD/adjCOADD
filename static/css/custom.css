@@ -1141,3 +1141,21 @@ form p {
   white-space: nowrap;
   padding-right: 0.75rem !important;
 }
+
+/* --------------------------- Modal form fields --------------------------*/
+/* Make text-like inputs, selects and textareas fill the available width in
+   Create/Update modal forms (fallback when no Bootstrap class is applied). */
+.modal-body form input[type="text"],
+.modal-body form input[type="number"],
+.modal-body form input[type="email"],
+.modal-body form input[type="password"],
+.modal-body form input[type="url"],
+.modal-body form input[type="date"],
+.modal-body form input[type="datetime-local"],
+.modal-body form input[type="time"],
+.modal-body form input:not([type]),
+.modal-body form select,
+.modal-body form textarea {
+  width: 100%;
+  max-width: 100%;
+}

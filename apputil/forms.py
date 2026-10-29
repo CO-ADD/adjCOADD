@@ -1,5 +1,6 @@
 #import django_filters
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from .models import  ApplicationUser, ApplicationLog, Dictionary, Document, Menu, Menu_Item
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
@@ -56,7 +57,7 @@ PERMISSION_CHOICES=[
                     ("No","No")
                     ]
 
-class AppUser_Form(forms.ModelForm):
+class AppUser_Form(Base_ModelForm):
 
     permission=forms.ChoiceField(choices=PERMISSION_CHOICES)
 
@@ -90,13 +91,13 @@ class AppUser_Filter(Base_Filter):
 # Application Dictionary
 #=================================================================================================
 
-class Dictionary_Form(forms.ModelForm):
+class Dictionary_Form(Base_ModelForm):
     class Meta:
         model=Dictionary
         fields='__all__'
 
 
-class Dictionary_UpdateForm(forms.ModelForm):
+class Dictionary_UpdateForm(Base_ModelForm):
     dict_value = forms.CharField(disabled=True)
 
     class Meta:
@@ -121,7 +122,7 @@ class Dictionary_Filter(BaseStatus_Filter):
 
 #------------------------------------------------------------------------
 ## Document
-class Document_Form(forms.ModelForm):
+class Document_Form(Base_ModelForm):
     doc_file = forms.FileField(label='Select a file', 
                                 #   validators=[validate_file], 
                                   required=True)
@@ -162,7 +163,7 @@ class Menu_Filter(BaseStatus_Filter):
         fields = ['menu_name', 'menu_label', 'permission']
 
 
-class Menu_Form(forms.ModelForm):
+class Menu_Form(Base_ModelForm):
     class Meta:
         model = Menu
         exclude = ['menu_id']
@@ -200,7 +201,7 @@ class Menu_Item_Filter(BaseStatus_Filter):
         fields = ['label', 'url_name', 'permission', 'menu_id', 'parent']
 
 
-class Menu_Item_Form(forms.ModelForm):
+class Menu_Item_Form(Base_ModelForm):
     def __init__(self, *args, **kwargs):
         super(Menu_Item_Form, self).__init__(*args, **kwargs)
         for field_name in self.fields:

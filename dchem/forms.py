@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django_filters import CharFilter, ChoiceFilter
 
 from apputil.models import Dictionary
@@ -40,7 +41,7 @@ class ChemSalt_Filter(BaseStatus_Filter):
         fields = ['salt_id', 'salt_name', 'salt_type']
 
 
-class ChemSalt_Form(forms.ModelForm):
+class ChemSalt_Form(Base_ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
@@ -79,7 +80,7 @@ class ChemGroup_Filter(BaseStatus_Filter):
         fields = ['chemgroup_code', 'chemgroup_name', 'chemgroup_set', 'chemgroup_type']
 
 
-class ChemGroup_Form(forms.ModelForm):
+class ChemGroup_Form(Base_ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
@@ -117,7 +118,7 @@ class ChemReaction_Filter(BaseStatus_Filter):
         fields = ['reaction_code', 'reaction_name', 'reaction_type']
 
 
-class ChemReaction_Form(forms.ModelForm):
+class ChemReaction_Form(Base_ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name in self.fields:
@@ -151,7 +152,7 @@ class AminoAcid_Filter(BaseStatus_Filter):
         fields = ['aa_id', 'aa_code', 'aa_letter']
 
 
-class AminoAcid_Form(forms.ModelForm):
+class AminoAcid_Form(Base_ModelForm):
     class Meta:
         model = AminoAcid
         exclude = ['aa_id']

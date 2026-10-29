@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -50,7 +51,7 @@ class Project_Filter(BaseStatus_Filter):
 
 
 # -----------------------------------------------------------------
-class Project_CreateForm(forms.ModelForm):
+class Project_CreateForm(Base_ModelForm):
 
     # PK to add help text
     project_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next Pnnnnn number")
@@ -111,7 +112,7 @@ class Project_CreateForm(forms.ModelForm):
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
-class Project_CreateMinimalForm(forms.ModelForm):
+class Project_CreateMinimalForm(Base_ModelForm):
 
     # PK to add help text
     project_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next Pnnnnn number")

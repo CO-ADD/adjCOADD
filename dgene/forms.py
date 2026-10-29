@@ -1,5 +1,6 @@
 #import django_filters
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
@@ -63,7 +64,7 @@ class GenomeSeq_Filter(BaseStatus_Filter):
 
 
 #----------------------------------------
-class GenomeSeq_Form(ModelForm):
+class GenomeSeq_Form(Base_ModelForm):
 #----------------------------------------
     def __init__(self, *args, **kwargs):    
         super().__init__(*args, **kwargs)
@@ -77,7 +78,7 @@ class GenomeSeq_Form(ModelForm):
 #=================================================================================================
 # --ID_Pub Forms--
 ## 
-class IDPub_Form(ModelForm):
+class IDPub_Form(Base_ModelForm):
     #id_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="id_type"), required=False)
    
     def __init__(self, *args, **kwargs):    
@@ -144,7 +145,7 @@ class IDSeq_Filter(BaseStatus_Filter):
 
 
 
-class IDSeq_Form(ModelForm):
+class IDSeq_Form(Base_ModelForm):
 
     id_organisms=SimpleArrayField(forms.CharField(), required=False)
     id_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="id_type"), required=False)
@@ -267,7 +268,7 @@ class Gene_Filter(BaseStatus_Filter):
         #            ]
 
 #----------------------------------------
-class Gene_Form(ModelForm):
+class Gene_Form(Base_ModelForm):
 #----------------------------------------
     gene_type=forms.ModelChoiceField(queryset=Dictionary.objects.filter(dict_class="gene_type"), required=False)
    
