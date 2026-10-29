@@ -1,6 +1,11 @@
 
 # adjCOADD stuff:
 applog/
+
+# Frontend build (Ketcher)
+frontend/ketcher/node_modules/
+frontend/ketcher/dist/
+
 utilities/upload_data/*.log
 utilities/export_data/*.log
 utilities/export_data/Output/

@@ -25,7 +25,7 @@ class Command(BaseCommand):
             newid = Organism_Batch.str_OrgBatchID("_".join(_p[:2]), _p[2])
         
             print(f"--- Org Batch OldID: {oldid} NewID: {newid} --- {nCurrent:8d}/{nTotal:8d}")
-            rename_ForeignKey(Organism_Batch,oldid,newid,upload=upload,delete=False)
+            rename_ForeignKey(Organism_Batch,oldid,newid,upload=upload,delete=delete)
     
     #----------------------------------------------------------------
     def handle(self, *args, **options):

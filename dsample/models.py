@@ -264,7 +264,7 @@ class Project(AuditModel):
     #------------------------------------------------
     @classmethod
     def get(cls,ProjectID,verbose=0):
-    # Returns an instance by structure_id or structure_name
+    # Returns an instance by project_id
         try:
             retInstance = cls.objects.get(project_id=ProjectID)
         except:
@@ -397,7 +397,7 @@ class Library(AuditModel):
     #------------------------------------------------
     @classmethod
     def get(cls,LibraryID=None,LibraryName=None,verbose=0):
-    # Returns an instance by structure_id or structure_name
+    # Returns an instance by library_id or library_name
         try:
             if LibraryID:
                 retInstance = cls.objects.get(library_id=LibraryID)
