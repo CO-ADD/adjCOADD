@@ -444,6 +444,11 @@ class ABase_ListView(LoginRequiredMixin, Filtered_ListView):
     ordering = ['compound_id']
     paginate_by = 50
 
+    def get_paginate_by(self, queryset):
+        if self.request.GET.get('view') == 'card':
+            return 15
+        return super().get_paginate_by(queryset)
+
     def get_queryset(self):
         # Filter-first: do not evaluate the (potentially huge) queryset until
         # at least one filter/search term has been supplied.
@@ -464,12 +469,15 @@ class ABase_ListView(LoginRequiredMixin, Filtered_ListView):
         filter_record = "Selected: " + str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
 
         context['filter'] = self.filterset
-        context['paginate_by'] = self.request.GET.get("paginate_by", self.paginate_by)
+        context['paginate_by'] = self.get_paginate_by(self.object_list)
         context['fields'] = self.model.get_fields(fields=self.model_fields)
         context['filterset'] = filter_record
         context['querycount'] = self.filter_count
         context['Count'] = None
         context['has_filters'] = bool(filter_record_dict)
+        context['model_name'] = self.model_name
+        context['view'] = self.request.GET.get('view', 'table')
+        context['list_url'] = 'abase_list'
         return context
 
 
@@ -537,6 +545,11 @@ class COADD_ListView(LoginRequiredMixin, Filtered_ListView):
     ordering = ['compound_id']
     paginate_by = 50
 
+    def get_paginate_by(self, queryset):
+        if self.request.GET.get('view') == 'card':
+            return 15
+        return super().get_paginate_by(queryset)
+
     def get_queryset(self):
         # Filter-first: do not evaluate the (very large) queryset until
         # at least one filter/search term has been supplied.
@@ -557,12 +570,15 @@ class COADD_ListView(LoginRequiredMixin, Filtered_ListView):
         filter_record = "Selected: " + str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
 
         context['filter'] = self.filterset
-        context['paginate_by'] = self.request.GET.get("paginate_by", self.paginate_by)
+        context['paginate_by'] = self.get_paginate_by(self.object_list)
         context['fields'] = self.model.get_fields(fields=self.model_fields)
         context['filterset'] = filter_record
         context['querycount'] = self.filter_count
         context['Count'] = None
         context['has_filters'] = bool(filter_record_dict)
+        context['model_name'] = self.model_name
+        context['view'] = self.request.GET.get('view', 'table')
+        context['list_url'] = 'coadd_list'
         return context
 
 

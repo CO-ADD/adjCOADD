@@ -16,7 +16,7 @@ from adjcoadd.constants import PROJECT_COMPOUND_STATUS, PROJECT_SCREEN_STATUS, P
 from applib.django.base.filters import BaseStatus_Filter, TrigramFilter
  
 #dSample
-from dsample.models import  Project, ABase_Compound, COADD_Compound
+from dsample.models import  Project, ABase_Compound, COADD_Compound, ABase_Compound_Batch
 
 #=================================================================================================
 # Project
@@ -157,14 +157,34 @@ class ABase_Filter(BaseStatus_Filter):
     structure_type = CharFilter(field_name='structure_type', lookup_expr='icontains')
     structure_metal = CharFilter(field_name='structure_metal', lookup_expr='icontains')
 
+    # Filter ABase_Compounds where any related ABase_Compound_Batch matches.
+    chemist = ChoiceFilter(method='filter_batch_chemist', choices=[], label='Chemist')
+    supplier = CharFilter(method='filter_batch_supplier', label='Supplier')
+    labbook_no = CharFilter(method='filter_batch_labbook', label='LabBook No')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.filters['chemist'].extra['choices'] = [
+            (u.name, f"{u.name}") for u in ApplicationUser.objects.all().order_by('name')
+        ]
         # Set Filter label to the Fields VerboseName or Filter Name
         for i in self.filters:
             try:
                 self.filters[i].label = self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
             except Exception:
-                self.filters[i].label = i
+                self.filters[i].label = self.filters[i].label or i
+
+    def filter_batch_chemist(self, queryset, name, value):
+        compound_ids = ABase_Compound_Batch.objects.filter(chemist_id=value).values('compound_id')
+        return queryset.filter(compound_id__in=compound_ids)
+
+    def filter_batch_supplier(self, queryset, name, value):
+        compound_ids = ABase_Compound_Batch.objects.filter(supplier__icontains=value).values('compound_id')
+        return queryset.filter(compound_id__in=compound_ids)
+
+    def filter_batch_labbook(self, queryset, name, value):
+        compound_ids = ABase_Compound_Batch.objects.filter(labbook_no__icontains=value).values('compound_id')
+        return queryset.filter(compound_id__in=compound_ids)
 
     class Meta:
         model = ABase_Compound

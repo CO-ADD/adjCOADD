@@ -3,17 +3,33 @@
 
 {% block content %}
 <div class="d-flex flex-row vh-100">
-  {% include 'grid/base/left_navbar.html' with list_url='coadd_list' model_name='COADD_Compound' %}
-  {% include 'utils/sidebar.html' %}
+  <!-- Sidebar View/Buttons -->
+  <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+    <div class="d-flex flex-column p-0">
+      <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
+        <i class="bi bi-funnel fs-5"></i>
+      </a>
+
+      <a href="{% url list_url %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Filterbar View/Filter -->
+  {% include "utils/sidebar.html" %}
+
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'datatable/base/datatable_top.html' with title='COADD Compounds' model_name='COADD_Compound' application='dsample' %}
     <div class="contain-fluid data-contain">
       {% if has_filters %}
-        <div class="row d-flex flex-wrap mx-2 fixTableHead">
+        {% if view == 'card' %}
           <!--prettier-ignore-->
-          {% include 'datatable/base/datatable_base.html' with url_name='coadd_detail' modelname='COADD_Compound' %}
-        </div>
+          {% include 'dsample/project/compound_card.html' with page_obj=page_obj querycount=querycount view=view view_switch=True %}
+        {% else %}
+          <!--prettier-ignore-->
+          {% include 'datatable/datatable_pag_action.html' with model_name=model_name view=view view_switch=True %}
+        {% endif %}
       {% else %}
         <div class="m-4 p-5 text-center card-bg rounded-3">
           <i class="bi bi-search fs-2"></i>

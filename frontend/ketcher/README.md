@@ -26,7 +26,7 @@ static/js/ketcher3/assets/...           # fonts/images/wasm emitted by Ketcher (
 
 ## Integration contract
 
-The bundle keeps the same contract as the previous `static/js/ketcher/index-bundle.js`:
+The bundle keeps the same contract as the previous `static/js/ketcher2/index-bundle.js`:
 
 - `<div id="root">` is the mount point.
 - `<input id="mol">` (hidden) carries the initial molfile to load.
