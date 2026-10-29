@@ -8,7 +8,7 @@ import { fileURLToPath, URL } from 'node:url'
 //
 // Output:
 //   static/js/ketcher3/ketcher.bundle.js   (ESM: React + ketcher-react + ketcher-standalone)
-//   static/js/ketcher3/styles.css          (ketcher-react styles, extracted by Vite lib mode)
+//   static/js/ketcher3/style.css           (ketcher-react styles, extracted by Vite lib mode)
 //   static/js/ketcher3/assets/...          (fonts/images/wasm emitted by Ketcher, if any)
 export default defineConfig({
   plugins: [
