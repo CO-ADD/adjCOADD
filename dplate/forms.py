@@ -123,12 +123,24 @@ class MasterPlate_UpdateForm(forms.ModelForm):
                        'plating', 'dilution_layout', 'master_solvent', 'master_conc', 'master_volume', 'plate_comment', 'process_status']
 
 
-class Labware_UpdateForm(forms.ModelForm):
-    labware_id = forms.CharField(disabled=True)
+class Labware_Form(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['plate_material'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Labware.DICTIONARY_FIELDS['plate_material'])]
+
+    class Meta:
+        model = Labware
+        fields = ['labware_id', 'labware_name', 'labware_type', 'plate_size', 'plate_type', 'plate_color',
+                  'plate_material', 'well_shape', 'well_bottom', 'well_type', 'well_size',
+                  'working_volume', 'brand', 'model']
+        field_order = ['labware_id', 'labware_name', 'labware_type', 'plate_size', 'plate_type', 'plate_color',
+                       'plate_material', 'well_shape', 'well_bottom', 'well_type', 'well_size',
+                       'working_volume', 'brand', 'model']
+
+
+class Labware_UpdateForm(Labware_Form):
+    labware_id = forms.CharField(disabled=True)
 
     class Meta:
         model = Labware

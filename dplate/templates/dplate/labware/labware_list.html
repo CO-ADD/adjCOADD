@@ -13,6 +13,14 @@
       <a href="{% url list_url %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
         <i class="fa-solid fa-table-list fs-5"></i>
       </a>
+
+      {% if create_url %}
+      <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"
+         hx-get="{% url create_url %}" hx-target="#info-body" hx-swap="innerHTML"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="New Labware">
+        <i class="bi bi-file-earmark-plus fs-5 text-success"></i>
+      </a>
+      {% endif %}
     </div>
   </div>
 

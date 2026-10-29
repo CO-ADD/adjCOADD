@@ -4,7 +4,7 @@ from django.urls import path, include, re_path
 
 from dplate.views import (TestPlate_ListView, TestPlate_DetailView, TestPlate_UpdateView, TestPlate_MapView,
                           MasterPlate_ListView, MasterPlate_DetailView, MasterPlate_UpdateView,
-                          Labware_ListView, Labware_UpdateView)
+                          Labware_ListView, Labware_CreateView, Labware_UpdateView)
 
 urlpatterns = [
     # TestPlate
@@ -20,5 +20,6 @@ urlpatterns = [
 
     # Labware
     path('labware_list', Labware_ListView.as_view(), name="labware_list"),
+    path('labware_create', Labware_CreateView, name="labware_create"),
     path('labware/update/<str:pk>', Labware_UpdateView, name="labware_update"),
 ]

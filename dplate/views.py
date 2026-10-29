@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.core.exceptions import FieldDoesNotExist
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.shortcuts import get_object_or_404, render, redirect
 
 from apputil.models import ApplicationLog
@@ -12,7 +12,8 @@ from applib.django.base.views import Filtered_ListView
 
 from dplate.models import TestPlate, MasterPlate, Labware
 from dplate.forms import (TestPlate_Filter, MasterPlate_Filter, Labware_Filter,
-                          TestPlate_UpdateForm, MasterPlate_UpdateForm, Labware_UpdateForm)
+                          TestPlate_UpdateForm, MasterPlate_UpdateForm,
+                          Labware_Form, Labware_UpdateForm)
 
 
 #=================================================================================================
@@ -244,8 +245,31 @@ class Labware_ListView(LoginRequiredMixin, Filtered_ListView):
         context = super().get_context_data(**kwargs)
         context['model_name'] = self.model_name
         context['list_url'] = 'labware_list'
+        context['create_url'] = 'labware_create'
         context['update_url'] = 'labware_update'
         return context
+
+
+@login_required
+def Labware_CreateView(req):
+    form = Labware_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dplate'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user,
+                                       str(instance.pk), 'Create Labware', 'Completed')
+                return redirect('labware_list')
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+        else:
+            messages.warning(req, f'Create failed due to {form.errors} error')
+        return redirect('labware_list')
+
+    context = {'form': form, 'modal_title': 'Create Labware'}
+    return render(req, 'dplate/plate_form_modal.html', context)
 
 
 @login_required
