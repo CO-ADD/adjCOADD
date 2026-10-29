@@ -1,0 +1,40 @@
+{% load static %}
+<div class="d-flex flex-column w-100">
+
+  {% if page_obj %}
+  <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+    {% include 'grid/base/pagination.html' %}
+  </div>
+  {% endif %}
+
+  <div class="row d-flex flex-wrap mx-2">
+    {% for object in page_obj %}
+      <div class="col-md-2 m-0 p-1">
+        <div class="card card-bg ms-3 px-1 rounded-3 h-100">
+          <div class="d-flex justify-content-between border-bottom border-dark">
+            <p class="card-title px-1 fw-bold mb-0">
+              <a class="card-link" href="{% url detail_url object.pk %}">{{ object.compound_id }}</a>
+            </p>
+          </div>
+
+          <div class="card-text m-auto" style="width: 95%">
+            {% if object.reg_smiles or object.std_smiles %}
+              <div id="structure{{ object.pk }}" class="molecule-structure-svg d-flex justify-content-center"
+                   data-smiles="{{ object.reg_smiles|default:object.std_smiles }}"></div>
+            {% else %}
+              <div class="text-muted small text-center py-2">No structure</div>
+            {% endif %}
+          </div>
+
+          <p class="card-text m-0 fst-normal"><strong>Code</strong> {{ object.compound_code }}</p>
+          <p class="card-text m-0 fst-normal"><strong>MW</strong> {{ object.reg_mw }}</p>
+          <p class="card-text m-0 fst-normal"><strong>MF</strong> {{ object.reg_mf }}</p>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted px-2">No compounds found</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% include 'utils/molecule_structure.html' %}
