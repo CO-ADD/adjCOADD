@@ -34,6 +34,10 @@ The bundle keeps the same contract as the previous `static/js/ketcher/index-bund
 - `window.ketcher` is exposed for external Check/Save handlers
   (`window.ketcher.getMolfile('v2000')`, `window.ketcher.setMolecule(...)`).
 
+Mounting is **explicit** — call `window.initKetcher()` after the `#root`/`#mol`
+markup is in the DOM (the bundle does not auto-mount). This lets the bundle be
+loaded once per page and re-mounted whenever a modal is (re)inserted.
+
 ## Templates using it
 
 - `dsample/templates/dsample/coadd/coadd_structure_edit.html`

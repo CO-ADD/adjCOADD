@@ -44,6 +44,12 @@
 <!-- Ketcher structure editor modal -->
 <div id="structureModal" class="modal fade" tabindex="-1" aria-hidden="true"></div>
 
+<!-- Ketcher 3 bundle + styles are loaded once here (the modal partial only
+     re-mounts via window.initKetcher, avoiding jQuery .load() script quirks). -->
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'js/ketcher3/styles.css' %}" />
+<script src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
+
 <script>
   $(document).ready(function () {
     loadModal(

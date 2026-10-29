@@ -39,9 +39,6 @@
   </div>
 </div>
 
-<link rel="stylesheet" type="text/css" href="{% static 'js/ketcher3/styles.css' %}" />
-<script src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
-
 <style>
   /* Constrain the Ketcher editor to the modal body (the bundle uses 100vw/100vh). */
   #structureModal #root > div {
@@ -181,5 +178,11 @@
         error: function () { setStatus('Save error.', false); }
       });
     });
+
+    // Mount the editor. The bundle itself is loaded once on the detail page;
+    // this partial only (re)mounts React at the freshly inserted #root.
+    if (window.initKetcher) {
+      window.initKetcher();
+    }
   })();
 </script>

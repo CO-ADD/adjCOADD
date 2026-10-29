@@ -48,9 +48,26 @@ function KetcherEditor({ initialMol }) {
 //   - <div id="root"> is the mount point
 //   - the current molfile is written to <input id="id_smol"> on "Update Smiles"
 //   - window.ketcher is exposed for external Check/Save handlers
-const rootEl = document.getElementById('root')
-if (rootEl) {
+//
+// Mounting is explicit (window.initKetcher()) rather than automatic, so the
+// bundle can be loaded once per page and re-mounted whenever the modal markup
+// is (re)inserted into the DOM.
+let currentRoot = null
+
+function initKetcher() {
+  const rootEl = document.getElementById('root')
+  if (!rootEl) return false
+
+  if (currentRoot) {
+    currentRoot.unmount()
+    currentRoot = null
+  }
+
   const molInput = document.getElementById('mol')
   const initialMol = molInput ? molInput.value : ''
-  createRoot(rootEl).render(<KetcherEditor initialMol={initialMol} />)
+  currentRoot = createRoot(rootEl)
+  currentRoot.render(<KetcherEditor initialMol={initialMol} />)
+  return true
 }
+
+window.initKetcher = initKetcher

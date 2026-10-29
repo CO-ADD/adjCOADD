@@ -4,12 +4,9 @@
 <link rel="stylesheet" type="text/css" href="{% static 'js/ketcher3/styles.css' %}" />
 <script src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
 <script>
-
-  $(document).ready(function () {
-    $("#root button").click((e) => {
-      e.preventDefault();
-      console.log("clickt");
-     
-    });
-  });
+  (function () {
+    if (window.initKetcher) {
+      window.initKetcher();
+    }
+  })();
 </script>
