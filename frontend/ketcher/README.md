@@ -20,7 +20,7 @@ Output (written directly into the project static tree):
 
 ```
 static/js/ketcher3/ketcher.bundle.js    # IIFE bundle (React + ketcher-react + ketcher-standalone)
-static/js/ketcher3/ketcher.bundle.css   # extracted ketcher-react styles
+static/js/ketcher3/styles.css           # extracted ketcher-react styles (Vite lib mode)
 static/js/ketcher3/assets/...           # fonts/images/wasm emitted by Ketcher (if any)
 ```
 
