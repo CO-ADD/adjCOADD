@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { StandaloneStructServiceProvider } from 'ketcher-standalone'
 import { Editor } from 'ketcher-react'
@@ -9,10 +9,7 @@ import 'ketcher-react/dist/index.css'
 const structServiceProvider = new StandaloneStructServiceProvider()
 
 function KetcherEditor({ initialMol }) {
-  const [ketcher, setKetcher] = useState(null)
-
   function handleOnInit(k) {
-    setKetcher(k)
     // Expose the instance so page scripts can call getMolfile()/setMolecule().
     window.ketcher = k
     if (initialMol) {
@@ -20,26 +17,15 @@ function KetcherEditor({ initialMol }) {
     }
   }
 
-  function updateSmiles() {
-    ketcher.getMolfile('v2000').then((molfile) => {
-      const out = document.getElementById('id_smol')
-      if (out) out.value = molfile
-    })
-  }
-
+  // Render the Editor directly (no wrapper) so its `height: 100%` layout chain
+  // resolves against #root. The "Update Smiles" button lives in the Django
+  // template toolbar and calls window.ketcher.getMolfile() itself.
   return (
-    <div>
-      <div>
-        <button id="get_new_mol" type="button" onClick={updateSmiles}>
-          Update Smiles
-        </button>
-      </div>
-      <Editor
-        staticResourcesUrl=""
-        structServiceProvider={structServiceProvider}
-        onInit={handleOnInit}
-      />
-    </div>
+    <Editor
+      staticResourcesUrl=""
+      structServiceProvider={structServiceProvider}
+      onInit={handleOnInit}
+    />
   )
 }
 

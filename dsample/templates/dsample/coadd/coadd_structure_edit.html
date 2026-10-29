@@ -17,6 +17,10 @@
           <option value="std" {% if smiles_type == 'std' %}selected{% endif %}>std_smiles</option>
         </select>
 
+        <button id="get_new_mol" type="button" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-repeat me-1"></i>Update Smiles
+        </button>
+
         <button id="structure-check" type="button" class="btn btn-sm btn-outline-primary">
           <i class="bi bi-check2-circle me-1"></i>Check
         </button>
@@ -45,7 +49,15 @@
   #structureModal #root {
     height: calc(100vh - 170px);
     width: 100%;
-    overflow: hidden;
+  }
+
+  /* Ketcher dialogs (Open/Settings) are MUI dialogs portaled to <body>.
+     Without this they top-align and can be clipped by the viewport. */
+  .MuiPaper-root.ketcher-dialog {
+    align-self: center;
+    z-index: 2000;
+    max-height: calc(100vh - 4rem);
+    max-width: calc(100vw - 4rem);
   }
 </style>
 
@@ -74,13 +86,7 @@
       if (window.ketcher && window.ketcher.getMolfile) {
         window.ketcher.getMolfile('v2000').then(cb);
       } else {
-        var btn = document.getElementById('get_new_mol');
-        if (btn) {
-          btn.click();
-          setTimeout(function () { cb(document.getElementById('id_smol').value); }, 300);
-        } else {
-          cb('');
-        }
+        cb('');
       }
     }
 

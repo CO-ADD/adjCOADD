@@ -1,5 +1,21 @@
 <div id="root" class="w-100"></div>
 
+<style>
+  /* Ketcher 3's Editor is height:100%; #root needs a definite height. */
+  #root {
+    height: 70vh;
+    width: 100%;
+  }
+
+  /* Center Ketcher's portaled MUI dialogs and keep them within the viewport. */
+  .MuiPaper-root.ketcher-dialog {
+    align-self: center;
+    z-index: 2000;
+    max-height: calc(100vh - 4rem);
+    max-width: calc(100vw - 4rem);
+  }
+</style>
+
 {%load static%}
 <link rel="stylesheet" type="text/css" href="{% static 'js/ketcher3/style.css' %}" />
 <script type="module" src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
