@@ -1,7 +1,8 @@
-    key: "getAttachmentPointLabel",
-    value: function(F) {
-      var B = "", R = Number(F.rglabel);
-      RQ(Number.isInteger(R));
-      for (var n = 0; n < 32; n++)
-        R & 1 << n && (B = "R" + (n + 1).toString());
-      return B;
+var pH = typeof window < "u" ? require("raphael") : void 0;
+function dpF() {
+  if (pH)
+    return typeof pH == "function" ? pH : pH.default;
+}
+var PM = dpF();
+PM && (PM.el.translateAbs = function(Q, U) {
+
