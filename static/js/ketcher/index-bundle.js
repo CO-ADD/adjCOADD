@@ -29783,6 +29783,7 @@ function KetcherExample(props) {
     setKetcher = _useState2[1];
   var handleOnInit = function handleOnInit(Ketcher) {
     setKetcher(Ketcher);
+    window.ketcher = Ketcher;
     var mole = props.molecular.replace(/\\n/g, "\n");
     var initialData = mole;
     Ketcher.setMolecule(initialData);
@@ -29801,7 +29802,7 @@ function KetcherExample(props) {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement("button", {
     id: "get_new_mol",
     onClick: getMolfile
-  }, "update Mol")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(GridWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(ketcher_react__WEBPACK_IMPORTED_MODULE_4__.Editor, {
+  }, "Update Smiles")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(GridWrapper, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default().createElement(ketcher_react__WEBPACK_IMPORTED_MODULE_4__.Editor, {
     staticResourcesUrl: "",
     structServiceProvider: structServiceProvider,
     onInit: handleOnInit,

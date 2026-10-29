@@ -33,6 +33,7 @@ from dsample.forms import Project_Filter, Project_CreateForm, Project_CreateMini
 from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
 from dplate.models import MasterPlate, TestPlate
+from dchem.models import Chem_Structure
 from applib.report.screen_data import Report_Screening
 from applib.project.stockprep_project import StockPrep_Project
 from dcollab.models import Collab_User, Collab_Group
@@ -602,16 +603,42 @@ def COADD_DetailView(req, pk):
 
 
 # -----------------------------------------------------------------
+def _molfile_to_smiles(molfile):
+    """
+    Convert a V2000/V3000 molfile to a canonical SMILES string.
+    Returns the SMILES or None if the molfile cannot be parsed.
+    """
+    if not molfile:
+        return None
+    try:
+        mol = Chem.MolFromMolBlock(molfile, sanitize=True)
+    except Exception:
+        mol = None
+    if mol is None:
+        return None
+    try:
+        return Chem.MolToSmiles(mol, canonical=True, isomericSmiles=True)
+    except Exception:
+        return None
+
+
+# -----------------------------------------------------------------
 @login_required
 def COADD_StructureEditView(req, pk):
     """
     Render the Ketcher structure-editing modal for a COADD_Compound.
     Loads reg_smiles (default) or std_smiles into the editor.
+
+    Optional GET overrides reg_smiles/std_smiles are used to preserve
+    in-memory edits when switching between the two smiles fields.
     """
     _object = get_object_or_404(COADD_Compound, compound_id=pk)
 
     smiles_type = req.GET.get('smiles_type', 'reg')
-    smiles = _object.std_smiles if smiles_type == 'std' else _object.reg_smiles
+    reg_smiles = req.GET.get('reg_smiles', _object.reg_smiles or '')
+    std_smiles = req.GET.get('std_smiles', _object.std_smiles or '')
+
+    smiles = std_smiles if smiles_type == 'std' else reg_smiles
 
     mol_block = ''
     if smiles:
@@ -626,9 +653,129 @@ def COADD_StructureEditView(req, pk):
         'object': _object,
         'mol_block': mol_block,
         'smiles_type': smiles_type,
-        'reg_smiles': _object.reg_smiles or '',
-        'std_smiles': _object.std_smiles or '',
+        'reg_smiles': reg_smiles,
+        'std_smiles': std_smiles,
     }
     return render(req, 'dsample/coadd/coadd_structure_edit.html', context)
+
+
+# -----------------------------------------------------------------
+@login_required
+def COADD_StructureConvertView(req):
+    """
+    POST endpoint: convert a molfile (from Ketcher) to a canonical SMILES.
+    No persistence, no database lookup.
+    """
+    if req.method != 'POST':
+        return JsonResponse({'success': False, 'errors': ['POST required']}, status=405)
+
+    data = json.loads(req.body or '{}')
+    molfile = data.get('molfile', '')
+    smiles = _molfile_to_smiles(molfile)
+
+    if smiles is None:
+        return JsonResponse({'success': False, 'errors': ['Unable to parse the structure.']})
+
+    return JsonResponse({'success': True, 'smiles': smiles})
+
+
+# -----------------------------------------------------------------
+@login_required
+def COADD_StructureCheckView(req, pk):
+    """
+    POST endpoint: run the current Ketcher structure through a
+    standardization check and look for an existing Chem_Structure.
+
+    For model == 'abase', also list matching ABase_Compound entries
+    linked to the resolved Chem_Structure.structure_id.
+    """
+    if req.method != 'POST':
+        return JsonResponse({'success': False, 'errors': ['POST required']}, status=405)
+
+    _object = get_object_or_404(COADD_Compound, compound_id=pk)
+    data = json.loads(req.body or '{}')
+    molfile = data.get('molfile', '')
+    model = data.get('model', 'coadd')
+    smiles_type = data.get('smiles_type', 'reg')
+
+    canonical = _molfile_to_smiles(molfile)
+    if canonical is None:
+        return JsonResponse({'success': False, 'errors': ['Unable to parse the structure.']})
+
+    std_smiles = canonical
+    std_errors = []
+    try:
+        from applib.mol.mol_standardize import SmiStandardizer_molvs
+        _standardizer = SmiStandardizer_molvs(validate=False, uncharge=True, normalize=False, desalt=True)
+        _std, _valid = _standardizer.run_single(canonical)
+        if _valid and _std:
+            std_smiles = _std
+        else:
+            std_errors.append('Standardization returned an invalid molecule; using canonical smiles.')
+    except Exception as err:
+        std_errors.append(f'Standardization skipped ({err}); using canonical smiles.')
+
+    current = _object.std_smiles if smiles_type == 'std' else _object.reg_smiles
+    changed = (canonical != current)
+
+    structure = None
+    structure_lookup_error = None
+    try:
+        structure = Chem_Structure.get_exact(std_smiles) or Chem_Structure.get_bySmiles(std_smiles)
+    except Exception as err:
+        structure_lookup_error = str(err)
+
+    abase_matches = []
+    if model == 'abase' and structure is not None:
+        abase_matches = list(
+            ABase_Compound.objects.filter(structure_id=structure.structure_id)
+            .values_list('compound_id', flat=True)
+        )
+
+    return JsonResponse({
+        'success': True,
+        'canonical_smiles': canonical,
+        'std_smiles': std_smiles,
+        'changed': changed,
+        'structure_id': structure.structure_id if structure else None,
+        'structure_exists': structure is not None,
+        'abase_matches': abase_matches,
+        'errors': std_errors,
+        'lookup_error': structure_lookup_error,
+    })
+
+
+# -----------------------------------------------------------------
+@login_required
+def COADD_StructureSaveView(req, pk):
+    """
+    POST endpoint: persist the in-memory reg_smiles and std_smiles
+    back to the COADD_Compound record.
+    """
+    if req.method != 'POST':
+        return JsonResponse({'success': False, 'errors': ['POST required']}, status=405)
+
+    _object = get_object_or_404(COADD_Compound, compound_id=pk)
+    data = json.loads(req.body or '{}')
+
+    reg_smiles = data.get('reg_smiles', '').strip()
+    std_smiles = data.get('std_smiles', '').strip()
+
+    try:
+        with transaction.atomic(using='default'):
+            _object.reg_smiles = reg_smiles
+            _object.std_smiles = std_smiles
+            _object.save(user=req.user)
+            ApplicationLog.add('Update', str(_object.pk), 'Info', req.user,
+                               str(_object.pk), 'Update COADD structure', 'Completed')
+    except Exception as err:
+        return JsonResponse({'success': False, 'errors': [str(err)]}, status=400)
+
+    return JsonResponse({
+        'success': True,
+        'message': f'Structure saved for {_object.pk}',
+        'reg_smiles': _object.reg_smiles,
+        'std_smiles': _object.std_smiles,
+    })
 
 

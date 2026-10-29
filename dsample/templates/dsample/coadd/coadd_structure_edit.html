@@ -20,7 +20,7 @@
         <button id="structure-check" type="button" class="btn btn-sm btn-outline-primary">
           <i class="bi bi-check2-circle me-1"></i>Check
         </button>
-        <span id="structure-check-result" class="small text-muted ms-2"></span>
+        <span id="structure-check-result" class="small ms-2"></span>
       </div>
 
       <!-- Ketcher editor -->
@@ -57,31 +57,129 @@
 
 <script>
   (function () {
+    var compoundId = "{{ object.pk|escapejs }}";
     var modalUrl = "{% url 'coadd_structure_edit' object.pk %}";
+    var convertUrl = "{% url 'coadd_structure_convert' %}";
+    var checkUrl = "{% url 'coadd_structure_check' object.pk %}";
+    var saveUrl = "{% url 'coadd_structure_save' object.pk %}";
+    var model = "coadd";
 
-    // Switch between reg_smiles and std_smiles
+    // In-memory state for the two smiles fields (preserved across switching).
+    var state = {
+      reg: "{{ reg_smiles|escapejs }}",
+      std: "{{ std_smiles|escapejs }}"
+    };
+
+    function setStatus(text, ok) {
+      var el = document.getElementById('structure-check-result');
+      el.textContent = text || '';
+      el.className = 'small ms-2 ' + (ok === true ? 'text-success' : (ok === false ? 'text-danger' : 'text-muted'));
+    }
+
+    function getCurrentMolfile(cb) {
+      if (window.ketcher && window.ketcher.getMolfile) {
+        window.ketcher.getMolfile('v2000').then(cb);
+      } else {
+        var btn = document.getElementById('get_new_mol');
+        if (btn) {
+          btn.click();
+          setTimeout(function () { cb(document.getElementById('id_smol').value); }, 300);
+        } else {
+          cb('');
+        }
+      }
+    }
+
+    // "Update Smiles" (the renamed Ketcher button) - capture the current
+    // structure as canonical SMILES and store it in the selected field state.
+    $(document).off('click.structureUpdate').on('click.structureUpdate', '#get_new_mol', function () {
+      var type = document.getElementById('structure-smiles-type').value;
+      getCurrentMolfile(function (molfile) {
+        $.ajax({
+          url: convertUrl,
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ molfile: molfile }),
+          headers: { 'X-CSRFToken': getCookie('csrftoken') },
+          success: function (resp) {
+            if (resp.success && resp.smiles) {
+              state[type] = resp.smiles;
+              setStatus(type + '_smiles updated.', true);
+            } else {
+              setStatus((resp.errors || []).join('; '), false);
+            }
+          },
+          error: function () { setStatus('Conversion error.', false); }
+        });
+      });
+    });
+
+    // Switch between reg_smiles and std_smiles, keeping the in-memory state.
     document.getElementById('structure-smiles-type').addEventListener('change', function () {
       var type = this.value;
-      $('#structureModal').load(modalUrl + '?smiles_type=' + type, function () {
+      var url = modalUrl + '?smiles_type=' + encodeURIComponent(type)
+              + '&reg_smiles=' + encodeURIComponent(state.reg)
+              + '&std_smiles=' + encodeURIComponent(state.std);
+      $('#structureModal').load(url, function () {
         $('#structureModal').modal('show');
       });
     });
 
-    // Check: TODO - standardize the current structure and check dchem.Chem_Structure
+    // Check: standardize and look up an existing Chem_Structure.
     document.getElementById('structure-check').addEventListener('click', function () {
-      var result = document.getElementById('structure-check-result');
-      result.textContent = 'Check functionality coming in the next step.';
-      console.log('Check current molfile:', document.getElementById('id_smol').value);
+      getCurrentMolfile(function (molfile) {
+        $.ajax({
+          url: checkUrl,
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ molfile: molfile, model: model, smiles_type: document.getElementById('structure-smiles-type').value }),
+          headers: { 'X-CSRFToken': getCookie('csrftoken') },
+          success: function (resp) {
+            if (!resp.success) {
+              setStatus((resp.errors || []).join('; '), false);
+              return;
+            }
+            var lines = [];
+            if (resp.changed) {
+              lines.push('Structure differs from current ' + document.getElementById('structure-smiles-type').value + '_smiles.');
+            }
+            if (resp.structure_exists) {
+              lines.push('Found Chem_Structure ' + resp.structure_id + '.');
+            } else {
+              lines.push('No matching Chem_Structure (new structure).');
+            }
+            if (resp.abase_matches && resp.abase_matches.length) {
+              lines.push('ABase matches: ' + resp.abase_matches.join(', '));
+            }
+            if (resp.errors && resp.errors.length) {
+              lines = lines.concat(resp.errors);
+            }
+            setStatus(lines.join(' '), resp.success);
+            console.log('Check result:', resp);
+          },
+          error: function () { setStatus('Check error.', false); }
+        });
+      });
     });
 
-    // Save: TODO - persist the edited smiles back to reg_smiles/std_smiles
+    // Save: persist both reg_smiles and std_smiles to the database.
     document.getElementById('structure-save').addEventListener('click', function () {
-      // Force the Ketcher "update Mol" button to push the current molfile into #id_smol
-      var updateBtn = document.getElementById('get_new_mol');
-      if (updateBtn) { updateBtn.click(); }
-      var molfile = document.getElementById('id_smol').value;
-      console.log('Save molfile:', molfile);
-      alert('Save functionality coming in the next step.');
+      $.ajax({
+        url: saveUrl,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ reg_smiles: state.reg, std_smiles: state.std }),
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        success: function (resp) {
+          if (resp.success) {
+            $('#structureModal').modal('hide');
+            location.reload();
+          } else {
+            setStatus((resp.errors || []).join('; '), false);
+          }
+        },
+        error: function () { setStatus('Save error.', false); }
+      });
     });
   })();
 </script>
