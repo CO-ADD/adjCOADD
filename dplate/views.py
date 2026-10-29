@@ -8,7 +8,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404, render, redirect
 
 from apputil.models import ApplicationLog
-from applib.django.base.views import Filtered_ListView, Htmx_UpdateView
+from applib.django.base.views import Filtered_ListView
 
 from dplate.models import TestPlate, MasterPlate, Labware
 from dplate.forms import (TestPlate_Filter, MasterPlate_Filter, Labware_Filter,
@@ -245,14 +245,29 @@ class Labware_ListView(LoginRequiredMixin, Filtered_ListView):
         context['model_name'] = self.model_name
         context['list_url'] = 'labware_list'
         context['update_url'] = 'labware_update'
-        context['row_template'] = 'dplate/labware/labware_htmx.html'
         return context
 
 
-class Labware_UpdateView(Htmx_UpdateView):
-    form_class = Labware_UpdateForm
-    template_name = 'dplate/labware/labware_update.html'
-    template_htmx = 'dplate/labware/labware_htmx.html'
-    model = Labware
-    transaction_use = 'dplate'
+@login_required
+def Labware_UpdateView(req, pk):
+    _object = get_object_or_404(Labware, labware_id=pk)
+    if req.method == 'POST':
+        form = Labware_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dplate'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user,
+                                       str(instance.pk), 'Update Labware', 'Completed')
+                return redirect('labware_list')
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('labware_list')
+
+    form = Labware_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Labware', 'modal_subtitle': pk}
+    return render(req, 'dplate/plate_form_modal.html', context)
 

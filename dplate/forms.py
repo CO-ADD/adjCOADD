@@ -22,26 +22,28 @@ from dplate.models import  TestPlate, MasterPlate, Labware
 # TestPlate
 #=================================================================================================
 class TestPlate_Filter(BaseStatus_Filter):
-    
-    result_type=ChoiceFilter(field_name='result_type',widget=forms.RadioSelect, choices=[], empty_label=None)
-    plate_quality=ChoiceFilter(field_name='plate_quality',widget=forms.RadioSelect, choices=[], empty_label=None)
-    run_id = ChoiceFilter(field_name='run_id', widget=forms.RadioSelect, choices=[], empty_label=None)
-    
+
+    plate_id = CharFilter(field_name='plate_id', lookup_expr='icontains', label='Plate ID')
+    run_id = CharFilter(field_name='run_id__run_id', lookup_expr='icontains', label='Run ID')
+    assay_id = CharFilter(field_name='assay_id__assay_id', lookup_expr='icontains', label='Assay ID')
+    result_type = ChoiceFilter(field_name='result_type', widget=forms.RadioSelect, choices=[], empty_label=None)
+    plate_quality = ChoiceFilter(field_name='plate_quality', widget=forms.RadioSelect, choices=[], empty_label=None)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["result_type"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(TestPlate.DICTIONARY_FIELDS['result_type'])]
-        self.filters["plate_quality"].extra['choices']=[(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(TestPlate.DICTIONARY_FIELDS['plate_quality'])]
-        self.filters['run_id'].extra["choices"] = self.Meta.model.get_field_choices(field_name='run_id')
+        self.filters["result_type"].extra['choices'] = [(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(TestPlate.DICTIONARY_FIELDS['result_type'])]
+        self.filters["plate_quality"].extra['choices'] = [(obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(TestPlate.DICTIONARY_FIELDS['plate_quality'])]
 
         # Set Filter label to the Fields VerboseName or Filter Name
         for i in self.filters:
             try:
-                self.filters[i].label=self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
-            except:
-                self.filters[i].label=i
+                self.filters[i].label = self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+            except Exception:
+                self.filters[i].label = self.filters[i].label or i
+
     class Meta:
-        model=TestPlate
-        fields=[ 'plate_id','run_id','result_type','assay_id','plate_quality',]
+        model = TestPlate
+        fields = ['plate_id', 'run_id', 'result_type', 'assay_id', 'plate_quality']
 
 
 #=================================================================================================
@@ -49,8 +51,9 @@ class TestPlate_Filter(BaseStatus_Filter):
 #=================================================================================================
 class MasterPlate_Filter(BaseStatus_Filter):
 
+    plate_id = CharFilter(field_name='plate_id', lookup_expr='icontains', label='Plate ID')
+    run_id = CharFilter(field_name='run_id__run_id', lookup_expr='icontains', label='Run ID')
     plate_quality = ChoiceFilter(field_name='plate_quality', widget=forms.RadioSelect, choices=[], empty_label=None)
-    run_id = ChoiceFilter(field_name='run_id', widget=forms.RadioSelect, choices=[], empty_label=None)
     prep_date = DateFilter(field_name='prep_date', widget=forms.DateInput(attrs={'type': 'date'}), label='Prep Date')
 
     def __init__(self, *args, **kwargs):
@@ -58,12 +61,11 @@ class MasterPlate_Filter(BaseStatus_Filter):
         self.filters['plate_quality'].extra['choices'] = [
             (obj.dict_value, str(obj)) for obj in Dictionary.get_filterobj(MasterPlate.DICTIONARY_FIELDS['plate_quality'])
         ]
-        self.filters['run_id'].extra['choices'] = self.Meta.model.get_field_choices(field_name='run_id')
         for i in self.filters:
             try:
                 self.filters[i].label = self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
             except Exception:
-                self.filters[i].label = i
+                self.filters[i].label = self.filters[i].label or i
 
     class Meta:
         model = MasterPlate

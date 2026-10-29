@@ -20,5 +20,5 @@ urlpatterns = [
 
     # Labware
     path('labware_list', Labware_ListView.as_view(), name="labware_list"),
-    path('labware/update/<str:pk>', Labware_UpdateView.as_view(), name="labware_update"),
+    path('labware/update/<str:pk>', Labware_UpdateView, name="labware_update"),
 ]
