@@ -64,7 +64,7 @@ class Peptide(AuditModel):
 
     DETAIL_VIEW_GROUPS = [
         ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes'],
-        ['seq','bilm','helm'],
+        ['seq',],
         ['peptide_origin','source', 'source_code','reference'],
         ['mta_status','mta_notes','mta_document','biologist'],
     ]
@@ -219,11 +219,10 @@ class Peptide_Isoform(AuditModel):
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['isoform_id', 'isoform_name', 'isoform_notes', 'biologist'],
-        ['peptide_id', 'mw', 'nseq'],
-        ['seq', 'bilm', 'helm', ],
+        ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'biologist'],
+        ['seq', 'mw', 'nseq'],
+        #['peptide_modifications'],
     ]
-
     DICTIONARY_FIELDS = {}
 
     isoform_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Isoform ID") 

@@ -1,0 +1,87 @@
+{% load static %}
+<div class="modal-dialog modal-fullscreen">
+  <div class="modal-content">
+    <div class="modal-header py-2">
+      <h5 class="modal-title">
+        <i class="bi bi-pencil-square me-2"></i>Edit Structure — {{ object.compound_id }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body p-0 d-flex flex-column" style="overflow: hidden;">
+      <!-- Toolbar -->
+      <div class="d-flex align-items-center gap-2 px-3 py-2 border-bottom">
+        <label class="form-label mb-0 small text-nowrap" for="structure-smiles-type">Edit</label>
+        <select id="structure-smiles-type" class="form-select form-select-sm" style="width: auto;">
+          <option value="reg" {% if smiles_type == 'reg' %}selected{% endif %}>reg_smiles</option>
+          <option value="std" {% if smiles_type == 'std' %}selected{% endif %}>std_smiles</option>
+        </select>
+
+        <button id="structure-check" type="button" class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-check2-circle me-1"></i>Check
+        </button>
+        <span id="structure-check-result" class="small text-muted ms-2"></span>
+      </div>
+
+      <!-- Ketcher editor -->
+      <input type="text" id="mol" value="{{ mol_block }}" hidden />
+      <input type="text" id="id_smol" hidden />
+      <div id="root" class="flex-grow-1 w-100"></div>
+
+      <!-- Footer -->
+      <div class="d-flex justify-content-end gap-2 px-3 py-2 border-top">
+        <button id="structure-save" type="button" class="btn btn-sm btn-success">
+          <i class="fa-solid fa-check me-1"></i>Save
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/ketcher.css' %}" />
+<script src="{% static 'js/ketcher/index-bundle.js' %}"></script>
+
+<style>
+  /* Constrain the Ketcher editor to the modal body (the bundle uses 100vw/100vh). */
+  #structureModal #root > div {
+    width: 100% !important;
+  }
+  #structureModal #root > div > div:last-child {
+    height: calc(100vh - 170px) !important;
+    width: 100% !important;
+    max-height: calc(100vh - 170px) !important;
+    max-width: 100% !important;
+  }
+</style>
+
+<script>
+  (function () {
+    var modalUrl = "{% url 'coadd_structure_edit' object.pk %}";
+
+    // Switch between reg_smiles and std_smiles
+    document.getElementById('structure-smiles-type').addEventListener('change', function () {
+      var type = this.value;
+      $('#structureModal').load(modalUrl + '?smiles_type=' + type, function () {
+        $('#structureModal').modal('show');
+      });
+    });
+
+    // Check: TODO - standardize the current structure and check dchem.Chem_Structure
+    document.getElementById('structure-check').addEventListener('click', function () {
+      var result = document.getElementById('structure-check-result');
+      result.textContent = 'Check functionality coming in the next step.';
+      console.log('Check current molfile:', document.getElementById('id_smol').value);
+    });
+
+    // Save: TODO - persist the edited smiles back to reg_smiles/std_smiles
+    document.getElementById('structure-save').addEventListener('click', function () {
+      // Force the Ketcher "update Mol" button to push the current molfile into #id_smol
+      var updateBtn = document.getElementById('get_new_mol');
+      if (updateBtn) { updateBtn.click(); }
+      var molfile = document.getElementById('id_smol').value;
+      console.log('Save molfile:', molfile);
+      alert('Save functionality coming in the next step.');
+    });
+  })();
+</script>

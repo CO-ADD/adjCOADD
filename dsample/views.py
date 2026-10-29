@@ -601,3 +601,34 @@ def COADD_DetailView(req, pk):
     return render(req, "dsample/coadd/coadd_detail.html", context)
 
 
+# -----------------------------------------------------------------
+@login_required
+def COADD_StructureEditView(req, pk):
+    """
+    Render the Ketcher structure-editing modal for a COADD_Compound.
+    Loads reg_smiles (default) or std_smiles into the editor.
+    """
+    _object = get_object_or_404(COADD_Compound, compound_id=pk)
+
+    smiles_type = req.GET.get('smiles_type', 'reg')
+    smiles = _object.std_smiles if smiles_type == 'std' else _object.reg_smiles
+
+    mol_block = ''
+    if smiles:
+        mol = Chem.MolFromSmiles(smiles)
+        if mol:
+            try:
+                mol_block = '\\n'.join(Chem.MolToMolBlock(mol).split('\n'))
+            except Exception:
+                mol_block = ''
+
+    context = {
+        'object': _object,
+        'mol_block': mol_block,
+        'smiles_type': smiles_type,
+        'reg_smiles': _object.reg_smiles or '',
+        'std_smiles': _object.std_smiles or '',
+    }
+    return render(req, 'dsample/coadd/coadd_structure_edit.html', context)
+
+
