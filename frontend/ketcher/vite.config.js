@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import { fileURLToPath, URL } from 'node:url'
 
 // Builds Ketcher 3.18.0 into the Django static tree so it can be loaded with a
@@ -10,7 +11,13 @@ import { fileURLToPath, URL } from 'node:url'
 //   static/js/ketcher3/ketcher.bundle.css  (ketcher-react styles, extracted)
 //   static/js/ketcher3/assets/...          (fonts/images/wasm emitted by Ketcher, if any)
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    // Ketcher (indigo) imports Node built-ins such as `events` (EventEmitter).
+    // Vite does not polyfill Node built-ins by default; this plugin provides
+    // browser polyfills for events/buffer/process/util/stream/etc.
+    nodePolyfills(),
+  ],
   build: {
     outDir: fileURLToPath(new URL('../../static/js/ketcher3', import.meta.url)),
     emptyOutDir: true,
