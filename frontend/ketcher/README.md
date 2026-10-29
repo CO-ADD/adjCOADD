@@ -19,7 +19,7 @@ npm run build
 Output (written directly into the project static tree):
 
 ```
-static/js/ketcher3/ketcher.bundle.js    # IIFE bundle (React + ketcher-react + ketcher-standalone)
+static/js/ketcher3/ketcher.bundle.js    # ES module (React + ketcher-react + ketcher-standalone)
 static/js/ketcher3/styles.css           # extracted ketcher-react styles (Vite lib mode)
 static/js/ketcher3/assets/...           # fonts/images/wasm emitted by Ketcher (if any)
 ```
@@ -37,6 +37,11 @@ The bundle keeps the same contract as the previous `static/js/ketcher/index-bund
 Mounting is **explicit** — call `window.initKetcher()` after the `#root`/`#mol`
 markup is in the DOM (the bundle does not auto-mount). This lets the bundle be
 loaded once per page and re-mounted whenever a modal is (re)inserted.
+
+Load the bundle with `<script type="module" src="...ketcher.bundle.js"></script>`
+(the output is an ES module). Since module scripts are deferred, wait for the
+module to execute before the first `window.initKetcher()` call (e.g. call it on
+the `load` event, or from code that runs after user interaction).
 
 ## Templates using it
 

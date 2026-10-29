@@ -2,11 +2,21 @@
 
 {%load static%}
 <link rel="stylesheet" type="text/css" href="{% static 'js/ketcher3/styles.css' %}" />
-<script src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
+<script type="module" src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
 <script>
   (function () {
+    function mount() {
+      if (window.initKetcher) {
+        window.initKetcher();
+      }
+    }
+
+    // The bundle is an ES module, so it executes asynchronously (deferred).
+    // Mount immediately if it is already loaded, otherwise wait for `load`.
     if (window.initKetcher) {
-      window.initKetcher();
+      mount();
+    } else {
+      window.addEventListener('load', mount);
     }
   })();
 </script>

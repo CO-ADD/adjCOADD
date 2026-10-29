@@ -48,7 +48,7 @@
      re-mounts via window.initKetcher, avoiding jQuery .load() script quirks). -->
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'js/ketcher3/styles.css' %}" />
-<script src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
+<script type="module" src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
 
 <script>
   $(document).ready(function () {
