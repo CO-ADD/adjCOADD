@@ -22,7 +22,7 @@ BATCH_SEP = '.'
 # -dOrganism Settings ---------------------------------------------------
 ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGID_SEP = "_"
-ORGBATCH_SEP = "_"
+ORGBATCH_SEP = "."
 
 # -dCell Settings 
 CELL_CLASSES = ['CL']

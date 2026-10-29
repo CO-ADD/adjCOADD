@@ -65,8 +65,8 @@ class Peptide(AuditModel):
     DETAIL_VIEW_GROUPS = [
         ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes'],
         ['seq',],
-        ['peptide_origin','source', 'source_code','reference'],
-        ['mta_status','mta_notes','mta_document','biologist'],
+        ['peptide_origin','source', 'source_code','reference','biologist'],
+        #['mta_status','mta_notes','mta_document','biologist'],
     ]
 
     DICTIONARY_FIELDS = {
