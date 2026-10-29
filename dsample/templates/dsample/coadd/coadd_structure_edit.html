@@ -40,15 +40,12 @@
 </div>
 
 <style>
-  /* Constrain the Ketcher editor to the modal body (the bundle uses 100vw/100vh). */
-  #structureModal #root > div {
-    width: 100% !important;
-  }
-  #structureModal #root > div > div:last-child {
-    height: calc(100vh - 170px) !important;
-    width: 100% !important;
-    max-height: calc(100vh - 170px) !important;
-    max-width: 100% !important;
+  /* Ketcher 3's Editor fills its container; give #root a definite size so the
+     internal grid lays out correctly instead of collapsing/overflowing. */
+  #structureModal #root {
+    height: calc(100vh - 170px);
+    width: 100%;
+    overflow: hidden;
   }
 </style>
 
