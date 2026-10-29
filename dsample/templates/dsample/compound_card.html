@@ -18,11 +18,23 @@
           </div>
 
           <div class="card-text m-auto" style="width: 95%">
-            {% if object.reg_smiles or object.std_smiles %}
-              <div id="structure{{ object.pk }}" class="molecule-structure-svg d-flex justify-content-center"
-                   data-smiles="{{ object.reg_smiles|default:object.std_smiles }}"></div>
+            {% if use_molblock %}
+              {% if object.reg_molfile %}
+                {% with molblock_id="molblock-"|add:object.pk %}
+                  {{ object.reg_molfile|json_script:molblock_id }}
+                  <div id="structure{{ object.pk }}" class="molecule-structure-molblock d-flex justify-content-center"
+                       data-molblock-id="{{ molblock_id }}"></div>
+                {% endwith %}
+              {% else %}
+                <div class="text-muted small text-center py-2">No structure</div>
+              {% endif %}
             {% else %}
-              <div class="text-muted small text-center py-2">No structure</div>
+              {% if object.reg_smiles or object.std_smiles %}
+                <div id="structure{{ object.pk }}" class="molecule-structure-svg d-flex justify-content-center"
+                     data-smiles="{{ object.reg_smiles|default:object.std_smiles }}"></div>
+              {% else %}
+                <div class="text-muted small text-center py-2">No structure</div>
+              {% endif %}
             {% endif %}
           </div>
 
@@ -37,4 +49,8 @@
   </div>
 </div>
 
-{% include 'utils/molecule_structure.html' %}
+{% if use_molblock %}
+  {% include 'utils/molecule_structure_molblock.html' %}
+{% else %}
+  {% include 'utils/molecule_structure.html' %}
+{% endif %}
