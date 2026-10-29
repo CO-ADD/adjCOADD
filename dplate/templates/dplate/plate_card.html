@@ -1,0 +1,29 @@
+{% load static %}
+<div class="d-flex flex-column w-100">
+
+  {% if page_obj %}
+  <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+    {% include 'grid/base/pagination.html' %}
+  </div>
+  {% endif %}
+
+  <div class="row d-flex flex-wrap mx-2">
+    {% for object in page_obj %}
+      <div class="col-md-2 m-0 p-1">
+        <div class="card card-bg ms-3 px-1 rounded-3 h-100">
+          <div class="d-flex justify-content-between border-bottom border-dark">
+            <p class="card-title px-1 fw-bold mb-0">
+              <a class="card-link" href="{% url detail_url object.pk %}">{{ object.plate_id }}</a>
+            </p>
+          </div>
+
+          <p class="card-text m-0 fst-normal"><strong>Run</strong> {{ object.run_id }}</p>
+          <p class="card-text m-0 fst-normal"><strong>Quality</strong> {{ object.plate_quality }}</p>
+          <p class="card-text m-0 fst-normal"><strong>Wells</strong> {{ object.n_wells }}</p>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted px-2">No plates found</p>
+    {% endfor %}
+  </div>
+</div>

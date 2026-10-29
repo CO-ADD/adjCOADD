@@ -1,0 +1,18 @@
+{% load custom_filters %}
+<tr class="editing">
+  <td width="5%" class="p-0">
+    {% url 'labware_update' object.pk as obj_url %}
+    {% include 'utils/miscellaneous/update_btn_htmx.html' with url=obj_url %}
+  </td>
+  {% for item in object.get_values %}
+    <td>
+      {% if item|is_dict %}
+        {% for key, value in item.items %}
+          <a href="{{ value }}" target="_blank">{{ key }}</a>
+        {% endfor %}
+      {% else %}
+        {{ item }}
+      {% endif %}
+    </td>
+  {% endfor %}
+</tr>

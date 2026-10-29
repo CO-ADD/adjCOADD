@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}COADD{% endblock %}
+
+{% block content %}
+<div class="d-flex vh-100">
+
+  <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
+    <div class="d-flex flex-column p-0">
+      <a href="{% url list_url %}" class="border-0 text-success bg-transparent"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="Back to List">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+
+      {% if update_url %}
+      <a href="#"
+         class="border-0 text-success bg-transparent"
+         data-bs-toggle="modal"
+         data-bs-target="#infoModal"
+         hx-get="{% url update_url object.pk %}"
+         hx-target="#info-body"
+         hx-swap="innerHTML"
+         title="Update">
+        <i class="fa-regular fa-pen-to-square"></i>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="w-100">
+    <div class="accordion bg-transparent" id="plate-detail">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_00">
+          <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#collapse_00" aria-expanded="true" aria-controls="collapse_00">
+            <h5 class="fs-4 my-0"><b>{{ object.plate_id }}</b></h5>
+          </button>
+        </h2>
+        <div id="collapse_00" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
+             data-bs-parent="#plate-detail">
+          <div class="accordion-body bg-transparent">
+            <b>{% include 'utils/message.html' %}</b>
+            <div class="row">
+              {% for group in display_groups %}
+                <div class="col-md-3">
+                  <table class="table table-hover table-sm align-middle table-bordered">
+                    <tbody>
+                      {% for row in group %}
+                        <tr>
+                          <th scope="row" class="table-label-col">{{ row.label }}</th>
+                          <td>{{ row.value }}</td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% endfor %}
+            </div>
+            <hr>
+            {% include 'detailview/audit_status.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

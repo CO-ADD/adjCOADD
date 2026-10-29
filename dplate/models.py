@@ -61,6 +61,23 @@ class Labware(AuditModel):
         'plate_material':'Plate_Material',
     }
 
+    LIST_VIEW_FIELDS = {
+        'labware_id': 'Labware ID',
+        'labware_name': 'Name',
+        'labware_type': 'Type',
+        'plate_size': 'Size',
+        'plate_type': 'Plate Type',
+        'plate_color': 'Color',
+        'plate_material': 'Material',
+        'well_shape': 'Shape',
+        'well_bottom': 'Bottom',
+        'well_type': 'Well Type',
+        'well_size': 'Well Size',
+        'working_volume': 'Volume (uL)',
+        'brand': 'Brand',
+        'model': 'Model',
+    }
+
     labware_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Labware ID") 
     labware_name= models.CharField(max_length=50, blank=True, verbose_name = "Labware Name") 
     labware_type= models.CharField(max_length=15, blank=True, verbose_name = "Labware Type") 
@@ -84,6 +101,10 @@ class Labware(AuditModel):
         app_label = 'dplate'
         db_table = 'labware'
         ordering=['labware_id']
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.labware_id}"
 
 #=================================================================================================
 
@@ -382,8 +403,7 @@ class TestPlate(Plate):
 #=================================================================================================
 
     LIST_VIEW_FIELDS = {
-        #"plate_id":{'Plate ID': {'plate_id':URL_LINKS['testplate_id']}},
-        "plate_id":"Plate ID",
+        'plate_id': {'Plate ID': {'plate_id': URL_LINKS['testplate_id']}},
         "run_id":"Run ID",
         "assay_id":"Assay ID",
         "result_type":"Type",
@@ -1120,6 +1140,20 @@ class MasterPlate(Plate):
         'master_volume_unit':'Unit_Volume',
     }
 
+    LIST_VIEW_FIELDS = {
+        'plate_id': {'Plate ID': {'plate_id': URL_LINKS['masterplate_id']}},
+        'run_id': 'Run ID',
+        'prep_date': 'Prep Date',
+        'plate_quality': 'Quality',
+        'dilution_layout': 'Dilution Layout',
+        'master_solvent': 'Solvent',
+        'master_conc': 'Conc',
+        'master_volume': 'Volume (uL)',
+        'n_samples': 'nS',
+        'n_layout': 'nL',
+        'process_status': 'Process',
+    }
+
     plating = models.CharField(max_length=10, blank=True, verbose_name = "Plating by")
     cpoz_id = models.CharField(max_length=15, blank=True, verbose_name = "CpOz ID")
     well_type= models.CharField(max_length=20, blank=True, null=True, choices=Labware.WELL_TYPE, verbose_name = "Type")  
@@ -1154,6 +1188,10 @@ class MasterPlate(Plate):
         app_label = 'dplate'
         db_table = 'masterplate'
         ordering=['plate_id']
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.plate_id}"
         indexes = [
             models.Index(name="masterplate_labw_idx",fields=['labware_id']),
             models.Index(name="masterplate_wtyp_idx",fields=['well_type']),
