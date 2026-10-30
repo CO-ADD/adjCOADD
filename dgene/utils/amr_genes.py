@@ -78,12 +78,11 @@ def get_AMRGenes_byOrgID(OrgID):
     OrgObj = Organism.objects.get(organism_id=OrgID)
 
     vAMR = AMR_Genotype.objects.filter(seq_id__orgbatch_id__organism_id=OrgObj, astatus__gte=0 )
-    print(f"Getting {len(vAMR)} AMR Gene data for {OrgID} ")
+    #print(f"Getting {len(vAMR)} AMR Gene data for {OrgID} ")
     for m in vAMR:
         aDict = {}
         OrgBatchID = str(m.seq_id.orgbatch_id)
-        aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
-        aDict['BatchID'] = OrgBatchID.split('_')[2]
+        aDict['OrganismID'], aDict['BatchID'] = Organism_Batch().split_OrgBatchID(OrgBatchID)
         aDict['Gene Name'] = m.gene_id.gene_code
         aDict['Gene SubType'] = m.gene_id.gene_subtype
         aDict['AMR Class'] = m.gene_id.amr_class
@@ -97,5 +96,5 @@ def get_AMRGenes_byOrgID(OrgID):
         df = df.fillna("-").astype(str)
         return(df)
     else:
-        print(" No AMR Gene data found")
+        #print(" No AMR Gene data found")
         return(None)
