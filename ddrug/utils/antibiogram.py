@@ -30,7 +30,7 @@ def get_Antibiogram_byOrgID_Html(pk, with_style = False):
         
         #print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} ")
         piv_table = piv_Antibiogram_byOrgID(df)
-        print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} -> {len(piv_table)}")
+        #print(f"[get_Antibiogram_byOrgID] {pk} : {df_entries} -> {len(piv_table)}")
 
         # Styling pivottable
         #print(f"HMTL {len(piv_table)} ")
@@ -107,8 +107,9 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['Drug Code'] = m.drug_id.drug_codes
         aDict['Drug Class'] = m.drug_id.antimicro_class
         OrgBatchID = str(m.card_barcode.orgbatch_id)
-        aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
-        aDict['BatchID'] = OrgBatchID.split('_')[2]
+        aDict['OrganismID'],aDict['BatchID'] = Organism_Batch.split_OrgBatchID(OrgBatchID)
+        #aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
+        #aDict['BatchID'] = OrgBatchID.split('_')[2]
         if '>=' in m.mic:
             aDict['MIC'] = m.mic.replace('>= ','>')
         elif '<=' in m.mic:
@@ -143,8 +144,9 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['Drug Code'] = m.drug_id.drug_codes
         aDict['Drug Class'] = m.drug_id.antimicro_class
         OrgBatchID = str(m.orgbatch_id)
-        aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
-        aDict['BatchID'] = OrgBatchID.split('_')[2]
+        aDict['OrganismID'],aDict['BatchID'] = Organism_Batch.split_OrgBatchID(OrgBatchID)
+        # aDict['OrganismID'] = '_'.join(OrgBatchID.split('_')[0:2])
+        # aDict['BatchID'] = OrgBatchID.split('_')[2]
         if '<=' in m.mic:
             aDict['MIC'] = m.mic
         elif '<' in m.mic:
@@ -155,8 +157,7 @@ def get_Antibiogram_byOrgID(OrgID):
         aDict['BP Source'] = m.run_id
         aDict['Source'] = "CO-ADD"
         orgMIC.append(aDict)
-        #print(aDict)
-        
+
     if len(orgMIC) > 0:
         #print(f"GroupBy {len(orgMIC)} Dataframe for {OrgID} ")
         df = pd.DataFrame(orgMIC)
@@ -171,5 +172,5 @@ def get_Antibiogram_byOrgID(OrgID):
                             # .aggregate(lambda x: agg_DR(x))                 
         return(agg_df)
     else:
-        print(" No MIC data found")
+        #print(" No MIC data found")
         return(None)

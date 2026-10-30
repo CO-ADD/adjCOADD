@@ -150,7 +150,7 @@ def Organism_DetailView(request, pk):
     # try:
     object_=get_object_or_404(Organism, organism_id=pk)
 
-    print(f" [Organism_DetailView] {object_.strain_panel} {type(object_.strain_panel)}")
+    #print(f" [Organism_DetailView] {object_.strain_panel} {type(object_.strain_panel)}")
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 
                                       'strain_panel':object_.strain_panel,}, 
                                        instance=object_)
@@ -229,13 +229,13 @@ def Organism_UpdateView(req, pk):
     object_=get_object_or_404(Organism, organism_id=pk)
     kwargs={}
     kwargs['user']=req.user
-    print(f" [Organism_UpdateView] {object_.strain_panel} {type(object_.strain_panel)}")
+    #print(f" [Organism_UpdateView] {object_.strain_panel} {type(object_.strain_panel)}")
     form=UpdateOrganism_form(initial={'strain_type':object_.strain_type, 
                                       'strain_panel':object_.strain_panel, 
                                       'assoc_documents': [i.doc_file for i in object_.assoc_documents.all()]
                                       }, 
                                       instance=object_)
-    print(object_.strain_type)
+    #print(object_.strain_type)
     if object_.organism_name.org_class: # Organism_Class_str for display class
         Organism_Class_str=object_.organism_name.org_class.dict_value
     else:
@@ -300,10 +300,10 @@ class Organism_UpdateAPI(viewsets.ModelViewSet):
         obj= Organism.objects.get(organism_id=self.kwargs['pk'])
         user = self.request.user
         serializer = self.serializer_class(obj,data=request.data, partial=True)
-        print(serializer)
+        #print(serializer)
         if serializer.is_valid():
             serializer.save()
-            print(f" [update] Organism {obj} <- {request.data} {serializer.is_valid()}")
+            #print(f" [update] Organism {obj} <- {request.data} {serializer.is_valid()}")
             updated_data = serializer.data
             updated_data['custom_message'] = f"{str(obj)} updated successfully!"
             return Response(updated_data, status=status.HTTP_200_OK)
@@ -379,10 +379,10 @@ class OrgBatch_UpdateAPI(viewsets.ModelViewSet):
         obj= Organism_Batch.objects.get(orgbatch_id=self.kwargs['pk'])
         user = self.request.user
         serializer = self.serializer_class(obj,data=request.data, partial=True)
-        print(serializer)
+        #print(serializer)
         if serializer.is_valid():
             serializer.save()
-            print(f" [update] Organism {obj} <- {request.data} {serializer.is_valid()}")
+            #print(f" [update] Organism {obj} <- {request.data} {serializer.is_valid()}")
             updated_data = serializer.data
             updated_data['custom_message'] = f"{str(obj)} updated successfully!"
             return Response(updated_data, status=status.HTTP_200_OK)
@@ -414,7 +414,7 @@ def OrgBatchStock_DetailView(req, pk):
     if req.method == 'GET':
         batch_id=req.GET.get('Batch_id')
         object_=get_object_or_404(Organism_Batch, orgbatch_id=batch_id)#Organism_Batch.objects.get(orgbatch_id=batch_id)
-        print(object_)
+        #print(object_)
         qs=OrgBatch_Stock.objects.filter(orgbatch_id=object_, astatus__gte=0, n_left__gt=0) # n_left show when bigger or equal to 2
         data=[]
         for i in qs:
@@ -600,7 +600,7 @@ def Organism_AntBio_PivotView(request, pk):
     context["antibio_entries"] = _pivDict['n_entries']
     context["antibio_pivottable"] = _pivDict['pivot_table']
     context["organism_id"] = pk
-    print(f"Rendering Antibiogram for {pk}")
+    #print(f"Rendering Antibiogram for {pk}")
     return render(request, template_name, context)
 
 
