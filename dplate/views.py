@@ -80,6 +80,65 @@ def TestPlate_MapView(req, pk):
 
 
 # -----------------------------------------------------------------
+def _plate_map_data(instance):
+    """Build a JSON-safe payload describing a plate and its wells for plate_map.js."""
+    is_test = isinstance(instance, TestPlate)
+    instance.get_wells()
+    row_labels = instance.ROW_LABELS[:instance.n_rows]
+    wells = []
+
+    for well_id in sorted(instance.wells.keys()):
+        well = instance.wells.get(well_id)
+        if well is None:
+            continue
+        _r, _c = instance.well_rowcol(well_id)
+
+        entry = {
+            'id': well_id,
+            'row': row_labels[_r - 1],
+            'col': _c,
+            'cmpbatch': [str(x) for x in (well.cmpbatch_lst or []) if x not in ('', None)],
+            'conc': [float(x) for x in (well.conc_lst or []) if x not in ('', None)],
+            'conc_unit': [str(x) for x in (well.conc_unit_lst or []) if x != ''],
+        }
+
+        if is_test:
+            entry['readout'] = [float(x) for x in (well.readouts or []) if x not in ('', None)]
+            entry['inhibition'] = float(well.inhibition) if well.inhibition not in (None, -1) else None
+            entry['act_type'] = well.act_type or ''
+            entry['is_control'] = bool(well.is_control)
+            entry['is_poscontrol'] = bool(well.is_poscontrol)
+            entry['is_negcontrol'] = bool(well.is_negcontrol)
+            entry['is_sample'] = bool(well.is_sample)
+            entry['is_skip'] = bool(well.is_skip)
+        else:
+            entry['barcode'] = well.barcode or ''
+
+        wells.append(entry)
+
+    if is_test:
+        metrics = {
+            'conc': {'label': 'Concentration', 'mode': 'seq'},
+            'readout': {'label': 'Readout', 'mode': 'seq'},
+            'inhibition': {'label': 'Inhibition (%)', 'mode': 'diverging', 'min': 0, 'max': 100},
+        }
+    else:
+        metrics = {
+            'conc': {'label': 'Concentration', 'mode': 'seq'},
+        }
+
+    return {
+        'plate_id': instance.plate_id,
+        'n_rows': instance.n_rows,
+        'n_cols': instance.n_cols,
+        'n_wells': instance.n_wells,
+        'row_labels': row_labels,
+        'metrics': metrics,
+        'wells': wells,
+    }
+
+
+# -----------------------------------------------------------------
 def _build_display_groups(instance, field_names, chunk=6):
     groups = []
     rows = []
@@ -107,6 +166,7 @@ def TestPlate_DetailView(req, pk):
         'display_groups': _build_display_groups(_object, TestPlate_DETAIL_FIELDS),
         'list_url': 'testplate_list',
         'update_url': 'testplate_update',
+        'plate_map_data': _plate_map_data(_object),
     }
     return render(req, 'dplate/plate_detail.html', context)
 
@@ -198,6 +258,7 @@ def MasterPlate_DetailView(req, pk):
         'display_groups': _build_display_groups(_object, MasterPlate_DETAIL_FIELDS),
         'list_url': 'masterplate_list',
         'update_url': 'masterplate_update',
+        'plate_map_data': _plate_map_data(_object),
     }
     return render(req, 'dplate/plate_detail.html', context)
 
