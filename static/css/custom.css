@@ -1168,7 +1168,7 @@ form p {
 
 .plate-map-grid {
   display: grid;
-  gap: 1px;
+  gap: 2px;
   background: var(--border-color, #dee2e6);
   border: 1px solid var(--border-color, #dee2e6);
   user-select: none;
@@ -1194,6 +1194,8 @@ form p {
   min-width: 18px;
   min-height: 18px;
   background: #ffffff;
+  border: 1px solid var(--pmc-border, #000000);
+  border-radius: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1204,24 +1206,29 @@ form p {
   transition: filter 0.1s ease;
 }
 
-.plate-map-cell.has-cmp::after {
+/* single compound: centred dot in the well's border colour */
+.plate-map-cell.pmc-single::after {
   content: '';
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 5px;
-  height: 5px;
+  top: 50%;
+  left: 50%;
+  width: 28%;
+  height: 28%;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: #000;
-  opacity: 0.85;
+  background: var(--pmc-border);
 }
 
-.plate-map-cell.dim {
-  opacity: 0.18;
-}
-
-.plate-map-cell.dim.has-cmp {
-  opacity: 1;
+/* multiple compounds: diagonal line in the well's border colour */
+.plate-map-cell.pmc-multi::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  background: linear-gradient(135deg,
+    transparent 44%,
+    var(--pmc-border) 44%,
+    var(--pmc-border) 56%,
+    transparent 56%);
 }
 
 .plate-map-scale {
@@ -1229,6 +1236,23 @@ form p {
   height: 10px;
   border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.plate-map-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 10px;
+  font-size: 11px;
+  color: #495057;
+}
+
+.plate-map-legend-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid #000;
+  display: inline-block;
 }
 
 .plate-map-tooltip {

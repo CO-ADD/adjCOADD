@@ -16,10 +16,30 @@
   const metricsEl = document.getElementById('plate-map-metrics');
   const legendEl = document.getElementById('plate-map-legend');
   const statusEl = document.getElementById('plate-map-status');
-  const highlightEl = document.getElementById('plate-map-highlight');
   const tooltipEl = document.getElementById('plate-map-tooltip');
 
   if (!gridEl) { return; }
+
+  // Well type -> border/fill styling (Type view and borders everywhere)
+  const TYPE_META = {
+    NEG:  { label: 'NEG',   border: '#8b0000', fill: '#b22222' },
+    POS:  { label: 'POS',   border: '#006400', fill: '#228b22' },
+    CTRL: { label: 'CTRL',  border: '#8b0000', fill: '#ced4da' },
+    SMP:  { label: 'SMP',   border: '#6c757d', fill: '#ced4da' },
+    EMPTY:{ label: 'Empty', border: '#000000', fill: 'transparent' }
+  };
+
+  function detectType(w) {
+    if (!w) { return 'EMPTY'; }
+    if (w.is_negcontrol) { return 'NEG'; }
+    if (w.is_poscontrol) { return 'POS'; }
+    if (w.is_control) { return 'CTRL'; }
+    if (w.is_sample) { return 'SMP'; }
+    return 'EMPTY';
+  }
+
+  // Add the Type view as the default metric
+  data.metrics = Object.assign({ 'type': { label: 'Type', mode: 'type' } }, data.metrics || {});
 
   const metricNames = Object.keys(data.metrics || {});
   const wells = data.wells || [];
@@ -130,9 +150,9 @@
         }
         return txt;
       });
-      parts.push('<div class="plate-map-tt-row"><span>Compound Batch</span><b>' + items.join('<br>') + '</b></div>');
+      parts.push('<div class="plate-map-tt-row"><span>Compound(s)</span><b>' + items.join('<br>') + '</b></div>');
     } else {
-      parts.push('<div class="plate-map-tt-row"><span>Compound Batch</span><b>—</b></div>');
+      parts.push('<div class="plate-map-tt-row"><span>Compound(s)</span><b>—</b></div>');
     }
 
     if (w.barcode !== undefined) {
@@ -205,13 +225,29 @@
     }
   }
 
+  function typeLegend() {
+    const order = ['SMP', 'CTRL', 'NEG', 'POS', 'EMPTY'];
+    let html = '';
+    order.forEach(function (key) {
+      const tm = TYPE_META[key];
+      const fill = tm.fill === 'transparent' ? '#ffffff' : tm.fill;
+      html += '<span class="plate-map-legend-item">' +
+        '<span class="plate-map-legend-swatch" style="background:' + fill + ';border-color:' + tm.border + '"></span>' +
+        tm.label +
+        '</span>';
+    });
+    return html;
+  }
+
   function render() {
     const m = data.metrics[activeMetric];
     const stats = computeStats(activeMetric);
 
     // legend
     if (legendEl) {
-      if (m.mode === 'diverging') {
+      if (m.mode === 'type') {
+        legendEl.innerHTML = typeLegend();
+      } else if (m.mode === 'diverging') {
         const lo = (m.min !== undefined) ? m.min : stats.min;
         const hi = (m.max !== undefined) ? m.max : stats.max;
         legendEl.innerHTML =
@@ -227,16 +263,32 @@
     }
 
     const cells = gridEl.querySelectorAll('.plate-map-cell');
-    const highlight = highlightEl ? highlightEl.checked : true;
 
     cells.forEach(function (cell, idx) {
       const wellId = cell.dataset.wellId;
       const w = wellById[wellId];
+      const t = detectType(w);
+      const tm = TYPE_META[t];
+      const cmpCount = (w && w.cmpbatch) ? w.cmpbatch.length : 0;
+
+      cell.className = 'plate-map-cell pmc-' + t.toLowerCase();
+      cell.style.setProperty('--pmc-border', tm.border);
+
+      // compound marker: single -> centered dot, multiple -> diagonal line
+      if (cmpCount > 1) { cell.classList.add('pmc-multi'); }
+      else if (cmpCount === 1) { cell.classList.add('pmc-single'); }
+
+      // Type view: fill encodes the well type
+      if (m.mode === 'type') {
+        cell.style.background = tm.fill;
+        cell.style.color = (t === 'NEG' || t === 'POS') ? '#ffffff' : '#212529';
+        cell.textContent = '';
+        cell.title = w ? w.id : '';
+        return;
+      }
+
+      // Heatmap view: fill encodes the value, border keeps the type colour
       const bg = w ? colorFor(w, activeMetric, stats, m) : null;
-
-      cell.classList.toggle('has-cmp', !!(w && w.cmpbatch && w.cmpbatch.length));
-      cell.classList.toggle('dim', !!(highlight && w && (!w.cmpbatch || !w.cmpbatch.length)));
-
       if (!bg) {
         cell.style.background = 'transparent';
         cell.style.color = '#212529';
@@ -268,11 +320,6 @@
     if (name === activeMetric) { btn.classList.add('active'); }
     metricsEl.appendChild(btn);
   });
-
-  // bind highlight toggle
-  if (highlightEl) {
-    highlightEl.addEventListener('change', render);
-  }
 
   // tooltip via event delegation
   gridEl.addEventListener('mousemove', function (e) {
