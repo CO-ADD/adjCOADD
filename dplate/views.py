@@ -80,11 +80,59 @@ def TestPlate_MapView(req, pk):
 
 
 # -----------------------------------------------------------------
+def _parse_control_layout(plate):
+    """Parse plate.control_layout ('Neg_Pos_Ref_Smp' well ranges) into regions."""
+    regions = {}
+    layout = getattr(plate, 'control_layout', None)
+    if not layout:
+        return regions
+    order = ['Neg', 'Pos', 'Ref', 'Smp']
+    for key, part in zip(order, layout.upper().split('_')):
+        rc = plate.get_layout_range(part)
+        if rc:
+            regions[key] = rc
+    return regions
+
+
+def _in_region(regions, key, row, col):
+    rc = regions.get(key)
+    if not rc or 'R1' not in rc:
+        return False
+    return rc['R1'] <= row <= rc['R2'] and rc['C1'] <= col <= rc['C2']
+
+
+def _well_type(plate, well, row, col, regions):
+    """Return the well's type (NEG/POS/CTRL/SMP/EMPTY) from control_layout,
+    falling back to the stored per-well flags when no layout is defined."""
+    if regions:
+        if _in_region(regions, 'Neg', row, col):
+            return 'NEG'
+        if _in_region(regions, 'Pos', row, col):
+            return 'POS'
+        if _in_region(regions, 'Ref', row, col):
+            return 'CTRL'
+        if _in_region(regions, 'Smp', row, col):
+            return 'SMP'
+        return 'EMPTY'
+
+    if getattr(well, 'is_negcontrol', False):
+        return 'NEG'
+    if getattr(well, 'is_poscontrol', False):
+        return 'POS'
+    if getattr(well, 'is_control', False):
+        return 'CTRL'
+    if getattr(well, 'is_sample', False):
+        return 'SMP'
+    return 'EMPTY'
+
+
+# -----------------------------------------------------------------
 def _plate_map_data(instance):
     """Build a JSON-safe payload describing a plate and its wells for plate_map.js."""
     is_test = isinstance(instance, TestPlate)
     instance.get_wells()
     row_labels = instance.ROW_LABELS[:instance.n_rows]
+    regions = _parse_control_layout(instance) if is_test else {}
     wells = []
 
     for well_id in sorted(instance.wells.keys()):
@@ -97,6 +145,7 @@ def _plate_map_data(instance):
             'id': well_id,
             'row': row_labels[_r - 1],
             'col': _c,
+            'type': _well_type(instance, well, _r, _c, regions) if is_test else 'NA',
             'cmpbatch': [str(x) for x in (well.cmpbatch_lst or []) if x not in ('', None)],
             'conc': [float(x) for x in (well.conc_lst or []) if x not in ('', None)],
             'conc_unit': [str(x) for x in (well.conc_unit_lst or []) if x != ''],
@@ -106,11 +155,6 @@ def _plate_map_data(instance):
             entry['readout'] = [float(x) for x in (well.readouts or []) if x not in ('', None)]
             entry['inhibition'] = float(well.inhibition) if well.inhibition not in (None, -1) else None
             entry['act_type'] = well.act_type or ''
-            entry['is_control'] = bool(well.is_control)
-            entry['is_poscontrol'] = bool(well.is_poscontrol)
-            entry['is_negcontrol'] = bool(well.is_negcontrol)
-            entry['is_sample'] = bool(well.is_sample)
-            entry['is_skip'] = bool(well.is_skip)
         else:
             entry['barcode'] = well.barcode or ''
 
@@ -133,6 +177,7 @@ def _plate_map_data(instance):
         'n_cols': instance.n_cols,
         'n_wells': instance.n_wells,
         'row_labels': row_labels,
+        'show_type': is_test,
         'metrics': metrics,
         'wells': wells,
     }

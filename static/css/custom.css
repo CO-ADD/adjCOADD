@@ -1206,29 +1206,55 @@ form p {
   transition: filter 0.1s ease;
 }
 
+/* Well type fills/borders (Type view; border colour kept in heatmap views) */
+.plate-map-cell.pmc-neg {
+  background: #8b0000;
+  border-color: #6a0000;
+}
+.plate-map-cell.pmc-pos {
+  background: #006400;
+  border-color: #004a00;
+}
+.plate-map-cell.pmc-ctrl {
+  background: #d3d3d3;
+  border-color: #8b0000;
+}
+.plate-map-cell.pmc-smp {
+  background: #d3d3d3;
+  border-color: #808080;
+}
+.plate-map-cell.pmc-empty {
+  background: #ffffff;
+  border-color: #000000;
+}
+.plate-map-cell.pmc-na {
+  background: #ffffff;
+  border-color: #ced4da;
+}
+
 /* single compound: centred dot in the well's border colour */
 .plate-map-cell.pmc-single::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 28%;
-  height: 28%;
+  width: 30%;
+  height: 30%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: var(--pmc-border);
 }
 
-/* multiple compounds: diagonal line in the well's border colour */
+/* multiple compounds: centred square in the well's border colour */
 .plate-map-cell.pmc-multi::after {
   content: '';
   position: absolute;
-  inset: 12%;
-  background: linear-gradient(135deg,
-    transparent 44%,
-    var(--pmc-border) 44%,
-    var(--pmc-border) 56%,
-    transparent 56%);
+  top: 50%;
+  left: 50%;
+  width: 30%;
+  height: 30%;
+  transform: translate(-50%, -50%);
+  background: var(--pmc-border);
 }
 
 .plate-map-scale {

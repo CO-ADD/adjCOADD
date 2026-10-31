@@ -22,15 +22,18 @@
 
   // Well type -> border/fill styling (Type view and borders everywhere)
   const TYPE_META = {
-    NEG:  { label: 'NEG',   border: '#8b0000', fill: '#b22222' },
-    POS:  { label: 'POS',   border: '#006400', fill: '#228b22' },
-    CTRL: { label: 'CTRL',  border: '#8b0000', fill: '#ced4da' },
-    SMP:  { label: 'SMP',   border: '#6c757d', fill: '#ced4da' },
-    EMPTY:{ label: 'Empty', border: '#000000', fill: 'transparent' }
+    NEG:  { label: 'NEG',   border: '#6a0000', fill: '#8b0000' },
+    POS:  { label: 'POS',   border: '#004a00', fill: '#006400' },
+    CTRL: { label: 'CTRL',  border: '#8b0000', fill: '#d3d3d3' },
+    SMP:  { label: 'SMP',   border: '#808080', fill: '#d3d3d3' },
+    EMPTY:{ label: 'Empty', border: '#000000', fill: '#ffffff' },
+    NA:   { label: '—',     border: '#ced4da', fill: '#ffffff' }
   };
 
-  function detectType(w) {
-    if (!w) { return 'EMPTY'; }
+  function rawType(w) {
+    if (w && w.type) { return w.type; }
+    if (!w) { return 'NA'; }
+    // fallback for older payloads without an explicit type
     if (w.is_negcontrol) { return 'NEG'; }
     if (w.is_poscontrol) { return 'POS'; }
     if (w.is_control) { return 'CTRL'; }
@@ -38,8 +41,20 @@
     return 'EMPTY';
   }
 
-  // Add the Type view as the default metric
-  data.metrics = Object.assign({ 'type': { label: 'Type', mode: 'type' } }, data.metrics || {});
+  // A sample well with no compound batch is rendered as Empty.
+  function effectiveType(w) {
+    const t = rawType(w);
+    if (t === 'SMP') {
+      const cmpCount = (w && w.cmpbatch) ? w.cmpbatch.length : 0;
+      if (cmpCount === 0) { return 'EMPTY'; }
+    }
+    return t;
+  }
+
+  // Add the Type view as the default metric (TestPlate only)
+  if (data.show_type !== false) {
+    data.metrics = Object.assign({ 'type': { label: 'Type', mode: 'type' } }, data.metrics || {});
+  }
 
   const metricNames = Object.keys(data.metrics || {});
   const wells = data.wells || [];
@@ -122,13 +137,13 @@
   }
 
   function wellFlags(w) {
-    const flags = [];
-    if (w.is_negcontrol) { flags.push('NEG'); }
-    if (w.is_poscontrol) { flags.push('POS'); }
-    if (w.is_control && !w.is_poscontrol && !w.is_negcontrol) { flags.push('CTRL'); }
-    if (w.is_sample) { flags.push('SMP'); }
-    if (w.is_skip) { flags.push('SKIP'); }
-    return flags;
+    switch (rawType(w)) {
+      case 'NEG': return ['NEG'];
+      case 'POS': return ['POS'];
+      case 'CTRL': return ['CTRL'];
+      case 'SMP': return ['SMP'];
+      default: return [];
+    }
   }
 
   function buildTooltip(w) {
@@ -267,20 +282,21 @@
     cells.forEach(function (cell, idx) {
       const wellId = cell.dataset.wellId;
       const w = wellById[wellId];
-      const t = detectType(w);
-      const tm = TYPE_META[t];
+      const t = effectiveType(w);
+      const tm = TYPE_META[t] || TYPE_META.NA;
       const cmpCount = (w && w.cmpbatch) ? w.cmpbatch.length : 0;
 
+      // type class drives border + fill (CSS); clear any inline background first
       cell.className = 'plate-map-cell pmc-' + t.toLowerCase();
+      cell.style.background = '';
       cell.style.setProperty('--pmc-border', tm.border);
 
-      // compound marker: single -> centered dot, multiple -> diagonal line
+      // compound marker: single -> centered dot, multiple -> square
       if (cmpCount > 1) { cell.classList.add('pmc-multi'); }
       else if (cmpCount === 1) { cell.classList.add('pmc-single'); }
 
-      // Type view: fill encodes the well type
+      // Type view: fill encodes the well type (via CSS class)
       if (m.mode === 'type') {
-        cell.style.background = tm.fill;
         cell.style.color = (t === 'NEG' || t === 'POS') ? '#ffffff' : '#212529';
         cell.textContent = '';
         cell.title = w ? w.id : '';
@@ -290,7 +306,7 @@
       // Heatmap view: fill encodes the value, border keeps the type colour
       const bg = w ? colorFor(w, activeMetric, stats, m) : null;
       if (!bg) {
-        cell.style.background = 'transparent';
+        cell.style.background = '#ffffff';
         cell.style.color = '#212529';
         cell.textContent = '';
         cell.title = w ? w.id : '';
