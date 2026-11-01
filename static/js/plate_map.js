@@ -84,18 +84,20 @@
   wells.forEach(function (w) { wellById[w.id] = w; });
 
   // ---------- helpers ----------
-  function metricValue(w, metric) {
-    if (metric === 'inhibition') {
+  function metricValue(w, m) {
+    if (!w) { return null; }
+    if (m.key === 'inhibition') {
       const v = w.inhibition;
       return (v === null || v === undefined || !isFinite(Number(v))) ? null : Number(v);
     }
-    if (metric === 'conc') {
-      const arr = w.conc || [];
-      return arr.length ? Number(arr[0]) : null;
-    }
-    if (metric === 'readout') {
+    if (m.key === 'readout') {
       const arr = w.readout || [];
       return arr.length ? Number(arr[0]) : null;
+    }
+    if (m.key === 'conc') {
+      const arr = w.conc || [];
+      const idx = m.index || 0;
+      return (arr.length > idx) ? Number(arr[idx]) : null;
     }
     return null;
   }
@@ -109,18 +111,18 @@
     return n.toFixed(3);
   }
 
-  function computeStats(metric) {
+  function computeStats(m) {
     const vals = [];
     wells.forEach(function (w) {
-      const v = metricValue(w, metric);
+      const v = metricValue(w, m);
       if (v !== null) { vals.push(v); }
     });
     if (vals.length === 0) { return { min: 0, max: 1 }; }
     return { min: Math.min.apply(null, vals), max: Math.max.apply(null, vals) };
   }
 
-  function colorFor(w, metric, stats, m) {
-    const v = metricValue(w, metric);
+  function colorFor(w, stats, m) {
+    const v = metricValue(w, m);
     if (v === null) { return null; }
 
     if (m.mode === 'diverging') {
@@ -269,7 +271,7 @@
 
   function render() {
     const m = data.metrics[activeMetric];
-    const stats = computeStats(activeMetric);
+    const stats = computeStats(m);
 
     // value (gradient) legend
     if (legendEl) {
@@ -302,7 +304,7 @@
       cell.style.color = '';
 
       // fill encodes the value (or stays white), border keeps the type colour
-      const bg = w ? colorFor(w, activeMetric, stats, m) : null;
+      const bg = w ? colorFor(w, stats, m) : null;
       if (bg) {
         cell.style.background = bg;
         cell.style.color = textColorFor(bg);
@@ -316,22 +318,60 @@
     });
   }
 
-  // metric selector buttons
-  metricNames.forEach(function (name) {
+  // metric selector: buttons for readout/inhib, dropdown for concentrations
+  const concMetricNames = metricNames.filter(function (n) { return data.metrics[n].key === 'conc'; });
+  const buttonMetricNames = metricNames.filter(function (n) { return data.metrics[n].key !== 'conc'; });
+  const metricButtons = {};
+  let concToggleEl = null;
+
+  function setActive(name) {
+    activeMetric = name;
+    Object.keys(metricButtons).forEach(function (n) {
+      metricButtons[n].classList.toggle('active', n === name);
+    });
+    if (concToggleEl) {
+      concToggleEl.textContent = data.metrics[name].label;
+      concToggleEl.classList.toggle('active', data.metrics[name].key === 'conc');
+    }
+    render();
+  }
+
+  buttonMetricNames.forEach(function (name) {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'btn btn-outline-secondary btn-sm';
     btn.textContent = data.metrics[name].label;
-    btn.addEventListener('click', function () {
-      activeMetric = name;
-      metricsEl.querySelectorAll('button').forEach(function (b) {
-        b.classList.toggle('active', b === btn);
-      });
-      render();
-    });
-    if (name === activeMetric) { btn.classList.add('active'); }
+    btn.addEventListener('click', function () { setActive(name); });
+    metricButtons[name] = btn;
     metricsEl.appendChild(btn);
   });
+
+  if (concMetricNames.length) {
+    const group = document.createElement('div');
+    group.className = 'btn-group btn-group-sm';
+    concToggleEl = document.createElement('button');
+    concToggleEl.type = 'button';
+    concToggleEl.className = 'btn btn-outline-secondary btn-sm dropdown-toggle';
+    concToggleEl.setAttribute('data-bs-toggle', 'dropdown');
+    concToggleEl.setAttribute('aria-expanded', 'false');
+    concToggleEl.textContent = data.metrics[concMetricNames[0]].label;
+
+    const menu = document.createElement('ul');
+    menu.className = 'dropdown-menu';
+    concMetricNames.forEach(function (name) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = 'dropdown-item';
+      a.href = '#';
+      a.textContent = data.metrics[name].label;
+      a.addEventListener('click', function (e) { e.preventDefault(); setActive(name); });
+      li.appendChild(a);
+      menu.appendChild(li);
+    });
+    group.appendChild(concToggleEl);
+    group.appendChild(menu);
+    metricsEl.appendChild(group);
+  }
 
   // type legend is static and shown across all heatmap tabs (TestPlate only)
   if (typeLegendEl) {
@@ -363,5 +403,5 @@
     });
   })();
 
-  render();
+  setActive(metricNames[0]);
 })();
