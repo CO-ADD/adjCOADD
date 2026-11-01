@@ -23,8 +23,8 @@
 
   // Well type -> border colour and centre icon (single vs multiple compounds)
   const TYPE_META = {
-    NEG:  { label: 'NEG',   single: 'bi-dash-circle',  multi: 'bi-dash-square',  border: '#6a0000', fill: '#8b0000', text: '#212529' },
-    POS:  { label: 'POS',   single: 'bi-plus-circle',  multi: 'bi-plus-square',  border: '#004a00', fill: '#006400', text: '#212529' },
+    NEG:  { label: 'NEG',   single: 'bi-dash-circle',  multi: 'bi-dash-square',  border: '#6a0000', fill: '#8b0000', text: '#ffffff' },
+    POS:  { label: 'POS',   single: 'bi-plus-circle',  multi: 'bi-plus-square',  border: '#004a00', fill: '#006400', text: '#ffffff' },
     CTRL: { label: 'CTRL',  single: 'bi-record-circle', multi: 'bi-record-btn',  border: '#8b0000', fill: '#d3d3d3', text: '#212529' },
     SMP:  { label: 'SMP',   single: 'bi-circle',       multi: 'bi-square',       border: '#808080', fill: '#d3d3d3', text: '#212529' },
     SKIP: { label: 'SKIP',  single: 'bi-slash-circle', multi: 'bi-slash-square', border: '#999999', fill: '#f2f2f2', text: '#212529' },

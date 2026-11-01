@@ -1229,11 +1229,11 @@ form p {
   border-color: #ced4da;
 }
 
-/* centre type icon */
+/* centre type icon — inherits the cell's readable colour (white on dark wells) */
 .plate-map-cell i.bi {
   font-size: 13px;
   line-height: 1;
-  color: #000000 !important;
+  color: inherit !important;
 }
 
 .plate-map-scale {
@@ -1268,7 +1268,7 @@ form p {
 .plate-map-legend-swatch i.bi {
   font-size: 12px;
   line-height: 1;
-  color: #000000 !important;
+  color: inherit !important;
 }
 
 .plate-map-tooltip {
