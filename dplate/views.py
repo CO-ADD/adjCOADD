@@ -1,10 +1,15 @@
 import datetime
+import io
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.core.exceptions import FieldDoesNotExist
 from django.db import transaction, IntegrityError
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 
 from apputil.models import ApplicationLog, Dictionary
@@ -297,6 +302,75 @@ def TestPlate_QualityUpdateView(req, pk):
         else:
             messages.warning(req, 'No plate quality provided')
     return redirect('testplate_detail', pk=pk)
+
+
+def _empty_heatmap_png():
+    """Return a transparent 1px PNG for plates with no readout data."""
+    buf = io.BytesIO()
+    fig, ax = plt.subplots(figsize=(1, 1), dpi=50)
+    ax.axis('off')
+    fig.patch.set_alpha(0)
+    ax.patch.set_alpha(0)
+    fig.savefig(buf, format='png', transparent=True)
+    plt.close(fig)
+    buf.seek(0)
+    return HttpResponse(buf.read(), content_type='image/png')
+
+
+@login_required
+def TestPlate_HeatmapView(req, pk):
+    """Static mini heatmap of readout[0] for TestPlate card views (no axes labels)."""
+    _object = get_object_or_404(TestPlate, plate_id=pk)
+    _object.get_wells()
+
+    rows = _object.n_rows or 0
+    cols = _object.n_cols or 0
+    if rows <= 0 or cols <= 0:
+        return _empty_heatmap_png()
+
+    mat = np.full((rows, cols), np.nan)
+    has_value = False
+    for well_id, well in _object.wells.items():
+        if well is None:
+            continue
+        try:
+            r, c = _object.well_rowcol(well_id)
+            if well.readouts:
+                mat[r - 1, c - 1] = float(well.readouts[0])
+                has_value = True
+        except Exception:
+            continue
+
+    if not has_value:
+        return _empty_heatmap_png()
+
+    # readout type label: plate-level first, else first well's readout_types[0]
+    _rt = _object.readout_type or ''
+    if not _rt:
+        for well in _object.wells.values():
+            if well is not None and well.readout_types and well.readout_types[0]:
+                _rt = well.readout_types[0]
+                break
+
+    fig_w = max(2.5, cols * 0.18)
+    fig_h = max(2.0, rows * 0.18) + 0.3
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=100)
+    cmap = plt.cm.Reds.copy()
+    cmap.set_bad('#f0f0f0')
+    vmin = float(np.nanmin(mat))
+    vmax = float(np.nanmax(mat))
+    if vmin == vmax:
+        vmax = vmin + 1
+    ax.imshow(mat, cmap=cmap, vmin=vmin, vmax=vmax, aspect='equal', origin='upper')
+    ax.set_title(_rt or 'Readout', fontsize=9, pad=2)
+    ax.axis('off')
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.84, bottom=0.02)
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', dpi=100)
+    plt.close(fig)
+    buf.seek(0)
+    return HttpResponse(buf.read(), content_type='image/png')
 
 
 #=================================================================================================
