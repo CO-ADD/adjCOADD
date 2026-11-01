@@ -1229,10 +1229,10 @@ form p {
   border-color: #ced4da;
 }
 
-/* centre type symbol */
-.plate-map-cell.pmc-symbol {
-  font-weight: 700;
-  font-size: 9px;
+/* centre type icon */
+.plate-map-cell .bi {
+  font-size: 11px;
+  line-height: 1;
 }
 
 .plate-map-scale {
@@ -1252,8 +1252,8 @@ form p {
 }
 
 .plate-map-legend-swatch {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 3px;
   border: 1px solid #000;
   display: inline-flex;
@@ -1261,6 +1261,11 @@ form p {
   justify-content: center;
   font-size: 9px;
   font-weight: 700;
+  line-height: 1;
+}
+
+.plate-map-legend-swatch .bi {
+  font-size: 11px;
   line-height: 1;
 }
 

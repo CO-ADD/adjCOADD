@@ -21,15 +21,15 @@
 
   if (!gridEl) { return; }
 
-  // Well type -> border/fill styling and centre symbol
+  // Well type -> border colour and centre icon (single vs multiple compounds)
   const TYPE_META = {
-    NEG:  { label: 'NEG',   symbol: 'N', border: '#6a0000', fill: '#8b0000', text: '#ffffff' },
-    POS:  { label: 'POS',   symbol: 'P', border: '#004a00', fill: '#006400', text: '#ffffff' },
-    CTRL: { label: 'CTRL',  symbol: 'C', border: '#8b0000', fill: '#d3d3d3', text: '#212529' },
-    SMP:  { label: 'SMP',   symbol: 'S', border: '#808080', fill: '#d3d3d3', text: '#212529' },
-    SKIP: { label: 'SKIP',  symbol: '\u2013', border: '#999999', fill: '#f2f2f2', text: '#6c757d' },
-    EMPTY:{ label: 'Empty', symbol: '',  border: '#000000', fill: '#ffffff', text: '#212529' },
-    NA:   { label: '\u2014', symbol: '', border: '#ced4da', fill: '#ffffff', text: '#212529' }
+    NEG:  { label: 'NEG',   single: 'bi-dash-circle-fill',  multi: 'bi-dash-square-fill',  border: '#6a0000', fill: '#8b0000', text: '#ffffff' },
+    POS:  { label: 'POS',   single: 'bi-plus-circle-fill',  multi: 'bi-plus-square-fill',  border: '#004a00', fill: '#006400', text: '#ffffff' },
+    CTRL: { label: 'CTRL',  single: 'bi-c-circle-fill',     multi: 'bi-c-square-fill',     border: '#8b0000', fill: '#d3d3d3', text: '#212529' },
+    SMP:  { label: 'SMP',   single: 'bi-circle-fill',       multi: 'bi-square-fill',       border: '#808080', fill: '#d3d3d3', text: '#212529' },
+    SKIP: { label: 'SKIP',  single: 'bi-slash-circle-fill', multi: 'bi-slash-square-fill', border: '#999999', fill: '#f2f2f2', text: '#6c757d' },
+    EMPTY:{ label: 'Empty', single: null, multi: null, symbol: '',  border: '#000000', fill: '#ffffff', text: '#212529' },
+    NA:   { label: '\u2014', single: null, multi: null, symbol: '', border: '#ced4da', fill: '#ffffff', text: '#212529' }
   };
 
   const FALLBACK_TYPE = (data.show_type === false) ? 'NA' : 'EMPTY';
@@ -54,15 +54,15 @@
     return t;
   }
 
-  // Centre label: (S) / (N) ... for single compounds, [S] / [N] ... for multiple.
-  // Empty/NA wells show no symbol.
-  function typeSymbol(w) {
+  // Centre icon: single compound -> circle variant, multiple -> square variant.
+  // Empty/NA wells show nothing.
+  function typeIconHTML(w) {
     const t = effectiveType(w);
     const tm = TYPE_META[t] || TYPE_META.NA;
-    if (!tm.symbol) { return ''; }
     const cmpCount = (w && w.cmpbatch) ? w.cmpbatch.length : 0;
-    if (cmpCount > 1) { return '[' + tm.symbol + ']'; }
-    return '(' + tm.symbol + ')';
+    const icon = (cmpCount > 1) ? tm.multi : tm.single;
+    if (icon) { return '<i class="bi ' + icon + '"></i>'; }
+    return tm.symbol || '';
   }
 
   const metricNames = Object.keys(data.metrics || {});
@@ -249,13 +249,18 @@
     }
   }
 
+  function legendSwatchHTML(tm) {
+    if (tm.single) { return '<i class="bi ' + tm.single + '"></i>'; }
+    return tm.symbol || '';
+  }
+
   function typeLegend() {
     const order = ['SMP', 'CTRL', 'NEG', 'POS', 'SKIP', 'EMPTY'];
     let html = '';
     order.forEach(function (key) {
       const tm = TYPE_META[key];
       html += '<span class="plate-map-legend-item">' +
-        '<span class="plate-map-legend-swatch" style="background:' + tm.fill + ';border-color:' + tm.border + ';color:' + tm.text + '">' + tm.symbol + '</span>' +
+        '<span class="plate-map-legend-swatch" style="background:' + tm.fill + ';border-color:' + tm.border + ';color:' + tm.text + '">' + legendSwatchHTML(tm) + '</span>' +
         tm.label +
         '</span>';
     });
@@ -289,14 +294,12 @@
       const wellId = cell.dataset.wellId;
       const w = wellById[wellId];
       const t = effectiveType(w);
-      const symbol = typeSymbol(w);
+      const iconHTML = typeIconHTML(w);
 
       // type class drives the border colour; heatmap fill is applied below
       cell.className = 'plate-map-cell pmc-' + t.toLowerCase();
       cell.style.background = '';
       cell.style.color = '';
-
-      if (symbol) { cell.classList.add('pmc-symbol'); }
 
       // fill encodes the value (or stays white), border keeps the type colour
       const bg = w ? colorFor(w, activeMetric, stats, m) : null;
@@ -308,7 +311,7 @@
         cell.style.color = '#212529';
       }
 
-      cell.textContent = symbol;
+      cell.innerHTML = iconHTML;
       cell.title = w ? w.id : '';
     });
   }
