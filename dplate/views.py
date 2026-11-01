@@ -205,6 +205,23 @@ def _build_display_groups(instance, field_names, chunk=6):
 @login_required
 def TestPlate_DetailView(req, pk):
     _object = get_object_or_404(TestPlate, plate_id=pk)
+
+    # Previous/Next TestPlate within the same Screen_Run (same ordering as ScreenRun_DetailView)
+    prev_plate = None
+    next_plate = None
+    if _object.run_id:
+        _siblings = list(
+            TestPlate.objects.filter(run_id=_object.run_id, astatus__gt=-1)
+            .order_by('plate_id')
+            .values_list('plate_id', flat=True)
+        )
+        if _object.plate_id in _siblings:
+            _idx = _siblings.index(_object.plate_id)
+            if _idx > 0:
+                prev_plate = _siblings[_idx - 1]
+            if _idx < len(_siblings) - 1:
+                next_plate = _siblings[_idx + 1]
+
     quality_choices = [
         (d.dict_value, d.strtml(), _quality_class(d.dict_value))
         for d in Dictionary.get_filterobj(TestPlate.DICTIONARY_FIELDS['plate_quality'])
@@ -228,6 +245,8 @@ def TestPlate_DetailView(req, pk):
         'update_url': 'testplate_update',
         'plate_map_data': _plate_map_data(_object),
         'plate_info': plate_info,
+        'prev_plate': prev_plate,
+        'next_plate': next_plate,
     }
     return render(req, 'dplate/plate_detail.html', context)
 

@@ -23,6 +23,22 @@
         <i class="fa-regular fa-pen-to-square"></i>
       </a>
       {% endif %}
+
+      {% if prev_plate %}
+      <a href="{% url 'testplate_detail' prev_plate %}"
+         class="border-0 text-success bg-transparent"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="Previous TestPlate">
+        <i class="bi bi-chevron-up"></i>
+      </a>
+      {% endif %}
+
+      {% if next_plate %}
+      <a href="{% url 'testplate_detail' next_plate %}"
+         class="border-0 text-success bg-transparent"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="Next TestPlate">
+        <i class="bi bi-chevron-down"></i>
+      </a>
+      {% endif %}
     </div>
   </div>
 
