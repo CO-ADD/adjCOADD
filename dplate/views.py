@@ -152,14 +152,14 @@ def _stat(arr, idx):
 def _quality_class(value):
     """Traffic-light CSS class for a plate quality dictionary value."""
     v = (value or '').lower()
-    if 'valid' in v:
-        return 'q-valid'
-    if 'retest' in v:
-        return 'q-retest'
     if 'reject' in v:
         return 'q-rejected'
+    if 'retest' in v:
+        return 'q-retest'
     if 'invalid' in v:
         return 'q-invalid'
+    if 'valid' in v:
+        return 'q-valid'
     return ''
 
 
@@ -195,10 +195,10 @@ def TestPlate_DetailView(req, pk):
     plate_info = {
         'assay_id': str(_object.assay_id) if _object.assay_id else '—',
         'zfactor': _object.zfactor if _object.zfactor not in (None, -1) else '—',
-        'poscontrol': f"{_stat(_object.poscontrol_stats, _MED)} [{_MED}] +/- {_stat(_object.poscontrol_stats, _MAD)} [{_MAD}]",
-        'negcontrol': f"{_stat(_object.negcontrol_stats, _MED)} [{_MED}] +/- {_stat(_object.negcontrol_stats, _MAD)} [{_MAD}]",
-        'sample': f"{_stat(_object.sample_stats, _MED)} [{_MED}] +/- {_stat(_object.sample_stats, _MAD)} [{_MAD}]",
-        'edge': f"{_stat(_object.edge_stats, 0)} [0] - {_stat(_object.edge_stats, 1)} [1]",
+        'poscontrol': f"{_stat(_object.poscontrol_stats, _MED)} +/- {_stat(_object.poscontrol_stats, _MAD)}",
+        'negcontrol': f"{_stat(_object.negcontrol_stats, _MED)} +/- {_stat(_object.negcontrol_stats, _MAD)}",
+        'sample': f"{_stat(_object.sample_stats, _MED)} +/- {_stat(_object.sample_stats, _MAD)}",
+        'edge': f"Edge: {_stat(_object.edge_stats, 0)} - NonEdge: {_stat(_object.edge_stats, 1)}",
         'plate_quality': _object.plate_quality_id or '',
         'quality_choices': quality_choices,
     }

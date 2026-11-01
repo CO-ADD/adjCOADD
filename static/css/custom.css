@@ -1275,7 +1275,7 @@ form p {
 option.q-valid { background-color: #1e7e34; color: #ffffff; }
 option.q-retest { background-color: #ffc107; color: #212529; }
 option.q-rejected { background-color: #8b0000; color: #ffffff; }
-option.q-invalid { background-color: #dda0dd; color: #212529; }
+option.q-invalid { background-color: #fd7e14; color: #ffffff; }
 
 select#plate_quality.q-valid {
   background-color: #1e7e34;
@@ -1293,9 +1293,9 @@ select#plate_quality.q-rejected {
   border-color: #8b0000;
 }
 select#plate_quality.q-invalid {
-  background-color: #dda0dd;
-  color: #212529;
-  border-color: #dda0dd;
+  background-color: #fd7e14;
+  color: #ffffff;
+  border-color: #fd7e14;
 }
 
 .plate-map-tooltip {
