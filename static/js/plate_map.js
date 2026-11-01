@@ -15,6 +15,7 @@
   const gridEl = document.getElementById('plate-map-grid');
   const metricsEl = document.getElementById('plate-map-metrics');
   const legendEl = document.getElementById('plate-map-legend');
+  const typeLegendEl = document.getElementById('plate-map-type-legend');
   const statusEl = document.getElementById('plate-map-status');
   const tooltipEl = document.getElementById('plate-map-tooltip');
 
@@ -53,9 +54,15 @@
     return t;
   }
 
-  // Add the Type view as the default metric (TestPlate only)
-  if (data.show_type !== false) {
-    data.metrics = Object.assign({ 'type': { label: 'Type', mode: 'type' } }, data.metrics || {});
+  // Centre label: (S) / (N) ... for single compounds, [S] / [N] ... for multiple.
+  // Empty/NA wells show no symbol.
+  function typeSymbol(w) {
+    const t = effectiveType(w);
+    const tm = TYPE_META[t] || TYPE_META.NA;
+    if (!tm.symbol) { return ''; }
+    const cmpCount = (w && w.cmpbatch) ? w.cmpbatch.length : 0;
+    if (cmpCount > 1) { return '[' + tm.symbol + ']'; }
+    return '(' + tm.symbol + ')';
   }
 
   const metricNames = Object.keys(data.metrics || {});
@@ -72,7 +79,6 @@
   }
 
   let activeMetric = metricNames[0];
-  const showValue = (data.n_wells || wells.length) <= 96;
 
   const wellById = {};
   wells.forEach(function (w) { wellById[w.id] = w; });
@@ -260,11 +266,9 @@
     const m = data.metrics[activeMetric];
     const stats = computeStats(activeMetric);
 
-    // legend
+    // value (gradient) legend
     if (legendEl) {
-      if (m.mode === 'type') {
-        legendEl.innerHTML = typeLegend();
-      } else if (m.mode === 'diverging') {
+      if (m.mode === 'diverging') {
         const lo = (m.min !== undefined) ? m.min : stats.min;
         const hi = (m.max !== undefined) ? m.max : stats.max;
         legendEl.innerHTML =
@@ -285,40 +289,27 @@
       const wellId = cell.dataset.wellId;
       const w = wellById[wellId];
       const t = effectiveType(w);
-      const tm = TYPE_META[t] || TYPE_META.NA;
-      const cmpCount = (w && w.cmpbatch) ? w.cmpbatch.length : 0;
+      const symbol = typeSymbol(w);
 
+      // type class drives the border colour; heatmap fill is applied below
       cell.className = 'plate-map-cell pmc-' + t.toLowerCase();
-      // inline styles guarantee fill/border/symbol colour regardless of CSS caching
-      cell.style.background = tm.fill;
-      cell.style.borderColor = tm.border;
-      cell.style.color = tm.text;
+      cell.style.background = '';
+      cell.style.color = '';
 
-      // compound marker: single -> small circle, multiple -> small square (corner)
-      if (cmpCount > 1) { cell.classList.add('pmc-multi'); }
-      else if (cmpCount === 1) { cell.classList.add('pmc-single'); }
+      if (symbol) { cell.classList.add('pmc-symbol'); }
 
-      // Type view: centre symbol encodes the well type
-      if (m.mode === 'type') {
-        cell.textContent = tm.symbol;
-        if (tm.symbol) { cell.classList.add('pmc-symbol'); }
-        cell.title = w ? w.id : '';
-        return;
-      }
-
-      // Heatmap view: fill encodes the value, border keeps the type colour
+      // fill encodes the value (or stays white), border keeps the type colour
       const bg = w ? colorFor(w, activeMetric, stats, m) : null;
-      if (!bg) {
+      if (bg) {
+        cell.style.background = bg;
+        cell.style.color = textColorFor(bg);
+      } else {
         cell.style.background = '#ffffff';
-        cell.textContent = '';
-        cell.title = w ? w.id : '';
-        return;
+        cell.style.color = '#212529';
       }
 
-      cell.style.background = bg;
-      cell.style.color = textColorFor(bg);
-      cell.textContent = showValue ? fmt(metricValue(w, activeMetric)) : '';
-      cell.title = '';
+      cell.textContent = symbol;
+      cell.title = w ? w.id : '';
     });
   }
 
@@ -338,6 +329,11 @@
     if (name === activeMetric) { btn.classList.add('active'); }
     metricsEl.appendChild(btn);
   });
+
+  // type legend is static and shown across all heatmap tabs (TestPlate only)
+  if (typeLegendEl) {
+    typeLegendEl.innerHTML = (data.show_type !== false) ? typeLegend() : '';
+  }
 
   // tooltip via event delegation
   gridEl.addEventListener('mousemove', function (e) {
