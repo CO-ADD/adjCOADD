@@ -1230,10 +1230,10 @@ form p {
 }
 
 /* centre type icon */
-.plate-map-cell .bi {
+.plate-map-cell i.bi {
   font-size: 13px;
   line-height: 1;
-  color: #000000;
+  color: #000000 !important;
 }
 
 .plate-map-scale {
@@ -1265,10 +1265,10 @@ form p {
   line-height: 1;
 }
 
-.plate-map-legend-swatch .bi {
+.plate-map-legend-swatch i.bi {
   font-size: 12px;
   line-height: 1;
-  color: #000000;
+  color: #000000 !important;
 }
 
 .plate-map-tooltip {
