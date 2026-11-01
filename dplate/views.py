@@ -7,7 +7,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db import transaction, IntegrityError
 from django.shortcuts import get_object_or_404, render, redirect
 
-from apputil.models import ApplicationLog
+from apputil.models import ApplicationLog, Dictionary
 from applib.django.base.views import Filtered_ListView
 
 from dplate.models import TestPlate, MasterPlate, Labware
@@ -140,6 +140,16 @@ def _plate_map_data(instance):
 
 
 # -----------------------------------------------------------------
+def _stat(arr, idx):
+    """Safely return an ArrayField element (e.g. median/MAD) for display."""
+    if arr and len(arr) > idx:
+        val = arr[idx]
+        if val is not None:
+            return val
+    return '—'
+
+
+# -----------------------------------------------------------------
 def _build_display_groups(instance, field_names, chunk=6):
     groups = []
     rows = []
@@ -162,12 +172,29 @@ def _build_display_groups(instance, field_names, chunk=6):
 @login_required
 def TestPlate_DetailView(req, pk):
     _object = get_object_or_404(TestPlate, plate_id=pk)
+    quality_choices = [
+        (d.dict_value, d.strtml())
+        for d in Dictionary.get_filterobj(TestPlate.DICTIONARY_FIELDS['plate_quality'])
+    ]
+    plate_info = {
+        'assay_id': str(_object.assay_id) if _object.assay_id else '—',
+        'zfactor': _object.zfactor if _object.zfactor not in (None, -1) else '—',
+        'poscontrol_median': _stat(_object.poscontrol_stats, 0),
+        'poscontrol_mad': _stat(_object.poscontrol_stats, 1),
+        'negcontrol_median': _stat(_object.negcontrol_stats, 0),
+        'negcontrol_mad': _stat(_object.negcontrol_stats, 1),
+        'sample_median': _stat(_object.sample_stats, 0),
+        'sample_mad': _stat(_object.sample_stats, 1),
+        'plate_quality': _object.plate_quality_id or '',
+        'quality_choices': quality_choices,
+    }
     context = {
         'object': _object,
         'display_groups': _build_display_groups(_object, TestPlate_DETAIL_FIELDS),
         'list_url': 'testplate_list',
         'update_url': 'testplate_update',
         'plate_map_data': _plate_map_data(_object),
+        'plate_info': plate_info,
     }
     return render(req, 'dplate/plate_detail.html', context)
 
@@ -194,6 +221,30 @@ def TestPlate_UpdateView(req, pk):
     form = TestPlate_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update TestPlate', 'modal_subtitle': pk}
     return render(req, 'dplate/plate_form_modal.html', context)
+
+
+@login_required
+def TestPlate_QualityUpdateView(req, pk):
+    _object = get_object_or_404(TestPlate, plate_id=pk)
+    if req.method == 'POST':
+        quality_value = (req.POST.get('plate_quality') or '').strip()
+        if quality_value:
+            _dict = Dictionary.get(TestPlate.DICTIONARY_FIELDS['plate_quality'], quality_value)
+            if _dict:
+                try:
+                    with transaction.atomic(using='dplate'):
+                        _object.plate_quality = _dict
+                        _object.save(user=req.user)
+                        ApplicationLog.add('Update', str(_object.pk), 'Info', req.user,
+                                           str(_object.pk), f'Set TestPlate quality {quality_value}', 'Completed')
+                    messages.success(req, f'Plate quality set to {quality_value}')
+                except Exception as err:
+                    messages.warning(req, f'Update failed due to {err} error')
+            else:
+                messages.warning(req, f'Unknown plate quality: {quality_value}')
+        else:
+            messages.warning(req, 'No plate quality provided')
+    return redirect('testplate_detail', pk=pk)
 
 
 #=================================================================================================

@@ -63,7 +63,12 @@
     </div>
 
     <hr>
-    {% include 'dplate/plate_map.html' %}
+    <div class="d-flex align-items-start gap-3">
+      {% if plate_info %}
+      <div style="width: 22%; min-width: 220px;">{% include 'dplate/plate_info_panel.html' %}</div>
+      {% endif %}
+      <div class="flex-fill">{% include 'dplate/plate_map.html' %}</div>
+    </div>
   </div>
 </div>
 {% endblock content %}

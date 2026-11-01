@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from dplate.views import (TestPlate_ListView, TestPlate_DetailView, TestPlate_UpdateView, TestPlate_MapView,
+                          TestPlate_QualityUpdateView,
                           MasterPlate_ListView, MasterPlate_DetailView, MasterPlate_UpdateView,
                           Labware_ListView, Labware_CreateView, Labware_UpdateView)
 
@@ -10,6 +11,7 @@ urlpatterns = [
     # TestPlate
     path('testplate_list', TestPlate_ListView.as_view(), name="testplate_list"),
     path('testplate/update/<str:pk>', TestPlate_UpdateView, name="testplate_update"),
+    path('testplate/quality/<str:pk>', TestPlate_QualityUpdateView, name="testplate_quality_update"),
     path('testplate/map/<str:pk>', TestPlate_MapView, name="testplate_map"),
     path('testplate/<str:pk>', TestPlate_DetailView, name="testplate_detail"),
 
