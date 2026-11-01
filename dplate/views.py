@@ -118,9 +118,9 @@ def _plate_map_data(instance):
 
     if is_test:
         metrics = {
-            'conc': {'label': 'Concentration', 'mode': 'seq'},
             'readout': {'label': 'Readout', 'mode': 'seq'},
             'inhibition': {'label': 'Inhibition (%)', 'mode': 'diverging', 'min': 0, 'max': 100},
+            'conc': {'label': 'Concentration', 'mode': 'seq'},
         }
     else:
         metrics = {
@@ -149,6 +149,20 @@ def _stat(arr, idx):
     return '—'
 
 
+def _quality_class(value):
+    """Traffic-light CSS class for a plate quality dictionary value."""
+    v = (value or '').lower()
+    if 'valid' in v:
+        return 'q-valid'
+    if 'retest' in v:
+        return 'q-retest'
+    if 'reject' in v:
+        return 'q-rejected'
+    if 'invalid' in v:
+        return 'q-invalid'
+    return ''
+
+
 # -----------------------------------------------------------------
 def _build_display_groups(instance, field_names, chunk=6):
     groups = []
@@ -173,18 +187,18 @@ def _build_display_groups(instance, field_names, chunk=6):
 def TestPlate_DetailView(req, pk):
     _object = get_object_or_404(TestPlate, plate_id=pk)
     quality_choices = [
-        (d.dict_value, d.strtml())
+        (d.dict_value, d.strtml(), _quality_class(d.dict_value))
         for d in Dictionary.get_filterobj(TestPlate.DICTIONARY_FIELDS['plate_quality'])
     ]
+    _MED = TestPlate.STATS_MEDIAN
+    _MAD = TestPlate.STATS_MAD
     plate_info = {
         'assay_id': str(_object.assay_id) if _object.assay_id else '—',
         'zfactor': _object.zfactor if _object.zfactor not in (None, -1) else '—',
-        'poscontrol_median': _stat(_object.poscontrol_stats, 0),
-        'poscontrol_mad': _stat(_object.poscontrol_stats, 1),
-        'negcontrol_median': _stat(_object.negcontrol_stats, 0),
-        'negcontrol_mad': _stat(_object.negcontrol_stats, 1),
-        'sample_median': _stat(_object.sample_stats, 0),
-        'sample_mad': _stat(_object.sample_stats, 1),
+        'poscontrol': f"{_stat(_object.poscontrol_stats, _MED)} [{_MED}] +/- {_stat(_object.poscontrol_stats, _MAD)} [{_MAD}]",
+        'negcontrol': f"{_stat(_object.negcontrol_stats, _MED)} [{_MED}] +/- {_stat(_object.negcontrol_stats, _MAD)} [{_MAD}]",
+        'sample': f"{_stat(_object.sample_stats, _MED)} [{_MED}] +/- {_stat(_object.sample_stats, _MAD)} [{_MAD}]",
+        'edge': f"{_stat(_object.edge_stats, 0)} [0] - {_stat(_object.edge_stats, 1)} [1]",
         'plate_quality': _object.plate_quality_id or '',
         'quality_choices': quality_choices,
     }
