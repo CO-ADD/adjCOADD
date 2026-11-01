@@ -318,21 +318,30 @@
     });
   }
 
-  // metric selector: buttons for readout/inhib, dropdown for concentrations
-  const concMetricNames = metricNames.filter(function (n) { return data.metrics[n].key === 'conc'; });
-  const buttonMetricNames = metricNames.filter(function (n) { return data.metrics[n].key !== 'conc'; });
+  // metric selector: buttons for inhib, dropdowns for readouts/concentrations
+  const DROPDOWN_GROUPS = [
+    { key: 'readout', title: 'Readouts' },
+    { key: 'conc', title: 'Concentrations' }
+  ];
+  const dropdownKeys = DROPDOWN_GROUPS.map(function (g) { return g.key; });
+  const buttonMetricNames = metricNames.filter(function (n) { return dropdownKeys.indexOf(data.metrics[n].key) === -1; });
   const metricButtons = {};
-  let concToggleEl = null;
+  const dropdownState = {};
 
   function setActive(name) {
     activeMetric = name;
+    const m = data.metrics[name];
     Object.keys(metricButtons).forEach(function (n) {
       metricButtons[n].classList.toggle('active', n === name);
     });
-    if (concToggleEl) {
-      concToggleEl.textContent = data.metrics[name].label;
-      concToggleEl.classList.toggle('active', data.metrics[name].key === 'conc');
-    }
+    DROPDOWN_GROUPS.forEach(function (g) {
+      const st = dropdownState[g.key];
+      if (!st) { return; }
+      st.toggle.classList.toggle('active', m.key === g.key);
+      st.items.forEach(function (item) {
+        item.classList.toggle('active', item.dataset.metric === name);
+      });
+    });
     render();
   }
 
@@ -346,32 +355,39 @@
     metricsEl.appendChild(btn);
   });
 
-  if (concMetricNames.length) {
+  DROPDOWN_GROUPS.forEach(function (g) {
+    const names = metricNames.filter(function (n) { return data.metrics[n].key === g.key; });
+    if (!names.length) { return; }
+
     const group = document.createElement('div');
     group.className = 'btn-group btn-group-sm';
-    concToggleEl = document.createElement('button');
-    concToggleEl.type = 'button';
-    concToggleEl.className = 'btn btn-outline-secondary btn-sm dropdown-toggle';
-    concToggleEl.setAttribute('data-bs-toggle', 'dropdown');
-    concToggleEl.setAttribute('aria-expanded', 'false');
-    concToggleEl.textContent = data.metrics[concMetricNames[0]].label;
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'btn btn-outline-secondary btn-sm dropdown-toggle';
+    toggle.setAttribute('data-bs-toggle', 'dropdown');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.textContent = g.title;
 
     const menu = document.createElement('ul');
     menu.className = 'dropdown-menu';
-    concMetricNames.forEach(function (name) {
+    const items = [];
+    names.forEach(function (name) {
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.className = 'dropdown-item';
       a.href = '#';
+      a.dataset.metric = name;
       a.textContent = data.metrics[name].label;
       a.addEventListener('click', function (e) { e.preventDefault(); setActive(name); });
       li.appendChild(a);
       menu.appendChild(li);
+      items.push(a);
     });
-    group.appendChild(concToggleEl);
+    group.appendChild(toggle);
     group.appendChild(menu);
     metricsEl.appendChild(group);
-  }
+    dropdownState[g.key] = { toggle: toggle, items: items };
+  });
 
   // type legend is static and shown across all heatmap tabs (TestPlate only)
   if (typeLegendEl) {

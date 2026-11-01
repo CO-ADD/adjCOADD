@@ -116,25 +116,24 @@ def _plate_map_data(instance):
 
         wells.append(entry)
 
+    metrics = {}
     if is_test:
-        _rt = getattr(instance, 'readout_type', '') or ''
-        readout_label = f"Readout {_rt}" if _rt else 'Readout'
-        metrics = {
-            'readout': {'label': readout_label, 'mode': 'seq', 'key': 'readout', 'index': 0},
-            'inhib': {'label': 'Inhib', 'mode': 'diverging', 'min': 0, 'max': 100, 'key': 'inhibition'},
-        }
-        # Highest concentration index (1-based) with a non-zero value across wells
-        max_conc = 0
+        max_readouts = 0
         for w in wells:
-            for i, c in enumerate(w['conc']):
-                if c and i + 1 > max_conc:
-                    max_conc = i + 1
-        for i in range(max_conc):
-            metrics[f'conc{i}'] = {'label': f'Conc{i + 1}', 'mode': 'seq', 'key': 'conc', 'index': i}
-    else:
-        metrics = {
-            'conc0': {'label': 'Conc', 'mode': 'seq', 'key': 'conc', 'index': 0},
-        }
+            if len(w['readout']) > max_readouts:
+                max_readouts = len(w['readout'])
+        for i in range(max_readouts):
+            metrics[f'readout{i}'] = {'label': f'Readout {i + 1}', 'mode': 'seq', 'key': 'readout', 'index': i}
+        metrics['inhib'] = {'label': 'Inhibition (%)', 'mode': 'diverging', 'min': 0, 'max': 100, 'key': 'inhibition'}
+
+    # Highest concentration index (1-based) with a non-zero value across wells
+    max_conc = 0
+    for w in wells:
+        for i, c in enumerate(w['conc']):
+            if c and i + 1 > max_conc:
+                max_conc = i + 1
+    for i in range(max_conc):
+        metrics[f'conc{i}'] = {'label': f'Concentration {i + 1}', 'mode': 'seq', 'key': 'conc', 'index': i}
 
     return {
         'plate_id': instance.plate_id,
