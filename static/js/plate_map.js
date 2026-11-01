@@ -20,25 +20,27 @@
 
   if (!gridEl) { return; }
 
-  // Well type -> border/fill styling (Type view and borders everywhere)
+  // Well type -> border/fill styling and centre symbol
   const TYPE_META = {
-    NEG:  { label: 'NEG',   border: '#6a0000', fill: '#8b0000' },
-    POS:  { label: 'POS',   border: '#004a00', fill: '#006400' },
-    CTRL: { label: 'CTRL',  border: '#8b0000', fill: '#d3d3d3' },
-    SMP:  { label: 'SMP',   border: '#808080', fill: '#d3d3d3' },
-    EMPTY:{ label: 'Empty', border: '#000000', fill: '#ffffff' },
-    NA:   { label: '—',     border: '#ced4da', fill: '#ffffff' }
+    NEG:  { label: 'NEG',   symbol: 'N', border: '#6a0000', fill: '#8b0000', text: '#ffffff' },
+    POS:  { label: 'POS',   symbol: 'P', border: '#004a00', fill: '#006400', text: '#ffffff' },
+    CTRL: { label: 'CTRL',  symbol: 'C', border: '#8b0000', fill: '#d3d3d3', text: '#212529' },
+    SMP:  { label: 'SMP',   symbol: 'S', border: '#808080', fill: '#d3d3d3', text: '#212529' },
+    SKIP: { label: 'SKIP',  symbol: '\u2013', border: '#999999', fill: '#f2f2f2', text: '#6c757d' },
+    EMPTY:{ label: 'Empty', symbol: '',  border: '#000000', fill: '#ffffff', text: '#212529' },
+    NA:   { label: '\u2014', symbol: '', border: '#ced4da', fill: '#ffffff', text: '#212529' }
   };
 
+  const FALLBACK_TYPE = (data.show_type === false) ? 'NA' : 'EMPTY';
+
   function rawType(w) {
-    if (w && w.type) { return w.type; }
-    if (!w) { return 'NA'; }
-    // fallback for older payloads without an explicit type
+    if (!w) { return FALLBACK_TYPE; }
     if (w.is_negcontrol) { return 'NEG'; }
     if (w.is_poscontrol) { return 'POS'; }
     if (w.is_control) { return 'CTRL'; }
+    if (w.is_skip) { return 'SKIP'; }
     if (w.is_sample) { return 'SMP'; }
-    return 'EMPTY';
+    return FALLBACK_TYPE;
   }
 
   // A sample well with no compound batch is rendered as Empty.
@@ -131,7 +133,7 @@
 
   function textColorFor(bg) {
     // pick readable text based on background lightness
-    const m = bg.match(/hsl\(0,\s*65%,\s*([\d.]+)%\)/);
+    const m = bg.match(/hsl\([\d.]+,?\s*[\d.]+%,\s*([\d.]+)%\)/);
     if (m) { return Number(m[1]) > 65 ? '#212529' : '#ffffff'; }
     return '#212529';
   }
@@ -142,6 +144,7 @@
       case 'POS': return ['POS'];
       case 'CTRL': return ['CTRL'];
       case 'SMP': return ['SMP'];
+      case 'SKIP': return ['SKIP'];
       default: return [];
     }
   }
@@ -241,13 +244,12 @@
   }
 
   function typeLegend() {
-    const order = ['SMP', 'CTRL', 'NEG', 'POS', 'EMPTY'];
+    const order = ['SMP', 'CTRL', 'NEG', 'POS', 'SKIP', 'EMPTY'];
     let html = '';
     order.forEach(function (key) {
       const tm = TYPE_META[key];
-      const fill = tm.fill === 'transparent' ? '#ffffff' : tm.fill;
       html += '<span class="plate-map-legend-item">' +
-        '<span class="plate-map-legend-swatch" style="background:' + fill + ';border-color:' + tm.border + '"></span>' +
+        '<span class="plate-map-legend-swatch" style="background:' + tm.fill + ';border-color:' + tm.border + ';color:' + tm.text + '">' + tm.symbol + '</span>' +
         tm.label +
         '</span>';
     });
@@ -286,19 +288,20 @@
       const tm = TYPE_META[t] || TYPE_META.NA;
       const cmpCount = (w && w.cmpbatch) ? w.cmpbatch.length : 0;
 
-      // type class drives border + fill (CSS); clear any inline background first
       cell.className = 'plate-map-cell pmc-' + t.toLowerCase();
-      cell.style.background = '';
-      cell.style.setProperty('--pmc-border', tm.border);
+      // inline styles guarantee fill/border/symbol colour regardless of CSS caching
+      cell.style.background = tm.fill;
+      cell.style.borderColor = tm.border;
+      cell.style.color = tm.text;
 
-      // compound marker: single -> centered dot, multiple -> square
+      // compound marker: single -> small circle, multiple -> small square (corner)
       if (cmpCount > 1) { cell.classList.add('pmc-multi'); }
       else if (cmpCount === 1) { cell.classList.add('pmc-single'); }
 
-      // Type view: fill encodes the well type (via CSS class)
+      // Type view: centre symbol encodes the well type
       if (m.mode === 'type') {
-        cell.style.color = (t === 'NEG' || t === 'POS') ? '#ffffff' : '#212529';
-        cell.textContent = '';
+        cell.textContent = tm.symbol;
+        if (tm.symbol) { cell.classList.add('pmc-symbol'); }
         cell.title = w ? w.id : '';
         return;
       }
@@ -307,7 +310,6 @@
       const bg = w ? colorFor(w, activeMetric, stats, m) : null;
       if (!bg) {
         cell.style.background = '#ffffff';
-        cell.style.color = '#212529';
         cell.textContent = '';
         cell.title = w ? w.id : '';
         return;
