@@ -318,7 +318,7 @@
     });
   }
 
-  // metric selector: buttons for inhib, dropdowns for readouts/concentrations
+  // metric selector order: Readout dropdown, Inhibition button, Concentrations dropdown
   const DROPDOWN_GROUPS = [
     { key: 'readout', title: 'Readouts' },
     { key: 'conc', title: 'Concentrations' }
@@ -327,6 +327,12 @@
   const buttonMetricNames = metricNames.filter(function (n) { return dropdownKeys.indexOf(data.metrics[n].key) === -1; });
   const metricButtons = {};
   const dropdownState = {};
+
+  function toggleLabel(g, name) {
+    const m = data.metrics[name];
+    if (g.key === 'readout' && m.type_label) { return m.type_label; }
+    return m.label;
+  }
 
   function setActive(name) {
     activeMetric = name;
@@ -338,6 +344,9 @@
       const st = dropdownState[g.key];
       if (!st) { return; }
       st.toggle.classList.toggle('active', m.key === g.key);
+      if (m.key === g.key) {
+        st.toggle.textContent = toggleLabel(g, name);
+      }
       st.items.forEach(function (item) {
         item.classList.toggle('active', item.dataset.metric === name);
       });
@@ -345,17 +354,7 @@
     render();
   }
 
-  buttonMetricNames.forEach(function (name) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'btn btn-outline-secondary btn-sm';
-    btn.textContent = data.metrics[name].label;
-    btn.addEventListener('click', function () { setActive(name); });
-    metricButtons[name] = btn;
-    metricsEl.appendChild(btn);
-  });
-
-  DROPDOWN_GROUPS.forEach(function (g) {
+  function buildDropdown(g) {
     const names = metricNames.filter(function (n) { return data.metrics[n].key === g.key; });
     if (!names.length) { return; }
 
@@ -366,18 +365,22 @@
     toggle.className = 'btn btn-outline-secondary btn-sm dropdown-toggle';
     toggle.setAttribute('data-bs-toggle', 'dropdown');
     toggle.setAttribute('aria-expanded', 'false');
-    toggle.textContent = g.title;
+    toggle.textContent = toggleLabel(g, names[0]);
 
     const menu = document.createElement('ul');
     menu.className = 'dropdown-menu';
     const items = [];
     names.forEach(function (name) {
+      const m = data.metrics[name];
+      let itemText = m.label;
+      if (g.key === 'readout' && m.type_label) { itemText += ' (' + m.type_label + ')'; }
+
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.className = 'dropdown-item';
       a.href = '#';
       a.dataset.metric = name;
-      a.textContent = data.metrics[name].label;
+      a.textContent = itemText;
       a.addEventListener('click', function (e) { e.preventDefault(); setActive(name); });
       li.appendChild(a);
       menu.appendChild(li);
@@ -387,7 +390,22 @@
     group.appendChild(menu);
     metricsEl.appendChild(group);
     dropdownState[g.key] = { toggle: toggle, items: items };
-  });
+  }
+
+  function buildButton(name) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-outline-secondary btn-sm';
+    btn.textContent = data.metrics[name].label;
+    btn.addEventListener('click', function () { setActive(name); });
+    metricButtons[name] = btn;
+    metricsEl.appendChild(btn);
+  }
+
+  // Order: Readout, Inhibition, Concentrations
+  buildDropdown(DROPDOWN_GROUPS[0]);     // readout
+  buttonMetricNames.forEach(buildButton); // inhibition
+  buildDropdown(DROPDOWN_GROUPS[1]);      // concentration
 
   // type legend is static and shown across all heatmap tabs (TestPlate only)
   if (typeLegendEl) {

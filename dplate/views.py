@@ -104,6 +104,7 @@ def _plate_map_data(instance):
 
         if is_test:
             entry['readout'] = [float(x) for x in (well.readouts or []) if x not in ('', None)]
+            entry['readout_types'] = [str(x) for x in (well.readout_types or [])]
             entry['inhibition'] = float(well.inhibition) if well.inhibition not in (None, -1) else None
             entry['act_type'] = well.act_type or ''
             entry['is_control'] = bool(well.is_control)
@@ -123,7 +124,17 @@ def _plate_map_data(instance):
             if len(w['readout']) > max_readouts:
                 max_readouts = len(w['readout'])
         for i in range(max_readouts):
-            metrics[f'readout{i}'] = {'label': f'Readout {i + 1}', 'mode': 'seq', 'key': 'readout', 'index': i}
+            type_label = ''
+            for w in wells:
+                rts = w.get('readout_types') or []
+                if i < len(rts) and rts[i]:
+                    type_label = rts[i]
+                    break
+            metrics[f'readout{i}'] = {
+                'label': f'Readout {i + 1}',
+                'type_label': type_label,
+                'mode': 'seq', 'key': 'readout', 'index': i,
+            }
         metrics['inhib'] = {'label': 'Inhibition (%)', 'mode': 'diverging', 'min': 0, 'max': 100, 'key': 'inhibition'}
 
     # Highest concentration index (1-based) with a non-zero value across wells
