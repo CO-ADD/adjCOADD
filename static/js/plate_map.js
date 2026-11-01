@@ -23,11 +23,11 @@
 
   // Well type -> border colour and centre icon (single vs multiple compounds)
   const TYPE_META = {
-    NEG:  { label: 'NEG',   single: 'bi-dash-circle-fill',  multi: 'bi-dash-square-fill',  border: '#6a0000', fill: '#8b0000', text: '#ffffff' },
-    POS:  { label: 'POS',   single: 'bi-plus-circle-fill',  multi: 'bi-plus-square-fill',  border: '#004a00', fill: '#006400', text: '#ffffff' },
-    CTRL: { label: 'CTRL',  single: 'bi-c-circle-fill',     multi: 'bi-c-square-fill',     border: '#8b0000', fill: '#d3d3d3', text: '#212529' },
-    SMP:  { label: 'SMP',   single: 'bi-circle-fill',       multi: 'bi-square-fill',       border: '#808080', fill: '#d3d3d3', text: '#212529' },
-    SKIP: { label: 'SKIP',  single: 'bi-slash-circle-fill', multi: 'bi-slash-square-fill', border: '#999999', fill: '#f2f2f2', text: '#6c757d' },
+    NEG:  { label: 'NEG',   single: 'bi-dash-circle',  multi: 'bi-dash-square',  border: '#6a0000', fill: '#8b0000', text: '#212529' },
+    POS:  { label: 'POS',   single: 'bi-plus-circle',  multi: 'bi-plus-square',  border: '#004a00', fill: '#006400', text: '#212529' },
+    CTRL: { label: 'CTRL',  single: 'bi-c-circle',     multi: 'bi-c-square',     border: '#8b0000', fill: '#d3d3d3', text: '#212529' },
+    SMP:  { label: 'SMP',   single: 'bi-circle',       multi: 'bi-square',       border: '#808080', fill: '#d3d3d3', text: '#212529' },
+    SKIP: { label: 'SKIP',  single: 'bi-slash-circle', multi: 'bi-slash-square', border: '#999999', fill: '#f2f2f2', text: '#212529' },
     EMPTY:{ label: 'Empty', single: null, multi: null, symbol: '',  border: '#000000', fill: '#ffffff', text: '#212529' },
     NA:   { label: '\u2014', single: null, multi: null, symbol: '', border: '#ced4da', fill: '#ffffff', text: '#212529' }
   };
