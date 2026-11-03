@@ -101,6 +101,25 @@
       </div>
     </div>
 
+    <!-- Isoform Modifications -->
+    <div class="accordion bg-transparent w-100" id="isoform-modifications">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_mods">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapseMods" aria-expanded="true" aria-controls="collapse_mods">
+            <h5 class="fs-6 my-0">Peptide Modifications</h5>
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=modification_count %}
+          </button>
+        </h2>
+        <div id="collapseMods" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_mods"
+             data-bs-parent="#isoform-modifications">
+          <div class="accordion-body">
+            {% include 'dpeptide/isoform/isoform_modifications.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Isoform Batches -->
     <div class="accordion bg-transparent w-100" id="isoform-batches">
       <div class="accordion-item">

@@ -14,11 +14,12 @@ from applib.django.base.views import Base_RemoveView, Filtered_ListView
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 
-from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary
+from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary, Isoform_Modification
 from dpeptide.forms import (Peptide_Filter, Peptide_CreateForm, Peptide_UpdateForm,
                             Isoform_Filter, Isoform_CreateForm, Isoform_UpdateForm,
                             IsoBatch_CreateForm, IsoBatch_UpdateForm,
-                            Modification_Filter, Modification_Form, Modification_UpdateForm)
+                            Modification_Filter, Modification_Form, Modification_UpdateForm,
+                            IsoformModification_Form)
 
 #=================================================================================================
 # Helpers
@@ -186,6 +187,16 @@ def Isoform_DetailView(req, pk):
     context['batch_count'] = _batches.count()
     context['batch_fields'] = Isoform_Batch.get_fields()
 
+    # Isoform modifications - grouped by position, ordered by mod_order
+    _mods = _object.modification_links.select_related('pepmod_id').order_by('mod_position', 'mod_order')
+    _mod_groups = []
+    for pos_value, pos_label in Isoform_Modification.MOD_POSITION_CHOICES:
+        _group_links = [link for link in _mods if link.mod_position == pos_value]
+        if _group_links:
+            _mod_groups.append({'position': pos_label, 'links': _group_links})
+    context['modification_groups'] = _mod_groups
+    context['modification_count'] = _mods.count()
+
     return render(req, 'dpeptide/isoform/isoform_detail.html', context)
 
 
@@ -218,6 +229,104 @@ def Isoform_UpdateView(req, pk):
 class Isoform_RemoveView(Base_RemoveView):
     model = Peptide_Isoform
     transaction_use = 'dpeptide'
+
+
+#=================================================================================================
+# Isoform Modifications (through-model links)
+#=================================================================================================
+
+@login_required
+def IsoformModification_CreateView(req, pk):
+    _isoform = get_object_or_404(Peptide_Isoform, isoform_id=pk)
+    form = IsoformModification_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dpeptide'):
+                    link = form.save(commit=False)
+                    link.isoform_id = _isoform
+                    link.save()
+                    ApplicationLog.add('Create', f"{_isoform.pk}:{link.pepmod_id}",
+                                       'Info', req.user, str(_isoform.pk),
+                                       f'Add modification {link.pepmod_id} ({link.mod_position}:{link.mod_order})', 'Completed')
+                return redirect('isoform_detail', pk=pk)
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} - modification with same position/order may already exist.')
+        else:
+            messages.warning(req, f'Create failed due to {form.errors} error')
+        return redirect('isoform_detail', pk=pk)
+
+    context = {'form': form, 'modal_title': 'Add Modification', 'modal_subtitle': pk}
+    return render(req, 'dpeptide/isoform/isoform_modification_form_modal.html', context)
+
+
+@login_required
+def IsoformModification_UpdateView(req, pk):
+    _link = get_object_or_404(Isoform_Modification, pk=pk)
+    if req.method == 'POST':
+        form = IsoformModification_Form(req.POST, instance=_link)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dpeptide'):
+                    form.save()
+                    ApplicationLog.add('Update', f"{_link.isoform_id_id}:{_link.pepmod_id}",
+                                       'Info', req.user, str(_link.isoform_id_id),
+                                       'Update isoform modification', 'Completed')
+                return redirect('isoform_detail', pk=_link.isoform_id_id)
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} - modification with same position/order may already exist.')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('isoform_detail', pk=_link.isoform_id_id)
+
+    form = IsoformModification_Form(instance=_link)
+    context = {'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': _link.isoform_id_id}
+    return render(req, 'dpeptide/isoform/isoform_modification_form_modal.html', context)
+
+
+@login_required
+def IsoformModification_RemoveView(req, pk):
+    _link = get_object_or_404(Isoform_Modification, pk=pk)
+    _isoform_pk = _link.isoform_id_id
+    if req.method == 'POST':
+        with transaction.atomic(using='dpeptide'):
+            ApplicationLog.add('Remove', f"{_isoform_pk}:{_link.pepmod_id}",
+                               'Warning', req.user, str(_isoform_pk),
+                               f'Remove modification {_link.pepmod_id} ({_link.mod_position}:{_link.mod_order})', 'Completed')
+            _link.delete()
+        messages.success(req, f'Removed modification {_link.pepmod_id}')
+    return redirect('isoform_detail', pk=_isoform_pk)
+
+
+@login_required
+def IsoformModification_ReorderView(req, pk, direction):
+    _link = get_object_or_404(Isoform_Modification, pk=pk)
+    _isoform_pk = _link.isoform_id_id
+    if req.method == 'POST':
+        _siblings = Isoform_Modification.objects.filter(
+            isoform_id=_link.isoform_id, mod_position=_link.mod_position).order_by('mod_order')
+        if direction == 'up':
+            _other = _siblings.filter(mod_order__lt=_link.mod_order).order_by('-mod_order').first()
+        else:
+            _other = _siblings.filter(mod_order__gt=_link.mod_order).order_by('mod_order').first()
+
+        if _other is not None:
+            # mod_order is PositiveSmallIntegerField; pick a free temp value <= 32767
+            _tmp = 32767
+            while Isoform_Modification.objects.filter(
+                isoform_id=_link.isoform_id, mod_position=_link.mod_position, mod_order=_tmp).exists():
+                _tmp -= 1
+
+            with transaction.atomic(using='dpeptide'):
+                _link_order = _link.mod_order
+                _other_order = _other.mod_order
+                _link.mod_order = _tmp
+                _link.save()
+                _other.mod_order = _link_order
+                _other.save()
+                _link.mod_order = _other_order
+                _link.save()
+    return redirect('isoform_detail', pk=_isoform_pk)
 
 
 #=================================================================================================

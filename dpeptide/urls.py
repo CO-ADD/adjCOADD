@@ -2,6 +2,8 @@ from django.urls import path
 
 from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_DetailView, Peptide_UpdateView, Peptide_RemoveView,
                             Isoform_ListView, Isoform_CreateView, Isoform_DetailView, Isoform_UpdateView, Isoform_RemoveView,
+                            IsoformModification_CreateView, IsoformModification_UpdateView,
+                            IsoformModification_RemoveView, IsoformModification_ReorderView,
                             IsoBatch_CreateView, IsoBatch_UpdateView, IsoBatch_RemoveView,
                             Modification_ListView, Modification_CreateView, Modification_UpdateView)
 
@@ -20,6 +22,12 @@ urlpatterns = [
     path('createIsoform/', Isoform_CreateView, name="isoform_create"),
     path('updateIsoform/<str:pk>', Isoform_UpdateView, name="isoform_update"),
     path('deleteIsoform/<str:pk>', Isoform_RemoveView.as_view(), name="isoform_delete"),
+
+    # Isoform Modifications
+    path('isoform/<str:pk>/modification/create', IsoformModification_CreateView, name="isoform_modification_create"),
+    path('isoform/modification/update/<str:pk>', IsoformModification_UpdateView, name="isoform_modification_update"),
+    path('isoform/modification/remove/<str:pk>', IsoformModification_RemoveView, name="isoform_modification_remove"),
+    path('isoform/modification/reorder/<str:pk>/<str:direction>', IsoformModification_ReorderView, name="isoform_modification_reorder"),
 
     # Isoform Batch
     path('createIsoBatch/<str:isoform_id>', IsoBatch_CreateView, name="isobatch_create"),

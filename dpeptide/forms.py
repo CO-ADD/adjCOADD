@@ -12,7 +12,7 @@ from dorganism.models import  Taxonomy
 from apputil.models import Dictionary, ApplicationUser, Document
 from applib.django.base.filters import BaseStatus_Filter
 from adjcoadd.constants import ORGANISM_CLASSES, CELL_CLASSES 
-from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary
+from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary, Isoform_Modification
 
 #=================================================================================================
 # Peptide
@@ -208,4 +208,19 @@ class Modification_UpdateForm(Modification_Form):
     class Meta:
         model = Modification_Dictionary
         exclude = []
+
+
+#=================================================================================================
+# Isoform Modification (ordered link between Isoform and Modification_Dictionary)
+#=================================================================================================
+class IsoformModification_Form(Base_ModelForm):
+    class Meta:
+        model = Isoform_Modification
+        fields = ['pepmod_id', 'mod_position', 'mod_order']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['pepmod_id'].queryset = Modification_Dictionary.objects.filter(
+            astatus__gte=0).order_by('pepmod_code')
+        self.fields['mod_position'].choices = Isoform_Modification.MOD_POSITION_CHOICES
 

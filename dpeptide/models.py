@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 #=================================================================================================
 class Peptide(AuditModel):
     """
-    Main class of Peptides
+    Main class of Peptides s
     
     """
 #=================================================================================================
@@ -63,9 +63,8 @@ class Peptide(AuditModel):
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes'],
+        ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes', 'peptide_origin','source', 'source_code','reference','biologist'],
         ['seq',],
-        ['peptide_origin','source', 'source_code','reference','biologist'],
         #['mta_status','mta_notes','mta_document','biologist'],
     ]
 
@@ -219,8 +218,8 @@ class Peptide_Isoform(AuditModel):
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'biologist'],
-        ['seq', 'mw', 'nseq'],
+        ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'mw', 'nseq', 'biologist'],
+        ['seq'],
         #['peptide_modifications'],
     ]
     DICTIONARY_FIELDS = {}
