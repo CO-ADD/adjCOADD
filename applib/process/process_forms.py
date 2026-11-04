@@ -1,12 +1,8 @@
-import os
 import shutil
-from django import forms
-from django.shortcuts import HttpResponse, render, redirect
-from formtools.wizard.views import SessionWizardView
-from django.core.files.storage import FileSystemStorage
-from django.core.exceptions import ValidationError
-from django.utils.datastructures import MultiValueDict
+
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
+from django.urls import reverse
+from formtools.wizard.views import SessionWizardView
 
 from applib.process.process_stepforms import (MultipleFileInput, SingleFileInput,
                                               MultipleFileField, SingleFileField,
@@ -14,9 +10,8 @@ from applib.process.process_stepforms import (MultipleFileInput, SingleFileInput
                                               Upload_StepForm, Generate_StepForm,
                                               Finalize_StepForm)
   
-from applib.django.base.views import SuperUserRequiredMixin, WriteUserRequiredMixin
-from apputil.utils.files_upload import validate_file, file_location, OverwriteStorage
-#from apputil.utils.validation_log import Validation_Log
+from applib.django.base.views import WriteUserRequiredMixin
+from apputil.utils.files_upload import file_location, OverwriteStorage
 from applib.logging.validation_log import Validation_Log
 
 
@@ -26,12 +21,6 @@ from applib.logging.validation_log import Validation_Log
 # -----------------------------------------------------------------
 def Start_Progress(request):
     return render(request, 'modal/progress_partial_modal.html')
-
-def Update_Progress(request,):
-    current_progress = 50 # Replace with actual logic
-    total_progress = 100
-    return render(request, 'modal/progress_partial_modal.html', {'current': current_progress, 'total':total_progress})
-
 
 # --------------------------------------------------------------------------------------------------
 class Process_View(WriteUserRequiredMixin,SessionWizardView):
@@ -52,11 +41,16 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     # define template
     template_name = None
     
-    # Define a file storage for handling file uploads
-    file_storage = FileSystemStorage(location='/tmp/')
+    # File storage is intentionally left unset (None): uploaded files are saved
+    # manually to a per-user location in process_step() via OverwriteStorage.
+    file_storage = None
     
     # Define Redirect URL
     redirect_url = None
+    
+    # URL name for the DetailView of the processed object; when set and an
+    # object pk is available, done() redirects there instead of redirect_url.
+    detail_url = None
     
     initial_dict = {
         'select_file': {'instructions':''},
@@ -205,7 +199,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         elif current_step == 'finalize':
             # self.file_dir=self.storage.extra_data['file_dir'] #get file path
             # self.file_list=self.storage.extra_data['file_list'] #get files' name  
-            self.pk = self.storage.extra_data['object_pk']
+            self.pk = self.storage.extra_data.get('object_pk')
             #print(f" [process_step] {current_step} PK: {self.pk}")
             self.file_process_finalizer(request, self.pk)
 
@@ -215,7 +209,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
 
     #---------------------------------------------------------
     def cleanup_filedir(self):
-        file_dir=self.storage.extra_data['file_dir']
+        file_dir=self.storage.extra_data.get('file_dir')
         if file_dir:
             try:
                 shutil.rmtree(file_dir)
@@ -228,20 +222,23 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     def done(self, form_list, **kwargs):
         #print(f" [Process_View.done] ")
         self.cleanup_filedir()
+        pk = self.storage.extra_data.get('object_pk') or getattr(self, 'pk', None)
+        if pk and self.detail_url:
+            return redirect(self.detail_url, pk=pk)
         if self.redirect_url is not None:
-            return redirect(self.redirect_url) 
-        else:
-            return redirect(self.request.META['HTTP_REFERER'])
+            return redirect(reverse(self.redirect_url))
+        return redirect(self.request.META['HTTP_REFERER'])
 
 
     # ----------------------------------------------------
     def get_context_data(self, form, **kwargs):
         context = super().get_context_data(form=form, **kwargs)
         
-        self.pk = self.kwargs.get('pk',None)
+        self.pk = self.kwargs.get('pk', None)
         if self.pk:
             self.storage.extra_data['object_pk'] = self.pk
-        else:
+        elif 'object_pk' not in self.storage.extra_data:
+            # Only initialise; never clobber a pk set during process_step.
             self.storage.extra_data['object_pk'] = None
         
         #print(f" [Process_View.get_context_data] PK: {self.pk} ")
@@ -260,7 +257,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
             context['validation_result']=""
             context['instructions'] = self.initial_dict[current_step]['instructions']
             #context['pk'] = self.pk
-        elif current_step == 'upload_file':
+        elif current_step == 'upload':
             context['validation_result']=""
             context['instructions'] = self.initial_dict[current_step]['instructions']
             #context['pk'] = self.storage.extra_data.get('object_pk', None)

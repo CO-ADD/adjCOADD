@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 #from django.apps import apps
 from django.core.validators import validate_email
@@ -8,6 +9,32 @@ from dsample.models import Project, Project_Membership,COADD_Compound
 from apputil.models import Dictionary
 
 from rdkit import Chem
+
+
+def _make_organisation_code(name, max_length=20):
+    """Generate a unique Organisation code from an organisation name."""
+    code = re.sub(r'[^A-Za-z0-9]', '', name or '').upper()
+    if not code:
+        code = 'ORG'
+    code = code[:max_length]
+    base = code
+    n = 1
+    while Organisation.exists(None, Code=code):
+        suffix = str(n)
+        code = f"{base[:max_length - len(suffix)]}{suffix}"
+        n += 1
+    return code
+
+
+def _default_organisation_type():
+    """Return a default Dictionary entry for Organisation_Type."""
+    dict_class = Organisation.DICTIONARY_FIELDS['organisation_type']
+    for value in ('Other', 'Unknown', 'Academic', 'Industry', 'Commercial'):
+        d = Dictionary.get(dict_class, value)
+        if d:
+            return d
+    objs = Dictionary.get_filterobj(dict_class)
+    return objs.first() if objs else None
 
 #-----------------------------------------------------------------------------
 def get_CompoundSubmisssion_xlsx(xlsFile, FillNA='-', **kwargs):
@@ -287,6 +314,12 @@ def Upload_Project_Collab(djProject, CollabDict,  upload=False, overwrite=False,
         if djOrg is None:
             djOrg = Organisation()
             djOrg.organisation_name = CollabDict[key]['organisation']
+            # Required fields without defaults in the contact sheet must be set
+            # before validation/save, otherwise the new Organisation is not
+            # created and the subsequent Group cannot reference it.
+            djOrg.organisation_code = _make_organisation_code(CollabDict[key]['organisation'])
+            djOrg.organisation_type = _default_organisation_type()
+            djOrg.previous_names = '-'
             valLog.add_warning("New Organisation",CollabDict[key]['organisation'])
             
             # - Validation ----------------------------------------------------------
