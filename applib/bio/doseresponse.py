@@ -76,13 +76,7 @@ class DoseResponse():
 
             if dfValid:
 
-                self.dmax = self.df['inhibition'].max(axis=0)
-                self.dmin = self.df['inhibition'].min(axis=0)
-                self.dave = self.df['inhibition'].mean(axis=0)
-
-                self.cmax = self.df['conc_lst'].max(axis=0)
-                self.cmin = self.df['conc_lst'].min(axis=0)
-                
+                self.dmax =                 
                 self.n_wells = len(self.df)
                 self.n_conc = len(self.df['conc'].unique())
                 
@@ -119,6 +113,8 @@ class DoseResponse():
         if 'MIC' in str(self.testplate.result_type): 
             self.MIC()
             self.IC50()
+        elif 'synMIC':
+            self.synMIC()
         elif 'CC50' in str(self.testplate.result_type):
             self.IC50() 
         elif 'HC50' in str(self.testplate.result_type):
@@ -304,7 +300,8 @@ class DoseResponse():
             xa1 = xa0
             idx += 1
             
-        # Record Total Single or Multiple Skips             
+        # Record Total Single or Multiple Skips
+        # ----------------------------------------             
         self.skips[0] += _skips
         if _skips == 1:
             self.skips[1] += 1
@@ -315,6 +312,7 @@ class DoseResponse():
         # print(f" {v['active']} - {act_Well} {act_Flag} - {self.skips_active} {self.skips_total} - {self.skips} ")
 
         # -- Assign correct MIC Value from actWell
+        # ----------------------------------------             
         if (act_Well == 0):
             #retMIC = _mic_df.to_dict('records')[nWells-1]
             self.mic_prefix = '>'
@@ -339,7 +337,7 @@ class DoseResponse():
         self.mic_quality = 'Valid'
         _mic_Comment = []
 
-        # In case n/aSkips  
+        # In case n/aSkips          # ----------------------------------------             
 #        if (self.skips_active > 0) and (self.skips_active < 2):
         if (self.skips[1] > 0) and (self.skips[2] < 1):
             self.mic_valid = 1
@@ -391,6 +389,16 @@ class DoseResponse():
         # print(f" [MIC] Inhib: {self.dmin} {self.dmax} Concs: {self.cmin} {self.cmax}")
         # print(f" [MIC] MIC  : {self.mic_dmax} {self.mic_act} {self.mic_act_score} {self.pmic}")  
         # print(f" [MIC]      Skips: {self.skips_active} {self.skips_total}")
+
+    #===================================================================        
+    def synMIC(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
+    #===================================================================
+        if self.df is None:
+            logger.warning(" [DoseResponse] synMIC no data")
+            return(None)   
+             
+        self.df = self.df.apply(self.apply_active,args=(Inhibition_Cutoff,MScore_Cutoff,),axis=1)
+
 
     #-----------------------------------------------------------------------------
     @staticmethod
@@ -555,6 +563,7 @@ class DoseResponse_Plot():
 
         
 # Process TestPlate -------------------------------------------------------------
+# 
 def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
     DR_Lst = []
     #djTP = TestPlate.get(PlateID,WellData=True)

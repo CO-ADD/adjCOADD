@@ -184,3 +184,53 @@ class Assay_UpdateForm(Assay_CreateForm):
     class Meta:
         model=Assay
         exclude=['assay_id']
+
+
+#=================================================================================================
+# AssayData (MIC / CC50 / HC50)
+#=================================================================================================
+class AssayData_BaseFilter(BaseStatus_Filter):
+    """
+    Shared filter fields for the (very large) AssayData result tables.
+    """
+
+    testplate_id = CharFilter(field_name='testplate_id__plate_id', lookup_expr='icontains', label='Plate')
+    testwell_id = CharFilter(field_name='testwell_id', lookup_expr='icontains', label='Well')
+    run_id = CharFilter(field_name='run_id__run_id', lookup_expr='icontains', label='Run ID')
+    assay_id = CharFilter(field_name='assay_id__assay_id', lookup_expr='icontains', label='Assay ID')
+    cmpbatch_id = CharFilter(field_name='cmpbatch_id__cmpbatch_id', lookup_expr='icontains', label='CmpBatch')
+    act_type = CharFilter(field_name='act_type', lookup_expr='icontains', label='Act Type')
+    data_quality = CharFilter(field_name='data_quality__dict_value', lookup_expr='icontains', label='Quality')
+
+    class Meta:
+        model = None
+        fields = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Keep the explicit labels above (FK paths cannot be resolved by
+        # get_field so do not attempt to overwrite them).
+
+
+class AssayData_MIC_Filter(AssayData_BaseFilter):
+
+    class Meta:
+        model = AssayData_MIC
+        fields = ['testplate_id', 'testwell_id', 'run_id', 'assay_id',
+                  'cmpbatch_id', 'act_type', 'data_quality']
+
+
+class AssayData_CC50_Filter(AssayData_BaseFilter):
+
+    class Meta:
+        model = AssayData_CC50
+        fields = ['testplate_id', 'testwell_id', 'run_id', 'assay_id',
+                  'cmpbatch_id', 'act_type', 'data_quality']
+
+
+class AssayData_HC50_Filter(AssayData_BaseFilter):
+
+    class Meta:
+        model = AssayData_HC50
+        fields = ['testplate_id', 'testwell_id', 'run_id', 'assay_id',
+                  'cmpbatch_id', 'act_type', 'data_quality']

@@ -302,15 +302,17 @@ class AssayData_MIC(CmpBatchList_Base):
 #    from dorganism.models import Organism, Organism_Batch
 
     LIST_VIEW_FIELDS = {
-        # "run_id":"Run ID",
-        # "run_type":"Run Type",
-        # "assay_note":"Assay",
-        # "run_status":"Status",
-        # "run_project":"Project",
-        # "run_name":"Name",
-        # "run_date":"Run Date",
-        # "run_conditions":"Conditions",
-        # "run_issues":"Issues",
+        'testplate_id': 'Plate',
+        'testwell_id': 'Well',
+        'run_id': 'Run ID',
+        'assay_id': 'Assay ID',
+        'cmpbatch_id': 'CmpBatch',
+        'mic': 'MIC',
+        'mic_unit': 'Unit',
+        'act_type': 'Act',
+        'pscore': 'pScore',
+        'data_quality': 'Quality',
+        'valid': 'Valid',
     }
 
     DICTIONARY_FIELDS = {
@@ -451,7 +453,17 @@ class AssayData_CC50(CmpBatchList_Base):
     from dplate.models import TestPlate
 
     LIST_VIEW_FIELDS = {
-        # "run_id":"Run ID",
+        'testplate_id': 'Plate',
+        'testwell_id': 'Well',
+        'run_id': 'Run ID',
+        'assay_id': 'Assay ID',
+        'cmpbatch_id': 'CmpBatch',
+        'cc50': 'CC50',
+        'cc50_unit': 'Unit',
+        'act_type': 'Act',
+        'pscore': 'pScore',
+        'data_quality': 'Quality',
+        'valid': 'Valid',
     }
 
     DICTIONARY_FIELDS = {
@@ -568,7 +580,17 @@ class AssayData_HC50(CmpBatchList_Base):
     from dplate.models import TestPlate
 
     LIST_VIEW_FIELDS = {
-        # "run_id":"Run ID",
+        'testplate_id': 'Plate',
+        'testwell_id': 'Well',
+        'run_id': 'Run ID',
+        'assay_id': 'Assay ID',
+        'cmpbatch_id': 'CmpBatch',
+        'hc50': 'HC50',
+        'hc50_unit': 'Unit',
+        'tox_type': 'Tox',
+        'pscore': 'pScore',
+        'data_quality': 'Quality',
+        'valid': 'Valid',
     }
 
     DICTIONARY_FIELDS = {

@@ -25,10 +25,11 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 
 # from adjcoadd.constants import *
 
-from dscreen.models import Screen_Run, Assay
+from dscreen.models import Screen_Run, Assay, AssayData_MIC, AssayData_CC50, AssayData_HC50
 #from dsummary.models import Summary_ScreenRun 
 from dscreen.forms import (ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm,
-                           Assay_Filter, Assay_CreateForm, Assay_UpdateForm)
+                           Assay_Filter, Assay_CreateForm, Assay_UpdateForm,
+                           AssayData_MIC_Filter, AssayData_CC50_Filter, AssayData_HC50_Filter)
 
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dscreen.utils.summary import update_screenrun_summary, get_projects_screenrun
@@ -341,3 +342,81 @@ def Assay_UpdateView(req, pk):
     
     return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
     #return render(req, "dscreen/assay/assay_update.html", context)
+
+
+#=================================================================================================
+# AssayData (MIC / CC50 / HC50)
+#=================================================================================================
+class AssayData_ListView(LoginRequiredMixin, Filtered_ListView):
+    """
+    Filter-first ListView for the (very large) AssayData result tables.
+
+    Uses the default `datatable/datatable_list_page.html` wrapper, which
+    renders a search prompt until at least one filter/search term is applied.
+    """
+    login_url = '/'
+    app_name = 'dscreen'
+    model_name = None
+    list_url = None
+    model_fields = None
+    filterset_class = None
+    ordering = ['testplate_id', 'testwell_id']
+    paginate_by = 50
+    # Ask the default list wrapper to only render the table once filters exist.
+    filter_first = True
+
+    def get_queryset(self):
+        # Filter-first: do not evaluate the (very large) queryset until
+        # at least one filter/search term has been supplied.
+        if not self.get_filter_record():
+            self.filterset = self.filterset_class(self.request.GET,
+                                                  queryset=self.model.objects.none(),
+                                                  filterset_dict={}, deep=False)
+            self.filter_count = 0
+            return self.model.objects.none()
+        return super().get_queryset()
+
+    def get_context_data(self, **kwargs):
+        # Replicate Filtered_ListView.get_context_data() but avoid the
+        # full-table COUNT() (expensive for very large tables).
+        context = super(Filtered_ListView, self).get_context_data(**kwargs)
+
+        filter_record_dict = self.get_filter_record()
+        filter_record = "Selected: " + str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
+
+        context['filter'] = self.filterset
+        context['paginate_by'] = self.get_paginate_by(self.object_list)
+        context['fields'] = self.model.get_fields(fields=self.model_fields)
+        context['filterset'] = filter_record
+        context['querycount'] = self.filter_count
+        context['Count'] = None
+        context['has_filters'] = bool(filter_record_dict)
+        context['model_name'] = self.model_name
+        context['view'] = self.request.GET.get('view', 'table')
+        context['list_url'] = self.list_url
+        context['filter_first'] = True
+        return context
+
+
+class AssayData_MIC_ListView(AssayData_ListView):
+    model = AssayData_MIC
+    filterset_class = AssayData_MIC_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'AssayData_MIC'
+    list_url = 'assaydata_mic_list'
+
+
+class AssayData_CC50_ListView(AssayData_ListView):
+    model = AssayData_CC50
+    filterset_class = AssayData_CC50_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'AssayData_CC50'
+    list_url = 'assaydata_cc50_list'
+
+
+class AssayData_HC50_ListView(AssayData_ListView):
+    model = AssayData_HC50
+    filterset_class = AssayData_HC50_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'AssayData_HC50'
+    list_url = 'assaydata_hc50_list'

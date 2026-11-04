@@ -6,6 +6,7 @@ from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_De
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             Assay_ListView, Assay_CreateView, Assay_UpdateView,
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
+                            AssayData_MIC_ListView, AssayData_CC50_ListView, AssayData_HC50_ListView,
                     ) 
 from dscreen.process_views import (Load_Readouts_ProcessView, Load_TestplateList_ProcessView, Load_Motherplates_ProcessView,
                                    Gen_Motherplates_PSR_ProcessView, Gen_Motherplates_HCR_ProcessView,
@@ -34,6 +35,10 @@ urlpatterns = [
     path('createAssay/', Assay_CreateView, name="assay_create"),
     path('updateAssay/<str:pk>', Assay_UpdateView, name="assay_update"),
     # path('deleteAssay/<str:pk>', Assay_RemoveView.as_view(), name="sassay_delete"),
+
+    path('assaydata_mic_list', AssayData_MIC_ListView.as_view(), name="assaydata_mic_list"),
+    path('assaydata_cc50_list', AssayData_CC50_ListView.as_view(), name="assaydata_cc50_list"),
+    path('assaydata_hc50_list', AssayData_HC50_ListView.as_view(), name="assaydata_hc50_list"),
 
 ]
 
