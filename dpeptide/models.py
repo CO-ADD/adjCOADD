@@ -78,7 +78,7 @@ class Peptide(AuditModel):
         # 'peptide_code':'Peptide Code',
         # 'peptide_identification':'Identification',
         # 'peptide_origin':'Origin',
-        'fasta':'Peptide Sequence',
+        'biln':'Peptide Sequence',
         # 'source':"Source",
         # 'source_code':"Source Code",
         # 'reference': "Reference",
@@ -94,7 +94,7 @@ class Peptide(AuditModel):
 
     DETAIL_VIEW_GROUPS = [
         ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes', 'peptide_origin','source', 'source_code','reference','biologist'],
-        ['fasta',],
+        ['biln',],
         #['mta_status','mta_notes','mta_document','biologist'],
     ]
 
@@ -242,14 +242,14 @@ class Peptide_Isoform(AuditModel):
         'isoform_id': {'Isoform ID': {'isoform_id': URL_LINKS['isoform_id']}},
         'isoform_name': 'Isoform Name',
         'peptide_id': 'Peptide',
-        #'fasta': 'Sequence',
+        #'biln': 'Sequence',
         'mw': 'MW',
         'biologist': 'Biologist',
     }
 
     DETAIL_VIEW_GROUPS = [
         ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'mw', 'nseq', 'biologist'],
-        ['fasta'],
+        ['biln'],
         #['peptide_modifications'],
     ]
     DICTIONARY_FIELDS = {}
