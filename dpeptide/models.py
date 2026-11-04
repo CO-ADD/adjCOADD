@@ -13,12 +13,41 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
-from applib.bio.biln import sync_biln_fasta
+from applib.bio.biln import sync_sequences
 from dorganism.models import Taxonomy 
 from adjcoadd.constants import *
 
 import logging
 logger = logging.getLogger(__name__)
+
+
+def _sync_sequence_fields(instance):
+    """Detect edited sequence fields and synchronise biln/helm/fasta.
+
+    Only conversions triggered by an edited field run. For a new instance all
+    three fields are treated as new. BILN is the master source when several
+    fields change at once (priority BILN > HELM > FASTA).
+    """
+    changed = set()
+    if instance.pk:
+        db = type(instance).objects.filter(pk=instance.pk).values_list(
+            'biln', 'helm', 'fasta').first()
+        if db is not None:
+            db_biln, db_helm, db_fasta = (v or '' for v in db)
+            if (instance.biln or '') != db_biln:
+                changed.add('biln')
+            if (instance.helm or '') != db_helm:
+                changed.add('helm')
+            if (instance.fasta or '') != db_fasta:
+                changed.add('fasta')
+        else:
+            changed = {'biln', 'helm', 'fasta'}
+    else:
+        changed = {'biln', 'helm', 'fasta'}
+
+    instance.biln, instance.helm, instance.fasta = sync_sequences(
+        instance.biln, instance.helm, instance.fasta, changed)
+
 
 #-------------------------------------------------------------------------------------------------
 # Peptide Application Model
@@ -192,7 +221,7 @@ class Peptide(AuditModel):
 
      #------------------------------------------------
     def save(self, *args, **kwargs):
-        self.biln, self.fasta = sync_biln_fasta(self.biln, self.fasta)
+        _sync_sequence_fields(self)
         if not self.peptide_id:
             _class = str(self.peptide_class.dict_value) if self.peptide_class else 'PEP'
             self.peptide_id = self.find_Next_PeptideID(_class)
@@ -301,7 +330,7 @@ class Peptide_Isoform(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        self.biln, self.fasta = sync_biln_fasta(self.biln, self.fasta)
+        _sync_sequence_fields(self)
         if not self.isoform_id:
             self.isoform_id = self.find_Next_IsoformID()
             if self.isoform_id:
@@ -524,7 +553,7 @@ class Modification_Dictionary(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        self.biln, self.fasta = sync_biln_fasta(self.biln, self.fasta)
+        _sync_sequence_fields(self)
         if not self.pepmod_id:
             self.pepmod_id = self.next_id()
             if self.pepmod_id:

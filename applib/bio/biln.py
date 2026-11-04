@@ -97,31 +97,71 @@ def is_valid_biln(biln):
         return False
 
 
-def sync_biln_fasta(biln, fasta):
-    """Sync BILN (master) and FASTA on save.
+def sync_sequences(biln, helm, fasta, changed=None):
+    """Synchronise BILN / HELM / FASTA from the edited field.
 
-    BILN is the master notation: when present it overwrites FASTA. When only
-    FASTA is provided (import), BILN is derived from it. If either conversion
-    fails, the derived field is cleared (empty).
+    Only the fields derived from the source field are regenerated. The source
+    is the highest-priority non-empty field in ``changed``; priority is
+    BILN > HELM > FASTA. If no edited field is non-empty, the values are
+    returned unchanged (no sync). On conversion failure the derived field is
+    cleared (empty).
+
+    :param changed: iterable of field names edited in this save
+        (subset of {'biln', 'helm', 'fasta'}).
+    :return: (biln, helm, fasta)
     """
     biln = (biln or '').strip()
+    helm = (helm or '').strip()
     fasta = (fasta or '').strip()
+    changed = set(changed or [])
+    values = {'biln': biln, 'helm': helm, 'fasta': fasta}
 
-    if biln:
+    # Pick the highest-priority edited field that is non-empty.
+    source = None
+    for field in ('biln', 'helm', 'fasta'):
+        if field in changed and values[field]:
+            source = field
+            break
+
+    if source is None:
+        # Nothing was edited (or the edited field was cleared) -> no sync.
+        return biln, helm, fasta
+
+    if source == 'biln':
+        try:
+            helm = biln_to_helm(biln)
+        except Exception:
+            helm = ''
         try:
             fasta = biln_to_fasta(biln)
         except Exception:
             fasta = ''
-        return biln, fasta
-
-    if fasta:
+    elif source == 'helm':
+        try:
+            biln = helm_to_biln(helm)
+        except Exception:
+            biln = ''
+        if biln:
+            try:
+                fasta = biln_to_fasta(biln)
+            except Exception:
+                fasta = ''
+        else:
+            fasta = ''
+    elif source == 'fasta':
         try:
             biln = fasta_to_biln(fasta)
         except Exception:
             biln = ''
-        return biln, fasta
+        if biln:
+            try:
+                helm = biln_to_helm(biln)
+            except Exception:
+                helm = ''
+        else:
+            helm = ''
 
-    return '', ''
+    return biln, helm, fasta
 
 
 def biln_to_mol(biln):
