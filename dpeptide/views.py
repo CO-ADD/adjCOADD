@@ -16,12 +16,13 @@ from applib.bio.biln import render_biln_svg, render_helm_svg
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 
-from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary, Isoform_Modification
+from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary, Isoform_Modification, Monomer
 from dpeptide.forms import (Peptide_Filter, Peptide_CreateForm, Peptide_UpdateForm,
                             Isoform_Filter, Isoform_CreateForm, Isoform_UpdateForm,
                             IsoBatch_CreateForm, IsoBatch_UpdateForm,
                             Modification_Filter, Modification_Form, Modification_UpdateForm,
-                            IsoformModification_Form)
+                            IsoformModification_Form,
+                            Monomer_Filter, Monomer_Form, Monomer_UpdateForm)
 
 #=================================================================================================
 # Helpers
@@ -468,6 +469,73 @@ def Modification_UpdateView(req, pk):
 
     form = Modification_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': pk, 'form_action': 'modification_update'}
+    return render(req, 'dpeptide/dpeptide_form_modal.html', context)
+
+
+#=================================================================================================
+# Monomer
+#=================================================================================================
+class Monomer_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Monomer
+    template_name = 'dpeptide/dict/dictionary_list.html'
+    filterset_class = Monomer_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Monomer'
+    app_name = 'dpeptide'
+    ordering = ['symbol']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Monomers'
+        context['model_name'] = self.model_name
+        context['list_url'] = 'monomer_list'
+        context['create_url'] = 'monomer_create'
+        context['update_url'] = 'monomer_update'
+        return context
+
+
+@login_required
+def Monomer_CreateView(req):
+    form = Monomer_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dpeptide'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Monomer', 'Completed')
+                return redirect('monomer_list')
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+        else:
+            messages.warning(req, f'Create failed due to {form.errors} error')
+        return redirect('monomer_list')
+
+    context = {'form': form, 'modal_title': 'Create Monomer', 'form_action': 'monomer_create'}
+    return render(req, 'dpeptide/dpeptide_form_modal.html', context)
+
+
+@login_required
+def Monomer_UpdateView(req, pk):
+    _object = get_object_or_404(Monomer, monomer_id=pk)
+    if req.method == 'POST':
+        form = Monomer_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dpeptide'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Monomer', 'Completed')
+                return redirect('monomer_list')
+            except Exception as err:
+                messages.warning(req, f'Update failed due to {err} error')
+        else:
+            messages.warning(req, f'Update failed due to {form.errors} error')
+        return redirect('monomer_list')
+
+    form = Monomer_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Monomer', 'modal_subtitle': pk, 'form_action': 'monomer_update'}
     return render(req, 'dpeptide/dpeptide_form_modal.html', context)
 
 

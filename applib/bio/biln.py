@@ -165,11 +165,36 @@ def sync_sequences(biln, helm, fasta, changed=None):
 
 
 def biln_to_mol(biln):
-    """Convert a BILN string to an RDKit molecule using pyPept."""
+    """Convert a BILN string to an RDKit molecule using pyPept.
+
+    The monomer library is read from the database (dpeptide.Monomer) when
+    available, falling back to pyPept's bundled SDF library otherwise.
+    """
     from pyPept.sequence import Sequence
     from pyPept.molecule import Molecule
+
+    monomer_df = _monomer_info_from_db()
+    if monomer_df is not None:
+        import pyPept.sequence as pseq
+        # Sequence.__init__ looks up get_monomer_info in the pyPept.sequence
+        # module namespace, so patching it makes pyPept read monomers from the
+        # database instead of the bundled SDF file.
+        pseq.get_monomer_info = lambda path: monomer_df
+
     seq = Sequence(biln)
     return Molecule(seq).get_molecule(fmt='ROMol')
+
+
+def _monomer_info_from_db():
+    """Return the pyPept monomer DataFrame from the database, or None."""
+    try:
+        from dpeptide.models import Monomer
+        df = Monomer.spec_from_database()
+        if df is not None and not df.empty:
+            return df
+    except Exception:
+        logger.exception('Failed to load monomer library from database')
+    return None
 
 
 def write_2d_svg(pep_mol, width=500, height=400):

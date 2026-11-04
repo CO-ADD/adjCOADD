@@ -12,7 +12,7 @@ from dorganism.models import  Taxonomy
 from apputil.models import Dictionary, ApplicationUser, Document
 from applib.django.base.filters import BaseStatus_Filter
 from adjcoadd.constants import ORGANISM_CLASSES, CELL_CLASSES 
-from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary, Isoform_Modification
+from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary, Isoform_Modification, Monomer
 
 
 class SequenceTextArea(forms.Textarea):
@@ -245,4 +245,92 @@ class IsoformModification_Form(Base_ModelForm):
         self.fields['pepmod_id'].queryset = Modification_Dictionary.objects.filter(
             astatus__gte=0).order_by('pepmod_code')
         self.fields['mod_position'].choices = Isoform_Modification.MOD_POSITION_CHOICES
+
+
+#=================================================================================================
+# Monomer
+#=================================================================================================
+def _monomer_list_to_str(values, length=4):
+    """Render an ArrayField list as comma-separated text ('H,OH,,')."""
+    values = list(values or [])
+    while len(values) < length:
+        values.append('')
+    return ','.join('' if v is None else str(v) for v in values[:length])
+
+
+def _monomer_str_to_str_list(value, length=4):
+    """Parse comma-separated text into a str/None list."""
+    out = [None if v.strip() in ('', 'None') else v.strip()
+           for v in (value or '').split(',')]
+    while len(out) < length:
+        out.append(None)
+    return out[:length]
+
+
+def _monomer_str_to_int_list(value, length=4):
+    """Parse comma-separated text into an int/None list."""
+    out = []
+    for v in (value or '').split(','):
+        v = v.strip()
+        if v in ('', 'None'):
+            out.append(None)
+        else:
+            out.append(int(v))
+    while len(out) < length:
+        out.append(None)
+    return out[:length]
+
+
+class Monomer_Filter(BaseStatus_Filter):
+    symbol = CharFilter(field_name='symbol', lookup_expr='icontains', label='Symbol')
+    monomer_name = CharFilter(field_name='monomer_name', lookup_expr='icontains', label='Name')
+    monomer_type = CharFilter(field_name='monomer_type', lookup_expr='icontains', label='Type')
+    monomer_subtype = CharFilter(field_name='monomer_subtype', lookup_expr='icontains', label='SubType')
+
+    class Meta:
+        model = Monomer
+        fields = ['symbol', 'monomer_name', 'monomer_type', 'monomer_subtype']
+
+
+class Monomer_Form(Base_ModelForm):
+    molfile = forms.CharField(widget=SequenceTextArea(), required=False)
+    rgroups = forms.CharField(required=False, help_text="Comma-separated R-group names, e.g. H,OH,,")
+    rgroup_idx = forms.CharField(required=False, help_text="Comma-separated R-group atom indices, e.g. 5,6,,")
+    attachment_idx = forms.CharField(required=False, help_text="Comma-separated attachment atom indices, e.g. 2,3,,")
+
+    class Meta:
+        model = Monomer
+        exclude = ['monomer_id', 'mol']
+        field_order = ['symbol', 'monomer_name', 'monomer_abbr', 'monomer_type',
+                       'monomer_subtype', 'nat_analog', 'pdb_name',
+                       'rgroups', 'rgroup_idx', 'attachment_idx', 'molfile']
+
+    def __init__(self, *args, **kwargs):
+        instance = kwargs.get('instance')
+        if instance:
+            initial = kwargs.setdefault('initial', {})
+            initial.setdefault('rgroups', _monomer_list_to_str(instance.rgroups))
+            initial.setdefault('rgroup_idx', _monomer_list_to_str(instance.rgroup_idx))
+            initial.setdefault('attachment_idx', _monomer_list_to_str(instance.attachment_idx))
+        super().__init__(*args, **kwargs)
+
+    def clean_rgroups(self):
+        return _monomer_str_to_str_list(self.cleaned_data.get('rgroups'))
+
+    def clean_rgroup_idx(self):
+        return _monomer_str_to_int_list(self.cleaned_data.get('rgroup_idx'))
+
+    def clean_attachment_idx(self):
+        return _monomer_str_to_int_list(self.cleaned_data.get('attachment_idx'))
+
+
+class Monomer_UpdateForm(Monomer_Form):
+    monomer_id = forms.CharField(disabled=True)
+
+    class Meta:
+        model = Monomer
+        exclude = ['mol']
+        field_order = ['monomer_id', 'symbol', 'monomer_name', 'monomer_abbr', 'monomer_type',
+                       'monomer_subtype', 'nat_analog', 'pdb_name',
+                       'rgroups', 'rgroup_idx', 'attachment_idx', 'molfile']
 

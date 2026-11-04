@@ -6,6 +6,7 @@ from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_Detail
                             IsoformModification_RemoveView, IsoformModification_ReorderView,
                             IsoBatch_CreateView, IsoBatch_UpdateView, IsoBatch_RemoveView,
                             Modification_ListView, Modification_CreateView, Modification_UpdateView,
+                            Monomer_ListView, Monomer_CreateView, Monomer_UpdateView,
                             Sequence_StructureView)
 
 
@@ -39,6 +40,11 @@ urlpatterns = [
     path('modification_list', Modification_ListView.as_view(), name="modification_list"),
     path('createModification/', Modification_CreateView, name="modification_create"),
     path('updateModification/<str:pk>', Modification_UpdateView, name="modification_update"),
+
+    # Monomer
+    path('monomer_list', Monomer_ListView.as_view(), name="monomer_list"),
+    path('createMonomer/', Monomer_CreateView, name="monomer_create"),
+    path('updateMonomer/<str:pk>', Monomer_UpdateView, name="monomer_update"),
 
     # Sequence structure preview
     path('sequence_structure', Sequence_StructureView, name="sequence_structure"),

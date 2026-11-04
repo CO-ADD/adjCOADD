@@ -2,12 +2,13 @@ import re
 
 #from django_rdkit import models
 from django.db import models
+from django_rdkit import models as rdm
 from model_utils import Choices
 from sequences import Sequence
 from django.core.validators import RegexValidator
 
 from django.contrib.postgres.fields import ArrayField
-from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.indexes import GinIndex, GistIndex
 from django.core.validators import MaxValueValidator, MinValueValidator 
 from django.db import transaction, IntegrityError
 from django.utils.text import slugify
@@ -562,6 +563,162 @@ class Modification_Dictionary(AuditModel):
         else:
             #self.save_batch()
             super(Modification_Dictionary, self).save(*args, **kwargs) 
+
+
+#=================================================================================================
+class Monomer(AuditModel):
+    """
+    Monomer library entry for BILN/HELM peptides.
+
+    Mirrors the pyPept monomer SDF (symbol, m_type, m_Rgroups, ...) so that
+    the monomer library can be stored in the database, edited by users, and
+    read back by pyPept via ``spec_from_database``.
+    """
+#=================================================================================================
+
+    ID_SEQUENCE = 'Monomer'
+    ID_PREFIX = 'MON'
+    ID_PAD = 5
+
+    LIST_VIEW_FIELDS = {
+        'monomer_id': 'Monomer ID',
+        'symbol': 'Symbol',
+        'monomer_name': 'Name',
+        'monomer_type': 'Type',
+        'monomer_subtype': 'SubType',
+        'nat_analog': 'Natural Analog',
+        'pdb_name': 'PDB',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['monomer_id', 'symbol', 'monomer_abbr', 'monomer_name'],
+        ['monomer_type', 'monomer_subtype', 'nat_analog', 'pdb_name'],
+    ]
+
+    monomer_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Monomer ID")
+    symbol = models.CharField(max_length=30, unique=True, verbose_name = "Symbol")
+    monomer_name = models.CharField(max_length=150, blank=True, verbose_name = "Name")
+    monomer_abbr = models.CharField(max_length=30, blank=True, verbose_name = "Abbreviation")
+    monomer_type = models.CharField(max_length=15, blank=True, verbose_name = "Type")
+    monomer_subtype = models.CharField(max_length=20, blank=True, verbose_name = "SubType")
+    nat_analog = models.CharField(max_length=10, blank=True, verbose_name = "Natural Analog")
+    pdb_name = models.CharField(max_length=10, blank=True, verbose_name = "PDB Name")
+
+    # Chemical structure: mol for querying/rendering, molfile keeps the exact
+    # SDF mol block (including R-group annotations) for pyPept round-tripping.
+    mol = rdm.MolField(blank=True, null=True, verbose_name = "Structure")
+    molfile = models.TextField(blank=True, verbose_name = "Mol Block")
+    
+    rgroups = ArrayField(models.CharField(max_length=10, blank=True, null=True),
+                         size=4, null=True, blank=True, verbose_name = "R-Groups")
+    rgroup_idx = ArrayField(models.IntegerField(null=True),
+                            size=4, null=True, blank=True, verbose_name = "R-Group Idx")
+    attachment_idx = ArrayField(models.IntegerField(null=True),
+                                size=4, null=True, blank=True, verbose_name = "Attachment Idx")
+
+    class Meta:
+        app_label = 'dpeptide'
+        db_table = 'monomer'
+        ordering = ['symbol']
+        indexes = [
+            models.Index(name="monomer_symbol_idx", fields=['symbol']),
+            models.Index(name="monomer_type_idx", fields=['monomer_type']),
+            GistIndex(name="monomer_mol_idx", fields=['mol']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"{self.symbol} ({self.monomer_id})"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.symbol}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, Symbol, verbose=0):
+        try:
+            retInstance = cls.objects.get(symbol=Symbol)
+        except cls.DoesNotExist:
+            if verbose:
+                logger.warning(f"[Monomer Not Found] {Symbol} ")
+            retInstance = None
+        return retInstance
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls, Symbol, verbose=0):
+        return cls.objects.filter(symbol=Symbol).exists()
+
+    #------------------------------------------------
+    def set_molecule(self, molblock):
+        """Parse a mol block and set both mol and molfile."""
+        from rdkit import Chem
+        mol = Chem.MolFromMolBlock(molblock) if molblock else None
+        if mol is not None:
+            self.mol = mol
+            self.molfile = molblock
+        return mol
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        # Keep the MolField in sync with the editable molfile.
+        if self.molfile:
+            from rdkit import Chem
+            mol = Chem.MolFromMolBlock(self.molfile)
+            if mol is not None:
+                self.mol = mol
+        if not self.monomer_id:
+            self.monomer_id = self.next_id()
+            if self.monomer_id:
+                super(Monomer, self).save(*args, **kwargs)
+        else:
+            super(Monomer, self).save(*args, **kwargs)
+
+    #------------------------------------------------
+    @classmethod
+    def spec_from_database(cls):
+        """Return a pyPept-compatible monomer DataFrame read from the database.
+
+        Equivalent to ``pyPept.sequence.get_monomer_info(sdf_path)``: indexed by
+        ``symbol`` with a ``m_romol`` column holding RDKit molecules, plus the
+        monomer property columns (m_Rgroups/m_RgroupIdx/m_attachmentPointIdx
+        parsed into lists).
+        """
+        import pandas as pd
+        from rdkit import Chem
+
+        records = []
+        for obj in cls.objects.filter(astatus__gte=0).order_by('symbol'):
+            mol = None
+            if obj.molfile:
+                mol = Chem.MolFromMolBlock(obj.molfile)
+            if mol is None and obj.mol is not None:
+                mol = obj.mol
+
+            records.append({
+                'symbol': obj.symbol,
+                'm_name': obj.monomer_name,
+                'm_abbr': obj.monomer_abbr,
+                'm_type': obj.monomer_type,
+                'm_subtype': obj.monomer_subtype,
+                'm_Rgroups': list(obj.rgroups or []) or [None, None, None, None],
+                'm_RgroupIdx': list(obj.rgroup_idx or []) or [None, None, None, None],
+                'm_attachmentPointIdx': list(obj.attachment_idx or []) or [None, None, None, None],
+                'natAnalog': obj.nat_analog,
+                'pdbName': obj.pdb_name,
+                'm_romol': mol,
+            })
+
+        df = pd.DataFrame(records)
+        if df.empty:
+            return df
+        return df.set_index('symbol')
+
+
+def spec_from_database():
+    """Module-level alias for Monomer.spec_from_database()."""
+    return Monomer.spec_from_database()
 
 
 #=================================================================================================
