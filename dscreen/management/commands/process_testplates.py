@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from applib.logging.validation_log import Validation_Log
 
 from dplate.models import TestPlate
-
+from applib.bio.doseresponse import process_testplate_doseresponse
 
 class Command(BaseCommand):
     
@@ -20,8 +20,15 @@ class Command(BaseCommand):
         
         valLog = Validation_Log("Process_TestPlates")
         
+        _dr_list = []
         if options['plateid']:
-            pass
+            djTP = TestPlate.get(options['plateid'])
+            if djTP is None:
+                print(f" [{self.command_process}] PlateID {options['plateid']} not found")
+                return()
+            
+            print(f" [{self.command_process}] Processing PlateID {options['plateid']} ...")
+            _dr_list = process_testplate_doseresponse(djTP)
             
         elif options['runid']:
             pass

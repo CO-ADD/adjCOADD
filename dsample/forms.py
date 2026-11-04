@@ -18,6 +18,7 @@ from applib.django.base.filters import BaseStatus_Filter, TrigramFilter
  
 #dSample
 from dsample.models import  Project, ABase_Compound, COADD_Compound, ABase_Compound_Batch
+from dplate.models import MasterWell
 
 #=================================================================================================
 # Project
@@ -205,6 +206,13 @@ class COADD_Filter(BaseStatus_Filter):
     std_metal = CharFilter(field_name='std_metal', lookup_expr='icontains')
     std_status = CharFilter(field_name='std_status', lookup_expr='icontains')
     pub_status = CharFilter(field_name='pub_status', lookup_expr='icontains')
+    barcode = CharFilter(method='filter_barcode', label='Barcode')
+
+    def filter_barcode(self, queryset, name, value):
+        # Match compounds via their Compound_Batch, using the barcodes
+        # assigned to MasterWells that hold that batch.
+        cmpbatch_ids = MasterWell.objects.filter(barcode__icontains=value).values_list('cmpbatch_id', flat=True)
+        return queryset.filter(cmpbatch_id__in=cmpbatch_ids)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -213,10 +221,10 @@ class COADD_Filter(BaseStatus_Filter):
             try:
                 self.filters[i].label = self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
             except Exception:
-                self.filters[i].label = i
+                self.filters[i].label = self.filters[i].label or i
 
     class Meta:
         model = COADD_Compound
         fields = ['compound_id', 'compound_code', 'compound_name',
                   'std_mf', 'std_structure_type', 'std_metal',
-                  'std_status', 'pub_status']
+                  'std_status', 'pub_status', 'barcode']
