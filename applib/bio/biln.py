@@ -11,6 +11,7 @@ pyPept is imported lazily so that the rest of the application can import this
 module without the package being installed.
 """
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -64,16 +65,25 @@ def fasta_to_biln(fasta):
 
 
 def biln_to_fasta(biln):
-    """Convert BILN to a FASTA sequence.
+    """Convert a BILN sequence to a FASTA one-letter sequence.
 
-    Modified/non-natural monomers are replaced by alanine (pyPept behaviour),
-    as FASTA cannot capture modifications or cyclisation.
+    Only the main peptide chain is considered (branched chains after '.' are
+    ignored). Only the 20 natural amino acids can be represented in FASTA, so
+    a modified/non-natural residue raises ValueError (the caller clears FASTA).
     """
     biln = (biln or '').strip()
     if not biln:
         return ''
-    from pyPept.conformer import Conformer
-    return Conformer.get_peptide(biln)
+
+    main_chain = biln.split('.')[0]
+    residues = []
+    for token in main_chain.split('-'):
+        res = re.sub(r'\([^)]*\)', '', token).strip()
+        if res in _STANDARD_AA:
+            residues.append(res)
+        else:
+            raise ValueError(f'Residue "{res}" cannot be represented in FASTA')
+    return ''.join(residues)
 
 
 def is_valid_biln(biln):

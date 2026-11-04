@@ -1160,16 +1160,6 @@ form p {
   max-width: 100%;
 }
 
-/* Inline 2D peptide structure (SVG from pyPept/RDKit) */
-.peptide-structure-svg {
-  max-width: 100%;
-  overflow-x: auto;
-}
-.peptide-structure-svg svg {
-  max-width: 100%;
-  height: auto;
-}
-
 /* Amino-acid / BILN / HELM sequence notation inputs */
 textarea.sequence-input {
   font-family: var(--bs-font-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
