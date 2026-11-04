@@ -13,6 +13,7 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
+from applib.bio.biln import sync_biln_fasta
 from dorganism.models import Taxonomy 
 from adjcoadd.constants import *
 
@@ -48,7 +49,7 @@ class Peptide(AuditModel):
         # 'peptide_code':'Peptide Code',
         # 'peptide_identification':'Identification',
         # 'peptide_origin':'Origin',
-        'seq':'Peptide Sequence',
+        'fasta':'Peptide Sequence',
         # 'source':"Source",
         # 'source_code':"Source Code",
         # 'reference': "Reference",
@@ -64,7 +65,7 @@ class Peptide(AuditModel):
 
     DETAIL_VIEW_GROUPS = [
         ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes', 'peptide_origin','source', 'source_code','reference','biologist'],
-        ['seq',],
+        ['fasta',],
         #['mta_status','mta_notes','mta_document','biologist'],
     ]
 
@@ -86,7 +87,7 @@ class Peptide(AuditModel):
 
     biln = models.TextField(blank=True, verbose_name = "BILN") 
     helm = models.TextField(blank=True, verbose_name = "HELM") 
-    seq = models.TextField(blank=True, verbose_name = "Seq") 
+    fasta = models.TextField(blank=True, verbose_name = "FASTA") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
@@ -191,6 +192,7 @@ class Peptide(AuditModel):
 
      #------------------------------------------------
     def save(self, *args, **kwargs):
+        self.biln, self.fasta = sync_biln_fasta(self.biln, self.fasta)
         if not self.peptide_id:
             _class = str(self.peptide_class.dict_value) if self.peptide_class else 'PEP'
             self.peptide_id = self.find_Next_PeptideID(_class)
@@ -211,14 +213,14 @@ class Peptide_Isoform(AuditModel):
         'isoform_id': {'Isoform ID': {'isoform_id': URL_LINKS['isoform_id']}},
         'isoform_name': 'Isoform Name',
         'peptide_id': 'Peptide',
-        #'seq': 'Sequence',
+        #'fasta': 'Sequence',
         'mw': 'MW',
         'biologist': 'Biologist',
     }
 
     DETAIL_VIEW_GROUPS = [
         ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'mw', 'nseq', 'biologist'],
-        ['seq'],
+        ['fasta'],
         #['peptide_modifications'],
     ]
     DICTIONARY_FIELDS = {}
@@ -241,7 +243,7 @@ class Peptide_Isoform(AuditModel):
 
     biln = models.TextField(blank=True, verbose_name = "BILN") 
     helm = models.TextField(blank=True, verbose_name = "HELM") 
-    seq = models.TextField(blank=True, verbose_name = "Seq") 
+    fasta = models.TextField(blank=True, verbose_name = "FASTA") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
@@ -299,6 +301,7 @@ class Peptide_Isoform(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
+        self.biln, self.fasta = sync_biln_fasta(self.biln, self.fasta)
         if not self.isoform_id:
             self.isoform_id = self.find_Next_IsoformID()
             if self.isoform_id:
@@ -466,7 +469,7 @@ class Modification_Dictionary(AuditModel):
     LIST_VIEW_FIELDS = {
         'pepmod_id': 'PepMod ID',
         'pepmod_code': 'PepMod Code',
-        'seq': 'Sequence',
+        'fasta': 'Sequence',
         'mw': 'MW',
     }
 
@@ -475,7 +478,7 @@ class Modification_Dictionary(AuditModel):
 
     biln = models.TextField(blank=True, verbose_name = "BILN") 
     helm = models.TextField(blank=True, verbose_name = "HELM") 
-    seq = models.TextField(blank=True, verbose_name = "Seq") 
+    fasta = models.TextField(blank=True, verbose_name = "FASTA") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
 
     class Meta:
@@ -521,6 +524,7 @@ class Modification_Dictionary(AuditModel):
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
+        self.biln, self.fasta = sync_biln_fasta(self.biln, self.fasta)
         if not self.pepmod_id:
             self.pepmod_id = self.next_id()
             if self.pepmod_id:

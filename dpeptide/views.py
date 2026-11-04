@@ -12,7 +12,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 
 from applib.django.base.views import Base_RemoveView, Filtered_ListView
-from applib.bio.biln import render_biln_svg, render_helm_svg
+from applib.bio.biln import biln_to_mol, render_biln_svg, render_helm_svg, write_2d_svg
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 
@@ -101,10 +101,20 @@ def Peptide_CreateView(req):
 @login_required
 def Peptide_DetailView(req, pk):
     _object = get_object_or_404(Peptide, peptide_id=pk)
+
+    svg_content = None
+    if _object.biln:
+        try:
+            pep_mol = biln_to_mol(_object.biln)
+            svg_content = write_2d_svg(pep_mol)
+        except Exception:
+            svg_content = None
+
     context = {
         'object': _object,
         'display_groups': _display_groups(_object, Peptide.DETAIL_VIEW_GROUPS),
         'doc_form': Document_Form,
+        'svg_content': svg_content,
     }
     return render(req, 'dpeptide/peptide/peptide_detail.html', context)
 

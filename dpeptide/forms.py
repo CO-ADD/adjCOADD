@@ -16,7 +16,7 @@ from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modificatio
 
 
 class SequenceTextArea(forms.Textarea):
-    """Multi-line, monospace textarea for amino-acid sequence notations (seq/BILN/HELM)."""
+    """Multi-line, monospace textarea for amino-acid sequence notations (FASTA/BILN/HELM)."""
     def __init__(self, *args, **kwargs):
         attrs = kwargs.get('attrs', {}) or {}
         attrs.setdefault('rows', '4')
@@ -61,7 +61,7 @@ class Peptide_CreateForm(Base_ModelForm):
 
     peptide_name= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     peptide_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
-    seq = forms.CharField(widget=SequenceTextArea(), required=False)
+    fasta = forms.CharField(widget=SequenceTextArea(), required=False)
     biln = forms.CharField(widget=SequenceTextArea(), required=False)
     helm = forms.CharField(widget=SequenceTextArea(), required=False)
     # prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -123,7 +123,7 @@ class Peptide_UpdateForm(Peptide_CreateForm):
         model=Peptide
         exclude=['assoc_documents']
         field_order = ['peptide_id', 'peptide_name', 'peptide_notes', 'peptide_class', 'peptide_panel',
-                       'seq', 'biln', 'helm', 'mw', 'nseq', 'peptide_origin', 'reference',
+                       'fasta', 'biln', 'helm', 'mw', 'nseq', 'peptide_origin', 'reference',
                        'mta_status', 'mta_notes', 'mta_document', 'biologist']
 
 
@@ -135,18 +135,18 @@ class Isoform_Filter(BaseStatus_Filter):
     isoform_name = CharFilter(field_name='isoform_name', lookup_expr='icontains', label='Isoform Name')
     peptide = CharFilter(field_name='peptide_id__peptide_id', lookup_expr='icontains', label='Peptide ID')
     peptide_name = CharFilter(field_name='peptide_id__peptide_name', lookup_expr='icontains', label='Peptide Name')
-    seq = CharFilter(field_name='seq', lookup_expr='icontains', label='Sequence')
+    fasta = CharFilter(field_name='fasta', lookup_expr='icontains', label='Sequence')
 
     class Meta:
         model = Peptide_Isoform
-        fields = ['isoform_id', 'isoform_name', 'peptide', 'peptide_name', 'seq']
+        fields = ['isoform_id', 'isoform_name', 'peptide', 'peptide_name', 'fasta']
 
 
 # -----------------------------------------------------------------
 class Isoform_CreateForm(Base_ModelForm):
     isoform_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}), required=False)
     isoform_notes = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False)
-    seq = forms.CharField(widget=SequenceTextArea(), required=False)
+    fasta = forms.CharField(widget=SequenceTextArea(), required=False)
     biln = forms.CharField(widget=SequenceTextArea(), required=False)
     helm = forms.CharField(widget=SequenceTextArea(), required=False)
     biologist = forms.ModelChoiceField(queryset=ApplicationUser.objects.all(), required=False)
@@ -159,7 +159,7 @@ class Isoform_CreateForm(Base_ModelForm):
     class Meta:
         model = Peptide_Isoform
         exclude = ['isoform_id', 'peptide_modifications', 'assoc_documents']
-        field_order = ['isoform_name', 'isoform_notes', 'peptide_id', 'seq', 'biln', 'helm', 'mw', 'nseq', 'biologist']
+        field_order = ['isoform_name', 'isoform_notes', 'peptide_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
 
 
 # -----------------------------------------------------------------
@@ -169,7 +169,7 @@ class Isoform_UpdateForm(Isoform_CreateForm):
     class Meta:
         model = Peptide_Isoform
         exclude = ['peptide_modifications', 'assoc_documents']
-        field_order = ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'seq', 'biln', 'helm', 'mw', 'nseq', 'biologist']
+        field_order = ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
 
 
 #=================================================================================================
@@ -214,14 +214,14 @@ class Modification_Filter(BaseStatus_Filter):
 
 
 class Modification_Form(Base_ModelForm):
-    seq = forms.CharField(widget=SequenceTextArea(), required=False)
+    fasta = forms.CharField(widget=SequenceTextArea(), required=False)
     biln = forms.CharField(widget=SequenceTextArea(), required=False)
     helm = forms.CharField(widget=SequenceTextArea(), required=False)
 
     class Meta:
         model = Modification_Dictionary
         exclude = ['pepmod_id']
-        field_order = ['pepmod_id', 'pepmod_code', 'seq', 'biln', 'helm', 'mw']
+        field_order = ['pepmod_id', 'pepmod_code', 'fasta', 'biln', 'helm', 'mw']
 
 
 class Modification_UpdateForm(Modification_Form):

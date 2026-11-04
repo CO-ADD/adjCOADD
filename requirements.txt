@@ -1,4 +1,4 @@
-# packages in environment at /home/swadmin/miniconda3/envs/dj61py314:
+﻿# packages in environment at /home/swadmin/miniconda3/envs/dj61py314:
 #
 # Name                           Version          Build                 Channel
 _openmp_mutex                    4.5              20_gnu                conda-forge
@@ -202,6 +202,6 @@ xorg-libxrender                  0.9.13           h7cc23a3_0            conda-fo
 zlib-ng                          2.3.3            hce19668_1            conda-forge
 zstd                             1.5.7            hb78ec9c_7            conda-forge
 
-
 # pip-installed packages (not available via conda-forge)
-helmkit                          0.7.12           pypi_0                pypi
+#   pip install git+https://github.com/Boehringer-Ingelheim/pyPept.git
+# pyPept depends on biopython and rdkit (rdkit already installed via conda-forge)
