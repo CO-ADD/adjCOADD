@@ -76,7 +76,13 @@ class DoseResponse():
 
             if dfValid:
 
-                self.dmax =                 
+                self.dmax = self.df['inhibition'].max(axis=0)
+                self.dmin = self.df['inhibition'].min(axis=0)
+                self.dave = self.df['inhibition'].mean(axis=0)
+
+                self.cmax = self.df['conc_lst'].max(axis=0)
+                self.cmin = self.df['conc_lst'].min(axis=0)
+
                 self.n_wells = len(self.df)
                 self.n_conc = len(self.df['conc'].unique())
                 
