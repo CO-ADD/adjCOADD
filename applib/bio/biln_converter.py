@@ -82,9 +82,9 @@ class BILN:
 
         helm_parts = []
         while len(helm):
-            m = re.search('\$[^,;]', helm)  # this excludes any $ signs in the cxsmiles
+            m = re.search(r'\$[^,;]', helm)  # this excludes any $ signs in the cxsmiles
             if m is None:
-                m = re.search('\$', helm)  # search for all other $ signs
+                m = re.search(r'\$', helm)  # search for all other $ signs
 
             if m is None:
                 helm_parts.append(helm)  # done, no more parts
