@@ -32,7 +32,7 @@ from dsample.models import Project, COADD_Compound, ABase_Compound_Batch, Projec
 from dsample.forms import Project_Filter, Project_CreateForm, Project_CreateMinimalForm, Project_UpdateForm, ABase_Filter, COADD_Filter
 from dsample.utils.summary import update_project_summary
 from dscreen.models import Screen_Run
-from dplate.models import MasterPlate, TestPlate
+from dplate.models import MasterPlate, MasterWell, TestPlate
 from dchem.models import Chem_Structure
 from applib.report.screen_data import Report_Screening
 from applib.project.stockprep_project import StockPrep_Project
@@ -489,6 +489,7 @@ def ABase_DetailView(req, pk):
       - read-only field groups
       - chemical structure rendering (reg_smiles) on the left
       - subsection accordion with the related ABase_Compound_Batch entries
+      - subsection accordion with Storage Locations (MasterWells) per batch
     """
     _object = get_object_or_404(ABase_Compound, compound_id=pk)
 
@@ -513,12 +514,31 @@ def ABase_DetailView(req, pk):
 
     _batches = ABase_Compound_Batch.objects.filter(compound_id=_object)
 
+    # Storage Locations: MasterWells holding each batch in Storage plates.
+    # MasterWell lives in the dplate database, so resolve the batch IDs in
+    # Python and query separately (PostgreSQL cannot JOIN across databases).
+    _cmpbatch_ids = list(_batches.values_list('cmpbatch_id', flat=True))
+    _storage_wells = MasterWell.objects.filter(
+        cmpbatch_id__in=_cmpbatch_ids,
+        plate_id__plate_type='Storage',
+    ).select_related('plate_id', 'plate_id__labware_id').order_by('cmpbatch_id', 'plate_id', 'well_id')
+
+    storage_by_batch = {}
+    for w in _storage_wells:
+        storage_by_batch.setdefault(w.cmpbatch_id_id, []).append(w)
+
+    _batch_storage = [
+        {'cmpbatch_id': batch.pk, 'wells': storage_by_batch.get(batch.pk, [])}
+        for batch in _batches
+    ]
+
     context = {
         'object': _object,
         'display_groups': _groups,
         'batch_objs': _batches,
         'batch_count': _batches.count(),
         'batch_fields': ABase_Compound_Batch.get_fields(),
+        'batch_storage': _batch_storage,
     }
     return render(req, "dsample/abase/abase_detail.html", context)
 
