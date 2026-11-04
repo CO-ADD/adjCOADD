@@ -43,10 +43,7 @@ def get_Antibiogram_byOrgID_Html(pk, with_style = False):
         else:
             html_table=df.to_html(classes=["dataframe", "table", "table-bordered", "fixTableHead"], index=False)
             html_pivtable = piv_table.to_html()
-
-        
             
-
         table={'n_entries':df_entries, 'html_table': html_table, 'pivot_table': html_pivtable} 
     else:
         table = {'n_entries':0, 'html_table': None, 'pivot_table': None}
