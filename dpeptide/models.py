@@ -114,9 +114,9 @@ class Peptide(AuditModel):
     #peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
     peptide_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Peptide")
 
-    biln = models.TextField(blank=True, verbose_name = "BILN") 
-    helm = models.TextField(blank=True, verbose_name = "HELM") 
-    fasta = models.TextField(blank=True, verbose_name = "FASTA") 
+    biln = models.TextField(blank=True, verbose_name = "Sequence (BILN)") 
+    helm = models.TextField(blank=True, verbose_name = "Sequence (HELM)") 
+    fasta = models.TextField(blank=True, verbose_name = "Sequence (FASTA)") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
@@ -270,9 +270,9 @@ class Peptide_Isoform(AuditModel):
         verbose_name = "Modifications",
     )
 
-    biln = models.TextField(blank=True, verbose_name = "BILN") 
-    helm = models.TextField(blank=True, verbose_name = "HELM") 
-    fasta = models.TextField(blank=True, verbose_name = "FASTA") 
+    biln = models.TextField(blank=True, verbose_name = "Sequence (BILN)") 
+    helm = models.TextField(blank=True, verbose_name = "Sequence (HELM)") 
+    fasta = models.TextField(blank=True, verbose_name = "Sequence (FASTA)") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 

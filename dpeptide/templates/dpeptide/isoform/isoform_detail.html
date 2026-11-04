@@ -50,6 +50,14 @@
                 </div>
               {% endfor %}
             </div>
+
+            {% if object.biln %}
+            <div class="mt-3">
+              <label class="form-label small fw-semibold mb-1">BILN</label>
+              <textarea class="form-control sequence-input font-monospace" rows="3" readonly>{{ object.biln }}</textarea>
+            </div>
+            {% endif %}
+
             <hr>
             {% include 'detailview/audit_status.html' %}
           </div>
