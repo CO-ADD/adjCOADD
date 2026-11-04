@@ -66,12 +66,20 @@ def _error_svg(message):
 class Peptide_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = Peptide
-    template_name = 'dpeptide/peptide/peptide_list.html'
+    template_name = 'datatable/datatable_list_page.html'
     filterset_class = Peptide_Filter
     model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Peptide'
     app_name = 'dpeptide'
     ordering = ['-acreated_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['list_url'] = 'peptide_list'
+        context['create_url'] = 'peptide_create'
+        context['update_url'] = 'peptide_update'
+        return context
 
 
 # -----------------------------------------------------------------
@@ -147,12 +155,20 @@ class Peptide_RemoveView(Base_RemoveView):
 class Isoform_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = Peptide_Isoform
-    template_name = 'dpeptide/isoform/isoform_list.html'
+    template_name = 'datatable/datatable_list_page.html'
     filterset_class = Isoform_Filter
     model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Peptide_Isoform'
     app_name = 'dpeptide'
     ordering = ['isoform_id']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['list_url'] = 'isoform_list'
+        context['create_url'] = 'isoform_create'
+        context['update_url'] = 'isoform_update'
+        return context
 
 
 # -----------------------------------------------------------------
@@ -411,7 +427,7 @@ class IsoBatch_RemoveView(Base_RemoveView):
 class Modification_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = Modification_Dictionary
-    template_name = 'dpeptide/dict/dictionary_list.html'
+    template_name = 'datatable/datatable_list_page.html'
     filterset_class = Modification_Filter
     model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Modification_Dictionary'
@@ -478,17 +494,24 @@ def Modification_UpdateView(req, pk):
 class Monomer_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = Monomer
-    template_name = 'dpeptide/dict/dictionary_list.html'
+    template_name = 'dpeptide/monomer/monomer_list.html'
     filterset_class = Monomer_Filter
     model_fields = model.LIST_VIEW_FIELDS
     model_name = 'Monomer'
     app_name = 'dpeptide'
     ordering = ['symbol']
+    paginate_by = 50
+
+    def get_paginate_by(self, queryset):
+        if self.request.GET.get('view') == 'card':
+            return 15
+        return super().get_paginate_by(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Monomers'
         context['model_name'] = self.model_name
+        context['view'] = self.request.GET.get('view', 'table')
         context['list_url'] = 'monomer_list'
         context['create_url'] = 'monomer_create'
         context['update_url'] = 'monomer_update'

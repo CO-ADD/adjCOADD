@@ -220,6 +220,10 @@ class Filtered_ListView(ListView):
     app_name = None
     model_name = None
 
+    # Default list template (full page wrapping datatable_pag_action.html);
+    # subclasses may override with a model-specific template.
+    template_name = 'datatable/datatable_list_page.html'
+
     #--------------------------------------------------------------------------
     @staticmethod
     def find_item_index(lst, item):
@@ -305,6 +309,7 @@ class Filtered_ListView(ListView):
         context['filterset'] = filter_record
         context['Count'] = self.model.objects.count()
         context['querycount'] = self.filter_count
+        context.setdefault('model_name', self.model_name or self.model.__name__)
 
         return context
     
