@@ -211,7 +211,10 @@ class COADD_Filter(BaseStatus_Filter):
     def filter_barcode(self, queryset, name, value):
         # Match compounds via their Compound_Batch, using the barcodes
         # assigned to MasterWells that hold that batch.
-        cmpbatch_ids = MasterWell.objects.filter(barcode__icontains=value).values_list('cmpbatch_id')
+        # MasterWell lives in the dplate database, so evaluate the IDs in
+        # Python (list()) rather than as a subquery - PostgreSQL cannot JOIN
+        # across the dsample/dplate databases.
+        cmpbatch_ids = list(MasterWell.objects.filter(barcode__icontains=value).values_list('cmpbatch_id', flat=True))
         return queryset.filter(cmpbatch_id__in=cmpbatch_ids)
 
     def __init__(self, *args, **kwargs):
