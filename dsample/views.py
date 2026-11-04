@@ -514,23 +514,15 @@ def ABase_DetailView(req, pk):
 
     _batches = ABase_Compound_Batch.objects.filter(compound_id=_object)
 
-    # Storage Locations: MasterWells holding each batch in Storage plates.
-    # MasterWell lives in the dplate database, so resolve the batch IDs in
-    # Python and query separately (PostgreSQL cannot JOIN across databases).
+    # Storage Locations: combined list of MasterWells holding any batch of
+    # this compound in Storage plates. MasterWell lives in the dplate
+    # database, so resolve the batch IDs in Python and query separately
+    # (PostgreSQL cannot JOIN across databases).
     _cmpbatch_ids = list(_batches.values_list('cmpbatch_id', flat=True))
     _storage_wells = MasterWell.objects.filter(
         cmpbatch_id__in=_cmpbatch_ids,
         plate_id__plate_type='Storage',
     ).select_related('plate_id', 'plate_id__labware_id').order_by('cmpbatch_id', 'plate_id', 'well_id')
-
-    storage_by_batch = {}
-    for w in _storage_wells:
-        storage_by_batch.setdefault(w.cmpbatch_id_id, []).append(w)
-
-    _batch_storage = [
-        {'cmpbatch_id': batch.pk, 'wells': storage_by_batch.get(batch.pk, [])}
-        for batch in _batches
-    ]
 
     context = {
         'object': _object,
@@ -538,7 +530,7 @@ def ABase_DetailView(req, pk):
         'batch_objs': _batches,
         'batch_count': _batches.count(),
         'batch_fields': ABase_Compound_Batch.get_fields(),
-        'batch_storage': _batch_storage,
+        'storage_wells': _storage_wells,
     }
     return render(req, "dsample/abase/abase_detail.html", context)
 
@@ -607,8 +599,9 @@ class COADD_ListView(LoginRequiredMixin, Filtered_ListView):
 def COADD_DetailView(req, pk):
     """
     Detail view for a COADD_Compound entry:
-      - read-only field groups (no subtables for now)
+      - read-only field groups
       - chemical structure rendering from std_smiles on the left
+      - subsection accordion with Storage Locations (MasterWells)
     """
     _object = get_object_or_404(COADD_Compound, compound_id=pk)
 
@@ -631,9 +624,21 @@ def COADD_DetailView(req, pk):
     for i in range(0, len(_rows), _chunk):
         _groups.append(_rows[i:i+_chunk])
 
+    # Storage Locations: MasterWells holding this compound's batch in Storage
+    # plates. MasterWell lives in the dplate database, so use the raw FK id
+    # (no cross-database JOIN is needed for the lookup itself).
+    if _object.cmpbatch_id_id:
+        _storage_wells = MasterWell.objects.filter(
+            cmpbatch_id=_object.cmpbatch_id_id,
+            plate_id__plate_type='Storage',
+        ).select_related('plate_id', 'plate_id__labware_id').order_by('plate_id', 'well_id')
+    else:
+        _storage_wells = MasterWell.objects.none()
+
     context = {
         'object': _object,
         'display_groups': _groups,
+        'storage_wells': _storage_wells,
     }
     return render(req, "dsample/coadd/coadd_detail.html", context)
 

@@ -36,6 +36,52 @@
       </div>
     </div>
 
+    <!-- Storage Locations -->
+    <div class="accordion bg-transparent w-100" id="coadd-storage">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_storage">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapseStorage" aria-expanded="true" aria-controls="collapseStorage">
+            <h5 class="fs-6 my-0">Storage Locations</h5>
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=storage_wells|length %}
+          </button>
+        </h2>
+        <div id="collapseStorage" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_storage"
+             data-bs-parent="#coadd-storage">
+          <div class="accordion-body">
+            {% if storage_wells %}
+              <div class="table-responsive">
+                <table class="table table-hover table-bg" style="width: 100%">
+                  <thead>
+                    <tr>
+                      <th>Plate ID</th>
+                      <th>Well ID</th>
+                      <th>Barcode</th>
+                      <th>Well Type</th>
+                      <th>Labware ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for w in storage_wells %}
+                      <tr>
+                        <td>{{ w.plate_id }}</td>
+                        <td>{{ w.well_id }}</td>
+                        <td>{{ w.barcode|default:'-' }}</td>
+                        <td>{{ w.plate_id.well_type }}</td>
+                        <td>{{ w.plate_id.labware_id }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <p class="text-muted m-0">No storage locations for this compound.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
