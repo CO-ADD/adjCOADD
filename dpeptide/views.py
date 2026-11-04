@@ -8,9 +8,11 @@ from django.contrib import messages
 from django.core.exceptions import FieldDoesNotExist, ValidationError
 from django.core.paginator import Paginator
 from django.db import transaction, IntegrityError
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 
 from applib.django.base.views import Base_RemoveView, Filtered_ListView
+from applib.bio.biln import render_biln_svg, render_helm_svg
 from apputil.models import ApplicationLog
 from apputil.forms import Document_Form
 
@@ -44,6 +46,17 @@ def _display_groups(instance, group_defs):
             rows.append({'label': field.verbose_name, 'value': value})
         groups.append(rows)
     return groups
+
+
+def _error_svg(message):
+    """Minimal SVG showing an error message, for <img> previews."""
+    text = message.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="500" height="80">'
+        f'<rect width="100%" height="100%" fill="#fff3cd" stroke="#ffc107"/>'
+        f'<text x="10" y="25" font-family="sans-serif" font-size="12" fill="#664d03">{text}</text>'
+        f'</svg>'
+    )
 
 
 #=================================================================================================
@@ -456,3 +469,24 @@ def Modification_UpdateView(req, pk):
     form = Modification_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': pk, 'form_action': 'modification_update'}
     return render(req, 'dpeptide/dpeptide_form_modal.html', context)
+
+
+#=================================================================================================
+# Sequence structure preview (BILN / HELM -> 2D)
+#=================================================================================================
+@login_required
+def Sequence_StructureView(req):
+    """Render a 2D structure SVG from a BILN or HELM string (via ?biln= / ?helm=)."""
+    biln = req.GET.get('biln') or ''
+    helm = req.GET.get('helm') or ''
+
+    try:
+        if biln:
+            svg = render_biln_svg(biln)
+        elif helm:
+            svg = render_helm_svg(helm)
+        else:
+            svg = _error_svg('No BILN or HELM sequence provided')
+        return HttpResponse(svg, content_type='image/svg+xml')
+    except Exception as err:
+        return HttpResponse(_error_svg(str(err)), content_type='image/svg+xml')

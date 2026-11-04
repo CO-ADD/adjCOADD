@@ -5,7 +5,8 @@ from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_Detail
                             IsoformModification_CreateView, IsoformModification_UpdateView,
                             IsoformModification_RemoveView, IsoformModification_ReorderView,
                             IsoBatch_CreateView, IsoBatch_UpdateView, IsoBatch_RemoveView,
-                            Modification_ListView, Modification_CreateView, Modification_UpdateView)
+                            Modification_ListView, Modification_CreateView, Modification_UpdateView,
+                            Sequence_StructureView)
 
 
 urlpatterns = [
@@ -38,4 +39,7 @@ urlpatterns = [
     path('modification_list', Modification_ListView.as_view(), name="modification_list"),
     path('createModification/', Modification_CreateView, name="modification_create"),
     path('updateModification/<str:pk>', Modification_UpdateView, name="modification_update"),
+
+    # Sequence structure preview
+    path('sequence_structure', Sequence_StructureView, name="sequence_structure"),
 ]

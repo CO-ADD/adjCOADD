@@ -1160,6 +1160,16 @@ form p {
   max-width: 100%;
 }
 
+/* Amino-acid / BILN / HELM sequence notation inputs */
+textarea.sequence-input {
+  font-family: var(--bs-font-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  width: 100%;
+}
+
 /* --------------------------- Plate map --------------------------*/
 .plate-map-scroll {
   overflow-x: auto;

@@ -26,3 +26,20 @@
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
   </div>
 </form>
+
+<script>
+  (function () {
+    document.querySelectorAll('textarea.sequence-input').forEach(function (ta) {
+      var counter = document.createElement('div');
+      counter.className = 'sequence-counter small text-muted mt-1';
+      counter.style.fontSize = '11px';
+      function update() {
+        var n = ta.value.length;
+        counter.textContent = n + ' character' + (n === 1 ? '' : 's');
+      }
+      ta.parentNode.insertBefore(counter, ta.nextSibling);
+      ta.addEventListener('input', update);
+      update();
+    });
+  })();
+</script>

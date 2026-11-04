@@ -84,9 +84,9 @@ class Peptide(AuditModel):
     #peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
     peptide_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Peptide")
 
-    bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
-    helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
-    seq= models.CharField(max_length=200, blank=True, verbose_name = "Seq") 
+    biln = models.TextField(blank=True, verbose_name = "BILN") 
+    helm = models.TextField(blank=True, verbose_name = "HELM") 
+    seq = models.TextField(blank=True, verbose_name = "Seq") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
@@ -120,7 +120,6 @@ class Peptide(AuditModel):
         db_table = 'peptide'
         #ordering=['peptide_id']
         indexes = [
-            models.Index(name="pep_bilm_idx", fields=['bilm']),
             #models.Index(name="pep_code_idx", fields=['peptide_code']),
             models.Index(name="pep_type_idx", fields=['peptide_class']),
             GinIndex(name="pep_panel_idx", fields=['peptide_panel']),
@@ -240,9 +239,9 @@ class Peptide_Isoform(AuditModel):
         verbose_name = "Modifications",
     )
 
-    bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
-    helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
-    seq= models.CharField(max_length=200, blank=True, verbose_name = "Seq") 
+    biln = models.TextField(blank=True, verbose_name = "BILN") 
+    helm = models.TextField(blank=True, verbose_name = "HELM") 
+    seq = models.TextField(blank=True, verbose_name = "Seq") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
@@ -256,7 +255,6 @@ class Peptide_Isoform(AuditModel):
         db_table = 'peptide_isoform'
         ordering=['peptide_id','isoform_id']
         indexes = [
-            models.Index(name="pepiso_bilm_idx", fields=['bilm']),
             models.Index(name="pepiso_pep_idx", fields=['peptide_id']),
         ]
 
@@ -468,17 +466,16 @@ class Modification_Dictionary(AuditModel):
     LIST_VIEW_FIELDS = {
         'pepmod_id': 'PepMod ID',
         'pepmod_code': 'PepMod Code',
-        'smiles': 'SMILES',
-        'mf': 'Formula',
+        'seq': 'Sequence',
         'mw': 'MW',
     }
 
     pepmod_id = models.CharField(primary_key=True, max_length=15, verbose_name = "PepMod ID")
     pepmod_code = models.CharField(max_length=25, verbose_name = "PepMod Code")
 
-    bilm= models.CharField(max_length=200, blank=True, verbose_name = "BILM") 
-    helm= models.CharField(max_length=200, blank=True, verbose_name = "HELM") 
-    seq= models.CharField(max_length=200, blank=True, verbose_name = "Seq") 
+    biln = models.TextField(blank=True, verbose_name = "BILN") 
+    helm = models.TextField(blank=True, verbose_name = "HELM") 
+    seq = models.TextField(blank=True, verbose_name = "Seq") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
 
     class Meta:

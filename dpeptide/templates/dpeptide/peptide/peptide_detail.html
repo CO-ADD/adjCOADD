@@ -54,6 +54,29 @@
         </div>
       </div>
     </div>
+
+    {% if object.biln or object.helm %}
+    <div class="accordion bg-transparent w-100" id="peptide-structure">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_struct">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapseStruct" aria-expanded="true" aria-controls="collapse_struct">
+            <h5 class="fs-6 my-0">Structure</h5>
+          </button>
+        </h2>
+        <div id="collapseStruct" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_struct"
+             data-bs-parent="#peptide-structure">
+          <div class="accordion-body">
+            {% if object.biln %}
+            <img src="{% url 'sequence_structure' %}?biln={{ object.biln|urlencode }}" alt="BILN structure" class="img-fluid">
+            {% elif object.helm %}
+            <img src="{% url 'sequence_structure' %}?helm={{ object.helm|urlencode }}" alt="HELM structure" class="img-fluid">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 {% endblock content %}

@@ -202,3 +202,6 @@ xorg-libxrender                  0.9.13           h7cc23a3_0            conda-fo
 zlib-ng                          2.3.3            hce19668_1            conda-forge
 zstd                             1.5.7            hb78ec9c_7            conda-forge
 
+
+# pip-installed packages (not available via conda-forge)
+helmkit                          0.7.12           pypi_0                pypi
