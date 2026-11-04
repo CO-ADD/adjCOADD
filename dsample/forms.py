@@ -211,7 +211,7 @@ class COADD_Filter(BaseStatus_Filter):
     def filter_barcode(self, queryset, name, value):
         # Match compounds via their Compound_Batch, using the barcodes
         # assigned to MasterWells that hold that batch.
-        cmpbatch_ids = MasterWell.objects.filter(barcode__icontains=value).values_list('cmpbatch_id', flat=True)
+        cmpbatch_ids = MasterWell.objects.filter(barcode__icontains=value).values_list('cmpbatch_id')
         return queryset.filter(cmpbatch_id__in=cmpbatch_ids)
 
     def __init__(self, *args, **kwargs):
