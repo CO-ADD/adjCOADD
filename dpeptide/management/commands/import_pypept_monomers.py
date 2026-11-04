@@ -43,6 +43,7 @@ class Command(BaseCommand):
             help='Path to the pyPept monomers SDF',
         )
         parser.add_argument('--upload', action='store_true', default=False)
+        parser.add_argument('--user', default='J.Zuegg', help='User name for created/updated records')
 
     def handle(self, *args, **options):
         path = options['path']
