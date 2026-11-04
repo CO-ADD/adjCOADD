@@ -52,7 +52,7 @@ class Command(BaseCommand):
         if not os.path.isfile(path):
             raise CommandError(f'Monomer SDF not found: {path}')
 
-        owner = ApplicationUser.objects.get(name=ApplicationUser.OWNER)
+        owner = ApplicationUser.objects.get(name= options['user'])
         created = updated = 0
 
         supplier = Chem.SDMolSupplier(path)
