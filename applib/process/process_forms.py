@@ -2,6 +2,7 @@ import shutil
 
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse
+from django.core.files.storage import FileSystemStorage
 from formtools.wizard.views import SessionWizardView
 
 from applib.process.process_stepforms import (MultipleFileInput, SingleFileInput,
@@ -41,9 +42,8 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     # define template
     template_name = None
     
-    # File storage is intentionally left unset (None): uploaded files are saved
-    # manually to a per-user location in process_step() via OverwriteStorage.
-    file_storage = None
+    # Define a file storage for handling file uploads
+    file_storage = FileSystemStorage(location='/tmp/')
     
     # Define Redirect URL
     redirect_url = None
