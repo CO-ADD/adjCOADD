@@ -533,6 +533,10 @@ LOGGING = {
             'filename': os.path.join(str(LOG_PATH), 'django_server.log'),
             'formatter': 'verbose',
         },
+       'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },        
         'user': {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(str(LOG_PATH), 'user.log'),
@@ -549,7 +553,6 @@ LOGGING = {
             'level': 'INFO', 
             'propagate': False,
         },
-    
         'user_log': {
             'handlers': ['user'],
             'level': 'INFO',
@@ -558,6 +561,10 @@ LOGGING = {
             'handlers': ['user'],
             'level': 'INFO',
             "propagate": True,
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG', 
         },
     },
 }

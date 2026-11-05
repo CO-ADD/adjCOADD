@@ -45,12 +45,13 @@ SEQRUN_SEP = "-"
 SAMPLEBATCH_SEP = "."
 COMPOUNDBATCH_SEP = "."
 COMPOUND_SEP = '|'
+COMPOUNDSET_SEP = ':'
 
 # -dScreen Settings ---------------------------------------------------
 RUN_CLASSES = ['PSR','HCR','QCR']
 RUN_SEP = ""
 DR_CLASSES = ['MIC','CC50','HC50']
-SYN_CLASSES = ['SYNMIC']
+SYN_CLASSES = ['synMIC']
 
 # -dSample Settings ---------------------------------------------------
 PROJECT_COMPOUND_STATUS = ['MissingStructureData','NoStructureData','ToImportStructureData',

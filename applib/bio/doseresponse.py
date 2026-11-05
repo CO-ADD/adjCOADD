@@ -108,7 +108,7 @@ class DoseResponse():
 
     #--------------------------------------------------------------
     def __repr__(self):
-        return(f"{self.cmpbatch_lst} {self.n_wells} {self.n_conc}")
+        return(f"{self.cmpbatch_lst} {self.n_wells} {self.n_conc} {self.mic_dmax}")
 
     #--------------------------------------------------------------
     def load_data(self,Plate_ID, Well_ID, Assay_ID):
@@ -173,7 +173,8 @@ class DoseResponse():
                     }
         
         ass_key = str(self.testplate.result_type)
-        if 'MIC' == ass_key:
+        if 'MIC' in ass_key:
+            ass_key = 'MIC'
             self.dr_type = ass_key
             self.assaydata_status = 'Exists'
             self.assaydata = AssayData_MIC.get(self.testplate.plate_id,self.testwell_id)
@@ -568,7 +569,7 @@ class DoseResponse_Plot():
         self.data_per_plot = 6
 
         
-# Process TestPlate -------------------------------------------------------------
+# Process TestPlate for Doseresponse ------------------------------------------------
 # 
 def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
     DR_Lst = []
@@ -579,15 +580,17 @@ def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
                 djTP.n_doseresponses = 0
                 if verbose > 0:
                     logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
-                
                 djTP.conv_list_to_string()
                 djTP.make_wells_df(ListToString=True)
 
                 grpData = djTP.wells_df.groupby('cmpbatch_sets') 
+                logger.debug(f" [{djTP.plate_id}] --1-- {djTP.result_type} {djTP.assay_id} {djTP.n_samples} Samples, {djTP.n_inhibitions} Inhibitions")
                 for CmpBatchSet,DRData in grpData:
                     if CmpBatchSet:
+                        logger.debug(f" [{djTP.plate_id}] --2-- {CmpBatchSet} {len(DRData)}")
                         # Use CmpBatch w/o SetID
                         CmpBatch = DRData['cmpbatches'].unique()[0]
+                        logger.debug(f" [{djTP.plate_id}] --3-- {CmpBatch}")
                         djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','mscore','conc_unit_lst']],djTP)
                         
                         # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)

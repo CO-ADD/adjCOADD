@@ -21,7 +21,20 @@ from adjcoadd.constants import *
 import logging
 logger = logging.getLogger(__name__)
 
+#-- TO DO -------------------------------------------------------------
+"""
+    Remove Peptide from Isoform 
+    Modification_Dictionary
+        Add Description, Cleavage sites ?
+    Isoform_Batch
+        Add volume, concentration, purity, storage conditions
+        
+    Sequence properties
+        MW, nSeq, pI, hydrophobicity, charge, 
+"""
+#-----------------------------------------------------------------------
 
+    
 def _sync_sequence_fields(instance):
     """Detect edited sequence fields and synchronise biln/helm/fasta.
 

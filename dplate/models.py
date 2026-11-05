@@ -1056,8 +1056,8 @@ class TestWell(Sample_Base):
             else:
                 logger.warning(f"[TestWell] SAVE has not PlateID and/or WellID") 
 
-
-    #------------------------------------------------  
+    #------------------------------------------------
+    # Converts the Lists (_lst) to StringsLists (_sets)  
     def conv_list_to_string(self):
         super().conv_list_to_string()
 
@@ -1066,15 +1066,27 @@ class TestWell(Sample_Base):
             self.sets = COMPOUND_SEP.join([str(x) for x in self.set_lst])
         self.cmpbatch_sets = ''
         if self.set_lst:
-            self.cmpbatch_sets = COMPOUND_SEP.join([f"{str(c)}_{str(s)}" for c,s in zip(self.cmpbatch_lst, self.set_lst) ])
+            self.cmpbatch_sets = COMPOUND_SEP.join([f"{str(c)}{COMPOUNDSET_SEP}{str(s)}" for c,s in zip(self.cmpbatch_lst, self.set_lst) ])
         else:
             self.cmpbatch_sets = self.cmpbatches
             
     #------------------------------------------------  
+    # Converts the StringsLists (_sets) back to Lists (_lst)   
     def conv_string_to_lst(self):
         super().conv_string_to_lst()
         self.set_lst = strList_to_List(self.sets,sep=COMPOUND_SEP,size=4,fill="")
 
+    #-----------------------------------------------
+    # Split cmpbatch_sets into cmpbatch_lst and set_lst
+    @staticmethod
+    def split_cmpbatch_sets(CmpBatchSet:str) -> tuple:
+        if CmpBatchSet:
+            _cmpbatch, _set = CmpBatchSet.split(COMPOUNDSET_SEP)
+        else:
+            _cmpbatch = ''
+            _set = ''
+        return(_cmpbatch, _set)
+        
     #------------------------------------------------  
     def fields_to_dict(self,AuditFields=False, ModelFields=[], ClassFields=[], ReadoutField=True):
         _dict = super().fields_to_dict(AuditFields=AuditFields, ModelFields=ModelFields, ClassFields=ClassFields)
