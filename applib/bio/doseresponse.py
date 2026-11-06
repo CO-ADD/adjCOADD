@@ -108,7 +108,7 @@ class DoseResponse():
 
     #--------------------------------------------------------------
     def __repr__(self):
-        return(f"{self.cmpbatch_lst} {self.n_wells} {self.n_conc} {self.mic_dmax}")
+        return(f"{COMPOUND_SEP.join(self.cmpbatch_lst)} {self.n_wells} {self.n_conc} {self.mic_dmax}")
 
     #--------------------------------------------------------------
     def load_data(self,Plate_ID, Well_ID, Assay_ID):
