@@ -386,7 +386,9 @@ class Isoform_Batch(AuditModel):
 
     DICTIONARY_FIELDS = {
         'qc_status':'QC_Status',
-        'source_type' : 'Peptide_Source'
+        'source_type' : 'Peptide_Source',
+        'conc_units' : 'Concentration_Units',
+        'init_amount_unit' : 'Amount_Units',
     }
     
     FORM_GROUPS = {
@@ -403,6 +405,14 @@ class Isoform_Batch(AuditModel):
     source_code = models.CharField(max_length=120, blank=True, verbose_name = "Source Code")
     source_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Source Type", on_delete=models.DO_NOTHING,
         db_column="source_type", related_name="%(class)s_source_type")
+    
+    conc = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="Concentration")
+    conc_units = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Concentration Units", on_delete=models.DO_NOTHING,
+        db_column="conc_units", related_name="%(class)s_conc_units")
+    
+    init_amount = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Init Amount")
+    init_amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Init Amount Unit", on_delete=models.DO_NOTHING,
+        db_column="init_amount_unit", related_name="%(class)s_init_amount_unit")
 
     quality_source = models.CharField(max_length=150, blank=True, verbose_name = "QC Source")
     qc_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "QC status", on_delete=models.DO_NOTHING,
