@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dpeptide', '0007_isoformbatch_concentration'),
+        ('dpeptide', '0008_alter_modification_dictionary_fasta_and_more'),
     ]
 
     operations = [
