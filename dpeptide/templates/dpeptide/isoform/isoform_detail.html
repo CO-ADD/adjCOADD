@@ -58,6 +58,27 @@
             </div>
             {% endif %}
 
+            <div class="row mt-3">
+              <div class="col-md-3">
+                <table class="table table-hover table-sm align-middle table-bordered mb-0">
+                  <tbody>
+                    <tr>
+                      <th scope="row" class="table-label-col">pI</th>
+                      <td>{{ object.isoelectric_point|default_if_none:'—' }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="table-label-col">Hydrophobicity (GRAVY)</th>
+                      <td>{{ object.gravy|default_if_none:'—' }}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" class="table-label-col">Charge @ pH 7</th>
+                      <td>{{ object.charge_at_ph7|default_if_none:'—' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <hr>
             {% include 'detailview/audit_status.html' %}
           </div>

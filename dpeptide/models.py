@@ -14,12 +14,15 @@ from django.db import transaction, IntegrityError
 from django.utils.text import slugify
 
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
-from applib.bio.biln import sync_sequences
+from applib.bio.biln import sync_sequences, fasta_to_biln, biln_residue_count, biln_molecular_weight
 from dorganism.models import Taxonomy 
 from adjcoadd.constants import *
 
 import logging
 logger = logging.getLogger(__name__)
+
+# Natural amino-acid one-letter codes (FASTA).
+_NATURAL_AA = set('ACDEFGHIKLMNPQRSTVWY')
 
 #-- TO DO -------------------------------------------------------------
 """
@@ -63,6 +66,96 @@ def _sync_sequence_fields(instance):
         instance.biln, instance.helm, instance.fasta, changed)
 
 
+def _compute_sequence_properties(instance):
+    """Update molecular weight (mw) and residue count (nseq) from the sequence.
+
+    MW is the average molecular weight of the RDKit molecule built from BILN;
+    nseq is the amino-acid count from FASTA when available, falling back to the
+    number of residues in the main BILN chain. All failures degrade gracefully
+    (values left at 0).
+    """
+    biln = (instance.biln or '').strip()
+    fasta = (instance.fasta or '').strip()
+
+    if not biln:
+        # No BILN sequence -> no molecule to weigh; only FASTA length (if any).
+        instance.nseq = len(fasta) if fasta else 0
+        instance.mw = 0
+        return
+
+    if fasta:
+        instance.nseq = len(fasta)
+    else:
+        try:
+            instance.nseq = biln_residue_count(biln)
+        except Exception:
+            instance.nseq = 0
+
+    try:
+        mw = biln_molecular_weight(biln)
+        instance.mw = round(mw, 3) if mw else 0
+    except Exception:
+        instance.mw = 0
+
+
+def _protein_analysis(fasta):
+    """Return a BioPython ProteinAnalysis for a natural FASTA, or None.
+
+    Modified/non-natural sequences (and any BioPython import failure) return
+    None so callers can fall back gracefully.
+    """
+    fasta = ''.join(str(fasta or '').split()).upper()
+    if not fasta or any(ch not in _NATURAL_AA for ch in fasta):
+        return None
+    try:
+        from Bio.SeqUtils.ProtParam import ProteinAnalysis
+        return ProteinAnalysis(fasta)
+    except Exception:
+        return None
+
+
+def _sequence_segment(instance):
+    """Return the BILN segment for a Peptide / Modification_Dictionary instance.
+
+    Prefers the stored BILN; otherwise derives BILN from FASTA. Empty on
+    failure so concatenation never inserts a broken segment.
+    """
+    biln = (getattr(instance, 'biln', '') or '').strip()
+    if biln:
+        return biln
+    fasta = (getattr(instance, 'fasta', '') or '').strip()
+    if fasta:
+        try:
+            return fasta_to_biln(fasta)
+        except Exception:
+            return ''
+    return ''
+
+
+#=================================================================================================
+class PeptideSequencePropertiesMixin:
+    """Computed peptide properties derived from the FASTA sequence (BioPython).
+
+    Read-only; used by Peptide and Peptide_Isoform for display. They return
+    None for modified/non-natural sequences which BioPython cannot analyse.
+    """
+
+    @property
+    def isoelectric_point(self):
+        pa = _protein_analysis(self.fasta)
+        return round(pa.isoelectric_point(), 2) if pa else None
+
+    @property
+    def gravy(self):
+        pa = _protein_analysis(self.fasta)
+        return round(pa.gravy(), 3) if pa else None
+
+    @property
+    def charge_at_ph7(self):
+        pa = _protein_analysis(self.fasta)
+        return round(pa.charge_at_pH(7.0), 2) if pa else None
+
+
 #-------------------------------------------------------------------------------------------------
 # Peptide Application Model
 # Peptide
@@ -76,7 +169,7 @@ def _sync_sequence_fields(instance):
 #-------------------------------------------------------------------------------------------------
 
 #=================================================================================================
-class Peptide(AuditModel):
+class Peptide(PeptideSequencePropertiesMixin, AuditModel):
     """
     Main class of Peptides s
     
@@ -108,6 +201,7 @@ class Peptide(AuditModel):
 
     DETAIL_VIEW_GROUPS = [
         ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes', 'peptide_origin','source', 'source_code','reference','biologist'],
+        ['mw', 'nseq'],
         ['biln',],
         #['mta_status','mta_notes','mta_document','biologist'],
     ]
@@ -236,6 +330,7 @@ class Peptide(AuditModel):
      #------------------------------------------------
     def save(self, *args, **kwargs):
         _sync_sequence_fields(self)
+        _compute_sequence_properties(self)
         if not self.peptide_id:
             _class = str(self.peptide_class.dict_value) if self.peptide_class else 'PEP'
             self.peptide_id = self.find_Next_PeptideID(_class)
@@ -246,7 +341,7 @@ class Peptide(AuditModel):
 
 
 #=================================================================================================
-class Peptide_Isoform(AuditModel):
+class Peptide_Isoform(PeptideSequencePropertiesMixin, AuditModel):
     """
     Isoform - a modified variant of a Peptide
     
@@ -345,12 +440,43 @@ class Peptide_Isoform(AuditModel):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         _sync_sequence_fields(self)
+        _compute_sequence_properties(self)
         if not self.isoform_id:
             self.isoform_id = self.find_Next_IsoformID()
             if self.isoform_id:
                 super(Peptide_Isoform, self).save(*args, **kwargs)
         else:
             super(Peptide_Isoform, self).save(*args, **kwargs)
+
+    #------------------------------------------------
+    def rebuild_sequence_from_modifications(self, *args, **kwargs):
+        """Rebuild the isoform sequence from the parent peptide plus its
+        terminal modifications, then re-sync and re-save.
+
+        Assembly order (per project convention):
+            C-terminal modifications (ordered by mod_order) at the FRONT,
+            then the parent peptide sequence,
+            then N-terminal modifications (ordered by mod_order) at the END.
+        Internal ('I') modifications are not concatenated.
+        """
+        parts = []
+        for link in self.modification_links.filter(mod_position='C').order_by('mod_order'):
+            seg = _sequence_segment(link.pepmod_id)
+            if seg:
+                parts.append(seg)
+
+        if self.peptide_id:
+            seg = _sequence_segment(self.peptide_id)
+            if seg:
+                parts.append(seg)
+
+        for link in self.modification_links.filter(mod_position='N').order_by('mod_order'):
+            seg = _sequence_segment(link.pepmod_id)
+            if seg:
+                parts.append(seg)
+
+        self.biln = '-'.join(parts)
+        self.save(*args, **kwargs)
 
     #------------------------------------------------
     @property
@@ -779,4 +905,24 @@ class Isoform_Modification(models.Model):
     #------------------------------------------------
     def __str__(self) -> str:
         return f"{self.pepmod_id} ({self.get_mod_position_display()} {self.mod_order})"
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        super(Isoform_Modification, self).save(*args, **kwargs)
+        # Rebuild the parent isoform's sequence whenever a modification link
+        # is added or changed. Best-effort: a rebuild failure must not roll
+        # back the saved modification link.
+        try:
+            self.isoform_id.rebuild_sequence_from_modifications()
+        except Exception:
+            logger.exception('Failed to rebuild isoform sequence after modification save')
+
+    #------------------------------------------------
+    def delete(self, *args, **kwargs):
+        isoform = self.isoform_id
+        super(Isoform_Modification, self).delete(*args, **kwargs)
+        try:
+            isoform.rebuild_sequence_from_modifications()
+        except Exception:
+            logger.exception('Failed to rebuild isoform sequence after modification removal')
 

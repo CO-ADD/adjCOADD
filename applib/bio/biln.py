@@ -197,6 +197,32 @@ def _monomer_info_from_db():
     return None
 
 
+def biln_residue_count(biln):
+    """Number of residues in the main BILN chain.
+
+    Branch chains (after a '.') are ignored; residues are the '-' separated
+    tokens of the main chain.
+    """
+    biln = (biln or '').strip()
+    if not biln:
+        return 0
+    main_chain = biln.split('.')[0]
+    return sum(1 for token in main_chain.split('-') if token.strip())
+
+
+def biln_molecular_weight(biln):
+    """Average molecular weight (Da) of a BILN peptide, via RDKit.
+
+    Raises ValueError/ImportError when the sequence cannot be converted or the
+    required packages are unavailable; callers should handle those cases.
+    """
+    from rdkit.Chem import Descriptors
+    mol = biln_to_mol(biln)
+    if mol is None:
+        raise ValueError('Unable to build molecule from BILN sequence')
+    return float(Descriptors.MolWt(mol))
+
+
 def write_2d_svg(pep_mol, width=500, height=400):
     """Render an RDKit molecule (e.g. from pyPept) to a 2D SVG string."""
     from rdkit.Chem import rdMolDraw2D
