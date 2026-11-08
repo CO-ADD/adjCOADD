@@ -185,11 +185,13 @@ class IsoBatch_CreateForm(Base_ModelForm):
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
         self.fields['qc_status'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Isoform_Batch.DICTIONARY_FIELDS['qc_status'])]
         self.fields['source_type'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Isoform_Batch.DICTIONARY_FIELDS['source_type'])]
+        self.fields['conc_unit'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Isoform_Batch.DICTIONARY_FIELDS['conc_unit'])]
+        self.fields['init_amount_unit'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Isoform_Batch.DICTIONARY_FIELDS['init_amount_unit'])]
 
     class Meta:
         model = Isoform_Batch
         exclude = ['isoformbatch_id', 'isoform_id', 'batch_id']
-        field_order = ['batch_notes', 'source', 'source_code', 'source_type', 'qc_status', 'quality_source', 'qc_record', 'stock_date', 'stock_level', 'biologist']
+        field_order = ['batch_notes', 'source', 'source_code', 'source_type', 'qc_status', 'quality_source', 'qc_record', 'stock_date', 'stock_level', 'conc', 'conc_unit', 'init_amount', 'init_amount_unit', 'biologist']
 
 
 # -----------------------------------------------------------------
@@ -199,7 +201,7 @@ class IsoBatch_UpdateForm(IsoBatch_CreateForm):
     class Meta:
         model = Isoform_Batch
         exclude = ['isoform_id', 'batch_id']
-        field_order = ['isoformbatch_id', 'batch_notes', 'source', 'source_code', 'source_type', 'qc_status', 'quality_source', 'qc_record', 'stock_date', 'stock_level', 'biologist']
+        field_order = ['isoformbatch_id', 'batch_notes', 'source', 'source_code', 'source_type', 'qc_status', 'quality_source', 'qc_record', 'stock_date', 'stock_level', 'conc', 'conc_unit', 'init_amount', 'init_amount_unit', 'biologist']
 
 
 #=================================================================================================

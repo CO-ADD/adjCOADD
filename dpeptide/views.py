@@ -197,13 +197,10 @@ def Isoform_CreateView(req):
 @login_required
 def Isoform_DetailView(req, pk):
     _object = get_object_or_404(Peptide_Isoform, isoform_id=pk)
-    _peptide = _object.peptide_id
 
     context = {
         'object': _object,
-        'peptide': _peptide,
         'display_groups': _display_groups(_object, Peptide_Isoform.DETAIL_VIEW_GROUPS),
-        'peptide_groups': _display_groups(_peptide, Peptide.DETAIL_VIEW_GROUPS),
         'doc_form': Document_Form,
     }
 

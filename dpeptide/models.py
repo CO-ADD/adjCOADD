@@ -255,7 +255,7 @@ class Peptide_Isoform(AuditModel):
     LIST_VIEW_FIELDS = {
         'isoform_id': {'Isoform ID': {'isoform_id': URL_LINKS['isoform_id']}},
         'isoform_name': 'Isoform Name',
-        'peptide_id': 'Peptide',
+        'peptide_id': {'Peptide ID': {'peptide_id': URL_LINKS['peptide_id']}},
         #'biln': 'Sequence',
         'mw': 'MW',
         'biologist': 'Biologist',
@@ -379,20 +379,22 @@ class Isoform_Batch(AuditModel):
         "source_type":"Method",
         "qc_status":"QC",
         "quality_source": "Quality by",
-        "stock_date":"Stock Date",
-        "stock_level":"Stock Levels",
+        "conc":"Conc",
+        "conc_unit":"Conc Units",
+        "init_amount":"Amount",
+        "init_amount_unit":"Amount Unit",
         "biologist":"Biologist"
     }
 
     DICTIONARY_FIELDS = {
         'qc_status':'QC_Status',
         'source_type' : 'Peptide_Source',
-        'conc_units' : 'Concentration_Units',
+        'conc_unit' : 'Concentration_Units',
         'init_amount_unit' : 'Amount_Units',
     }
     
     FORM_GROUPS = {
-       'Group1': ["batch_id", "batch_notes", "qc_status", "quality_source", "stock_date", "stock_level", "biologist", "source", "source_code", "source_type" ]
+       'Group1': ["batch_id", "batch_notes", "qc_status", "quality_source", "stock_date", "stock_level", "biologist", "source", "source_code", "source_type", "conc", "conc_unit", "init_amount", "init_amount_unit" ]
        }
 
     isoformbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "IsoFormBatch ID")
@@ -407,8 +409,8 @@ class Isoform_Batch(AuditModel):
         db_column="source_type", related_name="%(class)s_source_type")
     
     conc = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="Concentration")
-    conc_units = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Concentration Units", on_delete=models.DO_NOTHING,
-        db_column="conc_units", related_name="%(class)s_conc_units")
+    conc_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Concentration Unit", on_delete=models.DO_NOTHING,
+        db_column="conc_unit", related_name="%(class)s_conc_unit")
     
     init_amount = models.DecimalField(max_digits=12, decimal_places=3, default=0, verbose_name = "Init Amount")
     init_amount_unit = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Init Amount Unit", on_delete=models.DO_NOTHING,
