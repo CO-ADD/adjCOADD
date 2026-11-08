@@ -778,9 +778,9 @@ class Monomer(AuditModel):
     
     rgroups = ArrayField(models.CharField(max_length=10, blank=True, null=True),
                          size=4, null=True, blank=True, verbose_name = "R-Groups")
-    rgroup_idx = ArrayField(models.IntegerField(null=True),
+    rgroup_idx = ArrayField(models.IntegerField(null=True, blank=True),
                             size=4, null=True, blank=True, verbose_name = "R-Group Idx")
-    attachment_idx = ArrayField(models.IntegerField(null=True),
+    attachment_idx = ArrayField(models.IntegerField(null=True, blank=True),
                                 size=4, null=True, blank=True, verbose_name = "Attachment Idx")
 
     class Meta:
