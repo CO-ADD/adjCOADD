@@ -66,19 +66,17 @@ def _sync_sequence_fields(instance):
         instance.biln, instance.helm, instance.fasta, changed)
 
 
-def _compute_sequence_properties(instance):
-    """Update sequence-derived properties (mw, nseq, pI, gravy, charge).
+def _compute_mw_nseq(instance):
+    """Update molecular weight (mw) and residue count (nseq) from the sequence.
 
-    MW is the average molecular weight of the RDKit molecule built from BILN;
     nseq is the amino-acid count from FASTA when available, falling back to the
-    number of residues in the main BILN chain. isoelectric_point / gravy /
-    charge_at_ph7 are computed from the FASTA sequence via BioPython and left
-    NULL for modified/non-natural sequences. All failures degrade gracefully.
+    number of residues in the main BILN chain; mw is the average molecular
+    weight of the RDKit molecule built from BILN. All failures degrade
+    gracefully (values left at 0).
     """
     biln = (instance.biln or '').strip()
     fasta = (instance.fasta or '').strip()
 
-    # nseq
     if fasta:
         instance.nseq = len(fasta)
     elif biln:
@@ -89,7 +87,6 @@ def _compute_sequence_properties(instance):
     else:
         instance.nseq = 0
 
-    # mw
     if biln:
         try:
             mw = biln_molecular_weight(biln)
@@ -98,6 +95,18 @@ def _compute_sequence_properties(instance):
             instance.mw = 0
     else:
         instance.mw = 0
+
+
+def _compute_sequence_properties(instance):
+    """Update sequence-derived properties (mw, nseq, pI, gravy, charge).
+
+    MW/nseq via ``_compute_mw_nseq``; isoelectric_point / gravy / charge_at_ph7
+    are computed from the FASTA sequence via BioPython and left NULL for
+    modified/non-natural sequences. All failures degrade gracefully.
+    """
+    _compute_mw_nseq(instance)
+
+    fasta = (instance.fasta or '').strip()
 
     # pI / hydrophobicity / charge (BioPython, natural sequences only)
     pa = _protein_analysis(fasta)
@@ -654,8 +663,9 @@ class Modification_Dictionary(AuditModel):
     LIST_VIEW_FIELDS = {
         'pepmod_id': 'PepMod ID',
         'pepmod_code': 'PepMod Code',
-        'fasta': 'Sequence',
         'mw': 'MW',
+        'nseq': 'nSeq',
+        'fasta': 'Sequence',
     }
 
     pepmod_id = models.CharField(primary_key=True, max_length=15, verbose_name = "PepMod ID")
@@ -665,6 +675,7 @@ class Modification_Dictionary(AuditModel):
     helm = models.TextField(blank=True, verbose_name = "HELM") 
     fasta = models.TextField(blank=True, verbose_name = "FASTA") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
+    nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
     class Meta:
         app_label = 'dpeptide'
@@ -710,6 +721,7 @@ class Modification_Dictionary(AuditModel):
     #------------------------------------------------
     def save(self, *args, **kwargs):
         _sync_sequence_fields(self)
+        _compute_mw_nseq(self)
         if not self.pepmod_id:
             self.pepmod_id = self.next_id()
             if self.pepmod_id:

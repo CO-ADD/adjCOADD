@@ -29,6 +29,7 @@
           <span class="fw-semibold">{{ link.pepmod_id.pepmod_code }}</span>
           <span class="text-muted small">({{ link.pepmod_id.pepmod_id }})</span>
           {% if link.pepmod_id.mw %}<span class="text-muted small"> · MW {{ link.pepmod_id.mw }}</span>{% endif %}
+          {% if link.pepmod_id.nseq %}<span class="text-muted small"> · nSeq {{ link.pepmod_id.nseq }}</span>{% endif %}
         </td>
         <td class="text-end text-nowrap">
           <form method="POST" action="{% url 'isoform_modification_reorder' link.pk 'up' %}" class="d-inline">

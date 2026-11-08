@@ -222,7 +222,7 @@ class Modification_Form(Base_ModelForm):
 
     class Meta:
         model = Modification_Dictionary
-        exclude = ['pepmod_id']
+        exclude = ['pepmod_id', 'nseq']
         field_order = ['pepmod_id', 'pepmod_code', 'fasta', 'biln', 'helm', 'mw']
 
 
@@ -231,7 +231,7 @@ class Modification_UpdateForm(Modification_Form):
 
     class Meta:
         model = Modification_Dictionary
-        exclude = []
+        exclude = ['nseq']
 
 
 #=================================================================================================
