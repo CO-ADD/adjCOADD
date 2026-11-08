@@ -67,35 +67,57 @@ def _sync_sequence_fields(instance):
 
 
 def _compute_sequence_properties(instance):
-    """Update molecular weight (mw) and residue count (nseq) from the sequence.
+    """Update sequence-derived properties (mw, nseq, pI, gravy, charge).
 
     MW is the average molecular weight of the RDKit molecule built from BILN;
     nseq is the amino-acid count from FASTA when available, falling back to the
-    number of residues in the main BILN chain. All failures degrade gracefully
-    (values left at 0).
+    number of residues in the main BILN chain. isoelectric_point / gravy /
+    charge_at_ph7 are computed from the FASTA sequence via BioPython and left
+    NULL for modified/non-natural sequences. All failures degrade gracefully.
     """
     biln = (instance.biln or '').strip()
     fasta = (instance.fasta or '').strip()
 
-    if not biln:
-        # No BILN sequence -> no molecule to weigh; only FASTA length (if any).
-        instance.nseq = len(fasta) if fasta else 0
-        instance.mw = 0
-        return
-
+    # nseq
     if fasta:
         instance.nseq = len(fasta)
-    else:
+    elif biln:
         try:
             instance.nseq = biln_residue_count(biln)
         except Exception:
             instance.nseq = 0
+    else:
+        instance.nseq = 0
 
-    try:
-        mw = biln_molecular_weight(biln)
-        instance.mw = round(mw, 3) if mw else 0
-    except Exception:
+    # mw
+    if biln:
+        try:
+            mw = biln_molecular_weight(biln)
+            instance.mw = round(mw, 3) if mw else 0
+        except Exception:
+            instance.mw = 0
+    else:
         instance.mw = 0
+
+    # pI / hydrophobicity / charge (BioPython, natural sequences only)
+    pa = _protein_analysis(fasta)
+    if pa is not None:
+        try:
+            instance.isoelectric_point = round(pa.isoelectric_point(), 2)
+        except Exception:
+            instance.isoelectric_point = None
+        try:
+            instance.gravy = round(pa.gravy(), 3)
+        except Exception:
+            instance.gravy = None
+        try:
+            instance.charge_at_ph7 = round(pa.charge_at_pH(7.0), 2)
+        except Exception:
+            instance.charge_at_ph7 = None
+    else:
+        instance.isoelectric_point = None
+        instance.gravy = None
+        instance.charge_at_ph7 = None
 
 
 def _protein_analysis(fasta):
@@ -132,30 +154,6 @@ def _sequence_segment(instance):
     return ''
 
 
-#=================================================================================================
-class PeptideSequencePropertiesMixin:
-    """Computed peptide properties derived from the FASTA sequence (BioPython).
-
-    Read-only; used by Peptide and Peptide_Isoform for display. They return
-    None for modified/non-natural sequences which BioPython cannot analyse.
-    """
-
-    @property
-    def isoelectric_point(self):
-        pa = _protein_analysis(self.fasta)
-        return round(pa.isoelectric_point(), 2) if pa else None
-
-    @property
-    def gravy(self):
-        pa = _protein_analysis(self.fasta)
-        return round(pa.gravy(), 3) if pa else None
-
-    @property
-    def charge_at_ph7(self):
-        pa = _protein_analysis(self.fasta)
-        return round(pa.charge_at_pH(7.0), 2) if pa else None
-
-
 #-------------------------------------------------------------------------------------------------
 # Peptide Application Model
 # Peptide
@@ -169,7 +167,7 @@ class PeptideSequencePropertiesMixin:
 #-------------------------------------------------------------------------------------------------
 
 #=================================================================================================
-class Peptide(PeptideSequencePropertiesMixin, AuditModel):
+class Peptide(AuditModel):
     """
     Main class of Peptides s
     
@@ -227,6 +225,9 @@ class Peptide(PeptideSequencePropertiesMixin, AuditModel):
     fasta = models.TextField(blank=True, verbose_name = "Sequence (FASTA)") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
+    isoelectric_point = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, verbose_name ="pI")
+    gravy = models.DecimalField(max_digits=8, decimal_places=3, null=True, blank=True, verbose_name ="Hydrophobicity (GRAVY)")
+    charge_at_ph7 = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, verbose_name ="Charge @ pH 7")
 
     reference = models.CharField(max_length=150, blank=True, verbose_name = "Reference")
 
@@ -341,7 +342,7 @@ class Peptide(PeptideSequencePropertiesMixin, AuditModel):
 
 
 #=================================================================================================
-class Peptide_Isoform(PeptideSequencePropertiesMixin, AuditModel):
+class Peptide_Isoform(AuditModel):
     """
     Isoform - a modified variant of a Peptide
     
@@ -384,6 +385,9 @@ class Peptide_Isoform(PeptideSequencePropertiesMixin, AuditModel):
     fasta = models.TextField(blank=True, verbose_name = "Sequence (FASTA)") 
     mw = models.DecimalField(max_digits=12, decimal_places=3, default=0, blank=True, verbose_name ="MW")
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
+    isoelectric_point = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, verbose_name ="pI")
+    gravy = models.DecimalField(max_digits=8, decimal_places=3, null=True, blank=True, verbose_name ="Hydrophobicity (GRAVY)")
+    charge_at_ph7 = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True, verbose_name ="Charge @ pH 7")
 
     assoc_documents = models.ManyToManyField(Document,verbose_name = "Documents", blank=True,
         db_table = "isoform_doc", related_name="%(class)s_document")

@@ -113,7 +113,7 @@ class Peptide_CreateForm(Base_ModelForm):
     
     class Meta:
         model=Peptide
-        exclude=['peptide_id',  'assoc_documents'] 
+        exclude=['peptide_id',  'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7'] 
 
 # -----------------------------------------------------------------
 class Peptide_UpdateForm(Peptide_CreateForm):
@@ -121,7 +121,7 @@ class Peptide_UpdateForm(Peptide_CreateForm):
 
     class Meta:
         model=Peptide
-        exclude=['assoc_documents']
+        exclude=['assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
         field_order = ['peptide_id', 'peptide_name', 'peptide_notes', 'peptide_class', 'peptide_panel',
                        'fasta', 'biln', 'helm', 'mw', 'nseq', 'peptide_origin', 'reference',
                        'mta_status', 'mta_notes', 'mta_document', 'biologist']
@@ -158,7 +158,7 @@ class Isoform_CreateForm(Base_ModelForm):
 
     class Meta:
         model = Peptide_Isoform
-        exclude = ['isoform_id', 'peptide_modifications', 'assoc_documents']
+        exclude = ['isoform_id', 'peptide_modifications', 'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
         field_order = ['isoform_name', 'isoform_notes', 'peptide_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
 
 
@@ -168,7 +168,7 @@ class Isoform_UpdateForm(Isoform_CreateForm):
 
     class Meta:
         model = Peptide_Isoform
-        exclude = ['peptide_modifications', 'assoc_documents']
+        exclude = ['peptide_modifications', 'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
         field_order = ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
 
 
@@ -246,6 +246,7 @@ class IsoformModification_Form(Base_ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['pepmod_id'].queryset = Modification_Dictionary.objects.filter(
             astatus__gte=0).order_by('pepmod_code')
+        self.fields['pepmod_id'].label_from_instance = lambda obj: f"{obj.pepmod_code} ({obj.pepmod_id})"
         self.fields['mod_position'].choices = Isoform_Modification.MOD_POSITION_CHOICES
 
 
@@ -327,12 +328,11 @@ class Monomer_Form(Base_ModelForm):
 
 
 class Monomer_UpdateForm(Monomer_Form):
-    monomer_id = forms.CharField(disabled=True)
 
     class Meta:
         model = Monomer
-        exclude = ['mol']
-        field_order = ['monomer_id', 'symbol', 'monomer_name', 'monomer_abbr', 'monomer_type',
+        exclude = ['monomer_id', 'mol']
+        field_order = ['symbol', 'monomer_name', 'monomer_abbr', 'monomer_type',
                        'monomer_subtype', 'nat_analog', 'pdb_name',
                        'rgroups', 'rgroup_idx', 'attachment_idx', 'molfile']
 

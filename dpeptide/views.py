@@ -95,12 +95,12 @@ def Peptide_CreateView(req):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create a new Peptide', 'Completed')
-                return redirect('peptide_list')
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Peptide {instance.pk} created.'})
             except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-        else:
-            messages.warning(req, f'Create failed due to {form.errors} error')
-        return redirect('peptide_list')
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Peptide', 'form_action': 'peptide_create'})
 
     context = {'form': form, 'modal_title': 'Create Peptide', 'form_action': 'peptide_create'}
     return render(req, 'dpeptide/dpeptide_form_modal.html', context)
@@ -131,12 +131,13 @@ def Peptide_UpdateView(req, pk):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Peptide', 'Completed')
-                return redirect('peptide_detail', pk=pk)
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Peptide {instance.pk} updated.'})
             except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-        else:
-            messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect('peptide_detail', pk=pk)
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Peptide',
+                       'modal_subtitle': pk, 'form_action': 'peptide_update'})
 
     form = Peptide_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update Peptide', 'modal_subtitle': pk, 'form_action': 'peptide_update'}
@@ -182,12 +183,12 @@ def Isoform_CreateView(req):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create a new Isoform', 'Completed')
-                return redirect('isoform_detail', pk=instance.pk)
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Isoform {instance.pk} created.'})
             except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-        else:
-            messages.warning(req, f'Create failed due to {form.errors} error')
-        return redirect('isoform_list')
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Isoform', 'form_action': 'isoform_create'})
 
     context = {'form': form, 'modal_title': 'Create Isoform', 'form_action': 'isoform_create'}
     return render(req, 'dpeptide/dpeptide_form_modal.html', context)
@@ -240,12 +241,13 @@ def Isoform_UpdateView(req, pk):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Isoform', 'Completed')
-                return redirect('isoform_detail', pk=pk)
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Isoform {instance.pk} updated.'})
             except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-        else:
-            messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect('isoform_detail', pk=pk)
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Isoform',
+                       'modal_subtitle': pk, 'form_action': 'isoform_update'})
 
     form = Isoform_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update Isoform', 'modal_subtitle': pk, 'form_action': 'isoform_update'}
@@ -276,12 +278,12 @@ def IsoformModification_CreateView(req, pk):
                     ApplicationLog.add('Create', f"{_isoform.pk}:{link.pepmod_id}",
                                        'Info', req.user, str(_isoform.pk),
                                        f'Add modification {link.pepmod_id} ({link.mod_position}:{link.mod_order})', 'Completed')
-                return redirect('isoform_detail', pk=pk)
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Modification {link.pepmod_id} added.'})
             except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} - modification with same position/order may already exist.')
-        else:
-            messages.warning(req, f'Create failed due to {form.errors} error')
-        return redirect('isoform_detail', pk=pk)
+                form.add_error(None, f'Modification with same position/order may already exist ({err}).')
+        return render(req, 'dpeptide/isoform/isoform_modification_form_modal.html',
+                      {'form': form, 'modal_title': 'Add Modification', 'modal_subtitle': pk})
 
     context = {'form': form, 'modal_title': 'Add Modification', 'modal_subtitle': pk}
     return render(req, 'dpeptide/isoform/isoform_modification_form_modal.html', context)
@@ -299,12 +301,12 @@ def IsoformModification_UpdateView(req, pk):
                     ApplicationLog.add('Update', f"{_link.isoform_id_id}:{_link.pepmod_id}",
                                        'Info', req.user, str(_link.isoform_id_id),
                                        'Update isoform modification', 'Completed')
-                return redirect('isoform_detail', pk=_link.isoform_id_id)
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Modification {_link.pepmod_id} updated.'})
             except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} - modification with same position/order may already exist.')
-        else:
-            messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect('isoform_detail', pk=_link.isoform_id_id)
+                form.add_error(None, f'Modification with same position/order may already exist ({err}).')
+        return render(req, 'dpeptide/isoform/isoform_modification_form_modal.html',
+                      {'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': _link.isoform_id_id})
 
     form = IsoformModification_Form(instance=_link)
     context = {'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': _link.isoform_id_id}
@@ -372,12 +374,13 @@ def IsoBatch_CreateView(req, isoform_id):
                     instance.isoform_id = _isoform
                     instance.save(user=req.user)
                     ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create a new Isoform Batch', 'Completed')
-                return redirect('isoform_detail', pk=isoform_id)
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Batch {instance.pk} created.'})
             except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-        else:
-            messages.warning(req, f'Create failed due to {form.errors} error')
-        return redirect('isoform_detail', pk=isoform_id)
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'form': form, 'object': _isoform, 'modal_title': 'New Isoform Batch',
+                       'modal_subtitle': isoform_id, 'form_action': 'isobatch_create'})
 
     context = {
         'form': form, 'object': _isoform,
@@ -400,12 +403,13 @@ def IsoBatch_UpdateView(req, pk):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Isoform Batch', 'Completed')
-                return redirect('isoform_detail', pk=_object.isoform_id.isoform_id)
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Batch {instance.pk} updated.'})
             except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-        else:
-            messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect('isoform_detail', pk=_object.isoform_id.isoform_id)
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Isoform Batch',
+                       'modal_subtitle': pk, 'form_action': 'isobatch_update'})
 
     form = IsoBatch_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update Isoform Batch', 'modal_subtitle': pk, 'form_action': 'isobatch_update'}
@@ -451,12 +455,12 @@ def Modification_CreateView(req):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Modification', 'Completed')
-                return redirect('modification_list')
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Modification {instance.pk} created.'})
             except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-        else:
-            messages.warning(req, f'Create failed due to {form.errors} error')
-        return redirect('modification_list')
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Modification', 'form_action': 'modification_create'})
 
     context = {'form': form, 'modal_title': 'Create Modification', 'form_action': 'modification_create'}
     return render(req, 'dpeptide/dpeptide_form_modal.html', context)
@@ -473,12 +477,13 @@ def Modification_UpdateView(req, pk):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Modification', 'Completed')
-                return redirect('modification_list')
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Modification {instance.pk} updated.'})
             except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-        else:
-            messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect('modification_list')
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Modification',
+                       'modal_subtitle': pk, 'form_action': 'modification_update'})
 
     form = Modification_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': pk, 'form_action': 'modification_update'}
@@ -525,12 +530,12 @@ def Monomer_CreateView(req):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Monomer', 'Completed')
-                return redirect('monomer_list')
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Monomer {instance.symbol} created.'})
             except IntegrityError as err:
-                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
-        else:
-            messages.warning(req, f'Create failed due to {form.errors} error')
-        return redirect('monomer_list')
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Monomer', 'form_action': 'monomer_create'})
 
     context = {'form': form, 'modal_title': 'Create Monomer', 'form_action': 'monomer_create'}
     return render(req, 'dpeptide/dpeptide_form_modal.html', context)
@@ -547,12 +552,13 @@ def Monomer_UpdateView(req, pk):
                     instance = form.save(commit=False)
                     instance.save(user=req.user)
                     ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Monomer', 'Completed')
-                return redirect('monomer_list')
+                return render(req, 'dpeptide/saved_modal.html',
+                              {'save_message': f'Monomer {instance.symbol} updated.'})
             except Exception as err:
-                messages.warning(req, f'Update failed due to {err} error')
-        else:
-            messages.warning(req, f'Update failed due to {form.errors} error')
-        return redirect('monomer_list')
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dpeptide/dpeptide_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Monomer',
+                       'modal_subtitle': pk, 'form_action': 'monomer_update'})
 
     form = Monomer_UpdateForm(instance=_object)
     context = {'object': _object, 'form': form, 'modal_title': 'Update Monomer', 'modal_subtitle': pk, 'form_action': 'monomer_update'}
