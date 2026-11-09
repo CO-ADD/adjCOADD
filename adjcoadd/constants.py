@@ -30,10 +30,10 @@ CELLID_SEP = "_"
 CELLBATCH_SEP = "_"
 
 # -dbiologic Settings 
-PEPTIDE_CLASSES = ['NB','MAB','PEP']
-PEPID_SEP = "_"
-PEPISO_SEP = "_"
-PEPBATCH_SEP = "."
+BIOLOGIC_CLASSES = ['NB','MAB','PROT']
+BIOID_SEP = "_"
+BIOISO_SEP = "_"
+BIOBATCH_SEP = "."
 
 # -dGene Settings 
 SEQID_SEP = "_"

@@ -215,8 +215,8 @@ class Biologic(AuditModel):
 
     DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
-        'biologic_class':'Peptide_Class',
-        'biologic_panel':'Peptide_Panel',
+        'biologic_class':'Biologic_Class',
+        'biologic_panel':'Biologic_Panel',
     }
 
     biologic_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Biologic ID") 
@@ -268,10 +268,10 @@ class Biologic(AuditModel):
         db_table = 'biologic'
         #ordering=['biologic_id']
         indexes = [
-            #models.Index(name="pep_code_idx", fields=['biologic_code']),
-            models.Index(name="pep_type_idx", fields=['biologic_class']),
-            GinIndex(name="pep_panel_idx", fields=['biologic_panel']),
-            #models.Index(name="pep_source_idx", fields=['source']),
+            #models.Index(name="bio_code_idx", fields=['biologic_code']),
+            models.Index(name="bio_type_idx", fields=['biologic_class']),
+            GinIndex(name="bio_panel_idx", fields=['biologic_panel']),
+            #models.Index(name="bio_source_idx", fields=['source']),
             # models.Index(name="org_taxid_idx", fields=['tax_id']),
         ]
 
@@ -318,14 +318,14 @@ class Biologic(AuditModel):
     @classmethod
     def str_BiologicID(cls,BiologicClass,BiologicNo) -> str:
     #
-    # Output:   Biologic_ID as string like MAB_0001, PEP_0001, NB_0001 
+    # Output:   Biologic_ID as string like MAB_0001, PROT_0001, NB_0001 
     #
-        return(f"{BiologicClass}{PEPID_SEP}{BiologicNo:04d}")
+        return(f"{BiologicClass}{BIOID_SEP}{BiologicNo:04d}")
 
 
     #------------------------------------------------
     @classmethod
-    def find_Next_BiologicID(cls,BiologicClass, BiologicClassType = PEPTIDE_CLASSES) -> str:
+    def find_Next_BiologicID(cls,BiologicClass, BiologicClassType = BIOLOGIC_CLASSES) -> str:
         if BiologicClass in BiologicClassType:
             Biologic_IDSq=Sequence(BiologicClass)
             Biologic_nextID = next(Biologic_IDSq)
@@ -342,7 +342,7 @@ class Biologic(AuditModel):
         _sync_sequence_fields(self)
         _compute_sequence_properties(self)
         if not self.biologic_id:
-            _class = str(self.biologic_class.dict_value) if self.biologic_class else 'PEP'
+            _class = str(self.biologic_class.dict_value) if self.biologic_class else 'PROT'
             self.biologic_id = self.find_Next_BiologicID(_class)
             if self.biologic_id:
                 super(Biologic, self).save(*args, **kwargs)
@@ -408,7 +408,7 @@ class Biologic_Isoform(AuditModel):
         db_table = 'biologic_isoform'
         ordering=['biologic_id','isoform_id']
         indexes = [
-            models.Index(name="pepiso_pep_idx", fields=['biologic_id']),
+            models.Index(name="bioiso_bid_idx", fields=['biologic_id']),
         ]
 
     #------------------------------------------------
@@ -422,7 +422,7 @@ class Biologic_Isoform(AuditModel):
     #------------------------------------------------
     @classmethod
     def str_IsoformID(cls, BiologicID, IsoformNo) -> str:
-        return(f"{BiologicID}{PEPISO_SEP}I{IsoformNo:02d}")
+        return(f"{BiologicID}{BIOISO_SEP}I{IsoformNo:02d}")
 
     #------------------------------------------------
     def find_Next_IsoformID(self) -> str:
@@ -527,7 +527,7 @@ class Isoform_Batch(AuditModel):
 
     DICTIONARY_FIELDS = {
         'qc_status':'QC_Status',
-        'source_type' : 'Peptide_Source',
+        'source_type' : 'Biologic_Source',
         'conc_unit' : 'Concentration_Units',
         'init_amount_unit' : 'Amount_Units',
     }
@@ -590,7 +590,7 @@ class Isoform_Batch(AuditModel):
     @classmethod
     # Formats IsoformID:str,BatchID:str -> IsoBatchID:str
     def str_IsoBatchID(self,IsoformID:str,BatchID:str) -> str:
-        return(f"{IsoformID}{PEPBATCH_SEP}{BatchID}")
+        return(f"{IsoformID}{BIOBATCH_SEP}{BatchID}")
 
     #------------------------------------------------
     def find_Next_BatchID(self, IsoformID:str, BatchID:str=None) -> str:
@@ -644,7 +644,7 @@ class Isoform_Batch(AuditModel):
                 super(Isoform_Batch, self).save(*args, **kwargs)
         else:
             # confirms Batch_ID from IsoBatchID
-            self.batch_id = str(self.isoformbatch_id).split(PEPBATCH_SEP)[-1]
+            self.batch_id = str(self.isoformbatch_id).split(BIOBATCH_SEP)[-1]
             super(Isoform_Batch, self).save(*args, **kwargs)
         
 # ================================================================================================
