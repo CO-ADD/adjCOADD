@@ -26,7 +26,7 @@ _NATURAL_AA = set('ACDEFGHIKLMNPQRSTVWY')
 
 #-- TO DO -------------------------------------------------------------
 """
-    Remove Peptide from Isoform 
+    Remove Biologic from Isoform 
     Modification_Dictionary
         Add Description, Cleavage sites ?
     Isoform_Batch
@@ -146,7 +146,7 @@ def _protein_analysis(fasta):
 
 
 def _sequence_segment(instance):
-    """Return the BILN segment for a Peptide / Modification_Dictionary instance.
+    """Return the BILN segment for a Biologic / Modification_Dictionary instance.
 
     Prefers the stored BILN; otherwise derives BILN from FASTA. Empty on
     failure so concatenation never inserts a broken segment.
@@ -164,35 +164,35 @@ def _sequence_segment(instance):
 
 
 #-------------------------------------------------------------------------------------------------
-# Peptide Application Model
-# Peptide
-#  -> Peptide_Isoform  <- Modification_Dictionary (via Isoform_Modification)
+# Biologic Application Model
+# Biologic
+#  -> Biologic_Isoform  <- Modification_Dictionary (via Biologic_Modification)
 #     -> Isoform_Batch
 #
-# AminoAcid (dchem.models) - List of Amino Acids for Peptide Sequences, including modified and non-natural amino acids
-# Modification_Dictionary - List of Peptide Modifications/Tags, including modified and non-natural amino acids
+# AminoAcid (dchem.models) - List of Amino Acids for Biologic Sequences, including modified and non-natural amino acids
+# Modification_Dictionary - List of Biologic Modifications/Tags, including modified and non-natural amino acids
 #
 
 #-------------------------------------------------------------------------------------------------
 
 #=================================================================================================
-class Peptide(AuditModel):
+class Biologic(AuditModel):
     """
-    Main class of Peptides s
+    Main class of Biologics s
     
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-#       'organism_name':{"VerboseName":'Peptide Name','Updatable':False}
-        'peptide_id':{'Peptide ID': {'peptide_id':URL_LINKS['peptide_id']}}, 
-        'peptide_name':'Name',
-        'peptide_class':'Type',
-        # 'peptide_panel':'Panel',
-        'peptide_notes':'Notes',
-        # 'peptide_code':'Peptide Code',
-        # 'peptide_identification':'Identification',
-        # 'peptide_origin':'Origin',
-        'biln':'Peptide Sequence',
+#       'organism_name':{"VerboseName":'Biologic Name','Updatable':False}
+        'biologic_id':{'Biologic ID': {'biologic_id':URL_LINKS['biologic_id']}}, 
+        'biologic_name':'Name',
+        'biologic_class':'Type',
+        # 'biologic_panel':'Panel',
+        'biologic_notes':'Notes',
+        # 'biologic_code':'Biologic Code',
+        # 'biologic_identification':'Identification',
+        # 'biologic_origin':'Origin',
+        'biln':'Biologic Sequence',
         # 'source':"Source",
         # 'source_code':"Source Code",
         # 'reference': "Reference",
@@ -201,13 +201,13 @@ class Peptide(AuditModel):
 
     CARDS_FIELDS= {
         "source" : "Source",
-        "peptide_class": "Class",
+        "biologic_class": "Class",
     #     "res_property": "Phenotype",
     #     "gen_property": "Genotype",
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['peptide_name', 'peptide_class', 'peptide_panel', 'peptide_notes', 'peptide_origin','source', 'source_code','reference','biologist'],
+        ['biologic_name', 'biologic_class', 'biologic_panel', 'biologic_notes', 'biologic_origin','source', 'source_code','reference','biologist'],
         ['mw', 'nseq'],
         ['biln',],
         #['mta_status','mta_notes','mta_document','biologist'],
@@ -215,19 +215,19 @@ class Peptide(AuditModel):
 
     DICTIONARY_FIELDS = {
         'mta_status':'License_Status',
-        'peptide_class':'Peptide_Class',
-        'peptide_panel':'Peptide_Panel',
+        'biologic_class':'Peptide_Class',
+        'biologic_panel':'Peptide_Panel',
     }
 
-    peptide_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Peptide ID") 
-    peptide_name= models.CharField(max_length=200, blank=True, verbose_name = "Peptide Name") 
-    peptide_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Peptide Notes")
-    #peptide_code= models.CharField(max_length=30, blank=True, verbose_name = "Peptide Code")
-    peptide_panel=ArrayField(models.CharField(max_length=100, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
-    peptide_class=models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
-        db_column="peptide_class", related_name="%(class)s_peptide_class")
-    #peptide_identification = models.CharField(max_length=512, blank=True, verbose_name = "Peptide Identification")
-    peptide_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Peptide")
+    biologic_id = models.CharField(primary_key=True, max_length=15, verbose_name = "Biologic ID") 
+    biologic_name= models.CharField(max_length=200, blank=True, verbose_name = "Biologic Name") 
+    biologic_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Biologic Notes")
+    #biologic_code= models.CharField(max_length=30, blank=True, verbose_name = "Biologic Code")
+    biologic_panel=ArrayField(models.CharField(max_length=100, blank=True), size=20, verbose_name = "Panel", null=True, blank=True)
+    biologic_class=models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Class", on_delete=models.DO_NOTHING,
+        db_column="biologic_class", related_name="%(class)s_biologic_class")
+    #biologic_identification = models.CharField(max_length=512, blank=True, verbose_name = "Biologic Identification")
+    biologic_origin = models.CharField(max_length=512, blank=True, verbose_name = "Origin of Biologic")
 
     biln = models.TextField(blank=True, verbose_name = "Sequence (BILN)") 
     helm = models.TextField(blank=True, verbose_name = "Sequence (HELM)") 
@@ -256,7 +256,7 @@ class Peptide(AuditModel):
         db_column="biologist", related_name="%(class)s_biologist")
 
     assoc_documents = models.ManyToManyField(Document,verbose_name = "Documents", blank=True,
-        db_table = "peptide_doc", related_name="%(class)s_document")
+        db_table = "biologic_doc", related_name="%(class)s_document")
     
     #tax_id = models.IntegerField(default=0, verbose_name = "NCBI Tax ID")
 
@@ -264,76 +264,76 @@ class Peptide(AuditModel):
 #------------------------------------------------
 
     class Meta:
-        app_label = 'dpeptide'
-        db_table = 'peptide'
-        #ordering=['peptide_id']
+        app_label = 'dbiologic'
+        db_table = 'biologic'
+        #ordering=['biologic_id']
         indexes = [
-            #models.Index(name="pep_code_idx", fields=['peptide_code']),
-            models.Index(name="pep_type_idx", fields=['peptide_class']),
-            GinIndex(name="pep_panel_idx", fields=['peptide_panel']),
+            #models.Index(name="pep_code_idx", fields=['biologic_code']),
+            models.Index(name="pep_type_idx", fields=['biologic_class']),
+            GinIndex(name="pep_panel_idx", fields=['biologic_panel']),
             #models.Index(name="pep_source_idx", fields=['source']),
             # models.Index(name="org_taxid_idx", fields=['tax_id']),
         ]
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.peptide_id} ({self.peptide_name})"
+        return f"{self.biologic_id} ({self.biologic_name})"
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.peptide_id} {self.peptide_name}".strip()
+        return f"{self.biologic_id} {self.biologic_name}".strip()
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,PeptideID=None,PeptideName=None,verbose=0):
-        if PeptideID:
-            # Returns if an instance exists by peptide_id
-            return cls.objects.filter(peptide_id=PeptideID).exists()
-        elif PeptideName:
-            # Returns if an instance exists by peptide_line
-            return cls.objects.filter(peptide_name=PeptideName).exists()
+    def exists(cls,BiologicID=None,BiologicName=None,verbose=0):
+        if BiologicID:
+            # Returns if an instance exists by biologic_id
+            return cls.objects.filter(biologic_id=BiologicID).exists()
+        elif BiologicName:
+            # Returns if an instance exists by biologic_line
+            return cls.objects.filter(biologic_name=BiologicName).exists()
 
     #------------------------------------------------
     @classmethod
-    def get(cls,PeptideID=None,PeptideName=None,verbose=0):
-        if PeptideID:
-            # Returns an instance by peptide_id
+    def get(cls,BiologicID=None,BiologicName=None,verbose=0):
+        if BiologicID:
+            # Returns an instance by biologic_id
             try:
-                retInstance = cls.objects.get(peptide_id=PeptideID)
+                retInstance = cls.objects.get(biologic_id=BiologicID)
             except:
                 if verbose:
-                    print(f"[PeptideID Not Found] {PeptideID} ")
+                    print(f"[BiologicID Not Found] {BiologicID} ")
                 retInstance = None
-        elif PeptideName:
-            # Returns an instance by peptide_id
+        elif BiologicName:
+            # Returns an instance by biologic_id
             try:
-                retInstance = cls.objects.get(peptide_name=PeptideName)
+                retInstance = cls.objects.get(biologic_name=BiologicName)
             except:
                 if verbose:
-                    print(f"[Peptide Name Not Found] {PeptideName} ")
+                    print(f"[Biologic Name Not Found] {BiologicName} ")
                 retInstance = None
         return(retInstance)
 
     #------------------------------------------------
     @classmethod
-    def str_PeptideID(cls,PeptidClass,PeptideNo) -> str:
+    def str_BiologicID(cls,BiologicClass,BiologicNo) -> str:
     #
-    # Output:   Peptide_ID as string like MAB_0001, PEP_0001, NB_0001 
+    # Output:   Biologic_ID as string like MAB_0001, PEP_0001, NB_0001 
     #
-        return(f"{PeptidClass}{PEPID_SEP}{PeptideNo:04d}")
+        return(f"{BiologicClass}{PEPID_SEP}{BiologicNo:04d}")
 
 
     #------------------------------------------------
     @classmethod
-    def find_Next_PeptideID(cls,PeptidClass, PeptideClassType = PEPTIDE_CLASSES) -> str:
-        if PeptidClass in PeptideClassType:
-            Peptide_IDSq=Sequence(PeptidClass)
-            Peptide_nextID = next(Peptide_IDSq)
-            Peptide_strID = cls.str_PeptideID(PeptidClass,Peptide_nextID)
-            while cls.exists(Peptide_strID):
-                Peptide_nextID = next(Peptide_IDSq)
-                Peptide_strID = cls.str_PeptideID(PeptidClass,Peptide_nextID)
-            return(Peptide_strID)    
+    def find_Next_BiologicID(cls,BiologicClass, BiologicClassType = PEPTIDE_CLASSES) -> str:
+        if BiologicClass in BiologicClassType:
+            Biologic_IDSq=Sequence(BiologicClass)
+            Biologic_nextID = next(Biologic_IDSq)
+            Biologic_strID = cls.str_BiologicID(BiologicClass,Biologic_nextID)
+            while cls.exists(Biologic_strID):
+                Biologic_nextID = next(Biologic_IDSq)
+                Biologic_strID = cls.str_BiologicID(BiologicClass,Biologic_nextID)
+            return(Biologic_strID)    
         else:
             return(None)
 
@@ -341,35 +341,35 @@ class Peptide(AuditModel):
     def save(self, *args, **kwargs):
         _sync_sequence_fields(self)
         _compute_sequence_properties(self)
-        if not self.peptide_id:
-            _class = str(self.peptide_class.dict_value) if self.peptide_class else 'PEP'
-            self.peptide_id = self.find_Next_PeptideID(_class)
-            if self.peptide_id:
-                super(Peptide, self).save(*args, **kwargs)
+        if not self.biologic_id:
+            _class = str(self.biologic_class.dict_value) if self.biologic_class else 'PEP'
+            self.biologic_id = self.find_Next_BiologicID(_class)
+            if self.biologic_id:
+                super(Biologic, self).save(*args, **kwargs)
         else:
-            super(Peptide, self).save(*args, **kwargs) 
+            super(Biologic, self).save(*args, **kwargs) 
 
 
 #=================================================================================================
-class Peptide_Isoform(AuditModel):
+class Biologic_Isoform(AuditModel):
     """
-    Isoform - a modified variant of a Peptide
+    Isoform - a modified variant of a Biologic
     
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
         'isoform_id': {'Isoform ID': {'isoform_id': URL_LINKS['isoform_id']}},
         'isoform_name': 'Isoform Name',
-        'peptide_id': {'Peptide ID': {'peptide_id': URL_LINKS['peptide_id']}},
+        'biologic_id': {'Biologic ID': {'biologic_id': URL_LINKS['biologic_id']}},
         #'biln': 'Sequence',
         'mw': 'MW',
         'biologist': 'Biologist',
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'mw', 'nseq', 'biologist'],
+        ['isoform_id', 'isoform_name', 'isoform_notes', 'biologic_id', 'mw', 'nseq', 'biologist'],
         ['biln'],
-        #['peptide_modifications'],
+        #['biologic_modifications'],
     ]
     DICTIONARY_FIELDS = {}
 
@@ -377,13 +377,13 @@ class Peptide_Isoform(AuditModel):
     isoform_name= models.CharField(max_length=200, blank=True, verbose_name = "Isoform Name") 
     isoform_notes= models.CharField(max_length=1024, blank=True, verbose_name = "Isoform Notes")
     
-    peptide_id = models.ForeignKey(Peptide, null=False, blank=False, verbose_name = "Peptide ID", on_delete=models.DO_NOTHING,
-        db_column="peptide_id", related_name="isoforms")
+    biologic_id = models.ForeignKey(Biologic, null=False, blank=False, verbose_name = "Biologic ID", on_delete=models.DO_NOTHING,
+        db_column="biologic_id", related_name="isoforms")
 
-    peptide_modifications = models.ManyToManyField(
+    biologic_modifications = models.ManyToManyField(
         'Modification_Dictionary',
-        through='Isoform_Modification',
-        through_fields=('isoform_id', 'pepmod_id'),
+        through='Biologic_Modification',
+        through_fields=('isoform_id', 'biomod_id'),
         blank=True,
         related_name='isoforms',
         verbose_name = "Modifications",
@@ -404,11 +404,11 @@ class Peptide_Isoform(AuditModel):
         db_column="biologist", related_name="%(class)s_biologist")
 
     class Meta:
-        app_label = 'dpeptide'
-        db_table = 'peptide_isoform'
-        ordering=['peptide_id','isoform_id']
+        app_label = 'dbiologic'
+        db_table = 'biologic_isoform'
+        ordering=['biologic_id','isoform_id']
         indexes = [
-            models.Index(name="pepiso_pep_idx", fields=['peptide_id']),
+            models.Index(name="pepiso_pep_idx", fields=['biologic_id']),
         ]
 
     #------------------------------------------------
@@ -421,17 +421,17 @@ class Peptide_Isoform(AuditModel):
 
     #------------------------------------------------
     @classmethod
-    def str_IsoformID(cls, PeptideID, IsoformNo) -> str:
-        return(f"{PeptideID}{PEPISO_SEP}I{IsoformNo:02d}")
+    def str_IsoformID(cls, BiologicID, IsoformNo) -> str:
+        return(f"{BiologicID}{PEPISO_SEP}I{IsoformNo:02d}")
 
     #------------------------------------------------
     def find_Next_IsoformID(self) -> str:
-        peptide_id = self.peptide_id.peptide_id
+        biologic_id = self.biologic_id.biologic_id
         next_no = 1
-        next_iso = self.str_IsoformID(peptide_id, next_no)
+        next_iso = self.str_IsoformID(biologic_id, next_no)
         while self.exists(next_iso):
             next_no += 1
-            next_iso = self.str_IsoformID(peptide_id, next_no)
+            next_iso = self.str_IsoformID(biologic_id, next_no)
         return(next_iso)
 
     #------------------------------------------------
@@ -457,34 +457,34 @@ class Peptide_Isoform(AuditModel):
         if not self.isoform_id:
             self.isoform_id = self.find_Next_IsoformID()
             if self.isoform_id:
-                super(Peptide_Isoform, self).save(*args, **kwargs)
+                super(Biologic_Isoform, self).save(*args, **kwargs)
         else:
-            super(Peptide_Isoform, self).save(*args, **kwargs)
+            super(Biologic_Isoform, self).save(*args, **kwargs)
 
     #------------------------------------------------
     def rebuild_sequence_from_modifications(self, *args, **kwargs):
-        """Rebuild the isoform sequence from the parent peptide plus its
+        """Rebuild the isoform sequence from the parent biologic plus its
         terminal modifications, then re-sync and re-save.
 
         Assembly order (per project convention):
             C-terminal modifications (ordered by mod_order) at the FRONT,
-            then the parent peptide sequence,
+            then the parent biologic sequence,
             then N-terminal modifications (ordered by mod_order) at the END.
         Internal ('I') modifications are not concatenated.
         """
         parts = []
         for link in self.modification_links.filter(mod_position='C').order_by('mod_order'):
-            seg = _sequence_segment(link.pepmod_id)
+            seg = _sequence_segment(link.biomod_id)
             if seg:
                 parts.append(seg)
 
-        if self.peptide_id:
-            seg = _sequence_segment(self.peptide_id)
+        if self.biologic_id:
+            seg = _sequence_segment(self.biologic_id)
             if seg:
                 parts.append(seg)
 
         for link in self.modification_links.filter(mod_position='N').order_by('mod_order'):
-            seg = _sequence_segment(link.pepmod_id)
+            seg = _sequence_segment(link.biomod_id)
             if seg:
                 parts.append(seg)
 
@@ -507,7 +507,7 @@ class Peptide_Isoform(AuditModel):
 #=================================================================================================
 class Isoform_Batch(AuditModel):
     """
-    Peptide Isoform Batch Collection
+    Biologic Isoform Batch Collection
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
@@ -537,7 +537,7 @@ class Isoform_Batch(AuditModel):
        }
 
     isoformbatch_id  = models.CharField(primary_key=True, max_length=20, verbose_name = "IsoFormBatch ID")
-    isoform_id = models.ForeignKey(Peptide_Isoform, null=False, blank=False, verbose_name = "Isoform ID", on_delete=models.DO_NOTHING,
+    isoform_id = models.ForeignKey(Biologic_Isoform, null=False, blank=False, verbose_name = "Isoform ID", on_delete=models.DO_NOTHING,
         db_column="isoform_id", related_name="batches")
     batch_id  = models.CharField(max_length=12, null=False, blank=True, validators=[AlphaNumeric], verbose_name = "Batch ID")
     batch_notes= models.CharField(max_length=500, blank=True, verbose_name = "Batch Notes")
@@ -567,7 +567,7 @@ class Isoform_Batch(AuditModel):
 
     #------------------------------------------------
     class Meta:
-        app_label = 'dpeptide'
+        app_label = 'dbiologic'
         db_table = 'isoform_batch'
         ordering=['isoformbatch_id']
         indexes = [
@@ -652,24 +652,24 @@ class Isoform_Batch(AuditModel):
 #=================================================================================================
 class Modification_Dictionary(AuditModel):
     """
-    Peptide Modification Dictionary
+    Biologic Modification Dictionary
     """
 #=================================================================================================
 
-    ID_SEQUENCE = 'PepMod_Dictionary'
-    ID_PREFIX = 'PMOD'
+    ID_SEQUENCE = 'BioMod_Dictionary'
+    ID_PREFIX = 'BMOD'
     ID_PAD = 6
 
     LIST_VIEW_FIELDS = {
-        'pepmod_id': 'PepMod ID',
-        'pepmod_code': 'PepMod Code',
+        'biomod_id': 'BioMod ID',
+        'biomod_code': 'BioMod Code',
         'mw': 'MW',
         'nseq': 'nSeq',
         'fasta': 'Sequence',
     }
 
-    pepmod_id = models.CharField(primary_key=True, max_length=15, verbose_name = "PepMod ID")
-    pepmod_code = models.CharField(max_length=25, verbose_name = "PepMod Code")
+    biomod_id = models.CharField(primary_key=True, max_length=15, verbose_name = "BioMod ID")
+    biomod_code = models.CharField(max_length=25, verbose_name = "BioMod Code")
 
     biln = models.TextField(blank=True, verbose_name = "BILN") 
     helm = models.TextField(blank=True, verbose_name = "HELM") 
@@ -678,42 +678,42 @@ class Modification_Dictionary(AuditModel):
     nseq = models.PositiveSmallIntegerField(default=0, blank=True, verbose_name ="nSeq")
 
     class Meta:
-        app_label = 'dpeptide'
-        db_table = 'pepmod_dictionary'
-        ordering=['pepmod_code']
+        app_label = 'dbiologic'
+        db_table = 'biomod_dictionary'
+        ordering=['biomod_code']
         indexes = [
-            models.Index(name="pepmod_id_idx",fields=['pepmod_id']),
-            models.Index(name="pepmod_code_idx",fields=['pepmod_code']),
+            models.Index(name="biomod_id_idx",fields=['biomod_id']),
+            models.Index(name="biomod_code_idx",fields=['biomod_code']),
         ]
 
     #------------------------------------------------
     @classmethod
-    def get(cls,PEPMODID, PEPMODCode=None, verbose=0):
+    def get(cls,BIOMODID, BIOMODCode=None, verbose=0):
     # Returns an instance by compound_id
         try:
-            if PEPMODID:
-                retInstance = cls.objects.get(pepmod_id=PEPMODID)
-            elif PEPMODCode:
-                retInstance = cls.objects.get(pepmod_code=PEPMODCode)
+            if BIOMODID:
+                retInstance = cls.objects.get(biomod_id=BIOMODID)
+            elif BIOMODCode:
+                retInstance = cls.objects.get(biomod_code=BIOMODCode)
             else:
                 retInstance = None
         except:
             retInstance = None
             if verbose:
-                if PEPMODID:
-                    logger.warning(f"[Peptide Modification Not Found] {PEPMODID} ")
-                elif PEPMODCode :
-                    logger.warning(f"[Peptide Modification Not Found] {PEPMODCode}  ")
+                if BIOMODID:
+                    logger.warning(f"[Biologic Modification Not Found] {BIOMODID} ")
+                elif BIOMODCode :
+                    logger.warning(f"[Biologic Modification Not Found] {BIOMODCode}  ")
         return(retInstance)
 
     #------------------------------------------------
     @classmethod
-    def exists(cls,PEPMODID, PEPMODCode=None, verbose=0):
+    def exists(cls,BIOMODID, BIOMODCode=None, verbose=0):
     # Returns if an instance exists by compound_id
-        if PEPMODID:
-            retValue = cls.objects.filter(pepmod_id=PEPMODID).exists()
-        elif PEPMODCode:
-            retValue = cls.objects.filter(pepmod_code=PEPMODCode).exists()
+        if BIOMODID:
+            retValue = cls.objects.filter(biomod_id=BIOMODID).exists()
+        elif BIOMODCode:
+            retValue = cls.objects.filter(biomod_code=BIOMODCode).exists()
         else:
             retValue = False
         return(retValue)
@@ -722,9 +722,9 @@ class Modification_Dictionary(AuditModel):
     def save(self, *args, **kwargs):
         _sync_sequence_fields(self)
         _compute_mw_nseq(self)
-        if not self.pepmod_id:
-            self.pepmod_id = self.next_id()
-            if self.pepmod_id:
+        if not self.biomod_id:
+            self.biomod_id = self.next_id()
+            if self.biomod_id:
                 #self.save_batch() 
                 super(Modification_Dictionary, self).save(*args, **kwargs)
         else:
@@ -735,7 +735,7 @@ class Modification_Dictionary(AuditModel):
 #=================================================================================================
 class Monomer(AuditModel):
     """
-    Monomer library entry for BILN/HELM peptides.
+    Monomer library entry for BILN/HELM biologics.
 
     Mirrors the pyPept monomer SDF (symbol, m_type, m_Rgroups, ...) so that
     the monomer library can be stored in the database, edited by users, and
@@ -784,7 +784,7 @@ class Monomer(AuditModel):
                                 size=4, null=True, blank=True, verbose_name = "Attachment Idx")
 
     class Meta:
-        app_label = 'dpeptide'
+        app_label = 'dbiologic'
         db_table = 'monomer'
         ordering = ['symbol']
         indexes = [
@@ -889,9 +889,9 @@ def spec_from_database():
 
 
 #=================================================================================================
-class Isoform_Modification(models.Model):
+class Biologic_Modification(models.Model):
     """
-    Ordered modification link between a Peptide_Isoform and a
+    Ordered modification link between a Biologic_Isoform and a
     Modification_Dictionary entry, split by terminal position.
     """
 #=================================================================================================
@@ -901,30 +901,30 @@ class Isoform_Modification(models.Model):
         ('I', 'Internal'),
     ]
 
-    isoform_id = models.ForeignKey(Peptide_Isoform, null=False, blank=False, verbose_name = "Isoform ID", on_delete=models.CASCADE,
+    isoform_id = models.ForeignKey(Biologic_Isoform, null=False, blank=False, verbose_name = "Isoform ID", on_delete=models.CASCADE,
         db_column="isoform_id", related_name="modification_links")
-    pepmod_id = models.ForeignKey(Modification_Dictionary, null=False, blank=False, verbose_name = "Modification", on_delete=models.CASCADE,
-        db_column="pepmod_id", related_name="isoform_links")
+    biomod_id = models.ForeignKey(Modification_Dictionary, null=False, blank=False, verbose_name = "Modification", on_delete=models.CASCADE,
+        db_column="biomod_id", related_name="isoform_links")
     mod_position = models.CharField(max_length=1, choices=MOD_POSITION_CHOICES, default='I', verbose_name = "Position")
     mod_order = models.PositiveSmallIntegerField(default=0, verbose_name = "Order")
 
     class Meta:
-        app_label = 'dpeptide'
-        db_table = 'isoform_modification'
+        app_label = 'dbiologic'
+        db_table = 'biologic_modification'
         ordering = ['mod_position', 'mod_order']
         unique_together = ('isoform_id', 'mod_position', 'mod_order')
 
     #------------------------------------------------
     def __repr__(self) -> str:
-        return f"{self.isoform_id} <-[{self.mod_position}:{self.mod_order}]- {self.pepmod_id}"
+        return f"{self.isoform_id} <-[{self.mod_position}:{self.mod_order}]- {self.biomod_id}"
 
     #------------------------------------------------
     def __str__(self) -> str:
-        return f"{self.pepmod_id} ({self.get_mod_position_display()} {self.mod_order})"
+        return f"{self.biomod_id} ({self.get_mod_position_display()} {self.mod_order})"
 
     #------------------------------------------------
     def save(self, *args, **kwargs):
-        super(Isoform_Modification, self).save(*args, **kwargs)
+        super(Biologic_Modification, self).save(*args, **kwargs)
         # Rebuild the parent isoform's sequence whenever a modification link
         # is added or changed. Best-effort: a rebuild failure must not roll
         # back the saved modification link.
@@ -936,7 +936,7 @@ class Isoform_Modification(models.Model):
     #------------------------------------------------
     def delete(self, *args, **kwargs):
         isoform = self.isoform_id
-        super(Isoform_Modification, self).delete(*args, **kwargs)
+        super(Biologic_Modification, self).delete(*args, **kwargs)
         try:
             isoform.rebuild_sequence_from_modifications()
         except Exception:

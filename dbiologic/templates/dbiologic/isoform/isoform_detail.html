@@ -10,26 +10,28 @@
          class="border-0 text-success bg-transparent"
          data-bs-toggle="modal"
          data-bs-target="#infoModal"
-         hx-get="{% url 'peptide_update' object.pk %}"
+         hx-get="{% url 'isoform_update' object.pk %}"
          hx-target="#info-body"
          hx-swap="innerHTML"
-         title="Update Peptide">
+         title="Update Isoform">
          <i class="fa-regular fa-pen-to-square"></i>
       </a>
     </div>
   </div>
 
   <div class="w-100">
-    <div class="accordion bg-transparent" id="peptide-detail">
+
+    <!-- Isoform -->
+    <div class="accordion bg-transparent" id="isoform-detail">
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading_00">
           <button class="accordion-button" style="max-height:100px;" type="button" data-bs-toggle="collapse"
                   data-bs-target="#collapse_01" aria-expanded="true" aria-controls="collapse_00">
-            <h5 class="fs-4 my-0"><b>{{object.pk}}</b> | <i>{{object.peptide_name}}</i></h5>
+            <h5 class="fs-4 my-0"><b>{{object.pk}}</b> | <i>{{object.isoform_name}}</i></h5>
           </button>
         </h2>
         <div id="collapse_01" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
-             data-bs-parent="#peptide-detail">
+             data-bs-parent="#isoform-detail">
           <div class="accordion-body bg-transparent">
             <b> {% include 'utils/message.html' %} </b>
             <div class="row">
@@ -85,7 +87,8 @@
     </div>
 
     {% if object.biln or object.helm %}
-    <div class="accordion bg-transparent w-100" id="peptide-structure">
+    <!-- Structure -->
+    <div class="accordion bg-transparent w-100" id="isoform-structure">
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading_struct">
           <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
@@ -94,7 +97,7 @@
           </button>
         </h2>
         <div id="collapseStruct" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_struct"
-             data-bs-parent="#peptide-structure">
+             data-bs-parent="#isoform-structure">
           <div class="accordion-body">
             {% if object.biln %}
             <img src="{% url 'sequence_structure' %}?biln={{ object.biln|urlencode }}" alt="BILN structure" class="img-fluid">
@@ -106,6 +109,58 @@
       </div>
     </div>
     {% endif %}
+
+    <!-- Isoform Modifications -->
+    <div class="accordion bg-transparent w-100" id="isoform-modifications">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_mods">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapseMods" aria-expanded="true" aria-controls="collapse_mods">
+            <h5 class="fs-6 my-0">Biologic Modifications</h5>
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=modification_count %}
+          </button>
+        </h2>
+        <div id="collapseMods" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_mods"
+             data-bs-parent="#isoform-modifications">
+          <div class="accordion-body">
+            {% include 'dbiologic/isoform/biologic_modifications.html' %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Isoform Batches -->
+    <div class="accordion bg-transparent w-100" id="isoform-batches">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="heading_02">
+          <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                  data-bs-target="#collapseBatches" aria-expanded="true" aria-controls="collapse_02">
+            <h5 class="fs-6 my-0">Isoform Batches</h5>
+            {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=batch_count %}
+          </button>
+        </h2>
+        <div id="collapseBatches" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
+             data-bs-parent="#isoform-batches">
+          <div class="accordion-body">
+            <div class="d-flex justify-content-end mb-2">
+              <a href="#"
+                 class="btn btn-sm btn-outline-primary"
+                 data-bs-toggle="modal"
+                 data-bs-target="#infoModal"
+                 hx-get="{% url 'isobatch_create' object.pk %}"
+                 hx-target="#info-body"
+                 hx-swap="innerHTML">
+                <i class="bi bi-file-earmark-plus me-1"></i>New Batch
+              </a>
+            </div>
+            <div class="table-responsive">
+              {% include 'dbiologic/isoform/isobatch_subtable.html' with objects=batch_objs data_fields=batch_fields page_obj=batch_page_obj querycount=batch_count %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 {% endblock content %}

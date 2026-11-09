@@ -1,9 +1,9 @@
 from django.urls import path
 
-from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_DetailView, Peptide_UpdateView, Peptide_RemoveView,
+from dbiologic.views import (Biologic_ListView, Biologic_CreateView, Biologic_DetailView, Biologic_UpdateView, Biologic_RemoveView,
                             Isoform_ListView, Isoform_CreateView, Isoform_DetailView, Isoform_UpdateView, Isoform_RemoveView,
-                            IsoformModification_CreateView, IsoformModification_UpdateView,
-                            IsoformModification_RemoveView, IsoformModification_ReorderView,
+                            BiologicModification_CreateView, BiologicModification_UpdateView,
+                            BiologicModification_RemoveView, BiologicModification_ReorderView,
                             IsoBatch_CreateView, IsoBatch_UpdateView, IsoBatch_RemoveView,
                             Modification_ListView, Modification_CreateView, Modification_UpdateView,
                             Monomer_ListView, Monomer_CreateView, Monomer_UpdateView,
@@ -11,14 +11,14 @@ from dpeptide.views import (Peptide_ListView, Peptide_CreateView, Peptide_Detail
 
 
 urlpatterns = [
-    # Peptide
-    path('peptide_list', Peptide_ListView.as_view(), name="peptide_list"),
-    path('peptide/<str:pk>', Peptide_DetailView, name="peptide_detail"),
-    path('createPeptide/', Peptide_CreateView, name="peptide_create"),
-    path('updatePeptide/<str:pk>', Peptide_UpdateView, name="peptide_update"),
-    path('deletePeptide/<str:pk>', Peptide_RemoveView.as_view(), name="peptide_delete"),
+    # Biologic
+    path('biologic_list', Biologic_ListView.as_view(), name="biologic_list"),
+    path('biologic/<str:pk>', Biologic_DetailView, name="biologic_detail"),
+    path('createBiologic/', Biologic_CreateView, name="biologic_create"),
+    path('updateBiologic/<str:pk>', Biologic_UpdateView, name="biologic_update"),
+    path('deleteBiologic/<str:pk>', Biologic_RemoveView.as_view(), name="biologic_delete"),
 
-    # Peptide Isoform
+    # Biologic Isoform
     path('isoform_list', Isoform_ListView.as_view(), name="isoform_list"),
     path('isoform/<str:pk>', Isoform_DetailView, name="isoform_detail"),
     path('createIsoform/', Isoform_CreateView, name="isoform_create"),
@@ -26,10 +26,10 @@ urlpatterns = [
     path('deleteIsoform/<str:pk>', Isoform_RemoveView.as_view(), name="isoform_delete"),
 
     # Isoform Modifications
-    path('isoform/<str:pk>/modification/create', IsoformModification_CreateView, name="isoform_modification_create"),
-    path('isoform/modification/update/<str:pk>', IsoformModification_UpdateView, name="isoform_modification_update"),
-    path('isoform/modification/remove/<str:pk>', IsoformModification_RemoveView, name="isoform_modification_remove"),
-    path('isoform/modification/reorder/<str:pk>/<str:direction>', IsoformModification_ReorderView, name="isoform_modification_reorder"),
+    path('isoform/<str:pk>/modification/create', BiologicModification_CreateView, name="biologic_modification_create"),
+    path('isoform/modification/update/<str:pk>', BiologicModification_UpdateView, name="biologic_modification_update"),
+    path('isoform/modification/remove/<str:pk>', BiologicModification_RemoveView, name="biologic_modification_remove"),
+    path('isoform/modification/reorder/<str:pk>/<str:direction>', BiologicModification_ReorderView, name="biologic_modification_reorder"),
 
     # Isoform Batch
     path('createIsoBatch/<str:isoform_id>', IsoBatch_CreateView, name="isobatch_create"),

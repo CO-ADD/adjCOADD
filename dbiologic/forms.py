@@ -12,7 +12,7 @@ from dorganism.models import  Taxonomy
 from apputil.models import Dictionary, ApplicationUser, Document
 from applib.django.base.filters import BaseStatus_Filter
 from adjcoadd.constants import ORGANISM_CLASSES, CELL_CLASSES 
-from dpeptide.models import Peptide, Peptide_Isoform, Isoform_Batch, Modification_Dictionary, Isoform_Modification, Monomer
+from dbiologic.models import Biologic, Biologic_Isoform, Isoform_Batch, Modification_Dictionary, Biologic_Modification, Monomer
 
 
 class SequenceTextArea(forms.Textarea):
@@ -27,24 +27,24 @@ class SequenceTextArea(forms.Textarea):
 
 
 #=================================================================================================
-# Peptide
+# Biologic
 #=================================================================================================
-class Peptide_Filter(BaseStatus_Filter):
+class Biologic_Filter(BaseStatus_Filter):
     
-    peptide_id = CharFilter(field_name='peptide_id', lookup_expr='icontains')
-    peptide_name = CharFilter(field_name='peptide_name', lookup_expr='icontains')
-    peptide_notes = CharFilter(field_name='peptide_notes', lookup_expr='icontains')
-    peptide_class = MultipleChoiceFilter(field_name='peptide_class', method='multichoices_filter', 
+    biologic_id = CharFilter(field_name='biologic_id', lookup_expr='icontains')
+    biologic_name = CharFilter(field_name='biologic_name', lookup_expr='icontains')
+    biologic_notes = CharFilter(field_name='biologic_notes', lookup_expr='icontains')
+    biologic_class = MultipleChoiceFilter(field_name='biologic_class', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
-    peptide_panel = MultipleChoiceFilter(field_name='peptide_panel', method='multichoices_filter', 
+    biologic_panel = MultipleChoiceFilter(field_name='biologic_panel', method='multichoices_filter', 
                                              widget=forms.CheckboxSelectMultiple(attrs={'class': 'multiselect-accord'}), choices=[])
 
-    mta_status = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Peptide.DICTIONARY_FIELDS['mta_status'], astatus__gte=0))
+    mta_status = ModelChoiceFilter(field_name='mta_status', queryset=Dictionary.objects.filter(dict_class=Biologic.DICTIONARY_FIELDS['mta_status'], astatus__gte=0))
    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters["peptide_class"].extra["choices"]=Dictionary.get_aschoices(Peptide.DICTIONARY_FIELDS['peptide_class'], showDesc = False)
-        self.filters["peptide_panel"].extra["choices"]=Dictionary.get_aschoices(Peptide.DICTIONARY_FIELDS['peptide_panel'], showDesc = False)
+        self.filters["biologic_class"].extra["choices"]=Dictionary.get_aschoices(Biologic.DICTIONARY_FIELDS['biologic_class'], showDesc = False)
+        self.filters["biologic_panel"].extra["choices"]=Dictionary.get_aschoices(Biologic.DICTIONARY_FIELDS['biologic_panel'], showDesc = False)
 
         # Set Filter label to the Fields VerboseName or Filter Name
         for i in self.filters:
@@ -53,14 +53,14 @@ class Peptide_Filter(BaseStatus_Filter):
             except:
                 self.filters[i].label=i
     class Meta:
-        model=Peptide
-        fields=[ 'peptide_id', 'peptide_name','peptide_notes', 'peptide_class', 'peptide_panel', 'mta_status' ]
+        model=Biologic
+        fields=[ 'biologic_id', 'biologic_name','biologic_notes', 'biologic_class', 'biologic_panel', 'mta_status' ]
 
 # -----------------------------------------------------------------
-class Peptide_CreateForm(Base_ModelForm):
+class Biologic_CreateForm(Base_ModelForm):
 
-    peptide_name= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
-    peptide_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
+    biologic_name= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
+    biologic_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     fasta = forms.CharField(widget=SequenceTextArea(), required=False)
     biln = forms.CharField(widget=SequenceTextArea(), required=False)
     helm = forms.CharField(widget=SequenceTextArea(), required=False)
@@ -71,15 +71,15 @@ class Peptide_CreateForm(Base_ModelForm):
     #collect_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}), required=False)
    
     def __init__(self, *args, **kwargs): 
-        super(Peptide_CreateForm, self).__init__(*args, **kwargs)
+        super(Biologic_CreateForm, self).__init__(*args, **kwargs)
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
-        self.fields['peptide_class'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Peptide.DICTIONARY_FIELDS['peptide_class'])]
+        self.fields['biologic_class'].choices = [(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Biologic.DICTIONARY_FIELDS['biologic_class'])]
 
-        self.fields['peptide_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Peptide.DICTIONARY_FIELDS['peptide_panel'], showDesc=False),)
-        self.fields['peptide_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
+        self.fields['biologic_panel'].widget = forms.SelectMultiple(choices = Dictionary.get_aschoices(Biologic.DICTIONARY_FIELDS['biologic_panel'], showDesc=False),)
+        self.fields['biologic_panel'].widget.attrs.update({'class': 'form-control', 'size':'5', 'multiple': 'true'})
 
-        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Peptide.DICTIONARY_FIELDS['mta_status'])]
+        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Biologic.DICTIONARY_FIELDS['mta_status'])]
         self.create_field_groups()
 
         for field in self.fields.values():
@@ -106,40 +106,40 @@ class Peptide_CreateForm(Base_ModelForm):
 
 
     def create_field_groups(self):
-        if len(Peptide.DETAIL_VIEW_GROUPS) > 0:
+        if len(Biologic.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Peptide.DETAIL_VIEW_GROUPS:
+            for grp in Biologic.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp if name in self.fields])   
     
     class Meta:
-        model=Peptide
-        exclude=['peptide_id',  'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7'] 
+        model=Biologic
+        exclude=['biologic_id',  'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7'] 
 
 # -----------------------------------------------------------------
-class Peptide_UpdateForm(Peptide_CreateForm):
-    peptide_id = forms.CharField(disabled=True)
+class Biologic_UpdateForm(Biologic_CreateForm):
+    biologic_id = forms.CharField(disabled=True)
 
     class Meta:
-        model=Peptide
+        model=Biologic
         exclude=['assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
-        field_order = ['peptide_id', 'peptide_name', 'peptide_notes', 'peptide_class', 'peptide_panel',
-                       'fasta', 'biln', 'helm', 'mw', 'nseq', 'peptide_origin', 'reference',
+        field_order = ['biologic_id', 'biologic_name', 'biologic_notes', 'biologic_class', 'biologic_panel',
+                       'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologic_origin', 'reference',
                        'mta_status', 'mta_notes', 'mta_document', 'biologist']
 
 
 #=================================================================================================
-# Peptide Isoform
+# Biologic Isoform
 #=================================================================================================
 class Isoform_Filter(BaseStatus_Filter):
     isoform_id = CharFilter(field_name='isoform_id', lookup_expr='icontains', label='Isoform ID')
     isoform_name = CharFilter(field_name='isoform_name', lookup_expr='icontains', label='Isoform Name')
-    peptide = CharFilter(field_name='peptide_id__peptide_id', lookup_expr='icontains', label='Peptide ID')
-    peptide_name = CharFilter(field_name='peptide_id__peptide_name', lookup_expr='icontains', label='Peptide Name')
+    biologic = CharFilter(field_name='biologic_id__biologic_id', lookup_expr='icontains', label='Biologic ID')
+    biologic_name = CharFilter(field_name='biologic_id__biologic_name', lookup_expr='icontains', label='Biologic Name')
     fasta = CharFilter(field_name='fasta', lookup_expr='icontains', label='Sequence')
 
     class Meta:
-        model = Peptide_Isoform
-        fields = ['isoform_id', 'isoform_name', 'peptide', 'peptide_name', 'fasta']
+        model = Biologic_Isoform
+        fields = ['isoform_id', 'isoform_name', 'biologic', 'biologic_name', 'fasta']
 
 
 # -----------------------------------------------------------------
@@ -157,9 +157,9 @@ class Isoform_CreateForm(Base_ModelForm):
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
 
     class Meta:
-        model = Peptide_Isoform
-        exclude = ['isoform_id', 'peptide_modifications', 'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
-        field_order = ['isoform_name', 'isoform_notes', 'peptide_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
+        model = Biologic_Isoform
+        exclude = ['isoform_id', 'biologic_modifications', 'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
+        field_order = ['isoform_name', 'isoform_notes', 'biologic_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
 
 
 # -----------------------------------------------------------------
@@ -167,9 +167,9 @@ class Isoform_UpdateForm(Isoform_CreateForm):
     isoform_id = forms.CharField(disabled=True)
 
     class Meta:
-        model = Peptide_Isoform
-        exclude = ['peptide_modifications', 'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
-        field_order = ['isoform_id', 'isoform_name', 'isoform_notes', 'peptide_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
+        model = Biologic_Isoform
+        exclude = ['biologic_modifications', 'assoc_documents', 'isoelectric_point', 'gravy', 'charge_at_ph7']
+        field_order = ['isoform_id', 'isoform_name', 'isoform_notes', 'biologic_id', 'fasta', 'biln', 'helm', 'mw', 'nseq', 'biologist']
 
 
 #=================================================================================================
@@ -208,11 +208,11 @@ class IsoBatch_UpdateForm(IsoBatch_CreateForm):
 # Modification Dictionary
 #=================================================================================================
 class Modification_Filter(BaseStatus_Filter):
-    pepmod_code = CharFilter(field_name='pepmod_code', lookup_expr='icontains', label='Code')
+    biomod_code = CharFilter(field_name='biomod_code', lookup_expr='icontains', label='Code')
 
     class Meta:
         model = Modification_Dictionary
-        fields = ['pepmod_id', 'pepmod_code']
+        fields = ['biomod_id', 'biomod_code']
 
 
 class Modification_Form(Base_ModelForm):
@@ -222,12 +222,12 @@ class Modification_Form(Base_ModelForm):
 
     class Meta:
         model = Modification_Dictionary
-        exclude = ['pepmod_id', 'nseq']
-        field_order = ['pepmod_id', 'pepmod_code', 'fasta', 'biln', 'helm', 'mw']
+        exclude = ['biomod_id', 'nseq']
+        field_order = ['biomod_id', 'biomod_code', 'fasta', 'biln', 'helm', 'mw']
 
 
 class Modification_UpdateForm(Modification_Form):
-    pepmod_id = forms.CharField(disabled=True)
+    biomod_id = forms.CharField(disabled=True)
 
     class Meta:
         model = Modification_Dictionary
@@ -237,17 +237,17 @@ class Modification_UpdateForm(Modification_Form):
 #=================================================================================================
 # Isoform Modification (ordered link between Isoform and Modification_Dictionary)
 #=================================================================================================
-class IsoformModification_Form(Base_ModelForm):
+class BiologicModification_Form(Base_ModelForm):
     class Meta:
-        model = Isoform_Modification
-        fields = ['pepmod_id', 'mod_position', 'mod_order']
+        model = Biologic_Modification
+        fields = ['biomod_id', 'mod_position', 'mod_order']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['pepmod_id'].queryset = Modification_Dictionary.objects.filter(
-            astatus__gte=0).order_by('pepmod_code')
-        self.fields['pepmod_id'].label_from_instance = lambda obj: f"{obj.pepmod_code} ({obj.pepmod_id})"
-        self.fields['mod_position'].choices = Isoform_Modification.MOD_POSITION_CHOICES
+        self.fields['biomod_id'].queryset = Modification_Dictionary.objects.filter(
+            astatus__gte=0).order_by('biomod_code')
+        self.fields['biomod_id'].label_from_instance = lambda obj: f"{obj.biomod_code} ({obj.biomod_id})"
+        self.fields['mod_position'].choices = Biologic_Modification.MOD_POSITION_CHOICES
 
 
 #=================================================================================================

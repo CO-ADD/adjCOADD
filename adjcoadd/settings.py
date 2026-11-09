@@ -164,7 +164,7 @@ INSTALLED_APPS = [
     'dcell.apps.dCellConfig',
     'dchem.apps.dChemConfig',
     'dplate.apps.dPlateConfig',
-    'dpeptide.apps.dPeptideConfig',
+    'dbiologic.apps.dBiologicConfig',
     'dsummary.apps.dSummaryConfig',
     'rest_framework',
     'rest_framework.authtoken',
@@ -371,9 +371,9 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
-    'dpeptide': {
+    'dbiologic': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=dpeptide,dscreen,dsample,dcell,dorganism,apputil,public', 
+        'OPTIONS':{'options': '-c search_path=dbiologic,dscreen,dsample,dcell,dorganism,apputil,public', 
                    'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
@@ -393,7 +393,7 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 #--------------------------------------------------------------------
 # Requires django-dbbackup django-crontab and pg_dump/restore
 DBBACKUP_DATABASES = ['default'
-                    #   'dorganism','dcell','ddrug','dgene','dpeptide',
+                    #   'dorganism','dcell','ddrug','dgene','dbiologic',
                     #   'dplate','dcollab','dsample','dscreen',
                     #   'dchem','dsummary',
                     ]

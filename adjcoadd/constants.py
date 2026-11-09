@@ -29,7 +29,7 @@ CELL_CLASSES = ['CL']
 CELLID_SEP = "_"
 CELLBATCH_SEP = "_"
 
-# -dPeptide Settings 
+# -dbiologic Settings 
 PEPTIDE_CLASSES = ['NB','MAB','PEP']
 PEPID_SEP = "_"
 PEPISO_SEP = "_"
@@ -90,8 +90,8 @@ URL_LINKS={
     'testplate_id':     '/dplate/testplate/{VALUE1}',
     'masterplate_id':   '/dplate/masterplate/{VALUE1}',
     
-    'peptide_id':       '/dpeptide/peptide/{VALUE1}',
-    'isoform_id':       '/dpeptide/isoform/{VALUE1}',
+    'biologic_id':       '/dbiologic/biologic/{VALUE1}',
+    'isoform_id':       '/dbiologic/isoform/{VALUE1}',
 
     'structure_id':     '/dchem/structure/{VALUE1}',
     'aa_id':            '/dchem/aminoacid/{VALUE1}',

@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
-class dPeptideConfig(AppConfig):
+class dBiologicConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'dpeptide'
+    name = 'dbiologic'

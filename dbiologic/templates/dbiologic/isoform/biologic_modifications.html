@@ -3,7 +3,7 @@
      class="btn btn-sm btn-outline-primary"
      data-bs-toggle="modal"
      data-bs-target="#infoModal"
-     hx-get="{% url 'isoform_modification_create' object.pk %}"
+     hx-get="{% url 'biologic_modification_create' object.pk %}"
      hx-target="#info-body"
      hx-swap="innerHTML">
     <i class="bi bi-file-earmark-plus me-1"></i>Add Modification
@@ -26,20 +26,20 @@
       <tr>
         <td class="text-center">{{ link.mod_order }}</td>
         <td>
-          <span class="fw-semibold">{{ link.pepmod_id.pepmod_code }}</span>
-          <span class="text-muted small">({{ link.pepmod_id.pepmod_id }})</span>
-          {% if link.pepmod_id.mw %}<span class="text-muted small"> · MW {{ link.pepmod_id.mw }}</span>{% endif %}
-          {% if link.pepmod_id.nseq %}<span class="text-muted small"> · nSeq {{ link.pepmod_id.nseq }}</span>{% endif %}
+          <span class="fw-semibold">{{ link.biomod_id.biomod_code }}</span>
+          <span class="text-muted small">({{ link.biomod_id.biomod_id }})</span>
+          {% if link.biomod_id.mw %}<span class="text-muted small"> · MW {{ link.biomod_id.mw }}</span>{% endif %}
+          {% if link.biomod_id.nseq %}<span class="text-muted small"> · nSeq {{ link.biomod_id.nseq }}</span>{% endif %}
         </td>
         <td class="text-end text-nowrap">
-          <form method="POST" action="{% url 'isoform_modification_reorder' link.pk 'up' %}" class="d-inline">
+          <form method="POST" action="{% url 'biologic_modification_reorder' link.pk 'up' %}" class="d-inline">
             {% csrf_token %}
             <button type="submit" class="btn btn-sm btn-outline-secondary border-0" title="Move up"
                     {% if forloop.first %}disabled{% endif %}>
               <i class="bi bi-arrow-up"></i>
             </button>
           </form>
-          <form method="POST" action="{% url 'isoform_modification_reorder' link.pk 'down' %}" class="d-inline">
+          <form method="POST" action="{% url 'biologic_modification_reorder' link.pk 'down' %}" class="d-inline">
             {% csrf_token %}
             <button type="submit" class="btn btn-sm btn-outline-secondary border-0" title="Move down"
                     {% if forloop.last %}disabled{% endif %}>
@@ -50,13 +50,13 @@
              class="btn btn-sm btn-outline-primary border-0"
              data-bs-toggle="modal"
              data-bs-target="#infoModal"
-             hx-get="{% url 'isoform_modification_update' link.pk %}"
+             hx-get="{% url 'biologic_modification_update' link.pk %}"
              hx-target="#info-body"
              hx-swap="innerHTML"
              title="Edit">
             <i class="fa-regular fa-pen-to-square"></i>
           </a>
-          <form method="POST" action="{% url 'isoform_modification_remove' link.pk %}" class="d-inline"
+          <form method="POST" action="{% url 'biologic_modification_remove' link.pk %}" class="d-inline"
                 onsubmit="return confirm('Remove this modification?');">
             {% csrf_token %}
             <button type="submit" class="btn btn-sm btn-outline-danger border-0" title="Remove">

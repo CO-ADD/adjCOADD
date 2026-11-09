@@ -10,13 +10,13 @@
         <i class="bi bi-funnel fs-5"></i>
       </a>
 
-      <a href="{% url 'peptide_list' %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
+      <a href="{% url 'biologic_list' %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
         <i class="fa-solid fa-table-list fs-5"></i>
       </a>
 
       <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"
-         hx-get="{% url 'peptide_create' %}" hx-target="#info-body" hx-swap="innerHTML"
-         data-bs-toggle="tooltip" data-bs-placement="right" title="New Peptide">
+         hx-get="{% url 'biologic_create' %}" hx-target="#info-body" hx-swap="innerHTML"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="New Biologic">
         <i class="bi bi-file-earmark-plus fs-5 text-success"></i>
       </a>
     </div>
@@ -27,10 +27,10 @@
 
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    {% include 'datatable/base/datatable_top.html' with title='Peptides' model_name='Peptide' application='dpeptide' %}
+    {% include 'datatable/base/datatable_top.html' with title='Biologics' model_name='Biologic' application='dbiologic' %}
 
     <div class="contain-fluid data-contain">
-      {% include 'datatable/base/datatable_base.html' with modelname='Peptide' %}
+      {% include 'datatable/base/datatable_base.html' with modelname='Biologic' %}
     </div>
   </div>
 </div>

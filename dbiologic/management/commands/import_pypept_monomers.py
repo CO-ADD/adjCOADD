@@ -1,7 +1,7 @@
-"""Import pyPept monomer SDF into dpeptide.Monomer.
+"""Import pyPept monomer SDF into dbiologic.Monomer.
 
 Usage:
-    python manage.py import_pypept_monomers [--path dpeptide/monomers/pyPept_Monomers.sdf] [--upload]
+    python manage.py import_pypept_monomers [--path dbiologic/monomers/pyPept_Monomers.sdf] [--upload]
 
 Without --upload the command only validates/parses the SDF and reports what
 would be imported.
@@ -14,7 +14,7 @@ from django.db import transaction
 from rdkit import Chem
 
 from apputil.models import ApplicationUser
-from dpeptide.models import Monomer
+from dbiologic.models import Monomer
 
 
 def _parse_int_list(value, length=4):
@@ -34,12 +34,12 @@ def _parse_str_list(value, length=4):
 
 
 class Command(BaseCommand):
-    help = "Import pyPept monomer SDF into dpeptide.Monomer"
+    help = "Import pyPept monomer SDF into dbiologic.Monomer"
 
     def add_arguments(self, parser):
         parser.add_argument(
             '--path',
-            default=os.path.join('dpeptide', 'monomers', 'pyPept_Monomers.sdf'),
+            default=os.path.join('dbiologic', 'monomers', 'pyPept_Monomers.sdf'),
             help='Path to the pyPept monomers SDF',
         )
         parser.add_argument('--upload', action='store_true', default=False)
@@ -81,7 +81,7 @@ class Command(BaseCommand):
             entry.molfile = Chem.MolToMolBlock(mol)
 
             if options['upload']:
-                with transaction.atomic(using='dpeptide'):
+                with transaction.atomic(using='dbiologic'):
                     entry.save(user=owner)
 
         self.stdout.write(self.style.SUCCESS(
