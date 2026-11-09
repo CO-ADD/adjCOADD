@@ -47,6 +47,8 @@ class Command(BaseCommand):
                 _dr_list = process_testplate_doseresponse(djTP,verbose=2)
             elif str(djTP.result_type) in SYN_CLASSES:
                 _dr_list = process_testplate_synergy(djTP,verbose=2)
+                
+                print(_dr_list)
             
         elif options['runid']:
             pass

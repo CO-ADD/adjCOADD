@@ -55,22 +55,37 @@ class DoseResponse():
             logger.warning(" [DoseResponse] No concentration unit ")
         return(s)
 
-    def init_data(self,CmpBatches, dfDR, djTestPlate):
+    #---------------------------------------------------------------------
+    def init_data(self,CmpBatches, dfDR, djTestPlate, renameCol=None):
         dfValid = True
+        
+        self.df = dfDR.copy()
+        if renameCol:
+            self.df.rename(columns=renameCol, inplace=True)
+        
+        #print(self.df)
+            
         self.required_columns = ['well_id','conc_lst', 'inhibition','conc_unit_lst']
         # Prepare Data DF
-        if set(self.required_columns).issubset(dfDR.columns) :
+        if set(self.required_columns).issubset(self.df.columns) :
             dfValid = True
-            self.df = dfDR.sort_values(by='conc_lst',ascending=True).reset_index(drop=True)
+            self.df = self.df.sort_values(by='conc_lst',ascending=True).reset_index(drop=True)
 
             #self.df = self.df.apply(self.apply_conc,axis=1)
+            #
+            # Generate conc/conc_unit from first value in conc_lst/conc_unit_lst
+            #
+            #print(self.df)
             for index, row in self.df.iterrows():
                 if row.conc_lst:
                     self.df.at[index,'conc'] = row.conc_lst[0]
                 else:
                     dfValid = False
                 if row.conc_unit_lst:
-                    self.df.at[index,'conc_unit'] = row.conc_unit_lst[0]
+                    if isinstance(row.conc_unit_lst,list):
+                        self.df.at[index,'conc_unit'] = row.conc_unit_lst[0]
+                    else:
+                        self.df.at[index,'conc_unit'] = row.conc_unit_lst
                 else:
                     dfValid = False
 
@@ -80,8 +95,8 @@ class DoseResponse():
                 self.dmin = self.df['inhibition'].min(axis=0)
                 self.dave = self.df['inhibition'].mean(axis=0)
 
-                self.cmax = self.df['conc_lst'].max(axis=0)
-                self.cmin = self.df['conc_lst'].min(axis=0)
+                self.cmax = self.df['conc'].max(axis=0)
+                self.cmin = self.df['conc'].min(axis=0)
 
                 self.n_wells = len(self.df)
                 self.n_conc = len(self.df['conc'].unique())

@@ -18,7 +18,8 @@ from django.utils.text import slugify
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List, split_StrList
 from applib.bio.bio_data import pScore, ActScore_DR, ActScore_SC
-from dsample.models import CmpBatchList_Base, Compound_Batch
+from dsample.models_base import CmpBatchList_Base, Comb_CmpBatchList_Base
+from dsample.models import Compound_Batch
 
 from dcell.models import Cell
 from dorganism.models import Organism
@@ -422,14 +423,14 @@ class AssayData_MIC(CmpBatchList_Base):
     #------------------------------------------------  
     def conv_list_to_string(self):
         super().conv_list_to_string()
-        self.mic_lst        = COMPOUND_SEP.join([str(x) for x in self.mic if x > 0])
-        self.mic_unit_lst   = COMPOUND_SEP.join([str(x) for x in self.mic_unit if x > 0])
+        #self.mic_lst        = COMPOUND_SEP.join([str(x) for x in self.mic ])
+        #self.mic_unit_lst   = COMPOUND_SEP.join([str(x) for x in self.mic_unit ])
 
     #------------------------------------------------  
     def conv_string_to_lst(self):
         super().conv_string_to_list()
-        self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
-        self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
+        #self.mic = strList_to_List(self.mic_lst,sep=COMPOUND_SEP,size=4,fill="")
+        #self.mic_unit = strList_to_List(self.mic_unit_lst,sep=COMPOUND_SEP,size=4,fill="")
 
    #------------------------------------------------
     def set_actscores(self,verbose=0):
@@ -706,9 +707,9 @@ class AssayData_HC50(CmpBatchList_Base):
         self.act_score = ActScore_DR(self.hc50,self.hc50_unit,DMax=self.inhibit_max,cutoff_inhib=10)
         self.pscore = pScore(self.hc50,self.hc50_unit,self.inhibit_max,MW=self.cmpbatch_id.full_mw,gtShift=3,drMax2=40)
 
-#
 
-class AssayData_SynergyMIC(CmpBatchList_Base):
+#-------------------------------------------------------------------------------------------------
+class AssayData_SynergyMIC(Comb_CmpBatchList_Base):
     """
     List of Synergy 
     """
@@ -724,23 +725,30 @@ class AssayData_SynergyMIC(CmpBatchList_Base):
         'data_quality':'Data_Quality',
     }
 
-   # Primary Contraint
+
+    # Primary Contraint
     testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
         db_column="testplate_id", related_name="%(class)s_testplateid")
     testwell_id = models.CharField(max_length=5, blank=True, verbose_name = "TestWell ID")
 
     assay_id = models.ForeignKey(Assay, null=True, blank=True, verbose_name = "Assay ID", on_delete=models.DO_NOTHING,
         db_column="assay_id", related_name="%(class)s_assay_id")
+    # ora_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "ora Assay ID")
 
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
-    # Assay Data
+    # Synergy MIC Data
     synmic = models.CharField(max_length=50, verbose_name = "MIC")
     synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
     synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
 
-    fici = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "FICI")
+    fici = models.CharField(max_length=50, verbose_name = "MIC")
+    synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
+    synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
+
+    fici_value = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "FICI")
+    fici_syn = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Syn")
 
     act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
@@ -750,18 +758,17 @@ class AssayData_SynergyMIC(CmpBatchList_Base):
 
     inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
     inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
-    # conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
-    # conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
+    conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
+    conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
 
-    # Data Quality
     data_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Data Quality", on_delete=models.DO_NOTHING,
         db_column="data_quality", related_name="%(class)s_dataquality")
     data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
-    # ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
-    # ref_mic_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
+    ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
+    ref_mic_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
     # ic50 = models.CharField(max_length=50, blank=True, verbose_name = "IC50")
     # ic50_unit = models.CharField(max_length=20, blank=True, verbose_name = "IC50 Unit")
     # ic50_pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "IC50 pScore")
@@ -772,8 +779,7 @@ class AssayData_SynergyMIC(CmpBatchList_Base):
     pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
         db_column="pub_status", related_name="%(class)s_pub_statust")
     pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
-
-
+    
     class Meta:
         app_label = 'dscreen'
         db_table = 'assaydata_synmic'
@@ -781,58 +787,21 @@ class AssayData_SynergyMIC(CmpBatchList_Base):
         constraints = [
             models.UniqueConstraint(name='asssyn_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
-        indexes = [
-            GinIndex(name="asssyn_cmp_idx",fields=['cmpbatch_lst']),
-            models.Index(name="asssyn_rid_idx",fields=['run_id']),
-            models.Index(name="asssyn_sid_idx",fields=['assay_id']),
-            models.Index(name="asssyn_asc_idx",fields=['act_score']),
-            models.Index(name="asssyn_ana_idx",fields=['analysis']),
-        #    models.Index(name="asssyn_rot_idx",fields=['readout_type']),
-            models.Index(name="asssyn_act_idx",fields=['act_type']),
-            models.Index(name="asssyn_psc_idx",fields=['pscore']),
-            models.Index(name="asssyn_val_idx",fields=['valid']),
-            models.Index(name="asssyn_dqy_idx",fields=['data_quality']),
-            models.Index(name="asssyn_dcm_idx",fields=['data_comment']),
-        #    models.Index(name="asssyn_chkm_idx",fields=['chk_migration']),
-        ]
+        # indexes = [
+        #     GinIndex(name="asssyn_cmp_idx",fields=['cmpbatch_lst']),
+        #     models.Index(name="asssyn_rid_idx",fields=['run_id']),
+        #     models.Index(name="asssyn_sid_idx",fields=['assay_id']),
+        #     models.Index(name="asssyn_asc_idx",fields=['act_score']),
+        #     models.Index(name="asssyn_ana_idx",fields=['analysis']),
+        # #    models.Index(name="asssyn_rot_idx",fields=['readout_type']),
+        #     models.Index(name="asssyn_act_idx",fields=['act_type']),
+        #     models.Index(name="asssyn_psc_idx",fields=['pscore']),
+        #     models.Index(name="asssyn_val_idx",fields=['valid']),
+        #     models.Index(name="asssyn_dqy_idx",fields=['data_quality']),
+        #     models.Index(name="asssyn_dcm_idx",fields=['data_comment']),
+        # #    models.Index(name="asssyn_chkm_idx",fields=['chk_migration']),
+        # ]
 
-#   &xID.                   Number,
-#   Compounds               Varchar2(100),
-##   TestPlate_ID            Varchar2(25),
-##   TestWell_ID             Varchar2(3),
-#   CompoundA1_ID           Varchar2(25),
-#   CompoundA2_ID           Varchar2(25),
-#   CompoundB1_ID           Varchar2(25),
-#   CompoundB2_ID           Varchar2(25),
-##   N_Compounds             Number(2,0),
-##   AssayType_ID            Varchar2(25),
-##   Test_Strain             Varchar2(25),
-##   Test_Dye                Varchar2(25),
-##   Test_Additive           Varchar2(25),
-##   Test_Date               Date,
-##   Run_ID                  Varchar2(25),
-##   Analysis                Varchar2(10),
-##   FICI_Value              Number(8,2),
-#   FICI_Synergy            Number(3,0),
-##   SYNMIC                  Varchar2(50),
-##   SYNMIC_Unit             Varchar2(40),
-##   SYNMIC_Value            Number,
-##   SYNMIC_Prefix           Varchar2(2),
-#   SYNMIC_CmpdA1           Number,
-#   SYNMIC_CmpdA1_Unit      Varchar2(10),
-#   SYNMIC_CmpdA2           Number,
-#   SYNMIC_CmpdA2_Unit      Varchar2(10),
-#   SYNMIC_CmpdB1           Number,
-#   SYNMIC_CmpdB1_Unit      Varchar2(10),
-#   SYNMIC_CmpdB2           Number,
-#   SYNMIC_CmpdB2_Unit      Varchar2(10),
-##   DMax                    Number(12,1),
-##   DMin                    Number(12,1),
-##   MIC_Skips               Number(3,0),
-#   ConcA1_Min              Varchar2(20),
-#   ConcA1_Max              Varchar2(20),
-#   ConcB1_Min              Varchar2(20),
-#   ConcB1_Max              Varchar2(20),
 #   Checkerboard            Varchar2(10),
 ##   Data_Quality            Varchar2(20),
 ##   pScore                  Number(8,2),
@@ -850,7 +819,7 @@ class AssayData_SynergyMIC(CmpBatchList_Base):
 # Assay (?)
 # AssayData_SynMIC
 
-class AssayData_SynergyIsobol(CmpBatchList_Base):
+class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
     """
     List of Synergy Isobolograms
     """
@@ -877,12 +846,17 @@ class AssayData_SynergyIsobol(CmpBatchList_Base):
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
-    # Assay Data
+    # Synergy MIC Data
     synmic = models.CharField(max_length=50, verbose_name = "MIC")
     synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
     synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
 
-    fici = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "FICI")
+    fici = models.CharField(max_length=50, verbose_name = "MIC")
+    synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
+    synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
+
+    fici_value = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "FICI")
+    fici_syn = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Syn")
 
     act_type = models.CharField(max_length=5, blank=True, verbose_name = "Act Type")
     act_score = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Act Score")
@@ -892,36 +866,33 @@ class AssayData_SynergyIsobol(CmpBatchList_Base):
 
     inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
     inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
-    # conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
-    # conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
+    conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
+    conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
 
-    # Data Quality
+    # Quality Data
     data_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Data Quality", on_delete=models.DO_NOTHING,
         db_column="data_quality", related_name="%(class)s_dataquality")
     data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
+    # Refrerence Data
+    ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
+    ref_mic_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
+
+    pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
+        db_column="pub_status", related_name="%(class)s_pub_statust")
+    pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
+    
     class Meta:
         app_label = 'dscreen'
-        db_table = 'assaydata_syniso'
+        db_table = 'assaydata_synisobol'
         ordering=['assay_id','testplate_id','testwell_id']
         constraints = [
-            models.UniqueConstraint(name='assiso_loc_cst', fields=['testplate_id', 'testwell_id'], )
+            models.UniqueConstraint(name='asssyniso_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
         indexes = [
-            GinIndex(name="assiso_cmp_idx",fields=['cmpbatch_lst']),
-            models.Index(name="assiso_rid_idx",fields=['run_id']),
-            models.Index(name="assiso_sid_idx",fields=['assay_id']),
-            models.Index(name="assiso_asc_idx",fields=['act_score']),
-        #    models.Index(name="assiso_ana_idx",fields=['analysis']),
-        #    models.Index(name="assiso_rot_idx",fields=['readout_type']),
-        #    models.Index(name="assiso_act_idx",fields=['act_type']),
-        #    models.Index(name="assiso_psc_idx",fields=['pscore']),
-        #    models.Index(name="assiso_val_idx",fields=['valid']),
-        #    models.Index(name="assiso_dqy_idx",fields=['data_quality']),
-        #    models.Index(name="assiso_dcm_idx",fields=['data_comment']),
-        #    models.Index(name="assiso_chkm_idx",fields=['chk_migration']),
+            models.Index(name="asssyniso_fcic_idx",fields=['fici']),
         ]
 
 # AssayData_SynIsobol

@@ -20,7 +20,7 @@ from applib.data.str_lists import addto_StrList, strList_to_List
 from dscreen.models import Screen_Run, Assay
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
-from dsample.models import Sample_Base, CmpBatchList_Base
+from dsample.models_base import Sample_Base, CmpBatchList_Base
 from applib.bio.bio_data import ActScoreSC_Cutoff, ActType_SC
 from adjcoadd.constants import *
 
