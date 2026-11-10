@@ -98,27 +98,27 @@
       <!-- Button Actions --> 
         <a class="btn-active"
            href="{% if cancel_url %}{{ cancel_url }}{% elif reset_url %}{{ reset_url }}{% else %}#{% endif %}">
-          Cancel
+          <i class="bi bi-x-lg me-1"></i> Cancel
         </a>
 
         {% if wizard.steps.prev %}
           <button class="btn-active" name="wizard_goto_step" type="submit"
-            value="{{ wizard.steps.prev }}"> Previous</button>
+            value="{{ wizard.steps.prev }}"> <i class="bi bi-arrow-left me-1"></i> Previous</button>
         {% else %}
-          <button class="btn-disabled" disabled> Previous</button>
+          <button class="btn-disabled" disabled> <i class="bi bi-arrow-left me-1"></i> Previous</button>
         {% endif %}
 
         {% if wizard.steps.prev and wizard.steps.next %}
           {% if confirm_to_upload %}
-            <button class="btn-active" type="submit" value="Next">Next</button>
+            <button class="btn-active" type="submit" value="Next"><i class="bi bi-arrow-right me-1"></i> Next</button>
           {% else %}
-            <button class="btn-disabled" disabled> Next</button>
+            <button class="btn-disabled" disabled> <i class="bi bi-arrow-right me-1"></i> Next</button>
           {% endif %}
         {% elif wizard.steps.next %}
-          <button class="btn-active" type="submit" value="Next">Next</button>
+          <button class="btn-active" type="submit" value="Next"><i class="bi bi-arrow-right me-1"></i> Next</button>
         {% else %}
           <button class="btn-active" type="submit" value="Finish">
-            {% if wizard.steps.current == 'download' %}Finish{% else %}Finalize{% endif %}
+            <i class="bi bi-check-lg me-1"></i> {% if wizard.steps.current == 'download' %}Finish{% else %}Finalize{% endif %}
           </button>
         {% endif %}
       

@@ -74,27 +74,27 @@
 
         <a class="btn-active"
            href="{% if cancel_url %}{{ cancel_url }}{% else %}#{% endif %}">
-          Cancel
+          <i class="bi bi-x-lg me-1"></i> Cancel
         </a>
 
         {% if wizard.steps.prev %}
         <button class="btn-active" name="wizard_goto_step" type="submit"
-          value="{{ wizard.steps.prev }}"> Previous
+          value="{{ wizard.steps.prev }}"> <i class="bi bi-arrow-left me-1"></i> Previous
         </button>
         {% else %}
-        <button class="btn-disabled" disabled> Previous
+        <button class="btn-disabled" disabled> <i class="bi bi-arrow-left me-1"></i> Previous
         </button>
         {% endif %}
 
         <!--prettier-ignore-->
         {% if wizard.steps.prev and wizard.steps.next %}
-        <button class="btn-active" type="submit" value="Next"> Next
+        <button class="btn-active" type="submit" value="Next"> <i class="bi bi-arrow-right me-1"></i> Next
         </button>
         {% elif wizard.steps.next %}
-        <button class="btn-active" type="submit" value="Click to start"> Next
+        <button class="btn-active" type="submit" value="Click to start"> <i class="bi bi-arrow-right me-1"></i> Next
         </button>
         {% else %}
-        <button class="btn-active" type="submit" value="Finalize"> Finish
+        <button class="btn-active" type="submit" value="Finalize"> <i class="bi bi-check-lg me-1"></i> Finish
         </button>
         {% endif %}
     </div>
