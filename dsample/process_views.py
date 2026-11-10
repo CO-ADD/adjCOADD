@@ -123,6 +123,7 @@ class Add_ProjectInfo_ProcessView(Process_View):
         'finalize': {'instructions':''},
         }
     
+    redirect_url = "project_list"
     detail_url = "project_detail"
 
     def __init__(self, *args, **kwargs):
@@ -172,6 +173,7 @@ class Load_StockPrep_ProcessView(Process_View):
 
     template_name = 'dsample/project_process/load_stockprep.html'
 
+    redirect_url = "project_list"
     detail_url = "project_detail"
 
     # select_html  = 'Please select a Excel [xlsx] file from Tecan/BioTek readers'

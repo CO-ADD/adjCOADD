@@ -11,6 +11,7 @@ from dscreen.views import  (ScreenRun_ListView,ScreenRun_CreateView,ScreenRun_De
 from dscreen.process_views import (Load_Readouts_ProcessView, Load_TestplateList_ProcessView, Load_Motherplates_ProcessView,
                                    Gen_Motherplates_PSR_ProcessView, Gen_Motherplates_HCR_ProcessView,
                                    Load_Sequences_ProcessView)
+from applib.process.process_forms import Process_DownloadView
 
 urlpatterns = [
     # ScreenRun 
@@ -29,6 +30,7 @@ urlpatterns = [
     path('screenrun/load_motherplates/<str:pk>', Load_Motherplates_ProcessView.as_view(), name='load_motherplates'),
     path('screenrun/load_testplatelist/<str:pk>', Load_TestplateList_ProcessView.as_view(), name='load_testplatelist'),
     path('screenrun/report/<str:pk>', ScreenRun_ReportView, name="screenrun_report"),
+    path('process/download/<str:filename>', Process_DownloadView, name="process_download"),
 
     path('assay_list', Assay_ListView.as_view(), name="assay_list"),
     # path('screenrun/<str:pk>', Assay_DetailView, name="assay_detail"),

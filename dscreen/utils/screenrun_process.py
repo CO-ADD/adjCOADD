@@ -349,6 +349,227 @@ def Upload_TestplateList_Process(Request, DirName, FileList, RunID=None,
     valLog.select_unique()
     return(valLog)
 
+
+#-----------------------------------------------------------------------------------
+def Upload_TestplateList_Process_Progress(Request, DirName, FileList, RunID=None,
+                                          upload=False, apply_mp=False, overwrite=False, appuser=None,
+                                          progress_cb=None, session_key='process_progress'):
+#-----------------------------------------------------------------------------------
+    """
+    Progress-reporting copy of ``Upload_TestplateList_Process``.
+
+    This is the reference implementation for Option B (polled progress):
+
+      * ``progress_cb``   - optional callable invoked with a progress dict, e.g.
+                            ``progress_cb({'done': 12, 'total': 40, 'percent': 30,
+                                           'item': 'PSR000123', 'message': 'Processing ...'})``
+                            Use this to update a database row / message queue.
+      * ``session_key``   - when ``Request`` carries a session, progress is also
+                            written to ``Request.session[session_key]`` so a
+                            lightweight JSON endpoint can poll it (Option B).
+
+    A typical polling endpoint would be::
+
+        from django.http import JsonResponse
+        def process_progress(request):
+            return JsonResponse(request.session.get('process_progress', {}))
+
+    and the process handler passes ``progress_cb=None`` (session-only), letting
+    the wizard's message panel poll via htmx every second.
+
+    The function is otherwise identical to ``Upload_TestplateList_Process``.
+    """
+
+    if FileList:
+        nFiles = len(FileList)
+    else:
+        nFiles = 0
+    nUploads = 0
+
+    djRun = Screen_Run.get(RunID)
+    valLog = Validation_Log("Upload_TestplateList")
+
+    logNumbers = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
+                  'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
+                  'Processed AssayData':0,'Uploaded AssayData':0,
+                  'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0,
+                  'Empty':0}
+
+    # -- progress plumbing -----------------------------------------------------
+    def _progress(done, total, item, message):
+        data = {'done': done,
+                'total': total,
+                'percent': int(done * 100 / total) if total else 0,
+                'item': item or '',
+                'message': message or ''}
+        if progress_cb is not None:
+            try:
+                progress_cb(data)
+            except Exception as err:
+                print(f" [progress_cb] {err}")
+        if Request is not None and hasattr(Request, 'session'):
+            try:
+                Request.session[session_key] = data
+                Request.session.modified = True
+            except Exception as err:
+                print(f" [progress session] {err}")
+        return data
+
+    if nFiles > 0:
+        _progress(0, nFiles, '', 'Reading PlatePrep files ...')
+
+        for i in range(nFiles):
+            valLog.add_info('Read PlatePrep File', FileList[i],"[TestPlateList, Assay]")
+            _progress(i + 1, nFiles, FileList[i], f'Reading {FileList[i]}')
+            if settings.DEBUG:
+                print(f" [Upload_TestplateList] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{djRun}]  [{appuser}] ")
+
+            lstTP,lstAss = read_TestPlateList_Prepsheet_XLS(os.path.join(DirName,FileList[i]),apply_mp=apply_mp,valLog=valLog)
+
+            if valLog.if_noerrors():
+                _MPS = {}
+                nPlates = len(lstTP)
+                _done_plates = 0
+                for _tpid in lstTP:
+                    _done_plates += 1
+                    _tp = lstTP[_tpid]['plate']
+                    _new = lstTP[_tpid]['plate']
+                    validStatus = True
+                    _progress(_done_plates, nPlates, _tp.plate_id, f'Processing {_tp.plate_id}')
+                    if settings.DEBUG:
+                        print(f" [Upload_TestplateList] {_tp.plate_id} Validating:  {_tp.result_type} {_tp.assay_id} ")
+                    validDict = _tp.validate_model(WellData=False, verbose = 0)
+                    if validDict:
+                        validStatus = False
+                        for c in validDict:
+                            print(f" [Upload_TestPlateList] validDict: {c} ")
+
+                    if apply_mp:
+                        # Apply MP -> Add Compounds
+                        # -------------------------
+                        if hasattr(_tp,'motherplate_ids'):
+                            if settings.DEBUG:
+                                print(f" [Upload_TestplateList] {_tp.plate_id} Apply MP: {_tp.motherplate_ids}")
+
+                            _tp.clear_cmpbatch_data()
+                            mp_ids = getattr(_tp,'motherplate_ids')
+                            for mp in mp_ids:
+                                if mp != '-':
+                                    if mp not in _MPS:
+                                        _MPS[mp] = MasterPlate.get(mp,WellData=True)
+                                    add_mother_to_testplate(_MPS[mp],_tp)
+
+                            _tp.update_n('n_samples')
+                        else:
+                            validStatus = False
+                            valLog.add_error("No MIssing MotherPlates",_tpid,"No MotherPlate_IDs","Correct TestPlateList")
+
+                        # Analyze Testplate
+                        # -----------------
+                        if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
+                            #print(f"{_tp.plate_id} {_tp.n_wells} {_tp.control_layout}")
+
+                            if _tp.apply_layout() > 0:
+                                # Analyze Testplate -> Inhibition
+                                # -------------------------------
+                                _tp.calc_inhibition()
+                                if settings.DEBUG:
+                                    print(f" [Upload_TestPlateList] {_tpid} {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
+
+                                _dr_list = []
+                                if str(_tp.plate_quality) == 'Valid':
+                                    logNumbers['Valid Plates'] += 1
+
+                                    if str(_tp.result_type) in DR_CLASSES:
+                                        # Analyze Testplate -> DR AssayData
+                                        # ---------------------------------
+                                        _dr_list = process_testplate_doseresponse(_tp)
+
+                                        # Analyze Testplate -> AssayData
+                                        # ------------------------------
+                                        logNumbers['Processed AssayData'] += len(_dr_list)
+                                        for _dr in _dr_list:
+                                            logNumbers[f'{_dr.dr_type} AssayData'] += 1
+
+                                        if settings.DEBUG:
+                                            print(f" [Upload_TestplateList] {_tpid} DR: {_tp.result_type} {len(_dr_list)}")
+
+                                    elif str(_tp.result_type) == 'Inhibition':
+                                        logNumbers[f'Inhibition AssayData'] += _tp.n_inhibitions
+
+                                        if settings.DEBUG:
+                                            print(f" [Upload_TestplateList] {_tpid} SC: {_tp.result_type} {_tp.n_inhibitions}")
+                                    else:
+                                        if settings.DEBUG:
+                                            print(f" [Upload_TestplateList] {_tpid} ??: {_tp.result_type}")
+
+
+                                elif str(_tp.plate_quality) == 'Rejected':
+                                    logNumbers['Rejected Plates'] += 1
+                                else:
+                                    logNumbers['Failed Plates'] += 1
+
+                        else:
+                            validStatus = False
+                            valLog.add_error("Calc Error",_tp.plate_id,"Either no Wells, Readout or Layout","Correct TestPlateList")
+
+                    if upload and validStatus:
+                        if settings.DEBUG:
+                            print(f" [Upload_TestPlateList] {_tpid} Updating: {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
+                        _tp.save()
+                        for _dr in _dr_list:
+                            _dr.save_assaydata(overwrite=True)
+                        logNumbers['Uploaded Plates'] += 1
+                        logNumbers['Uploaded AssayData'] += len(_dr_list)
+
+                # Message valLog
+                if apply_mp:
+
+                    #TestPlates
+                    valLog.add_info('TestPlates',f"Valid: {logNumbers['Valid Plates']} ","Testplates pass QC","Confirm Testplate")
+                    if logNumbers['Rejected Plates'] > 0:
+                        valLog.add_warning('TestPlates',f"Rejected: {logNumbers['Rejected Plates']} ","Testplates Rejected by ZFactor QC","Check Testplate/Layout")
+                    else:
+                        valLog.add_info('TestPlates',f"Rejected: {logNumbers['Rejected Plates']} ","Testplates Rejected by ZFactor QC")
+
+                    if logNumbers['Failed Plates'] > 0:
+                        valLog.add_warning('TestPlates',f"Failed: {logNumbers['Failed Plates']} ","Testplates fail ","Check Testplate")
+                    else:
+                        valLog.add_info('TestPlates',f"Failed: {logNumbers['Failed Plates']} ","Testplates fail ")
+
+                    # AssayData
+                    valLog.add_info('SC AssayData',f"Inhibition: {logNumbers['Inhibition AssayData']} ","Inhibition AssayData generated ")
+                    valLog.add_info('DR AssayData',f"Processed: {logNumbers['Processed AssayData']} ","Dosereponse AssayData generated ")
+                    valLog.add_info('DR AssayData',f"MIC: {logNumbers['MIC AssayData']} ","MIC AssayData generated ")
+                    valLog.add_info('DR AssayData',f"CC50: {logNumbers['CC50 AssayData']} ","CC50 AssayData generated ")
+                    valLog.add_info('DR AssayData',f"HC50: {logNumbers['HC50 AssayData']} ","HC50 AssayData generated ")
+                    if logNumbers['Processed AssayData'] > 0:
+                        valLog.add_warning('TestPlates',f"Failed: {logNumbers['Failed Plates']} ","Testplates fail ","Check Testplate")
+                    else:
+                        valLog.add_info('TestPlates',f"Failed: {logNumbers['Failed Plates']} ","Testplates fail ")
+
+                else:
+                    valLog.add_warning('TestPlates',f"No Analysis",f"No Compound, Layout or Analysis applied","Select Apply_MP")
+
+                if upload:
+                    valLog.add_info('TestPlates',f"Uploaded: {logNumbers['Uploaded Plates']} ","Testplates uploaded")
+                    _not_uploaded = logNumbers['Processed Plates']- logNumbers['Uploaded Plates']
+                    if  _not_uploaded > 0:
+                        valLog.add_warning('TestPlates',f"Not Uploaded: {_not_uploaded} ","Testplates not uploaded","Check Testplate")
+                    valLog.add_info('DR AssayData',f"Uploaded: {logNumbers['Uploaded AssayData']} ","Dosereponse AssayData uploaded")
+
+                else:
+                    valLog.add_warning('TestPlates',f"Uploaded: 0",f"No Testplate uploaded to database","Select Upload")
+
+    else:
+        print(f"[Upload_TestplateList] No Xlsx to process in {DirName}  ")
+
+    # Signal completion
+    _progress(1, 1, '', 'Finished')
+    valLog.select_unique()
+    return(valLog)
+
+
 #-----------------------------------------------------------------------------------
 def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID=None, 
                                  generate=False,  appuser=None):

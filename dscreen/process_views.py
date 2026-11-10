@@ -54,6 +54,7 @@ class XLSX_SelectForm(SelectSingleFile_StepForm):
 class Load_Readouts_ProcessView(Process_View):
     process_name = 'Upload_Readouts'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     #name_step1="Upload"
     form_list = [
@@ -100,6 +101,7 @@ class Load_Readouts_ProcessView(Process_View):
 class Load_Motherplates_ProcessView(Process_View):
     process_name = 'Upload_Motherplates'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_SelectForm),
@@ -152,6 +154,7 @@ class Load_TestplateList_ProcessView(Process_View):
     process_name = 'Upload_TestplatesList'
     model = Screen_Run
     progress = [0,0]
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_SelectForm),
@@ -217,6 +220,7 @@ class PlatePrep_DownloadForm(Download_StepForm):
 class Gen_Motherplates_PSR_ProcessView(Process_View):
     process_name = 'Gen_Motherplates_PSR'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
@@ -225,6 +229,11 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
     ]
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_psr.html'
+
+    def get_generated_file(self):
+        if self.pk:
+            return f"{self.pk}_PSPrep_Motherplates.xlsx"
+        return None
 
     def file_process_handler(self, request, *args, **kwargs):    
         print(" [Gen_MotherPlates_PSR.file_process_handler]")
@@ -245,6 +254,7 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
 class Gen_Motherplates_HCR_ProcessView(Process_View):
     process_name = 'Gen_Motherplates_HCR'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
@@ -253,6 +263,11 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
     ]
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_hcr.html'
+
+    def get_generated_file(self):
+        if self.pk:
+            return f"{self.pk}_HCPrep_Motherplates.xlsx"
+        return None
 
     def file_process_handler(self, request, *args, **kwargs):    
         #print(" [Gen_MotherPlates_HCR.file_process_handler]")
@@ -272,6 +287,7 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
 class Load_Sequences_ProcessView(Process_View):
     process_name = 'Upload_Sequences'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     #name_step1="Upload"
     form_list = [

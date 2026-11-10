@@ -1,6 +1,7 @@
 import os
 from django import forms
 from django.shortcuts import HttpResponse, render, redirect
+from django.urls import reverse
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ValidationError
@@ -252,6 +253,12 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
         context['step1']=self.name_step1
         current_step = self.steps.current
         context['validation_message'] = self.storage.extra_data.get('validation_message', None)
+        # Cancel target: a configured URL name takes precedence, otherwise
+        # fall back to the referring page (matching done()'s redirect).
+        if getattr(self, 'redirect_url', None):
+            context['cancel_url'] = reverse(self.redirect_url)
+        else:
+            context['cancel_url'] = self.request.META.get('HTTP_REFERER')
         if current_step == 'upload_file':
             context['validation_result']="Select VITEK PDF files"
         else:
