@@ -165,7 +165,16 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
         self.dirname=None
         self.valLog=None
         self.upload=False
+        self.progress_key = None
         self.html_columns = ['Type','Note','Item','Filename','Help']
+
+    def ensure_progress_key(self):
+        """Return (and persist) the cache key used for progress polling."""
+        if not self.storage.extra_data.get('progress_key'):
+            import uuid
+            self.storage.extra_data['progress_key'] = f"{self.__class__.__name__}:{uuid.uuid4().hex}"
+        self.progress_key = self.storage.extra_data['progress_key']
+        return self.progress_key
     
     def file_process_handler(self, request, *args, **kwargs):
         pass
@@ -174,6 +183,8 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
+
+        self.ensure_progress_key()
 
         if current_step == 'select_file':
             context={}
@@ -259,6 +270,9 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
             context['cancel_url'] = reverse(self.redirect_url)
         else:
             context['cancel_url'] = self.request.META.get('HTTP_REFERER')
+        # Progress polling (Option B)
+        context['progress_key'] = self.ensure_progress_key()
+        context['progress_url'] = reverse('process_progress')
         if current_step == 'upload_file':
             context['validation_result']="Select VITEK PDF files"
         else:

@@ -2,7 +2,8 @@ import os
 import shutil
 
 from django.contrib.auth.decorators import login_required
-from django.http import FileResponse, Http404
+from django.core.cache import cache
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponse, render, redirect
 from django.urls import reverse
 from django.core.files.storage import FileSystemStorage
@@ -40,6 +41,17 @@ def Process_DownloadView(request, filename):
                             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
     return response
+
+
+# --------------------------------------------------------------------------------------------------
+@login_required
+def Process_ProgressView(request):
+    """Return the cached progress snapshot for a running process (Option B)."""
+    key = request.GET.get('key')
+    data = cache.get(key) if key else None
+    if data is None:
+        data = {'done': 0, 'total': 0, 'percent': 0, 'item': '', 'message': ''}
+    return JsonResponse(data)
 
 # --------------------------------------------------------------------------------------------------
 class Process_View(WriteUserRequiredMixin,SessionWizardView):
@@ -89,8 +101,18 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         self.valLog=None
         self.upload=False
         self.overwrite=False
+        self.progress_key = None
         self.html_columns = Validation_Log.LOG_FIELDS
         #print(f" [{self.process_name}] Init")
+
+    # ----------------------------------------------------
+    def ensure_progress_key(self):
+        """Return (and persist) the cache key used for progress polling."""
+        if not self.storage.extra_data.get('progress_key'):
+            import uuid
+            self.storage.extra_data['progress_key'] = f"{self.process_name}:{uuid.uuid4().hex}"
+        self.progress_key = self.storage.extra_data['progress_key']
+        return self.progress_key
     
     # ----------------------------------------------------
     def get_object(self):
@@ -120,6 +142,10 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
+
+        # Make the progress key available to file_process_handler() so the
+        # Process_Progress instance writes to the key the client is polling.
+        self.ensure_progress_key()
 
         print(f" [{self.process_name}] [{current_step}] on [{self.pk}]")
         #print(f" [{self.process_name}] process_step: {current_step} Extra Data: {self.storage.extra_data} ")
@@ -308,6 +334,11 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         _download_file = self.storage.extra_data.get('download_file')
         context['download_file'] = _download_file
         context['download_url'] = reverse('process_download', args=[_download_file]) if _download_file else None
+
+        # Progress polling (Option B): expose the cache key to the template so
+        # the client can poll the JSON endpoint while a step is processing.
+        context['progress_key'] = self.ensure_progress_key()
+        context['progress_url'] = reverse('process_progress')
 
         #print(f" [Process_View.get_context_data] Step: [{current_step}] for PK:{self.pk} ")
         

@@ -13,7 +13,7 @@ from apputil.views import (index, userprofile,
 
 from apputil.utils.flex_pivottable import flex_pivottable
 from apputil.test_app import Test_View
-from applib.process.process_forms import  Start_Progress
+from applib.process.process_forms import  Start_Progress, Process_ProgressView
 
 from apputil.task_views import Task_UpdateABaseView, TaskResult_ListView, Task_RemoveView
 
@@ -47,6 +47,7 @@ urlpatterns = [
     # path('data-visual/<str:process_name>', Data_visualView.as_view(), name="data-visual"),
 
     path('progress/', Start_Progress, name='start_progress'),
+    path('process_progress/', Process_ProgressView, name='process_progress'),
     path('info/', SystemInfoView, name='system_info'),
 
     # Background tasks (django.tasks)

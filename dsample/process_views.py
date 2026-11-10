@@ -79,17 +79,19 @@ class Load_Project_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        (valLog,procDict)=Load_Project_Process(request, self.file_dir, self.file_list['single_file'], ProjectID=None,
-                                    UploadContent={'Samples':self.samples,'Contacts':self.contacts},
+        (valLog,procDict)=Load_Project_Process.execute(request, self.file_dir, self.file_list['single_file'],
+                                    project_id=None,
+                                    upload_content={'Samples':self.samples,'Contacts':self.contacts},
                                     upload=self.upload, overwrite=False,
-                                    appuser=request.user)
+                                    appuser=request.user,
+                                    progress_key=self.progress_key)
         #print(procDict)
         self.pk = procDict.get('pk', None)
             
         return(valLog)
     
     def file_process_finalizer(self, request, pk):
-        Summary_Project_Process(request, pk)
+        Summary_Project_Process.execute(request, pk, progress_key=self.progress_key)
 
     # def done(self, form_list, **kwargs):
     #     self.cleanup_filedir()
@@ -152,10 +154,12 @@ class Add_ProjectInfo_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog,procDict=Load_Project_Process(request, self.file_dir, self.file_list['single_file'], ProjectID=self.pk,
-                                    UploadContent={'Samples':self.samples,'Contacts':self.contacts},
+        valLog,procDict=Load_Project_Process.execute(request, self.file_dir, self.file_list['single_file'],
+                                    project_id=self.pk,
+                                    upload_content={'Samples':self.samples,'Contacts':self.contacts},
                                     upload=self.upload, overwrite=self.overwrite,
-                                    appuser=request.user)
+                                    appuser=request.user,
+                                    progress_key=self.progress_key)
          
         return(valLog)
     
@@ -201,11 +205,13 @@ class Load_StockPrep_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Upload_StockPrep_Process(request, self.file_dir, self.file_list['single_file'], ProjectID=self.pk, 
-                                           upload=self.upload, overwrite=self.overwrite,
-                                           appuser=request.user) 
+        valLog=Upload_StockPrep_Process.execute(request, self.file_dir, self.file_list['single_file'],
+                                                 project_id=self.pk,
+                                                 upload=self.upload, overwrite=self.overwrite,
+                                                 appuser=request.user,
+                                                 progress_key=self.progress_key)
  
         return(valLog)
 
     def file_process_finalizer(self, request, pk):
-        Summary_Project_Process(request, pk)
+        Summary_Project_Process.execute(request, pk, progress_key=self.progress_key)

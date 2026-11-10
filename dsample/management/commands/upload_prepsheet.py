@@ -34,7 +34,7 @@ class Command(BaseCommand):
                     dirname, filename = os.path.split(options["xlsx"])
 
 
-                    valLog=Upload_StockPrep_Process(None, dirname, [filename], ProjectID=options["projectid"], 
+                    valLog=Upload_StockPrep_Process.execute(None, dirname, [filename], project_id=options["projectid"],
                                                 upload=options["upload"], overwrite=options["overwrite"],
                                                 appuser=cmduser)
                 else:

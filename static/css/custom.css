@@ -127,6 +127,14 @@ body {
   
 }
 
+/* Anchors styled as buttons (e.g. the Process_View Cancel link) must match
+   <button> rendering: bootstrap_overrides.css forces buttons to 12px, so an
+   <a class="btn-active"> would otherwise stay at the 24px set above. */
+a.btn-active,
+a.btn-disabled {
+  font-size: 12px;
+}
+
 .btn-active:hover{
   background-color: var(--bs-table-hover-bg) !important;
   color: var(--plain-text) !important;

@@ -3,6 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 from apputil.utils.validation_log import Validation_Log
+from applib.process.process_progress import Process_Progress
 from dorganism.models import Taxonomy
 from dcell.models import Cell, Cell_Batch
 
@@ -13,7 +14,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------------
-def upload_Cells_Process(Request, DirName, FileList, upload=False,appuser=None):
+class Upload_Cells_Process(Process_Progress):
     """
     Uploads (upload=True) the data from a single Excel File, given by:
         Request  : Objects to pass state through the system, including user model instance: e.g., request.user
@@ -24,32 +25,39 @@ def upload_Cells_Process(Request, DirName, FileList, upload=False,appuser=None):
 
     """
 # ----------------------------------------------------------------------------------------------------
+    process_name = 'upload_Cells_Xls'
 
-    if FileList:
+    def __init__(self, request, dirname, file_list, upload=False, appuser=None,
+                 progress_cb=None, progress_key=None):
+        super().__init__(request, dirname, file_list, appuser=appuser,
+                         progress_cb=progress_cb, progress_key=progress_key)
+        self.upload = upload
+
+    def run(self):
+        FileList = list(self.file_list or [])
         nFiles = len(FileList)
-    else:
-        nFiles = 0
 
-    # Get Xlsx Files in case none given
-    if nFiles == 0:
-        if DirName:
-            DirFiles = os.listdir(DirName)
-            FileList = [f for f in DirFiles if f.endswith(".xlsx")]
-            nFiles = len(FileList)
+        # Get Xlsx Files in case none given
+        if nFiles == 0:
+            if self.dirname:
+                DirFiles = os.listdir(self.dirname)
+                FileList = [f for f in DirFiles if f.endswith(".xlsx")]
+                nFiles = len(FileList)
 
-    valLog = Validation_Log("upload_Cells_Xls")
+        valLog = self.valLog
 
-    if nFiles > 0:
-        for i in range(nFiles):
-            logger.info(f"[upload_Cell_Xls_Process] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
-            upload_Cells_fromXls(DirName,FileList[i],upload=upload,appuser=appuser,valLog=valLog)
+        if nFiles > 0:
+            for i in range(nFiles):
+                self.report_progress(i + 1, nFiles, FileList[i], 'Processing Cell upload file')
+                logger.info(f"[upload_Cell_Xls_Process] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{self.appuser}] ")
+                upload_Cells_fromXls(self.dirname,FileList[i],upload=self.upload,appuser=self.appuser,valLog=valLog)
 
-    else:
-        logger.info(f"[upload_Cell_Xls_Process] NO Excel files to process in {DirName}  ")
+        else:
+            logger.info(f"[upload_Cell_Xls_Process] NO Excel files to process in {self.dirname}  ")
 
-    valLog.select_unique()
-    
-    return(valLog)
+        self.finish()
+        valLog.select_unique()
+        return valLog
 
 # ----------------------------------------------------------------------------------------------------
 def upload_Cells_fromXls(DirName, FileName, upload=False,appuser=None,valLog=None):

@@ -144,16 +144,20 @@
     </div>
   </form>
 
-  <!-- Processing spinner (shown while a step submits/processes) -->
+  <!-- Processing progress modal (shown while a step submits/processes) -->
   <div class="modal fade" id="process-spinner" tabindex="-1"
        data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body text-center py-4">
           <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="visually-hidden">Processing…</span>
           </div>
-          <p class="mt-3 mb-0">Processing, please wait…</p>
+          <p class="mt-3 mb-2" id="process-progress-message">Processing, please wait…</p>
+          <div class="progress mt-2" style="height: 1.25rem;">
+            <div id="process-progress-bar" class="progress-bar" role="progressbar"
+                 style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+          </div>
         </div>
       </div>
     </div>
@@ -163,14 +167,41 @@
     (function () {
       var form = document.getElementById('processForm');
       if (!form) return;
+      var progressUrl = '{{ progress_url|default:"" }}';
+      var progressKey = '{{ progress_key|default:"" }}';
+
+      function showProgress() {
+        var modalEl = document.getElementById('process-spinner');
+        if (modalEl) { bootstrap.Modal.getOrCreateInstance(modalEl).show(); }
+        var bar = document.getElementById('process-progress-bar');
+        if (bar) { bar.style.width = '0%'; bar.textContent = '0%'; }
+        var msg = document.getElementById('process-progress-message');
+        if (msg) { msg.textContent = 'Processing, please wait…'; }
+      }
+
+      function poll() {
+        if (!progressUrl || !progressKey) return;
+        fetch(progressUrl + '?key=' + encodeURIComponent(progressKey))
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            var bar = document.getElementById('process-progress-bar');
+            var msg = document.getElementById('process-progress-message');
+            var pct = d.percent || 0;
+            if (bar) { bar.style.width = pct + '%'; bar.textContent = pct + '%'; }
+            if (msg && d.message) {
+              msg.textContent = d.item ? (d.message + ' — ' + d.item) : d.message;
+            }
+            if (pct < 100) { setTimeout(poll, 1000); }
+          })
+          .catch(function () { /* stop polling on error */ });
+      }
+
       form.addEventListener('submit', function (e) {
         var submitter = e.submitter;
         var isPrevious = submitter && submitter.name === 'wizard_goto_step';
         if (!isPrevious) {
-          var modalEl = document.getElementById('process-spinner');
-          if (modalEl) {
-            bootstrap.Modal.getOrCreateInstance(modalEl).show();
-          }
+          showProgress();
+          poll();
         }
       });
     })();
