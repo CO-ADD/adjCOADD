@@ -3,6 +3,7 @@ import io
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -25,14 +26,16 @@ from dplate.forms import (TestPlate_Filter, MasterPlate_Filter, Labware_Filter,
 # TestPlate
 #=================================================================================================
 
-TestPlate_DETAIL_FIELDS = ['plate_id', 'plate_type', 'labware_id', 'n_rows', 'n_cols', 'n_wells',
+TESTPLATE_DETAIL_FIELDS = ['plate_id', 'plate_type', 'labware_id', 'n_rows', 'n_cols', 'n_wells',
                            'run_id', 'assay_id', 'result_type', 'plate_quality', 'test_date',
                            'control_layout', 'zfactor', 'plate_qc', 'process_status',
                            'n_reads', 'n_samples', 'n_layout', 'n_inhibitions',
                            'n_doseresponses', 'n_synergies']
 
 
+#----------------------------------------------------------------------------------
 class TestPlate_ListView(LoginRequiredMixin, Filtered_ListView):
+#----------------------------------------------------------------------------------
     login_url = '/'
     model = TestPlate
     template_name = 'dplate/plate_list.html'
@@ -245,7 +248,7 @@ def TestPlate_DetailView(req, pk):
     }
     context = {
         'object': _object,
-        'display_groups': _build_display_groups(_object, TestPlate_DETAIL_FIELDS),
+        'display_groups': _build_display_groups(_object, TESTPLATE_DETAIL_FIELDS),
         'list_url': 'testplate_list',
         'update_url': 'testplate_update',
         'plate_map_data': _plate_map_data(_object),
@@ -319,6 +322,7 @@ def _empty_heatmap_png():
 
 @login_required
 def TestPlate_HeatmapView(req, pk):
+    
     """Static mini heatmap of readout[0] for TestPlate card views (no axes labels)."""
     _object = get_object_or_404(TestPlate, plate_id=pk)
     _object.get_wells()
@@ -328,6 +332,7 @@ def TestPlate_HeatmapView(req, pk):
     if rows <= 0 or cols <= 0:
         return _empty_heatmap_png()
 
+    # Generate Matrix 
     mat = np.full((rows, cols), np.nan)
     has_value = False
     for well_id, well in _object.wells.items():
@@ -355,21 +360,30 @@ def TestPlate_HeatmapView(req, pk):
     fig_w = max(2.5, cols * 0.18)
     fig_h = max(2.0, rows * 0.18) + 0.3
     fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=100)
-    cmap = plt.cm.Reds.copy()
-    cmap.set_bad('#f0f0f0')
+    
+    # Color Map
+    cmap = mcolors.LinearSegmentedColormap.from_list("yellow_green", ["#FCFCBB", "#01582D"])
+    cmap.set_bad("#ff8b7b")
+    
+    # Min/Max
     vmin = float(np.nanmin(mat))
     vmax = float(np.nanmax(mat))
     if vmin == vmax:
         vmax = vmin + 1
-    ax.imshow(mat, cmap=cmap, vmin=vmin, vmax=vmax, aspect='equal', origin='upper')
-    ax.set_title(_rt or 'Readout', fontsize=9, pad=2)
+    
+    # Heatmap    
+    img = ax.imshow(mat, cmap=cmap, vmin=vmin, vmax=vmax, aspect='equal', origin='upper')
+    ax.set_title(_rt or 'Readout', fontsize=9, pad=4)
     ax.axis('off')
+    plt.colorbar(img)
     fig.subplots_adjust(left=0.02, right=0.98, top=0.84, bottom=0.02)
 
+    # Inline image via buf
     buf = io.BytesIO()
     fig.savefig(buf, format='png', dpi=100)
     plt.close(fig)
     buf.seek(0)
+    
     return HttpResponse(buf.read(), content_type='image/png')
 
 

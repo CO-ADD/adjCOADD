@@ -16,3 +16,12 @@ Re-design HCPrep - Method (byRack, Manual) - Rack ID - Rack Row (fix to I/A) - T
 # To DO Data
 
 Rename CTRL MasterPlates
+
+# To Fix
+
+Create Screen Run revisit the create model, and on finish could the List be refreshed
+
+Process - Cancel does not return to original 
+
+Project detail view - display nC, nS, nB 
+Compound list - display nB 

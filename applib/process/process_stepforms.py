@@ -187,9 +187,9 @@ class SelectSingleFileFolder_StepForm(WriteUserRequiredMixin, forms.Form):
             self.add_error('multi_files', "No file selected. Please select a file")
             raise forms.ValidationError("No files selected")
         
-        print(f" [SelectSingleFileFolder_StepForm] : {file_fields}")
-        for e in uploadfiles:
-            print(f" [SelectSingleFileFolder_StepForm] UploadFiles: {e}")
+        # print(f" [SelectSingleFileFolder_StepForm] : {file_fields}")
+        # for e in uploadfiles:
+        #     print(f" [SelectSingleFileFolder_StepForm] UploadFiles: {e}")
         
         return cleaned_data
     

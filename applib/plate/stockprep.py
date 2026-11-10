@@ -62,6 +62,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
         for _mpid in xDF['masterplate'].unique():
             if not pd.isna(_mpid):
                 _mp_new = True
+                _mp_empty = True
                 _rackid = MasterPlate.fix_plateid(_mpid)
                 lstMP[_rackid] = {'plate_id':_rackid}
 
@@ -71,17 +72,19 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                     _MP = MasterPlate.new(_rackid, nWells, PlateType='Storage', WellData=True)
                     valLog.add_info('New Rack', _rackid,f'New Storage TubeRack',"Select Upload")
                     _mp_new = True
+                    _mp_empty = True
                 else:
                     valLog.add_warning('Rack exists', _rackid,f"Tube rack exists","Select Overwrite to add tubes") #_MP.load_wells(WellModel=MasterWell)
                     _mp_new = False
+                    _mp_empty = True
 
                 # for w in  _MP.wells:
                 #     print(f"{_MP.wells[w]}")       
 
                 lstMP[_rackid]['plate'] = _MP
                 lstMP[_rackid]['new'] = _mp_new
-
-        print(lstMP)
+                lstMP[_rackid]['empty'] = _mp_empty
+                
         # For each Compound
         for idx,row in xDF.iterrows():
             _is_stock = True
@@ -96,7 +99,7 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
             # Check if Barcode exists ----------------
             if pd.isna(row['barcode']):
                 _is_stock = False
-                valLog.add_warning('No Stock',f"{row['compound_code']} ({row['compound_id']})",f"Sample has Barcode information")
+                valLog.add_warning('No Stock',f"{row['compound_code']} ({row['compound_id']})",f"Sample has no Barcode information")
             else:
                 # In case of numeric only Barcode's
                 #row['barcode'] = MasterWell.fix_barcode(row['barcode'])
@@ -127,11 +130,16 @@ def read_Stock_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                 if _Well.barcode:
                     valLog.add_error('Existing Rack/Pos', f"{_rackid}:{_wellid}",
                                             f"Rack has Tube in this position: {_Well.barcode} [{_Well.cmpbatch_id}]","Relocate Tube/Barcode first")
+                    lstMP[_rackid]['empty'] = False
                     _mw_status = 'Exists'
+                    
                 elif _Well.cmpbatch_id:
                     valLog.add_error('Existing Rack/Pos', f"{_rackid}:{_wellid}",
                                             f"Rack has Compound in this position: [{_Well.cmpbatch_id}]","Check MasterPlate/Well ID's")
+                    lstMP[_rackid]['empty'] = False
                     _mw_status = 'Exists'
+                else:
+                    _mw_status = 'Empty'
 
                 if _mw_status in ['New','Empty']: 
 

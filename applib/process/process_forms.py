@@ -157,7 +157,8 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
                 else:
                     dfLog = self.valLog.nLogs.get('Error') or 'No object exists, Is this a correct data file?'
 
-                self.storage.extra_data['validation_message']= f" File(s) checked for errors: {len(self.file_list)}" 
+                #self.storage.extra_data['validation_message']= f" File(s) checked for errors: {len(self.file_list)}"
+                self.storage.extra_data['validation_message']= ""  
                 #self.storage.extra_data['validation_help']= self.message_html['upload']
                 self.storage.extra_data['file_list'] = self.file_list
                 self.storage.extra_data['file_dir'] = self.file_dir
@@ -258,7 +259,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
             context['instructions'] = self.initial_dict[current_step]['instructions']
             #context['pk'] = self.pk
         elif current_step == 'upload':
-            context['validation_result']=""
+            context['validation_result']= self.storage.extra_data.get('validation_result', None)
             context['instructions'] = self.initial_dict[current_step]['instructions']
             #context['pk'] = self.storage.extra_data.get('object_pk', None)
         else:

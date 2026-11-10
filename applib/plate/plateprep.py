@@ -110,6 +110,38 @@ def get_BarcodeScans(DirName, csvFiles, **kwargs):
     return(Racks)
 
 # --------------------------------------------------------------------------------
+def _gen_Motherplates_list(MPs):
+# --------------------------------------------------------------------------------
+    MP_Wells = []
+    for _mp in MPs:
+        for w in MPs[_mp].wells:
+            if MPs[_mp].wells[w].barcode:
+                _mp_well_dict = {'MotherPlate_ID':_mp,
+                                'MotherWell_ID':w,
+                                'Plating':'IMB',
+                                }                   
+                if MPs[_mp].wells[w].cmpbatch_id:
+                    _mp_well_dict['CompoundID'] = str(MPs[_mp].wells[w].cmpbatch_id)
+                    _mp_well_dict['SetID'] = 'A'
+                    if MPs[_mp].wells[w].cmpbatch_id.batch_source == 'COADD':
+                        _cmp = COADD_Compound.get(MPs[_mp].wells[w].cmpbatch_id)
+                        _mp_well_dict['CompoundName'] = _cmp.compound_code
+                        _mp_well_dict['ProjectID'] = str(_cmp.project_id)
+
+                    elif MPs[_mp].wells[w].cmpbatch_id.batch_source == 'COADD':
+                        _cmp = ABase_Compound_Batch.get(MPs[_mp].wells[w].cmpbatch_id)
+                        _mp_well_dict['CompoundName'] = _cmp.compound_code
+                        _mp_well_dict['ProjectID'] = str(_cmp.project_id)
+                else:
+                    _mp_well_dict['CompoundID'] = "BARCODE NOT FOUND"
+                    _mp_well_dict['CompoundName'] = ""
+                    _mp_well_dict['ProjectID'] = ""
+
+                _mp_well_dict['Barcode']= MPs[_mp].wells[w].barcode
+                MP_Wells.append(_mp_well_dict)
+    return(MP_Wells)
+ 
+# --------------------------------------------------------------------------------
 def gen_Motherplates_PSPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
 # --------------------------------------------------------------------------------
 
@@ -122,6 +154,7 @@ def gen_Motherplates_PSPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
     verbose = kwargs.get('verbose',0)
 
     MP_Wells = []
+    MPs = {}
     #print(f" Barcodes: {Barcodes}")
 
     _prepSheets = get_PlatePrep_xlsx(os.path.join(DirName,xlFile),Sheets=[PREP_SHEET],FillNA=None,UpperCase=True)
@@ -132,7 +165,7 @@ def gen_Motherplates_PSPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
         _n_mps = len(xDF)
         _n_tubes = 0
         _n_quad = 0
-        MPs = {}
+        
         for idx,row in xDF.iterrows():
             #print(f" Row: {row}")
 
@@ -170,40 +203,101 @@ def gen_Motherplates_PSPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
 
         valLog.add_info('PSPrep',f" {len(xDF)}",f"{xlFile} [#MP: {_n_mps}] (#Tubes: {_n_tubes})","" )
 
+    return(pd.DataFrame(_gen_Motherplates_list(MPs)))
+    
         # == Create MotherPlate output - to be copied into [MotherPlate] ===============================
-        for _mp in MPs:
-            for w in MPs[_mp].wells:
-                if MPs[_mp].wells[w].barcode:
-                    _mp_well_dict = {'MotherPlate_ID':_mp,
-                                     'MotherWell_ID':w,
-                                     'Plating':'IMB',
-                                    }                   
-                    if MPs[_mp].wells[w].cmpbatch_id:
-                        _mp_well_dict['CompoundID'] = str(MPs[_mp].wells[w].cmpbatch_id)
-                        _mp_well_dict['SetID'] = 'A'
-                        if MPs[_mp].wells[w].cmpbatch_id.batch_source == 'COADD':
-                            _cmp = COADD_Compound.get(MPs[_mp].wells[w].cmpbatch_id)
-                            _mp_well_dict['CompoundName'] = _cmp.compound_code
-                            _mp_well_dict['ProjectID'] = str(_cmp.project_id)
+        # for _mp in MPs:
+        #     for w in MPs[_mp].wells:
+        #         if MPs[_mp].wells[w].barcode:
+        #             _mp_well_dict = {'MotherPlate_ID':_mp,
+        #                              'MotherWell_ID':w,
+        #                              'Plating':'IMB',
+        #                             }                   
+        #             if MPs[_mp].wells[w].cmpbatch_id:
+        #                 _mp_well_dict['CompoundID'] = str(MPs[_mp].wells[w].cmpbatch_id)
+        #                 _mp_well_dict['SetID'] = 'A'
+        #                 if MPs[_mp].wells[w].cmpbatch_id.batch_source == 'COADD':
+        #                     _cmp = COADD_Compound.get(MPs[_mp].wells[w].cmpbatch_id)
+        #                     _mp_well_dict['CompoundName'] = _cmp.compound_code
+        #                     _mp_well_dict['ProjectID'] = str(_cmp.project_id)
 
-                        elif MPs[_mp].wells[w].cmpbatch_id.batch_source == 'COADD':
-                            _cmp = ABase_Compound_Batch.get(MPs[_mp].wells[w].cmpbatch_id)
-                            _mp_well_dict['CompoundName'] = _cmp.compound_code
-                            _mp_well_dict['ProjectID'] = str(_cmp.project_id)
-                    else:
-                        _mp_well_dict['CompoundID'] = "BARCODE NOT FOUND"
-                        _mp_well_dict['CompoundName'] = ""
-                        _mp_well_dict['ProjectID'] = ""
+        #                 elif MPs[_mp].wells[w].cmpbatch_id.batch_source == 'COADD':
+        #                     _cmp = ABase_Compound_Batch.get(MPs[_mp].wells[w].cmpbatch_id)
+        #                     _mp_well_dict['CompoundName'] = _cmp.compound_code
+        #                     _mp_well_dict['ProjectID'] = str(_cmp.project_id)
+        #             else:
+        #                 _mp_well_dict['CompoundID'] = "BARCODE NOT FOUND"
+        #                 _mp_well_dict['CompoundName'] = ""
+        #                 _mp_well_dict['ProjectID'] = ""
 
-                    _mp_well_dict['Barcode']= MPs[_mp].wells[w].barcode
-                    MP_Wells.append(_mp_well_dict)
+        #             _mp_well_dict['Barcode']= MPs[_mp].wells[w].barcode
+        #             MP_Wells.append(_mp_well_dict)
 
-    return(pd.DataFrame(MP_Wells))
+    #return(pd.DataFrame(MP_Wells))
 
 # --------------------------------------------------------------------------------
-def gen_Motherplates_HCPrep():
+def gen_Motherplates_HCPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
 # --------------------------------------------------------------------------------
-    pass
+    PREP_SHEET = 'HCPrep'
+    QUADRANTS = {'A1':(0,0),'B1':(1,0),'A2':(0,1),'B2':(1,1)}
+
+    MP_Prep_Xlsx = 'MotherPlate_from_HCPrep.xlsx'
+
+    valLog = kwargs.get('valLog',None)
+    verbose = kwargs.get('verbose',0)
+
+    MPs = {}
+
+    _prepSheets = get_PlatePrep_xlsx(os.path.join(DirName,xlFile),Sheets=[PREP_SHEET],FillNA=None,UpperCase=True)
+    if _prepSheets[PREP_SHEET] is not None:
+        xDF = _prepSheets[PREP_SHEET]
+        
+        _n_mps = len(xDF)
+        _n_tubes = 0
+        _n_quad = 0
+        for idx,row in xDF.iterrows():
+            #print(f" {row} ")
+            
+            if row['MOTHERPLATEID'] not in MPs:
+                MPs[row['MOTHERPLATEID']]= MasterPlate.new(row['MOTHERPLATEID'],384,'Mother',WellData=True)
+                
+            if row['RACKROW'] == 'A':
+                _rack_start = 1
+            elif row['RACKROW'] == 'E':
+                _rack_start = 5
+            elif row['PLATING'] == 'Manual':
+                _rack_start = 0
+            else:
+                valLog.add_error('HCPrep',f" Wrong RackRow given {row['RACKROW']}",f" 'A' (1st row) or 'E' (4th row)","" )
+                _rack_start = -1
+                
+            # If Correct RackRow and/or not Manual Plating
+            #-----------------------------------------    
+            if _rack_start > 0:
+                _rackid = fix_rackid_str(row['RACKID'])
+                _rack = Barcodes[_rackid]
+
+                # For each 1-4 rows and 1-12 cols 
+                for _rack_row in range(1,5):
+                    for _rcol in range(1,13):
+                        _rrow = _rack_row + _rack_start -1
+                        _mrow = (int((_rack_row - 1)/2) * 8) + 1
+                        _mcol = ((_rcol - 1)*2) + ((_rrow - 1) % 2) + 1
+
+                        _tube = _rack.get_well((_rrow,_rcol))
+                        _mp_well = MPs[row['MOTHERPLATEID']].get_well((_mrow,_mcol))
+                    
+                        if _tube.barcode:
+                            print(f" Tube: {_rrow} {_rcol} [{_tube}] -> MP: {_mrow} {_mcol} [{_mp_well}]")
+                        
+                            _mp_well.barcode = _tube.barcode
+                            _mp_well.cmpbatch_id = _tube.cmpbatch_id
+                            if _mp_well.barcode:
+                                _n_tubes += 1
+                                
+    return(pd.DataFrame(_gen_Motherplates_list(MPs)))
+
+                
 
 
 # --------------------------------------------------------------------------------

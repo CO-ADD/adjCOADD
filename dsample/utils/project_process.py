@@ -142,6 +142,7 @@ def Upload_StockPrep_Process(Request, DirName, FileList, ProjectID=None, upload=
                 print(f" [Upload_StockPrep] {i+1:3d}/{nFiles:3d} - {FileList[i]}  [{djPrj}]  [{appuser}] ")
             lstMP = read_Stock_Prepsheet_XLS(os.path.join(DirName,FileList[i]),valLog=valLog)
 
+            print(lstMP)
             # Process MP's
             for _mpid in lstMP:
                 print(f" [Upload_StockPrep] Validating: {lstMP[_mpid]['plate']} ")
@@ -157,7 +158,7 @@ def Upload_StockPrep_Process(Request, DirName, FileList, ProjectID=None, upload=
                         print(f" [Upload_StockPrep] validDict: {c} ")
 
                 if upload and validStatus:
-                    if lstMP[_mpid]['new'] or overwrite:
+                    if lstMP[_mpid]['new'] or lstMP[_mpid]['empty'] or overwrite:
                         print(f" [Upload_StockPrep] Saving: {lstMP[_mpid]['plate']} [Overwrite: {overwrite}]")
                         # for w in lstMP[_mpid]['plate'].wells:
                         #     _w = lstMP[_mpid]['plate'].wells[w]

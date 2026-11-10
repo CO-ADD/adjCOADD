@@ -89,7 +89,7 @@ class Load_Readouts_ProcessView(Process_View):
 
         valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
                                        upload=self.upload, overwrite=self.overwrite,appuser=request.user)
-
+        
         return(valLog)
 
     # Customize Function to update after upload:
@@ -255,7 +255,7 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
     template_name = 'dscreen/screenrun_process/gen_motherplates_hcr.html'
 
     def file_process_handler(self, request, *args, **kwargs):    
-        print(" [Gen_MotherPlates_HCR.file_process_handler]")
+        #print(" [Gen_MotherPlates_HCR.file_process_handler]")
         self.generate = False
 
         # Set Form Data        
@@ -266,6 +266,7 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
         valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
                                            generate=self.generate,
                                            appuser=request.user)
+        return(valLog)
 
 # --------------------------------------------------------------------------------------------------
 class Load_Sequences_ProcessView(Process_View):

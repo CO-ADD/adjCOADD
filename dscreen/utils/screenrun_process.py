@@ -67,7 +67,7 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
             
             for _tp in lstTP:
                 if settings.DEBUG:
-                    print(f" [Upload_ReadOuts] Validating: {_tp['plate']} ")
+                    logger.info(f" [Upload_ReadOuts] Validating: {_tp['plate']} ")
  
                 validStatus = True
                 validDict = {}
@@ -77,14 +77,15 @@ def Upload_ReadOuts_Process(Request, DirName, FileList, RunID=None, upload=False
                 if validDict:
                     validStatus = False
                     for c in validDict:
-                        print(f" [Upload_ReadOuts] validDict: {c} ")
+                        logger.error(f" [Upload_ReadOuts] validDict: {c} ")
                         #valLog.add_error('')
                         
                 if upload and validStatus:
                     if _tp['new'] or overwrite:
                         _tp['plate'].save(verbose=0)
-                        print(f" [Upload_ReadOuts] Saving: {_tp['plate_id']} [Overwrite: {overwrite}]")
+                        logger.info(f" [Upload_ReadOuts] Saving: {_tp['plate_id']} [Overwrite: {overwrite}]")
                         nUploads += 1
+    
         if upload:
             if len(lstTP)-nUploads > 0:                
                 valLog.add_warning("Partial Upload",
@@ -366,29 +367,25 @@ def Gen_Masterplates_Process(Request, DirName, PrepFileList, RackFileList, RunID
     djRun = Screen_Run.get(RunID)
     valLog = Validation_Log("Gen_Masterplates")
 
-    # logNumbers = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
-    #               'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
-    #               'Processed AssayData':0,'Uploaded AssayData':0,
-    #               'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0, 
-    #               'Empty':0}
-
     if nRacks > 0:
         Barcodes = get_BarcodeScans(DirName, RackFileList, valLog=valLog)
     
     if djRun is not None and nFiles > 0:
         dfMP = pd.DataFrame()
         
-        if djRun.run_id == 'PSR': 
+        if str(djRun.run_type) == 'PSR': 
             dfMP = gen_Motherplates_PSPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
-            xlsFile = f"{RunID}_PS_Motherplates.xlsx"
-        elif djRun.run_id == 'HCR': 
+            xlsFile = f"{RunID}_PSPrep_Motherplates.xlsx"
+            
+        elif str(djRun.run_type) == 'HCR': 
             dfMP = gen_Motherplates_HCPrep(DirName,PrepFileList[0],Barcodes,valLog=valLog,verbose=0)
-            xlsFile = f"{RunID}_HC_Motherplates.xlsx"
+            xlsFile = f"{RunID}_HCPrep_Motherplates.xlsx"
 
         if generate and len(dfMP)>0:            
-            print(f" Generate Download {DirName} {xlsFile}")
+            #print(f" Generate Download {DirName} {xlsFile}")
             dfMP.to_excel(os.path.join(DirName,xlsFile))
-
+            
+    #valLog.show()
     valLog.select_unique()
     
     return(valLog)
