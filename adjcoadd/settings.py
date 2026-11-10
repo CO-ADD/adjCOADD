@@ -17,18 +17,7 @@ import ldap
 import django
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
-
 print(f"Project: adjCOADD ")
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-#--------------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Collect Versions
-#--------------------------------------------------------------------
-DJANGO_VER = django.__version__
-PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
-
 
 #======================================================================
 # Define Version 
@@ -41,6 +30,11 @@ PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
 DEVELOPMENT='Test'
 
 VERSION = '2.0.1'
+#======================================================================
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+#--------------------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 #........................................................................
 if DEVELOPMENT:
@@ -112,11 +106,17 @@ else:
 # MEDIA_URL = ('uploads/')
 # MEDIA_ROOT= UPLOAD_DIR
 
+# Collect Versions
+#--------------------------------------------------------------------
+DJANGO_VER = django.__version__
+PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
+
 print(f"Django : {DJANGO_VER}" )
 print(f"Python : {PYTHON_VER}" )
 print(f"BaseDir: {BASE_DIR}")
 print(f"Version: {VERSION}")
-
+print(f"Debug  : {DEBUG}")
+    
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 #--------------------------------------------------------------------
@@ -562,22 +562,18 @@ LOGGING = {
             'level': 'INFO',
             "propagate": True,
         },
-        '': {
-            'handlers': ['console'],
-            'level': 'DEBUG', 
-        },
+        # '': {
+        #     'handlers': ['console'],
+        #     'level': 'DEBUG', 
+        # },
     },
 }
+
+if DEVELOPMENT:
+    LOGGING['loggers'][''] = {'handlers': ['console'],'level': 'DEBUG', }
+
 
 X_FRAME_OPTIONS = 'ALLOWALL'
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
 
-# -------------------------------------------
-# print('Development:',DEVELOPMENT)
-# print('Debug:',DEBUG)
-# print('Base_Dir:',BASE_DIR)
-# print('Upload_Dir:',UPLOAD_DIR)
-# print('Media_Root:',MEDIA_ROOT)
-# print('Structure_files_dir:',MOL_IMG_DIR)
-# print('DbBackup:',DBBACKUP_STORAGE_OPTIONS)
-
+#====================================================================================
