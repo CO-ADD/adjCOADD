@@ -76,21 +76,22 @@ class Upload_ReadOuts_Process(Process_Progress):
         valLog = self.valLog
 
         if nFiles > 0:
+            _progress_plates = 0
             for i in range(nFiles):
                 valLog.add_info('Read Readout File', self.file_list[i])
-                self.report_progress(i + 1, nFiles, self.file_list[i], 'Reading readout file')
 
                 if settings.DEBUG:
                     print(f" [Upload_ReadOuts] {i+1:3d}/{nFiles:3d} - {self.file_list[i]}  [{djRun}]  [{self.appuser}] ")
                 lstTP = multimodereader_xls(os.path.join(self.dirname,self.file_list[i]),valLog=valLog)
 
                 nPlates = len(lstTP)
-                _done_plates = 0
+                
                 for _tp in lstTP:
-                    _done_plates += 1
-                    self.report_progress(_done_plates, nPlates, _tp['plate_id'], 'Validating testplate')
+                    _progress_plates += 1
+                    self.report_progress(_progress_plates, nPlates, _tp['plate_id'], 'Reading TestPlate')
+                    
                     if settings.DEBUG:
-                        logger.info(f" [Upload_ReadOuts] Validating: {_tp['plate']} ")
+                        logger.info(f" [Upload_ReadOuts] Validating: {_tp['plate']} {_progress_plates}/{nPlates}")
 
                     validStatus = True
                     validDict = {}
@@ -121,7 +122,7 @@ class Upload_ReadOuts_Process(Process_Progress):
                                     "")
 
         else:
-            print(f"[Upload_ReadOuts] No Xlsx to process in {self.dirname}  ")
+            valLog.add_error(f"No Xlsx to process",f" in {self.dirname} ")
 
         self.finish()
         valLog.select_unique()

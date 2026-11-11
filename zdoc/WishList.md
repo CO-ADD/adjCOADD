@@ -1,7 +1,6 @@
 
 # Wish list App
 
-Rename Peptide to Biologic (or Proteins) - The whole app or just models/tables for Peptide, Isoform, and Menus/Text
 
 Add Documents for most Items : Organism, Cell, COADD_Compound, ABase_Compound, Biologic_Isoform 
  with document_type 
@@ -11,17 +10,21 @@ Add access permission for different app-groups : OrgDB, CastDB, MoleculeDB, Biol
 
 On generating a new Organism, automatically generate a [Std] Assay entry
 
-Re-design HCPrep - Method (byRack, Manual) - Rack ID - Rack Row (fix to I/A) - TestPlate Row (A/I) - Descripption/Help
+Calculated Fields in Extra Status Line
+
+Masterplate card view in ScreenRun_DetailView
 
 # To DO Data
 
-Rename CTRL MasterPlates
 
 # To Fix
 
-Create Screen Run revisit the create model, and on finish could the List be refreshed
+Reduce Process_Progress init to (self, request, progress_cb=None, progress_key=None, progress_timeout=None)
 
-Process - Cancel does not return to original 
+def __init__(self, request, dirname=None, file_list=None, appuser=None,
+                 progress_cb=None, progress_key=None, progress_timeout=None):
+
+Create Screen Run revisit the create model, and on finish could the List be refreshed
 
 Project detail view - display nC, nS, nB 
 Compound list - display nB 

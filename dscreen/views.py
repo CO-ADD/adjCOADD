@@ -145,6 +145,7 @@ def ScreenRun_DetailView(req, pk):
         
         # Single page list
         _prj_dict = get_projects_screenrun(_object)
+        print(f"DEBUG: {_prj_dict}")
         _projects = [p['project_id'] for p in _prj_dict]
         _projects = Project.objects.filter(project_id__in=_projects, )
         context["project_objs"] = _projects

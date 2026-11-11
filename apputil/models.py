@@ -162,7 +162,9 @@ class AuditModel(models.Model):
     # Helpers for displaying model fields in list view, detail view and cards
     LIST_VIEW_FIELDS   = {}
     DETAIL_VIEW_GROUPS   = []
+    STATUS_VIEW_FIELDS = []
     CARDS_FIELDS   = {}
+    CALCULATED_FIELDS = []
 
     # Helpers for defining foreign key relationships to the DICTIONARY table for choices and lookups
     DICTIONARY_FIELDS = {}

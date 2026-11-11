@@ -134,7 +134,7 @@ class DoseResponse():
         if 'MIC' in str(self.testplate.result_type): 
             self.MIC()
             self.IC50()
-        elif 'synMIC':
+        elif 'synMIC'in str(self.testplate.result_type):
             self.synMIC()
         elif 'CC50' in str(self.testplate.result_type):
             self.IC50() 
