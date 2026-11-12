@@ -275,9 +275,9 @@ class Upload_TestplateList_Process(Process_Progress):
                     if str(self.mp_lst[mp].run_id) != self.run_id:
                         self.valLog.add_warning("Different RunID",f" {str(self.mp_lst[mp].plate_id)}",f"From {str(self.mp_lst[mp].run_id)}","")                     
 
-        print(self.tp_lst)
-        print(self.mp_lst)
-        print(self.ass_lst)
+        self.valLog.add_info('PlatePrep ', f"Testplates  : {len(self.tp_lst)}","") 
+        self.valLog.add_info('PlatePrep ', f"Motherplates: {len(self.mp_lst)}","") 
+        self.valLog.add_info('PlatePrep ', f"Assays      : {len(self.ass_lst)}","") 
 
     # ----------------------------------------------------------------
     def _process_testplate(self):
@@ -339,6 +339,9 @@ class Upload_TestplateList_Process(Process_Progress):
     # ----------------------------------------------------------------
     def run(self):
         self._process_files()
+
+        self.valLog.select_unique()
+        return self.valLog
         
     # ----------------------------------------------------------------
     def run_old(self):
