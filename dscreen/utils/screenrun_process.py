@@ -321,12 +321,14 @@ class Upload_TestplateList_Process(Process_Progress):
                             print(f"add {mp} {self.mp_lst[mp]} -> {_tp}")
                             add_mother_to_testplate(self.mp_lst[mp],_tp)
                             print('done')
+                    print('update_n')
                     _tp.update_n('n_samples')
-                    
+                    print('done')
                 else:
                     validStatus = False
                     self.valLog.add_error("No MotherPlates",key,"No MotherPlate_IDs","Correct TestPlateList")
 
+                print('next')
                 print(f"{validStatus} and {_tp.n_wells} and {_tp.n_reads} and {_tp.control_layout}")
                 # Analyze Testplate
                 # -----------------
