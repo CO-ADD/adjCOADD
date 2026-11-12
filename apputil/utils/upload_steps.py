@@ -194,6 +194,21 @@ class UploadHandler_View(WriteUserRequiredMixin,SessionWizardView):
         self.progress_key = None
         self.html_columns = ['Type','Note','Item','Filename','Help']
 
+    def get(self, request, *args, **kwargs):
+        """Render the current step without resetting the wizard.
+
+        formtools' WizardView.get() resets storage on every GET; the AJAX
+        wizard submission re-navigates to the wizard URL after the POST, which
+        would otherwise bounce back to step 1. Only reset on a fresh session
+        or an explicit ``?reset`` request.
+        """
+        if 'reset' in request.GET:
+            self.storage.reset()
+            self.storage.current_step = self.steps.first
+        elif self.storage.current_step is None:
+            self.storage.current_step = self.steps.first
+        return self.render(self.get_form())
+
     def ensure_progress_key(self):
         """Return (and persist) the cache key used for progress polling."""
         if not self.storage.extra_data.get('progress_key'):

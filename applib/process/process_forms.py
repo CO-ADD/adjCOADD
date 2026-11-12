@@ -106,6 +106,23 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         #print(f" [{self.process_name}] Init")
 
     # ----------------------------------------------------
+    def get(self, request, *args, **kwargs):
+        """Render the current step without resetting the wizard.
+
+        formtools' ``WizardView.get()`` resets the wizard storage on every GET
+        (it treats a GET as "start over"). The AJAX wizard submission navigates
+        back to the wizard URL after the POST has advanced to the next step, so
+        the default behaviour would bounce the user back to step 1. Only reset
+        on a fresh session or an explicit ``?reset`` request.
+        """
+        if 'reset' in request.GET:
+            self.storage.reset()
+            self.storage.current_step = self.steps.first
+        elif self.storage.current_step is None:
+            self.storage.current_step = self.steps.first
+        return self.render(self.get_form())
+
+    # ----------------------------------------------------
     def ensure_progress_key(self):
         """Return (and persist) the cache key used for progress polling."""
         if not self.storage.extra_data.get('progress_key'):
