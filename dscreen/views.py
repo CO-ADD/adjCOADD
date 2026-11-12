@@ -131,7 +131,7 @@ def ScreenRun_DetailView(req, pk):
         context["process"] = {"type":"Screening"}
         context["process_status"] = _object.process_status
         
-        # Paginated and filtered list
+        # TestPlates - Paginated 
         _view = req.GET.get('view', 'table')
         _per_page = 15 if _view == 'card' else 50
         _testplates = TestPlate.objects.filter(run_id=_object, astatus__gt=-1)
@@ -142,8 +142,15 @@ def ScreenRun_DetailView(req, pk):
         context["testplate_page_obj"] = _testplate_page
         context["testplate_count"] = _testplates.count()
         context["testplate_fields"] = TestPlate.get_fields()
+
+
+        # MasterPlates - Single page list 
+        _masterplates = MasterPlate.objects.filter(run_id=_object, astatus__gt=-1)
+        context["masterplate_objs"] = _masterplates
+        context["masterplate_count"] = _masterplates.count()
+        context["masterplate_fields"] = TestPlate.get_fields()
         
-        # Single page list
+        # Project - Single page list
         _prj_dict = get_projects_screenrun(_object)
         print(f"DEBUG: {_prj_dict}")
         _projects = [p['project_id'] for p in _prj_dict]
