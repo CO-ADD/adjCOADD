@@ -294,10 +294,7 @@ class Upload_TestplateList_Process(Process_Progress):
         for key in self.tp_lst:
             progressCount += 1
             _tp = self.tp_lst[key]['plate']
-            print(key)
-            print(self.tp_lst[key])
-            print(self.tp_lst[key]['plate'])
-            self.valLog.add_info('Read PlatePrep File', key,"[TestPlateList, Assay]")
+
             self.report_progress(progressCount, progressTotal, _tp.plate_id, f'Processing {_tp.plate_id}')
             
             if settings.DEBUG:
