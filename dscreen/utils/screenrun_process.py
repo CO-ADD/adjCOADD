@@ -284,6 +284,7 @@ class Upload_TestplateList_Process(Process_Progress):
     # ----------------------------------------------------------------
         progressCount = 0
         progressTotal = len(self.tp_lst)
+        validStatus = True
         
         progressLog = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
                       'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
@@ -318,18 +319,14 @@ class Upload_TestplateList_Process(Process_Progress):
                     mp_ids = getattr(_tp,'motherplate_ids')
                     for mp in mp_ids:
                         if mp != '-':
-                            print(f"add {mp} {self.mp_lst[mp]} -> {_tp}")
                             add_mother_to_testplate(self.mp_lst[mp],_tp)
-                            print('done')
-                    print('update_n')
                     _tp.update_n('n_samples')
-                    print('done')
                 else:
                     validStatus = False
                     self.valLog.add_error("No MotherPlates",key,"No MotherPlate_IDs","Correct TestPlateList")
 
-                print('next')
-                print(f"{validStatus} and {_tp.n_wells} and {_tp.n_reads} and {_tp.control_layout}")
+                #print('next')
+                #print(f"{validStatus} and {_tp.n_wells} and {_tp.n_reads} and {_tp.control_layout}")
                 # Analyze Testplate
                 # -----------------
                 if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
