@@ -272,7 +272,7 @@ class Upload_TestplateList_Process(Process_Progress):
                 if self.mp_lst[mp] is None:
                     self.valLog.add_error('MotherPlate not found ', mp, "Add MNotherPlate or check ID")
                 else:
-                    if str(self.mp_lst[mp].run_id) != self.run_id:
+                    if str(self.mp_lst[mp].run_id) != str(self.run_id):
                         self.valLog.add_warning("Different RunID",f" {str(self.mp_lst[mp].plate_id)}",f"From {str(self.mp_lst[mp].run_id)}","")                     
 
         self.valLog.add_info('PlatePrep ', f"Testplates  : {len(self.tp_lst)}","") 
@@ -280,7 +280,7 @@ class Upload_TestplateList_Process(Process_Progress):
         self.valLog.add_info('PlatePrep ', f"Assays      : {len(self.ass_lst)}","") 
 
     # ----------------------------------------------------------------
-    def _process_testplate(self):
+    def _process_testplates(self):
     # ----------------------------------------------------------------
         progressCount = 0
         progressTotal = len(self.tp_lst)
@@ -306,40 +306,63 @@ class Upload_TestplateList_Process(Process_Progress):
                 for c in validDict:
                     print(f" [Upload_TestPlateList] validDict: {c} ")
 
-            # Get and Check Motherplates
-            if hasattr(_tp,'motherplate_ids'):
-                mp_ids = getattr(_tp,'motherplate_ids')
-                for mp in mp_ids:
-                    if mp != '-':
-                        if mp not in self.mp_lst:
-                            self.mp_lst[mp] = MasterPlate.get(mp,WellData=True)
-                            if str(self.mp_lst[mp].run_id) != self.run_id:
-                                self.valLog.add_warning("Different RunID",f" {str(self.mp_lst[mp].plate_id)}",f"From {str(self.mp_lst[mp].run_id)}","")                            
-        print(self.mp_lst)
-            # if self.apply_mp:
-            #     # Apply MP -> Add Compounds
-            #     # -------------------------
-            #     if hasattr(_tp,'motherplate_ids'):
-            #         if settings.DEBUG:
-            #             print(f" [Upload_TestplateList] {_tp.plate_id} Apply MP: {_tp.motherplate_ids}")
+            if self.apply_mp:
+                
+                # Apply MotherPlates -> Add Compounds
+                # -------------------------
+                if hasattr(_tp,'motherplate_ids'):
+                    if settings.DEBUG:
+                        print(f" [Upload_TestplateList] {_tp.plate_id} Apply MP: {_tp.motherplate_ids}")
 
-            #         _tp.clear_cmpbatch_data()
-            #         mp_ids = getattr(_tp,'motherplate_ids')
-            #         for mp in mp_ids:
-            #             if mp != '-':
-            #                 # if mp not in _MPS:
-            #                 #     _MPS[mp] = MasterPlate.get(mp,WellData=True)
-            #                 add_mother_to_testplate(self.mp_lst[mp],_tp)
+                    _tp.clear_cmpbatch_data()
+                    mp_ids = getattr(_tp,'motherplate_ids')
+                    for mp in mp_ids:
+                        if mp != '-':
+                            add_mother_to_testplate(self.mp_lst[mp],_tp)
+                    _tp.update_n('n_samples')
+                    
+                else:
+                    validStatus = False
+                    self.valLog.add_error("No MotherPlates",key,"No MotherPlate_IDs","Correct TestPlateList")
 
-            #         _tp.update_n('n_samples')
-            #     else:
-            #         validStatus = False
-            #         self.valLog.add_error("No MotherPlates",key,"No MotherPlate_IDs","Correct TestPlateList")
+                # Analyze Testplate
+                # -----------------
+                if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
+                    #print(f"{_tp.plate_id} {_tp.n_wells} {_tp.control_layout}")
 
+                    if _tp.apply_layout() > 0:
+                        # Analyze Testplate -> Inhibition
+                        # -------------------------------
+                        _tp.calc_inhibition()
+                        if settings.DEBUG:
+                            print(f" [Upload_TestPlateList] {key} {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
+
+                        _dr_list = []
+                        if str(_tp.plate_quality) == 'Valid' and str(_tp.result_type) in DR_CLASSES:
+                            _dr_list = process_testplate_doseresponse(_tp)
+
+                            if settings.DEBUG:
+                                print(f" [Upload_TestplateList] {key} DR: {_tp.result_type} {len(_dr_list)}")
+
+                        elif str(_tp.plate_quality) == 'Rejected':
+                            self.valLog.add_error("Testplate rejected",_tp.plate_id,f"Zfactor : {_tp.zfactor}")
+                else:
+                    validStatus = False
+                    self.valLog.add_error("Calc Error",_tp.plate_id,"Either no Wells, Readout or Layout","Correct TestPlateList")
+
+            if self.upload and validStatus:
+                if settings.DEBUG:
+                    print(f" [Upload_TestPlateList] {key} Updating: {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
+                _tp.save()
+                
+                for _dr in _dr_list:
+                    _dr.save_assaydata(overwrite=True)
+                            
     # ----------------------------------------------------------------
     def run(self):
         self._process_files()
-
+        self._process_testplates()
+        
         self.valLog.select_unique()
         return self.valLog
         

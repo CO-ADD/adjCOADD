@@ -461,7 +461,7 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
 
                 AssayDict[row['assay_id']] = {'assay': djAss, 'new': new_assay}
             
-            valLog.add_info('Assays',f'Listed: {logNumbers["Processed Assays"]}','')
+            #valLog.add_info('Assays',f'Listed: {logNumbers["Processed Assays"]}','')
             if logNumbers['New Assays'] > 0:
                 valLog.add_warning('Missing Assays',f'New: {logNumbers["New Assays"]}','Assays not registered', 'Update online Assays')
             if settings.DEBUG:
@@ -522,7 +522,8 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
                     for mp in djTP.motherplate_ids:
                         MotherPlateDict[mp] = "no loaded"
                         
-            valLog.add_info('TestPlates',f'Listed: {logNumbers["Processed Plates"]}','Testplate listed',)
+            #valLog.add_info('TestPlates',f'Listed: {logNumbers["Processed Plates"]}','Testplate listed',)
+            #valLog.add_info('MotherPlates',f'Listed: {logNumbers["Processed Plates"]}','Testplate listed',)
             if settings.DEBUG:
                 print(f' [read_TestPlateList_Prepsheet_XLS] TestPlates: {logNumbers["Processed Plates"]} {logNumbers["New Plates"]} {logNumbers["Uploaded Plates"]}')
 
