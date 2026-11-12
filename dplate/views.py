@@ -433,8 +433,8 @@ def MasterPlate_HeatmapView(req, pk):
     fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=100)
 
     # Color Map
-    cmap = mcolors.LinearSegmentedColormap.from_list("yellow_green", ["#FCFCBB", "#01582D"])
-    cmap.set_bad("#ff8b7b")
+    cmap = mcolors.LinearSegmentedColormap.from_list("yellow_green", ["#81CFF3", "#003249"])
+    cmap.set_bad("#d1d1d1")
 
     # Min/Max
     vmin = float(np.nanmin(mat))
