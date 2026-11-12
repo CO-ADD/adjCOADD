@@ -263,7 +263,7 @@ class Upload_TestplateList_Process(Process_Progress):
         
         if nFiles > 0:
             #self.report_progress(0, nFiles, '', 'Reading PlatePrep files ...')
-
+            _MPS = {}
             for i in range(nFiles):
                 valLog.add_info('Read PlatePrep File', self.file_list[i],"[TestPlateList, Assay]")
                 if settings.DEBUG:
@@ -272,15 +272,14 @@ class Upload_TestplateList_Process(Process_Progress):
                 lstTP,lstAss = read_TestPlateList_Prepsheet_XLS(os.path.join(self.dirname,self.file_list[i]),apply_mp=self.apply_mp,valLog=valLog)
 
                 if valLog.if_noerrors():
-                    _MPS = {}
+                    
                     nPlates = len(lstTP)
                     progressTotal = nPlates
                     
                     for _tpid in lstTP:
                         progressCount += 1
-                        
                         _tp = lstTP[_tpid]['plate']
-                        _new = lstTP[_tpid]['plate']
+                        
                         validStatus = True
                         self.report_progress(progressCount, progressTotal, _tp.plate_id, f'Processing {_tp.plate_id}')
                         if settings.DEBUG:
@@ -292,6 +291,16 @@ class Upload_TestplateList_Process(Process_Progress):
                             for c in validDict:
                                 print(f" [Upload_TestPlateList] validDict: {c} ")
 
+                        # Get and Check Motherplates
+                        if hasattr(_tp,'motherplate_ids'):
+                            mp_ids = getattr(_tp,'motherplate_ids')
+                            for mp in mp_ids:
+                                if mp != '-':
+                                    if mp not in _MPS:
+                                        _MPS[mp] = MasterPlate.get(mp,WellData=True)
+                                        if str(mp.run_id) != self.run_id:
+                                            valLog.add_warning("Different RunID",f" {str(mp.plate_id)}",f"From {str(mp.run_id)}","")                            
+                        
                         if self.apply_mp:
                             # Apply MP -> Add Compounds
                             # -------------------------
@@ -303,10 +312,8 @@ class Upload_TestplateList_Process(Process_Progress):
                                 mp_ids = getattr(_tp,'motherplate_ids')
                                 for mp in mp_ids:
                                     if mp != '-':
-                                        if mp not in _MPS:
-                                            _MPS[mp] = MasterPlate.get(mp,WellData=True)
-                                            if str(mp.run_id) != self.run_id:
-                                                valLog.add_warning("Different RunID",f" {str(mp.plate_id)}",f"From {str(mp.run_id)}","")
+                                        # if mp not in _MPS:
+                                        #     _MPS[mp] = MasterPlate.get(mp,WellData=True)
                                         add_mother_to_testplate(_MPS[mp],_tp)
  
                                 _tp.update_n('n_samples')
