@@ -299,7 +299,7 @@ class Upload_TestplateList_Process(Process_Progress):
                                     if mp not in _MPS:
                                         _MPS[mp] = MasterPlate.get(mp,WellData=True)
                                         if str(_MPS[mp].run_id) != self.run_id:
-                                            valLog.add_warning("Different RunID",f" {str(mp.plate_id)}",f"From {str(mp.run_id)}","")                            
+                                            valLog.add_warning("Different RunID",f" {str(_MPS[mp].plate_id)}",f"From {str(_MPS[mp].run_id)}","")                            
                         
                         if self.apply_mp:
                             # Apply MP -> Add Compounds
