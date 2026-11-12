@@ -361,7 +361,7 @@ class Upload_TestplateList_Process(Process_Progress):
     # ----------------------------------------------------------------
     def run(self):
         self._process_files()
-        self._process_testplates()
+        #self._process_testplates()
         
         self.valLog.select_unique()
         return self.valLog
