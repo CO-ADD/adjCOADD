@@ -113,19 +113,34 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
         (it treats a GET as "start over"). The AJAX wizard submission navigates
         back to the wizard URL after the POST has advanced to the next step, so
         the default behaviour would bounce the user back to step 1. Only reset
-        on a fresh session or an explicit ``?reset`` request.
+        on a fresh session or an explicit ``?reset`` request (used by Cancel to
+        fully reset the process before returning to the detail/list view).
         """
         if 'reset' in request.GET:
             self.storage.reset()
             self.storage.current_step = self.steps.first
+            _next = request.GET.get('next')
+            if _next:
+                return redirect(_next)
+            _pk = self.kwargs.get('pk')
+            if getattr(self, 'detail_url', None) and _pk:
+                return redirect(self.detail_url, pk=_pk)
+            if getattr(self, 'redirect_url', None):
+                return redirect(reverse(self.redirect_url))
         elif self.storage.current_step is None:
             self.storage.current_step = self.steps.first
         return self.render(self.get_form())
 
     # ----------------------------------------------------
-    def ensure_progress_key(self):
-        """Return (and persist) the cache key used for progress polling."""
-        if not self.storage.extra_data.get('progress_key'):
+    def ensure_progress_key(self, renew=False):
+        """Return (and persist) the cache key used for progress polling.
+
+        The key is renewed each time the page is rendered (``renew=True`` in
+        ``get_context_data``) so that every step starts with a fresh progress
+        bar instead of reusing the previous step's "Finished" snapshot. During
+        ``process_step`` the current page's key is read back unchanged.
+        """
+        if renew or not self.storage.extra_data.get('progress_key'):
             import uuid
             self.storage.extra_data['progress_key'] = f"{self.process_name}:{uuid.uuid4().hex}"
         self.progress_key = self.storage.extra_data['progress_key']
@@ -354,7 +369,7 @@ class Process_View(WriteUserRequiredMixin,SessionWizardView):
 
         # Progress polling (Option B): expose the cache key to the template so
         # the client can poll the JSON endpoint while a step is processing.
-        context['progress_key'] = self.ensure_progress_key()
+        context['progress_key'] = self.ensure_progress_key(renew=True)
         context['progress_url'] = reverse('process_progress')
 
         #print(f" [Process_View.get_context_data] Step: [{current_step}] for PK:{self.pk} ")

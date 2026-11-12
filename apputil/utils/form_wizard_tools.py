@@ -174,18 +174,28 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
         formtools' WizardView.get() resets storage on every GET; the AJAX
         wizard submission re-navigates to the wizard URL after the POST, which
         would otherwise bounce back to step 1. Only reset on a fresh session
-        or an explicit ``?reset`` request.
+        or an explicit ``?reset`` request (used by Cancel to fully reset).
         """
         if 'reset' in request.GET:
             self.storage.reset()
             self.storage.current_step = self.steps.first
+            _next = request.GET.get('next')
+            if _next:
+                return redirect(_next)
+            if getattr(self, 'redirect_url', None):
+                return redirect(reverse(self.redirect_url))
         elif self.storage.current_step is None:
             self.storage.current_step = self.steps.first
         return self.render(self.get_form())
 
-    def ensure_progress_key(self):
-        """Return (and persist) the cache key used for progress polling."""
-        if not self.storage.extra_data.get('progress_key'):
+    def ensure_progress_key(self, renew=False):
+        """Return (and persist) the cache key used for progress polling.
+
+        The key is renewed each time the page is rendered (``renew=True`` in
+        ``get_context_data``) so every step starts with a fresh progress bar.
+        During ``process_step`` the current page's key is read back unchanged.
+        """
+        if renew or not self.storage.extra_data.get('progress_key'):
             import uuid
             self.storage.extra_data['progress_key'] = f"{self.__class__.__name__}:{uuid.uuid4().hex}"
         self.progress_key = self.storage.extra_data['progress_key']
@@ -286,7 +296,7 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
         else:
             context['cancel_url'] = self.request.META.get('HTTP_REFERER')
         # Progress polling (Option B)
-        context['progress_key'] = self.ensure_progress_key()
+        context['progress_key'] = self.ensure_progress_key(renew=True)
         context['progress_url'] = reverse('process_progress')
         if current_step == 'upload_file':
             context['validation_result']="Select VITEK PDF files"

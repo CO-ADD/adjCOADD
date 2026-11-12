@@ -97,7 +97,7 @@
 
       <!-- Button Actions --> 
         <a class="btn-active"
-           href="{% if cancel_url %}{{ cancel_url }}{% elif reset_url %}{{ reset_url }}{% else %}#{% endif %}">
+           href="{{ request.path }}?reset=1{% if cancel_url %}&next={{ cancel_url|urlencode }}{% endif %}">
           <i class="bi bi-x-lg me-1"></i> Cancel
         </a>
 
@@ -203,7 +203,15 @@
             if (msg && d.message) {
               msg.textContent = d.item ? (d.message + ' — ' + d.item) : d.message;
             }
-            if (pct < 100) { setTimeout(poll, 500); }
+            if (pct >= 100) {
+              // Done — close the popup instead of leaving it on "Finished".
+              setTimeout(function () {
+                var modalEl = document.getElementById('process-spinner');
+                if (modalEl) { bootstrap.Modal.getOrCreateInstance(modalEl).hide(); }
+              }, 400);
+            } else {
+              setTimeout(poll, 500);
+            }
           })
           .catch(function () {
             // Transient error — retry a little later while the request is in flight.
