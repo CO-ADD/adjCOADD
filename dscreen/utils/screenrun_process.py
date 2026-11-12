@@ -296,7 +296,7 @@ class Upload_TestplateList_Process(Process_Progress):
             progressCount += 1
             _tp = self.tp_lst[key]['plate']
 
-            self.report_progress(progressCount, progressTotal, _tp.plate_id, f'Processing {_tp.plate_id}')
+            self.report_progress(progressCount, progressTotal, message=f'Processing {_tp.plate_id}')
             
             if settings.DEBUG:
                 print(f" [Upload_TestplateList] {progressCount:3d}/{progressTotal:3d} - {key}  [{self.run_id}]  ")
