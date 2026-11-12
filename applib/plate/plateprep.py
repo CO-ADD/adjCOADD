@@ -476,6 +476,8 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
     if _prepSheets['TestPlateList'] is not None:
 
         TestPlateDict = {}
+        MotherPlateDict = {}
+        
         tp_Fields = ['plating','test_media', 'test_dye','test_additive', 'processing', 'issues','control_layout' ]
         tp_FKeys  = {'assay_id': Assay,'test_cellbatch_id': Cell_Batch, 'test_orgbatch_id': Organism_Batch, 'labware_id': Labware}
         tp_Dicts = ['result_type']
@@ -517,9 +519,11 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
                                                       valLog=valLog)
                     
                     TestPlateDict[row['testplate_id']] = {'plate':djTP}
-
+                    for mp in djTP.motherplate_ids:
+                        MotherPlateDict[mp] = "no loaded"
+                        
             valLog.add_info('TestPlates',f'Listed: {logNumbers["Processed Plates"]}','Testplate listed',)
             if settings.DEBUG:
                 print(f' [read_TestPlateList_Prepsheet_XLS] TestPlates: {logNumbers["Processed Plates"]} {logNumbers["New Plates"]} {logNumbers["Uploaded Plates"]}')
 
-    return TestPlateDict,AssayDict
+    return TestPlateDict,MotherPlateDict,AssayDict

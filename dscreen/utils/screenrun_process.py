@@ -241,13 +241,107 @@ class Upload_TestplateList_Process(Process_Progress):
                  progress_cb=None, progress_key=None):
         super().__init__(request, dirname, file_list,
                          appuser=appuser, progress_cb=progress_cb, progress_key=progress_key)
-        self.run_id = run_id
+
+        self.run_id = Screen_Run.get(run_id)
         self.upload = upload
         self.apply_mp = apply_mp
         self.overwrite = overwrite
+        
+        self.tp_lst = {}
+        self.mp_lst = {}
+        self.ass_lst = {}
+
+    # ----------------------------------------------------------------
+    def _process_files(self):
+    # ----------------------------------------------------------------
+        for i in range(self.n_files):
+            self.valLog.add_info('Read PlatePrep File', self.file_list[i],"[TestPlateList, Assay]")
+            
+            self.report_progress(i, self.n_files, message= f'Reading file {i+1}/{self.n_files} ...')
+            if settings.DEBUG:
+                print(f" [Upload_TestplateList] {i+1:3d}/{self.n_files:3d} - {self.file_list[i]}  [{self.run_id}]  [{self.appuser}] ")
+
+            dictTP,dictMP,dictAss = read_TestPlateList_Prepsheet_XLS(os.path.join(self.dirname,self.file_list[i]),
+                                                            apply_mp=self.apply_mp,valLog=self.valLog)
+            self.tp_lst.update(dictTP)
+            self.mp_lst.update(dictMP)
+            self.ass_lst.update(dictAss)
+            
+            for mp in self.mp_lst:
+                self.mp_lst[mp] = MasterPlate.get(mp,WellData=True)
+                if self.mp_lst[mp] is None:
+                    self.valLog.add_error('MotherPlate not found ', mp, "Add MNotherPlate or check ID")
+                else:
+                    if str(self.mp_lst[mp].run_id) != self.run_id:
+                        self.valLog.add_warning("Different RunID",f" {str(self.mp_lst[mp].plate_id)}",f"From {str(self.mp_lst[mp].run_id)}","")                     
+
+        print(self.tp_lst)
+        print(self.mp_lst)
+        print(self.ass_lst)
+
+    # ----------------------------------------------------------------
+    def _process_testplate(self):
+    # ----------------------------------------------------------------
+        progressCount = 0
+        progressTotal = len(self.tp_lst)
+        
+        progressLog = {'Processed Plates':0,'New Plates':0, 'Uploaded Plates':0,
+                      'Valid Plates':0, 'Rejected Plates':0, 'Failed Plates':0,
+                      'Processed AssayData':0,'Uploaded AssayData':0,
+                      'Inhibition AssayData':0, 'MIC AssayData':0, 'CC50 AssayData':0, 'HC50 AssayData':0,
+                      'Empty':0}
+    
+        for key in self.tp_lst:
+            progressCount += 1
+            _tp = self.tp_lst[key]['plate']
+
+            self.valLog.add_info('Read PlatePrep File', key,"[TestPlateList, Assay]")
+            self.report_progress(0, 1, self.file_list[i], f'Reading file {progressCount}/{progressTotal} ...')
+            if settings.DEBUG:
+                print(f" [Upload_TestplateList] {progressCount:3d}/{progressTotal:3d} - {key}  [{self.run_id}]  ")
+            
+            validDict = _tp.validate_model(WellData=False, verbose = 0)
+            if validDict:
+                validStatus = False
+                for c in validDict:
+                    print(f" [Upload_TestPlateList] validDict: {c} ")
+
+            # Get and Check Motherplates
+            if hasattr(_tp,'motherplate_ids'):
+                mp_ids = getattr(_tp,'motherplate_ids')
+                for mp in mp_ids:
+                    if mp != '-':
+                        if mp not in self.mp_lst:
+                            self.mp_lst[mp] = MasterPlate.get(mp,WellData=True)
+                            if str(self.mp_lst[mp].run_id) != self.run_id:
+                                self.valLog.add_warning("Different RunID",f" {str(self.mp_lst[mp].plate_id)}",f"From {str(self.mp_lst[mp].run_id)}","")                            
+        print(self.mp_lst)
+            # if self.apply_mp:
+            #     # Apply MP -> Add Compounds
+            #     # -------------------------
+            #     if hasattr(_tp,'motherplate_ids'):
+            #         if settings.DEBUG:
+            #             print(f" [Upload_TestplateList] {_tp.plate_id} Apply MP: {_tp.motherplate_ids}")
+
+            #         _tp.clear_cmpbatch_data()
+            #         mp_ids = getattr(_tp,'motherplate_ids')
+            #         for mp in mp_ids:
+            #             if mp != '-':
+            #                 # if mp not in _MPS:
+            #                 #     _MPS[mp] = MasterPlate.get(mp,WellData=True)
+            #                 add_mother_to_testplate(self.mp_lst[mp],_tp)
+
+            #         _tp.update_n('n_samples')
+            #     else:
+            #         validStatus = False
+            #         self.valLog.add_error("No MotherPlates",key,"No MotherPlate_IDs","Correct TestPlateList")
 
     # ----------------------------------------------------------------
     def run(self):
+        self._process_files()
+        
+    # ----------------------------------------------------------------
+    def run_old(self):
         nFiles = self.n_files
         nUploads = 0
 
