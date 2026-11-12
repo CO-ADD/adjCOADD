@@ -327,6 +327,7 @@ class Upload_TestplateList_Process(Process_Progress):
                     validStatus = False
                     self.valLog.add_error("No MotherPlates",key,"No MotherPlate_IDs","Correct TestPlateList")
 
+                print(f"{validStatus} and {_tp.n_wells} and {_tp.n_reads} and {_tp.control_layout}")
                 # Analyze Testplate
                 # -----------------
                 if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
