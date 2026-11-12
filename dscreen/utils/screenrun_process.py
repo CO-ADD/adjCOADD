@@ -305,8 +305,10 @@ class Upload_TestplateList_Process(Process_Progress):
                                     if mp != '-':
                                         if mp not in _MPS:
                                             _MPS[mp] = MasterPlate.get(mp,WellData=True)
+                                            if str(mp.run_id) != self.run_id:
+                                                valLog.add_warning("Different RunID",f" {str(mp.plate_id)}",f"From {str(mp.run_id)}","")
                                         add_mother_to_testplate(_MPS[mp],_tp)
-
+ 
                                 _tp.update_n('n_samples')
                             else:
                                 validStatus = False
