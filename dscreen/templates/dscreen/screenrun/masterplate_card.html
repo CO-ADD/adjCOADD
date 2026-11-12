@@ -1,0 +1,33 @@
+<div class="d-flex flex-column w-100">
+
+  <div class="row d-flex flex-wrap mx-2">
+    {% for object in objects %}
+      <div class="col-md-4 m-0 p-1">
+        <div class="card card-bg ms-3 px-1 rounded-3 h-100">
+
+          <!-- Header: plate_id | plate_type | plating (values only) -->
+          <div class="d-flex justify-content-between align-items-center border-bottom border-dark px-1 py-1">
+            <a href="{% url 'masterplate_detail' object.plate_id %}" class="fw-bold text-decoration-none">{{ object.plate_id }}</a>
+            <span class="small mx-auto">{{ object.plate_type }}</span>
+            <span class="small">{{ object.plating }}</span>
+          </div>
+
+          <!-- Heatmap of conc_lst[0] -->
+          <a href="{% url 'masterplate_detail' object.plate_id %}" class="d-block px-1 pt-1">
+            <img src="{% url 'masterplate_heatmap' object.plate_id %}" class="img-fluid w-100" alt="{{ object.plate_id }} concentration heatmap">
+          </a>
+
+          <!-- Footer: plate_quality | n-values | dilution_layout -->
+          <div class="d-flex justify-content-between align-items-center border-top border-dark mt-1 pt-1 px-1 pb-1">
+            <span class="small">{{ object.plate_quality }}</span>
+            <span class="small mx-auto">{{ object.n_samples }} {{ object.n_layout }}</span>
+            <span class="small">{{ object.dilution_layout }}</span>
+          </div>
+
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted px-2">No motherplates found</p>
+    {% endfor %}
+  </div>
+</div>

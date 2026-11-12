@@ -325,8 +325,6 @@ class Upload_TestplateList_Process(Process_Progress):
                     validStatus = False
                     self.valLog.add_error("No MotherPlates",key,"No MotherPlate_IDs","Correct TestPlateList")
 
-                #print('next')
-                #print(f"{validStatus} and {_tp.n_wells} and {_tp.n_reads} and {_tp.control_layout}")
                 # Analyze Testplate
                 # -----------------
                 if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
@@ -357,7 +355,7 @@ class Upload_TestplateList_Process(Process_Progress):
                                 print(f" [Upload_TestplateList] {key} DR: {_tp.result_type} {len(_dr_list)}")
 
                         elif str(_tp.plate_quality) == 'Rejected':
-                            self.valLog.add_error("Testplate rejected",_tp.plate_id,f"Zfactor : {_tp.zfactor}")
+                            self.valLog.add_warning("Testplate rejected",_tp.plate_id,f"Zfactor : {_tp.zfactor}")
                 else:
                     validStatus = False
                     self.valLog.add_error("Calc Error",_tp.plate_id,"Either no Wells, Readout or Layout","Correct TestPlateList")

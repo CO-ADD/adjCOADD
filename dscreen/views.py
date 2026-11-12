@@ -144,11 +144,11 @@ def ScreenRun_DetailView(req, pk):
         context["testplate_fields"] = TestPlate.get_fields()
 
 
-        # MasterPlates - Single page list 
-        _masterplates = MasterPlate.objects.filter(run_id=_object, astatus__gt=-1)
-        context["masterplate_objs"] = _masterplates
-        context["masterplate_count"] = _masterplates.count()
-        context["masterplate_fields"] = TestPlate.get_fields()
+        # MotherPlates - Single page list 
+        _motherplates = MasterPlate.objects.filter(run_id=_object, astatus__gt=-1)
+        context["motherplate_objs"] = _motherplates
+        context["motherplate_count"] = _motherplates.count()
+        context["motherplate_fields"] = MasterPlate.get_fields()
         
         # Project - Single page list
         _prj_dict = get_projects_screenrun(_object)

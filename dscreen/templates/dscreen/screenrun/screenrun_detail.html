@@ -91,6 +91,36 @@
                 </div>
             </div>
 
+            <!-- MotherPlates -->
+            <div class="accordion bg-transparent w-100" id="screenrun-motherplates">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_04">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunMotherPlates" aria-expanded="true" aria-controls="collapseRunMotherPlates">
+                    <h5 class="fs-6 my-0">
+                        MotherPlates
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=motherplate_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunMotherPlates" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
+                    data-bs-parent="#screenrun-motherplates">
+                    <div class="accordion-body">
+                    {% if view == 'card' %}
+                        <!-- prettier-ignore -->
+                        {% include 'dscreen/screenrun/masterplate_card.html' with objects=motherplate_objs %}
+                    {% else %}
+                    <div class="table-responsive">
+                        <!-- prettier-ignore -->
+                        {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_motherplate' objects=motherplate_objs data_fields=motherplate_fields %}
+                    </div>
+                    {% endif %}
+                    </div>
+                </div>
+                </div>
+            </div>
+
             <!-- Projects -->
             <div class="accordion bg-transparent w-100 m-auto" id="screenrun-projects">
                 <div class="accordion-item">

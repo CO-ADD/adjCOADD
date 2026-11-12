@@ -5,6 +5,7 @@ from django.urls import path, include, re_path
 from dplate.views import (TestPlate_ListView, TestPlate_DetailView, TestPlate_UpdateView, TestPlate_MapView,
                           TestPlate_QualityUpdateView, TestPlate_HeatmapView,
                           MasterPlate_ListView, MasterPlate_DetailView, MasterPlate_UpdateView,
+                          MasterPlate_HeatmapView,
                           Labware_ListView, Labware_CreateView, Labware_UpdateView)
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
     # MasterPlate
     path('masterplate_list', MasterPlate_ListView.as_view(), name="masterplate_list"),
     path('masterplate/update/<str:pk>', MasterPlate_UpdateView, name="masterplate_update"),
+    path('masterplate/heatmap/<str:pk>', MasterPlate_HeatmapView, name="masterplate_heatmap"),
     path('masterplate/<str:pk>', MasterPlate_DetailView, name="masterplate_detail"),
 
     # Labware

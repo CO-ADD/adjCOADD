@@ -397,6 +397,67 @@ MasterPlate_DETAIL_FIELDS = ['plate_id', 'plate_type', 'labware_id', 'n_rows', '
                              'master_volume', 'master_volume_unit', 'n_samples', 'n_layout', 'process_status']
 
 
+@login_required
+def MasterPlate_HeatmapView(req, pk):
+    """Static mini heatmap of conc_lst[0] for MasterPlate card views (no axes labels)."""
+    _object = get_object_or_404(MasterPlate, plate_id=pk)
+    _object.get_wells()
+
+    rows = _object.n_rows or 0
+    cols = _object.n_cols or 0
+    if rows <= 0 or cols <= 0:
+        return _empty_heatmap_png()
+
+    # Generate Matrix from each well's first concentration (conc_lst[0])
+    mat = np.full((rows, cols), np.nan)
+    has_value = False
+    for well_id, well in _object.wells.items():
+        if well is None:
+            continue
+        try:
+            r, c = _object.well_rowcol(well_id)
+            if well.conc_lst:
+                mat[r - 1, c - 1] = float(well.conc_lst[0])
+                has_value = True
+        except Exception:
+            continue
+
+    if not has_value:
+        return _empty_heatmap_png()
+
+    # Label: plate_type, else generic concentration label
+    _label = str(_object.plate_type) if _object.plate_type else 'Concentration'
+
+    fig_w = max(2.5, cols * 0.18)
+    fig_h = max(2.0, rows * 0.18) + 0.3
+    fig, ax = plt.subplots(figsize=(fig_w, fig_h), dpi=100)
+
+    # Color Map
+    cmap = mcolors.LinearSegmentedColormap.from_list("yellow_green", ["#FCFCBB", "#01582D"])
+    cmap.set_bad("#ff8b7b")
+
+    # Min/Max
+    vmin = float(np.nanmin(mat))
+    vmax = float(np.nanmax(mat))
+    if vmin == vmax:
+        vmax = vmin + 1
+
+    # Heatmap
+    img = ax.imshow(mat, cmap=cmap, vmin=vmin, vmax=vmax, aspect='equal', origin='upper')
+    ax.set_title(_label, fontsize=9, pad=4)
+    ax.axis('off')
+    plt.colorbar(img)
+    fig.subplots_adjust(left=0.02, right=0.98, top=0.84, bottom=0.02)
+
+    # Inline image via buf
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', dpi=100)
+    plt.close(fig)
+    buf.seek(0)
+
+    return HttpResponse(buf.read(), content_type='image/png')
+
+
 class MasterPlate_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
     model = MasterPlate
