@@ -76,15 +76,16 @@ class Upload_ReadOuts_Process(Process_Progress):
         valLog = self.valLog
 
         if nFiles > 0:
-            _progress_plates = 0
             for i in range(nFiles):
                 valLog.add_info('Read Readout File', self.file_list[i])
+                self.report_progress(0, 1, self.file_list[i], f'Reading file {i+1}/{nFiles} ...')
 
                 if settings.DEBUG:
                     print(f" [Upload_ReadOuts] {i+1:3d}/{nFiles:3d} - {self.file_list[i]}  [{djRun}]  [{self.appuser}] ")
                 lstTP = multimodereader_xls(os.path.join(self.dirname,self.file_list[i]),valLog=valLog)
 
                 nPlates = len(lstTP)
+                _progress_plates = 0
                 
                 for _tp in lstTP:
                     _progress_plates += 1
@@ -262,10 +263,10 @@ class Upload_TestplateList_Process(Process_Progress):
                       'Empty':0}
         
         if nFiles > 0:
-            #self.report_progress(0, nFiles, '', 'Reading PlatePrep files ...')
             _MPS = {}
             for i in range(nFiles):
                 valLog.add_info('Read PlatePrep File', self.file_list[i],"[TestPlateList, Assay]")
+                self.report_progress(0, 1, self.file_list[i], f'Reading file {i+1}/{nFiles} ...')
                 if settings.DEBUG:
                     print(f" [Upload_TestplateList] {i+1:3d}/{nFiles:3d} - {self.file_list[i]}  [{djRun}]  [{self.appuser}] ")
 
@@ -275,6 +276,7 @@ class Upload_TestplateList_Process(Process_Progress):
                     
                     nPlates = len(lstTP)
                     progressTotal = nPlates
+                    progressCount = 0
                     
                     for _tpid in lstTP:
                         progressCount += 1

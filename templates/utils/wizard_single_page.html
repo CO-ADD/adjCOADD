@@ -169,6 +169,8 @@
       if (!form) return;
       var progressUrl = '{{ progress_url|default:"" }}';
       var progressKey = '{{ progress_key|default:"" }}';
+      var finished = false;
+      var submitting = false;
 
       function showProgress() {
         var modalEl = document.getElementById('process-spinner');
@@ -180,10 +182,11 @@
       }
 
       function poll() {
-        if (!progressUrl || !progressKey) return;
-        fetch(progressUrl + '?key=' + encodeURIComponent(progressKey))
+        if (finished || !progressUrl || !progressKey) return;
+        fetch(progressUrl + '?key=' + encodeURIComponent(progressKey), {cache: 'no-store'})
           .then(function (r) { return r.json(); })
           .then(function (d) {
+            if (finished) return;
             var bar = document.getElementById('process-progress-bar');
             var msg = document.getElementById('process-progress-message');
             var pct = d.percent || 0;
@@ -191,18 +194,45 @@
             if (msg && d.message) {
               msg.textContent = d.item ? (d.message + ' — ' + d.item) : d.message;
             }
-            if (pct < 100) { setTimeout(poll, 1000); }
+            if (pct < 100) { setTimeout(poll, 500); }
           })
-          .catch(function () { /* stop polling on error */ });
+          .catch(function () {
+            if (!finished) { setTimeout(poll, 1000); }
+          });
+      }
+
+      function submitStep() {
+        var action = form.getAttribute('action') || window.location.href;
+        fetch(action, {
+          method: 'POST',
+          body: new FormData(form),
+          credentials: 'same-origin',
+          redirect: 'follow'
+        }).then(function (response) {
+          finished = true;
+          if (!response.ok) {
+            window.location.reload();
+            return;
+          }
+          window.location.assign(response.url || action);
+        }).catch(function () {
+          finished = true;
+          window.location.reload();
+        });
       }
 
       form.addEventListener('submit', function (e) {
         var submitter = e.submitter;
         var isPrevious = submitter && submitter.name === 'wizard_goto_step';
-        if (!isPrevious) {
-          showProgress();
-          poll();
+        if (isPrevious) {
+          return;
         }
+        if (submitting) { e.preventDefault(); return; }
+        e.preventDefault();
+        submitting = true;
+        showProgress();
+        poll();
+        submitStep();
       });
     })();
   </script>
