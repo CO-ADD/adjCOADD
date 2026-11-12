@@ -318,7 +318,9 @@ class Upload_TestplateList_Process(Process_Progress):
                     mp_ids = getattr(_tp,'motherplate_ids')
                     for mp in mp_ids:
                         if mp != '-':
+                            print(f"add {mp} {self.mp_lst[mp]} -> {_tp}")
                             add_mother_to_testplate(self.mp_lst[mp],_tp)
+                            print('done')
                     _tp.update_n('n_samples')
                     
                 else:
