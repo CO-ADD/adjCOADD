@@ -107,15 +107,8 @@
                 <div id="collapseRunMotherPlates" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
                     data-bs-parent="#screenrun-motherplates">
                     <div class="accordion-body">
-                    {% if view == 'card' %}
                         <!-- prettier-ignore -->
                         {% include 'dscreen/screenrun/masterplate_card.html' with objects=motherplate_objs %}
-                    {% else %}
-                    <div class="table-responsive">
-                        <!-- prettier-ignore -->
-                        {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_motherplate' objects=motherplate_objs data_fields=motherplate_fields %}
-                    </div>
-                    {% endif %}
                     </div>
                 </div>
                 </div>

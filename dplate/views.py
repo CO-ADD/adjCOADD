@@ -399,7 +399,7 @@ MasterPlate_DETAIL_FIELDS = ['plate_id', 'plate_type', 'labware_id', 'n_rows', '
 
 @login_required
 def MasterPlate_HeatmapView(req, pk):
-    """Static mini heatmap of conc_lst[0] for MasterPlate card views (no axes labels)."""
+    """Static mini heatmap of test_conc_lst[0] for MasterPlate card views (no axes labels)."""
     _object = get_object_or_404(MasterPlate, plate_id=pk)
     _object.get_wells()
 
@@ -408,7 +408,7 @@ def MasterPlate_HeatmapView(req, pk):
     if rows <= 0 or cols <= 0:
         return _empty_heatmap_png()
 
-    # Generate Matrix from each well's first concentration (conc_lst[0])
+    # Generate Matrix from each well's first test concentration (test_conc_lst[0])
     mat = np.full((rows, cols), np.nan)
     has_value = False
     for well_id, well in _object.wells.items():
@@ -416,8 +416,8 @@ def MasterPlate_HeatmapView(req, pk):
             continue
         try:
             r, c = _object.well_rowcol(well_id)
-            if well.conc_lst:
-                mat[r - 1, c - 1] = float(well.conc_lst[0])
+            if well.test_conc_lst:
+                mat[r - 1, c - 1] = float(well.test_conc_lst[0])
                 has_value = True
         except Exception:
             continue

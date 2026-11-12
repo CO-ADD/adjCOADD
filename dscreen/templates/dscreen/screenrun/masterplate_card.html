@@ -12,9 +12,9 @@
             <span class="small">{{ object.plating }}</span>
           </div>
 
-          <!-- Heatmap of conc_lst[0] -->
+          <!-- Heatmap of test_conc_lst[0] -->
           <a href="{% url 'masterplate_detail' object.plate_id %}" class="d-block px-1 pt-1">
-            <img src="{% url 'masterplate_heatmap' object.plate_id %}" class="img-fluid w-100" alt="{{ object.plate_id }} concentration heatmap">
+            <img src="{% url 'masterplate_heatmap' object.plate_id %}" class="img-fluid w-100" alt="{{ object.plate_id }} test concentration heatmap">
           </a>
 
           <!-- Footer: plate_quality | n-values | dilution_layout -->
