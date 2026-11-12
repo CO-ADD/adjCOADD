@@ -328,17 +328,27 @@ class Upload_TestplateList_Process(Process_Progress):
                 # Analyze Testplate
                 # -----------------
                 if validStatus and _tp.n_wells > 0 and _tp.n_reads > 0 and _tp.control_layout:
-                    #print(f"{_tp.plate_id} {_tp.n_wells} {_tp.control_layout}")
 
-                    if _tp.apply_layout() > 0:
+                    if settings.DEBUG:
+                        print(f" [Upload_TestplateList] {_tp.plate_id} Apply Layout: {_tp.control_layout}")
+                    _n_layout = _tp.apply_layout()
+                    
+                    if _n_layout > 0:
                         # Analyze Testplate -> Inhibition
                         # -------------------------------
-                        _tp.calc_inhibition()
                         if settings.DEBUG:
-                            print(f" [Upload_TestPlateList] {key} {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
+                            print(f" [Upload_TestPlateList] {_tp.plate_id} Apply Calc ")
+
+                        _tp.calc_inhibition()
+                        
+                        if settings.DEBUG:
+                            print(f" [Upload_TestPlateList] {_tp.plate_id} {_tp.plate_quality} {_tp.zfactor} {_tp.n_inhibitions}")
 
                         _dr_list = []
                         if str(_tp.plate_quality) == 'Valid' and str(_tp.result_type) in DR_CLASSES:
+                            if settings.DEBUG:
+                                print(f" [Upload_TestPlateList] {_tp.plate_id} ApplyDoseReponse  ")
+
                             _dr_list = process_testplate_doseresponse(_tp)
 
                             if settings.DEBUG:
