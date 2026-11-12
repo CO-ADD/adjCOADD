@@ -438,7 +438,7 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
                                     "Correct SheetName")        
 
         if validStatus:
-            logger.info(f"[Assays]")
+            #logger.info(f"[Assays]")
             for idx,row in _prepSheets['Assays'].iterrows():
                 logNumbers['Processed Assays'] += 1
                 djAss = Assay.get(row['assay_id'])
@@ -499,7 +499,7 @@ def read_TestPlateList_Prepsheet_XLS(xlFile, prefix=None, as_is=False, **kwargs)
                                     "Correct SheetName")        
 
         if validStatus:
-            logger.info(f"[TestPlateList]")
+            #logger.info(f"[TestPlateList]")
             _prepSheets['TestPlateList'].rename(columns={"test_strain": "test_orgbatch_id", 
                                                         "test_cell": "test_cellbatch_id"},inplace=True)
             for idx,row in _prepSheets['TestPlateList'].iterrows():

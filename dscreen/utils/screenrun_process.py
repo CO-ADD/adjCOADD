@@ -294,9 +294,12 @@ class Upload_TestplateList_Process(Process_Progress):
         for key in self.tp_lst:
             progressCount += 1
             _tp = self.tp_lst[key]['plate']
-
+            print(key)
+            print(self.tp_lst[key])
+            print(self.tp_lst[key]['plate'])
             self.valLog.add_info('Read PlatePrep File', key,"[TestPlateList, Assay]")
-            self.report_progress(0, 1, self.file_list[i], f'Reading file {progressCount}/{progressTotal} ...')
+            self.report_progress(progressCount, progressTotal, _tp.plate_id, f'Processing {_tp.plate_id}')
+            
             if settings.DEBUG:
                 print(f" [Upload_TestplateList] {progressCount:3d}/{progressTotal:3d} - {key}  [{self.run_id}]  ")
             
@@ -361,7 +364,7 @@ class Upload_TestplateList_Process(Process_Progress):
     # ----------------------------------------------------------------
     def run(self):
         self._process_files()
-        #self._process_testplates()
+        self._process_testplates()
         
         self.valLog.select_unique()
         return self.valLog
