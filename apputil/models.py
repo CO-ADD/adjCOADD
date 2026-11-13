@@ -1056,6 +1056,9 @@ class Document(AuditModel):
         'doc_desc':'Description',
         'doc_source':'Source',
     }
+    
+    DOCUMENT_FOLDER = ""
+    
     ID_SEQUENCE = 'Document'
     ID_PREFIC = 'DOC'
     ID_PAD = 5

@@ -437,7 +437,7 @@ class AssayData_MIC(CmpBatchList_Base):
     def set_actscores(self,verbose=0):
         self.act_score = ActScore_DR(self.mic,self.mic_unit,DMax=self.inhibit_max)
         self.pscore = pScore(self.mic,self.mic_unit,self.inhibit_max,MW=self.cmpbatch_id.full_mw,gtShift=3,drMax2=40)
-    
+        
     #------------------------------------------------
     # 
     @classmethod    
@@ -822,7 +822,7 @@ class AssayData_SynergyMIC(Comb_CmpBatchList_Base):
 
 class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
     """
-    List of Synergy Isobolograms
+    List of Synergy Isobolograms - individual MIC values
     """
 #-------------------------------------------------------------------------------------------------
     from dplate.models import TestPlate
@@ -835,7 +835,7 @@ class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
         'pub_status':'Pub_Status',
         'data_quality':'Data_Quality',
     }
-
+            
    # Primary Contraint
     testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
         db_column="testplate_id", related_name="%(class)s_testplateid")
@@ -852,10 +852,13 @@ class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
     synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
     synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
 
-    fici = models.CharField(max_length=50, verbose_name = "MIC")
-    synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
-    synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
-
+    cmpbatches_drug = models.CharField(max_length=50, verbose_name = "MIC")
+    cmpbatches_pot = models.CharField(max_length=20, verbose_name = "Pot")
+    synmic_val_drug = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Drug MIC")
+    synmic_unit_pot = models.CharField(max_length=20, verbose_name = "Drug Unit")
+    synmic_val_pot = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Pot MIC")
+    synmic_unit_pot = models.CharField(max_length=20, verbose_name = "Pot Unit")
+ 
     fici_value = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "FICI")
     fici_syn = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Syn")
 
@@ -877,9 +880,10 @@ class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
     data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
+            
     # Refrerence Data
-    ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
-    ref_mic_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
+    refmic_val_drug = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Drug MIC")
+    refmic_val_pot  = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Drug MIC")
 
     pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
         db_column="pub_status", related_name="%(class)s_pub_statust")
@@ -893,9 +897,27 @@ class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
             models.UniqueConstraint(name='asssyniso_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
         indexes = [
-            models.Index(name="asssyniso_fcic_idx",fields=['fici']),
+            models.Index(name="asssyniso_fcic_idx",fields=['fici_value']),
         ]
 
+    #---------------------------------------------------------------------
+    def calc_fici(self):
+
+        self.fici_value = -1
+        if self.synmic_val_drug > 0 and self.synmic_val_pot > 0:
+            if self.refmic_val_drug > 0 and self.refmic_val_pot > 0:
+                self.fici_value = (self.synmic_val_drug/float(self.refmic_val_drug))+(self.synmic_val_pot/float(self.refmic_val_pot))
+        else:
+            self.fici_value = 1
+ 
+        #print(f"{cAB} / {synAB} + {cPOT} / {synPOT} = {_fici}")
+        self.fici_syn  = -10
+        if self.fici_value < synCutOff:
+            self.fici_syn = 1
+        else:
+            self.fici_syn = 0 
+
+        
 # AssayData_SynIsobol
 #  &xID.                   Number,
 #   Compounds               Varchar2(100),

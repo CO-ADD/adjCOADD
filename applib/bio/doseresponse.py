@@ -259,6 +259,13 @@ class DoseResponse():
     #--------------------------------------------------------------
     
     #--------------------------------------------------------------
+    @staticmethod
+    def split_MIC(MIC):
+        mic_value_lst = []
+        _mic = MIC.split(COMPOUND_SEP)
+        for _m in _mic:
+            mic_value_lst.append(float(_m))
+        return(mic_value_lst)
 
     #--------------------------------------------------------------
     @staticmethod
@@ -412,14 +419,14 @@ class DoseResponse():
         # print(f" [MIC] MIC  : {self.mic_dmax} {self.mic_act} {self.mic_act_score} {self.pmic}")  
         # print(f" [MIC]      Skips: {self.skips_active} {self.skips_total}")
 
-    #===================================================================        
-    def synMIC(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
-    #===================================================================
-        if self.df is None:
-            logger.warning(" [DoseResponse] synMIC no data")
-            return(None)   
+    # #===================================================================        
+    # def synMIC(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
+    # #===================================================================
+    #     if self.df is None:
+    #         logger.warning(" [DoseResponse] synMIC no data")
+    #         return(None)   
              
-        self.df = self.df.apply(self.apply_active,args=(Inhibition_Cutoff,MScore_Cutoff,),axis=1)
+    #     self.df = self.df.apply(self.apply_active,args=(Inhibition_Cutoff,MScore_Cutoff,),axis=1)
 
 
     #-----------------------------------------------------------------------------
