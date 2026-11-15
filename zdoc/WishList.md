@@ -12,8 +12,6 @@ On generating a new Organism, automatically generate a [Std] Assay entry
 
 Calculated Fields in Extra Status Line
 
-Masterplate card view in ScreenRun_DetailView
-
 # To DO Data
 
 
