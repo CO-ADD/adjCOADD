@@ -3,6 +3,7 @@ import datetime
 import numpy as np
 import pandas as pd
 import scipy.optimize as opt
+from decimal import Decimal
 
 from adjcoadd.constants import COMPOUND_SEP
 from apputil.models import Dictionary
@@ -123,7 +124,7 @@ class DoseResponse():
 
     #--------------------------------------------------------------
     def __repr__(self):
-        return(f"{COMPOUND_SEP.join(self.cmpbatch_lst)} {self.n_wells} {self.n_conc} {self.mic_dmax}")
+        return(f"{COMPOUND_SEP.join(self.cmpbatch_lst)} {self.n_wells} {self.n_conc} {self.mic_dmax} ")
 
     #--------------------------------------------------------------
     def load_data(self,Plate_ID, Well_ID, Assay_ID):
@@ -264,7 +265,7 @@ class DoseResponse():
         mic_value_lst = []
         _mic = MIC.split(COMPOUND_SEP)
         for _m in _mic:
-            mic_value_lst.append(float(_m))
+            mic_value_lst.append(Decimal(_m))
         return(mic_value_lst)
 
     #--------------------------------------------------------------

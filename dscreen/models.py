@@ -2,6 +2,7 @@
 #from django_rdkit import models
 from django.db import models
 import re
+from decimal import Decimal
 
 #from django_rdkit import models
 from django.db import models
@@ -404,6 +405,10 @@ class AssayData_MIC(CmpBatchList_Base):
             models.Index(name="assmic_chkm_idx",fields=['chk_migration']),
         ]
 
+    #---------------------------------------------------------------------
+    def __repr__(self):
+        return(f" {self.testplate_id}:{self.testwell_id} {self.assay_id} - {self.cmpbatches} - {self.mic} {self.mic_unit}")
+
     #------------------------------------------------
     @classmethod
     def get(cls,PlateID,WellID,verbose=0):
@@ -726,7 +731,6 @@ class AssayData_SynergyMIC(Comb_CmpBatchList_Base):
         'data_quality':'Data_Quality',
     }
 
-
     # Primary Contraint
     testplate_id = models.ForeignKey(TestPlate, blank=False, verbose_name = "TestPlate ID", on_delete=models.DO_NOTHING,
         db_column="testplate_id", related_name="%(class)s_testplateid")
@@ -734,20 +738,24 @@ class AssayData_SynergyMIC(Comb_CmpBatchList_Base):
 
     assay_id = models.ForeignKey(Assay, null=True, blank=True, verbose_name = "Assay ID", on_delete=models.DO_NOTHING,
         db_column="assay_id", related_name="%(class)s_assay_id")
-    # ora_assay_id = models.CharField(max_length=25, blank=True, verbose_name = "ora Assay ID")
 
     run_id = models.ForeignKey(Screen_Run, null=False, blank=False, verbose_name = "Run ID", on_delete=models.DO_NOTHING,
         db_column="run_id", related_name="%(class)s_run_id") 
 
+
+    checkerboard = models.CharField(max_length=10, verbose_name = "Checkboard")
     # Synergy MIC Data
     synmic = models.CharField(max_length=50, verbose_name = "MIC")
     synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
     synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
 
-    fici = models.CharField(max_length=50, verbose_name = "MIC")
-    synmic_unit = models.CharField(max_length=20, verbose_name = "Unit")
-    synmic_skips = models.SmallIntegerField(default=0, blank=True, verbose_name = "Skips")
-
+    cmpbatches_drug = models.CharField(max_length=50, verbose_name = "MIC")
+    cmpbatches_pot = models.CharField(max_length=20, verbose_name = "Pot")
+    synmic_val_drug = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Drug MIC")
+    synmic_unit_pot = models.CharField(max_length=20, verbose_name = "Drug Unit")
+    synmic_val_pot = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Pot MIC")
+    synmic_unit_pot = models.CharField(max_length=20, verbose_name = "Pot Unit")
+ 
     fici_value = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "FICI")
     fici_syn = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Syn")
 
@@ -757,30 +765,33 @@ class AssayData_SynergyMIC(Comb_CmpBatchList_Base):
 
     analysis = models.CharField(max_length=15, verbose_name = "Analysis")
 
-    inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
-    inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
-    conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
-    conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
+    inhibit_max = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "DMax")
+    inhibit_min = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "DMin")
+    conc_max = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "CMax")
+    conc_min = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
 
+    # Quality Data
     data_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Data Quality", on_delete=models.DO_NOTHING,
         db_column="data_quality", related_name="%(class)s_dataquality")
     data_comment = models.CharField(max_length=50, blank=True, verbose_name = "Data Comment")
     valid = models.SmallIntegerField(default=-1, blank=True, verbose_name = "Valid")
 
-    ref_mic = models.CharField(max_length=150, blank=True, verbose_name = "Ref MIC")
-    ref_mic_chk = models.SmallIntegerField(default=-1, blank=True, verbose_name = "d(Dilution)")
-    # ic50 = models.CharField(max_length=50, blank=True, verbose_name = "IC50")
-    # ic50_unit = models.CharField(max_length=20, blank=True, verbose_name = "IC50 Unit")
-    # ic50_pscore = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "IC50 pScore")
-    # ic50_quality = models.CharField(max_length=20, blank=True, verbose_name = "IC50 Quality")
-    # ic50_r2 = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "IC50 r2")
-    # ic50_slope = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "IC50 Slope")
+    # Refrerence Data
+    refmic_val_drug = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Drug MIC")
+    refmic_val_pot  = models.DecimalField(default=0,max_digits=12, decimal_places=4, verbose_name = "Drug MIC")
 
     pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
         db_column="pub_status", related_name="%(class)s_pub_statust")
     pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
     
+    # ------------------------------------------------------
+
+    pub_status = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Pub Status", on_delete=models.DO_NOTHING,
+        db_column="pub_status", related_name="%(class)s_pub_statust")
+    pub_date = models.DateField(null=True, blank=True,  editable=False, verbose_name="Published")
+    
+    #------------------------------------------------
     class Meta:
         app_label = 'dscreen'
         db_table = 'assaydata_synmic'
@@ -788,24 +799,43 @@ class AssayData_SynergyMIC(Comb_CmpBatchList_Base):
         constraints = [
             models.UniqueConstraint(name='asssyn_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
-        # indexes = [
-        #     GinIndex(name="asssyn_cmp_idx",fields=['cmpbatch_lst']),
-        #     models.Index(name="asssyn_rid_idx",fields=['run_id']),
-        #     models.Index(name="asssyn_sid_idx",fields=['assay_id']),
-        #     models.Index(name="asssyn_asc_idx",fields=['act_score']),
-        #     models.Index(name="asssyn_ana_idx",fields=['analysis']),
-        # #    models.Index(name="asssyn_rot_idx",fields=['readout_type']),
-        #     models.Index(name="asssyn_act_idx",fields=['act_type']),
-        #     models.Index(name="asssyn_psc_idx",fields=['pscore']),
-        #     models.Index(name="asssyn_val_idx",fields=['valid']),
-        #     models.Index(name="asssyn_dqy_idx",fields=['data_quality']),
-        #     models.Index(name="asssyn_dcm_idx",fields=['data_comment']),
-        # #    models.Index(name="asssyn_chkm_idx",fields=['chk_migration']),
-        # ]
+        indexes = [
+            models.Index(name="asssyn_fiv_idx",fields=['fici_value']),
+            models.Index(name="asssyn_fis_idx",fields=['fici_syn']),
+            models.Index(name="asssyn_rid_idx",fields=['assay_id']),
+            models.Index(name="asssyn_aid_idx",fields=['run_id']),
+        ]
 
-#   Checkerboard            Varchar2(10),
-##   Data_Quality            Varchar2(20),
-##   pScore                  Number(8,2),
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PlateID,WellID,verbose=0):
+        try:
+            retInstance = cls.objects.get(testplate_id=PlateID, testwell_id=WellID)
+        except:
+            if verbose:
+                logger.warning(f"[AssayData Not Found] {PlateID} {WellID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,PlateID,WellID):
+        return cls.objects.filter(testplate_id=PlateID, testwell_id=WellID).exists()
+
+   #---------------------------------------------------------------------
+    def __repr__(self):
+        rStr  = f" {self.testplate_id}:{self.testwell_id} {self.assay_id}:"
+        rStr += f" {self.cmpbatch_lst_drug} x {self.cmpbatch_lst_pot} "
+        rStr += f"- {self.synmic} {self.synmic_unit} "
+        rStr += f"- {self.fici_syn} {self.fici_value} "  
+        return(rStr)
+            
+
+    #---------------------------------------------------------------------
+    def calc_mysyc(self):
+        SYN_CUTOFF = 0.5
+                    
 #   MYSYC                   Number(3,0),
 #   MYSYC_Synergy           Number(3,0),
 #   MYSYC_Antagonism        Number(3,0),
@@ -817,9 +847,8 @@ class AssayData_SynergyMIC(Comb_CmpBatchList_Base):
 ##   Hit                     Varchar2(4),
 ##   Active                  Varchar2(4),
 
-# Assay (?)
-# AssayData_SynMIC
 
+#-------------------------------------------------------------------------------------------------
 class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
     """
     List of Synergy Isobolograms - individual MIC values
@@ -868,10 +897,10 @@ class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
 
     analysis = models.CharField(max_length=15, verbose_name = "Analysis")
 
-    inhibit_max = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMax")
-    inhibit_min = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = "DMin")
-    conc_max = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMax")
-    conc_min = models.DecimalField(max_digits=12, decimal_places=4, verbose_name = "CMin")
+    inhibit_max = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "DMax")
+    inhibit_min = models.DecimalField(default=-1, max_digits=10, decimal_places=2, verbose_name = "DMin")
+    conc_max = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "CMax")
+    conc_min = models.DecimalField(default=-1, max_digits=12, decimal_places=4, verbose_name = "CMin")
     n_conc = models.SmallIntegerField(default=-1, blank=True, verbose_name = "#Conc")
 
     # Quality Data
@@ -897,79 +926,55 @@ class AssayData_SynergyIsobol(Comb_CmpBatchList_Base):
             models.UniqueConstraint(name='asssyniso_loc_cst', fields=['testplate_id', 'testwell_id'], )
         ]        
         indexes = [
-            models.Index(name="asssyniso_fcic_idx",fields=['fici_value']),
+            models.Index(name="asssyniso_fiv_idx",fields=['fici_value']),
+            models.Index(name="asssyniso_fis_idx",fields=['fici_syn']),
+            models.Index(name="asssyniso_rid_idx",fields=['assay_id']),
+            models.Index(name="asssyniso_aid_idx",fields=['run_id']),
         ]
 
+    #------------------------------------------------
+    @classmethod
+    def get(cls,PlateID,WellID,verbose=0):
+        try:
+            retInstance = cls.objects.get(testplate_id=PlateID, testwell_id=WellID)
+        except:
+            if verbose:
+                logger.warning(f"[AssayData Not Found] {PlateID} {WellID}")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    # Returns an User instance if found by name
+    @classmethod
+    def exists(cls,PlateID,WellID):
+        return cls.objects.filter(testplate_id=PlateID, testwell_id=WellID).exists()
+
+    #---------------------------------------------------------------------
+    def __repr__(self):
+        rStr  = f" {self.testplate_id}:{self.testwell_id} {self.assay_id}:"
+        rStr += f"{self.cmpbatch_lst_drug} x {self.cmpbatch_lst_pot} "
+        rStr += f"- {self.synmic} {self.synmic_unit} "
+        rStr += f"- {self.fici_syn} {self.fici_value} "  
+        return(rStr)
+    
     #---------------------------------------------------------------------
     def calc_fici(self):
+        SYN_CUTOFF = 0.5
 
         self.fici_value = -1
         if self.synmic_val_drug > 0 and self.synmic_val_pot > 0:
             if self.refmic_val_drug > 0 and self.refmic_val_pot > 0:
-                self.fici_value = (self.synmic_val_drug/float(self.refmic_val_drug))+(self.synmic_val_pot/float(self.refmic_val_pot))
+                self.fici_value = (self.synmic_val_drug/self.refmic_val_drug)+(self.synmic_val_pot/self.refmic_val_pot)
         else:
             self.fici_value = 1
  
+        #print(f" [FICI] {self.synmic_val_drug} {self.refmic_val_drug} - {self.synmic_val_drug} {self.refmic_val_pot} = {self.fici_value}")
+
         #print(f"{cAB} / {synAB} + {cPOT} / {synPOT} = {_fici}")
         self.fici_syn  = -10
-        if self.fici_value < synCutOff:
+        if self.fici_value < SYN_CUTOFF:
             self.fici_syn = 1
         else:
             self.fici_syn = 0 
 
         
-# AssayData_SynIsobol
-#  &xID.                   Number,
-#   Compounds               Varchar2(100),
-#   CompoundA1_ID           Varchar2(25),
-#   CompoundA2_ID           Varchar2(25),
-#   CompoundB1_ID           Varchar2(25),
-#   CompoundB2_ID           Varchar2(25),
-#   N_Compounds             Number(2,0),
-#   TestPlate_ID            Varchar2(25),
-#   TestWell_ID             Varchar2(5),
-#   AssayType_ID            Varchar2(25),
-#   Test_Strain             Varchar2(25),
-#   Test_Dye                Varchar2(25),
-#   Test_Additive           Varchar2(25),
-#   Test_Date               Date,
-#   Run_ID                  Varchar2(25),
-#   Analysis                Varchar2(10),
-#   FICI_Value              Number(8,2),
-#   FICI_Synergy            Number(3,0),
-#   SYNMIC                  Varchar2(50),
-#   SYNMIC_Unit             Varchar2(40),
-#   SYNMIC_Value            Number,
-#   SYNMIC_Prefix           Varchar2(2),
-#   SYNMIC_CmpdA1           Number,
-#   SYNMIC_CmpdA1_Unit      Varchar2(10),
-#   SYNMIC_CmpdA2           Number,
-#   SYNMIC_CmpdA2_Unit      Varchar2(10),
-#   SYNMIC_CmpdB1           Number,
-#   SYNMIC_CmpdB1_Unit      Varchar2(10),
-#   SYNMIC_CmpdB2           Number,
-#   SYNMIC_CmpdB2_Unit      Varchar2(10),
-#   DMax                    Number(12,1),
-#   DMin                    Number(12,1),
-#   MIC_Skips               Number(3,0),
-#   SC50                    Varchar2(20),
-#   SC50_Prefix             Varchar2(2),
-#   SC50_Value              Number,
-#   SC50_Unit               Varchar2(10),
-#   SC50_fSlope             Number,
-#   SC50_fXC50              Number,
-#   SC50_fR2                Number,
-#   SC50_pScore             Number(8,2),
-#   SC50_Quality            Varchar2(20),
-#   ConcA1_Min              Varchar2(20),
-#   ConcA1_Max              Varchar2(20),
-#   ConcB1_Min              Varchar2(20),
-#   ConcB1_Max              Varchar2(20),
-#   Checkerboard            Varchar2(10),
-#   Data_Quality            Varchar2(10),
-#   Status                  Number(5),
-#   aCreatedBy		      Varchar2(20),
-#   aCreatedDate            Date,
-#   aModifiedBy		      Varchar2(20),
-#   aModifiedDate           Date,
-#

@@ -27,7 +27,7 @@ ORGBATCH_SEP = "."
 # -dCell Settings 
 CELL_CLASSES = ['CL']
 CELLID_SEP = "_"
-CELLBATCH_SEP = "_"
+CELLBATCH_SEP = "."
 
 # -dbiologic Settings 
 BIOLOGIC_CLASSES = ['NB','MAB','PROT']
@@ -62,8 +62,9 @@ PROJECT_REPORT_STATUS   = ['PS','HC','HV']
 
 AlphaNumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
-# column name can be edited here 
-# make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
+# -apputil Settings ---------------------------------------------------
+AUDITMODEL_FIELDS = ['astatus','acreated_at','acreated','aupdated_at','aupdated','adeleted_at','adeleted']
+
 
 # Documents:
 DOC_TEMPLATES={

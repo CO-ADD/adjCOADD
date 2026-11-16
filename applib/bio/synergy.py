@@ -3,14 +3,15 @@ import datetime
 import numpy as np
 import pandas as pd
 import scipy.optimize as opt
+from decimal import Decimal
 
 from apputil.models import Dictionary
-from applib.bio.bio_data import DR_Range
+from applib.bio.bio_data import DR_Range, DR2Value
 from applib.bio.doseresponse import DoseResponse
 from dsample.models import Compound_Batch
 from dplate.models import TestPlate, TestWell
-from dscreen.models import AssayData_MIC, AssayData_SynergyIsobol 
-from adjcoadd.constants import SYN_CLASSES, COMPOUND_SEP, COMPOUNDSET_SEP
+from dscreen.models import AssayData_MIC, AssayData_SynergyMIC, AssayData_SynergyIsobol 
+from adjcoadd.constants import SYN_CLASSES, COMPOUND_SEP, COMPOUNDSET_SEP, AUDITMODEL_FIELDS
 
 import logging
 logger = logging.getLogger(__name__)
@@ -37,6 +38,10 @@ class Synergy():
         self.inhib_correct = inhib_correction 
         self.inhib_correct_limit = inhib_correct_limit
         self.ic50_dmax_cutoff = ic50_dmax_cutoff
+        
+        self.Isobol_lst = []
+        self.sumSyn = None
+
 
     #--------------------------------------------------------------
     # Initialise Synergy with
@@ -65,8 +70,8 @@ class Synergy():
     #--------------------------------------------------------------
     
     #--------------------------------------------------------------
-    def init_data(self,synDF,cDrug, cPot, synPlate, 
-                  RefMicDrug=None, RefMicPot=None, 
+    def init_data(self,synDF,DrugID, PotID, synPlate, 
+                  RefDRDrug=None, RefDRPot=None, 
                   renameCol= None,
                   CutOff=80, MuSyC=False, Method='min.FICI'):
     #--------------------------------------------------------------
@@ -81,17 +86,14 @@ class Synergy():
         if renameCol:
             self.syndf.rename(columns=renameCol, inplace=True )            
 
-        self.drug = cDrug
-        self.pot = cPot
-        self.refmic_drug = RefMicDrug
-        self.refmic_pot = RefMicPot
+        self.drug_id = DrugID
+        self.pot_id = PotID
+        self.refdr_drug = RefDRDrug
+        self.refdr_pot = RefDRPot
         #self.valCol = valCol
         self.cutoff = CutOff
         self.method = Method
         self.musync = MuSyC
-
-        self.IsoB_Lst = []
-        self.sumSyn = {}
         
         self.conc_lst_drug = list(set(self.syndf['conc_drug']))
         self.conc_lst_drug.sort()
@@ -101,86 +103,100 @@ class Synergy():
         
         self.syndf = self.syndf.apply(self._apply_gen_lst,axis=1)
                 
-        print(f"Checkerboard: {len(self.conc_lst_drug)}x{len(self.conc_lst_pot)}")
+        #print(f"Checkerboard: {len(self.conc_lst_drug)}x{len(self.conc_lst_pot)}")
         return(self)
 
     #--------------------------------------------------------------
-    def _copy_mic_to_isobol(self,djMIC,type=None, SynData=None):
+    def __repr__(self):
+        return(f"{self.drug_id} x {self.pot_id}")
+
+    #--------------------------------------------------------------
+    def _copy_mic_to_isobol(self,djDR,IsoType=None, SynData=None):
         # Replicate the MIC data to SynergyIsobol for type='Drug' or 'Pot' 
     #--------------------------------------------------------------
-    
-        if djMIC and type in ['Drug','Pot','Syn']:
+
+        if djDR and IsoType in ['Drug','Pot','SynDrug']:
             # print(f" DEBUG: {[field.name for field in djMIC._meta.get_fields()]}")
             # for f in [field.name for field in djMIC._meta.get_fields()]:
             #     print(f" {f:20s} : {getattr(djMIC,f)}")
             
-            djMIC.conv_list_to_string() 
+            djData = djDR.assaydata
+            djData.conv_list_to_string() 
 
-            djIsoB = AssayData_SynergyIsobol()
-            djIsoB.testplate_id = djMIC.testplate_id
-            djIsoB.testwell_id = djMIC.testwell_id
-            djIsoB.assay_id = djMIC.assay_id
-            djIsoB.run_id = djMIC.run_id
-            
-            djIsoB.inhibit_max = djMIC.inhibit_max
-            djIsoB.inhibit_min = djMIC.inhibit_min
-            djIsoB.conc_max = djMIC.conc_max
-            djIsoB.conc_min = djMIC.conc_min
-            
-            if type == 'Drug':
-                djIsoB.cmpbatches_drug = djMIC.cmpbatches
-                djIsoB.cmpbatches_pot = '-'
+            djIsoB = AssayData_SynergyIsobol.get(djData.testplate_id,djData.testwell_id)
+            if djIsoB is None:
+                djIsoB = AssayData_SynergyIsobol()                        
+                djIsoB.testplate_id = djData.testplate_id
+                djIsoB.testwell_id = djData.testwell_id
+                djIsoB.save_status = 'New'
+            else:
+                djIsoB.save_status = 'Exists'
                 
-                djIsoB.synmic_drug = djMIC.mic
-                djIsoB.synmic_unit_drug = djMIC.mic_unit
+                
+            djIsoB.assay_id = djData.assay_id
+            djIsoB.run_id = djData.run_id
+                        
+            djIsoB.inhibit_max = djData.inhibit_max
+            djIsoB.inhibit_min = djData.inhibit_min
+            djIsoB.conc_max = djData.conc_max
+            djIsoB.conc_min = djData.conc_min
+            
+            if IsoType == 'Drug':
+                djIsoB.cmpbatch_lst_drug = djData.cmpbatch_lst
+                djIsoB.cmpbatch_lst_pot = []
+                
+                djIsoB.synmic_drug = djData.mic
+                djIsoB.synmic_unit_drug = djData.mic_unit
                 djIsoB.synmic_pot = '-'
                 djIsoB.synmic_unit_pot = '-'
-                djIsoB.refmic_val_drug = self.refmic_drug
+                djIsoB.refmic_val_drug = djDR.refmic_val
                 djIsoB.refmic_val_pot = -1
 
                 djIsoB.fici_value = 1
                 djIsoB.fici_syn = 0
                 
-            elif type == 'Pot':
-                djIsoB.cmpbatches_drug = '-'
-                djIsoB.cmpbatches_pot = djMIC.cmpbatches
+            elif IsoType == 'Pot':
+                djIsoB.cmpbatch_lst_drug = []
+                djIsoB.cmpbatch_lst_pot = djData.cmpbatch_lst
                 
                 djIsoB.synmic_drug = '-'
                 djIsoB.synmic_unit_drug = '-'
-                djIsoB.synmic_pot = djMIC.mic
-                djIsoB.synmic_unit_pot = djMIC.mic_unit
+                djIsoB.synmic_pot = djData.mic
+                djIsoB.synmic_unit_pot = djData.mic_unit
                 djIsoB.refmic_val_drug = -1
-                djIsoB.refmic_val_pot = self.refmic_pot
+                djIsoB.refmic_val_pot = djDR.refmic_val
 
                 djIsoB.fici_value = 1
                 djIsoB.fici_syn = 0
                 
-            elif type == 'SynDrug':
-                djIsoB.cmpbatches_drug = djMIC.cmpbatches
-                djIsoB.cmpbatches_pot = SynData['pot']
+            elif IsoType == 'SynDrug':
+                djIsoB.cmpbatch_lst_drug = djData.cmpbatch_lst
+                djIsoB.cmpbatch_lst_pot = SynData['pot']
                 
-                djIsoB.synmic_drug = djMIC.mic
-                djIsoB.synmic_unit_drug = djMIC.mic_unit
-                djIsoB.synmic_pot = SynData['conc_pot']
+                djIsoB.synmic_val_drug = DR2Value(djData.mic)
+                djIsoB.synmic_unit_drug = djData.mic_unit
+                djIsoB.synmic_val_pot = DR2Value(SynData['conc_pot'])
                 djIsoB.synmic_unit_pot = SynData['conc_unit_pot']
-                djIsoB.refmic_val_drug = self.refmic_drug
-                djIsoB.refmic_val_pot = self.refmic_pot
+                djIsoB.refmic_val_drug = self.refdr_drug.refmic_val
+                djIsoB.refmic_val_pot = self.refdr_pot.refmic_val
                 
-                #djIsoB.calc_fici()
+                djIsoB.calc_fici()
             
-            djIsoB.synmic = djMIC.mic
-            djIsoB.synmic_unit = djMIC.mic_unit
+            djIsoB.synmic = djData.mic
+            djIsoB.synmic_unit = djData.mic_unit
+            #djIsoB.synmic_prefix = djData.mic_prefix
             
-            djIsoB.act_type = djMIC.act_type
-            djIsoB.act_score = djMIC.act_score
-            djIsoB.pscore = djMIC.pscore
+            djIsoB.act_type = djData.act_type
+            djIsoB.act_score = djData.act_score
+            djIsoB.pscore = djData.pscore
 
-            djIsoB.data_quality = djMIC.data_quality
-            djIsoB.data_comment = djMIC.data_comment
-            djIsoB.valid = djMIC.valid
+            djIsoB.data_quality = djData.data_quality
+            djIsoB.data_comment = djData.data_comment
+            djIsoB.valid = djData.valid
             
             djIsoB.analysis = 'pyBioDR'
 
+            #print(repr(djIsoB))
             return(djIsoB)
         
         return(None)
@@ -188,295 +204,102 @@ class Synergy():
     #--------------------------------------------------------------
     def calc_synergy_mic(self):
     #--------------------------------------------------------------
-        Isobol_lst = []
-        if self.mic_drug:
-            Isobol_lst.append(self._copy_mic_to_isobol(self.mic_drug,'Drug'))
-
+        
+        if self.refdr_drug:
+            djISO = self._copy_mic_to_isobol(self.refdr_drug,'Drug')
+            #print(repr(djISO))
+            self.Isobol_lst.append(djISO)
+            
         # For each POT conc ---------------------------------------------------------------
         #abCol = {'Conc':valCol['ConcAB'],'Inhib':'INHIBITION','Unit':valCol['UnitAB'],'WellAct':'WELLACT' }
 
-        print(" [calc_synergy_mic] --------------------------")
+        #print(" [calc_synergy_mic] --------------------------")
         
         grpData = self.syndf.groupby('conc_pot')
+        minFICI = None
+        minFICI_Value = 99
+        minFICI_WellID = 'A00'
+        
         for conc_pot,SngData in grpData:
             
             dictSynData = {'conc_pot':conc_pot,
                            'conc_unit_pot':SngData['conc_unit_pot'].unique()[0],
-                           'pot':SngData['cmpbatch_pot'].unique()[0],
-                           'refmic_val_drug':self.mic_drug.ref_mic,
-                           'refmic_val_pot':self.mic_pot.ref_mic,
+                           'pot':SngData['cmpbatch_pot'].unique().tolist(),
+                           'refmic_val_drug':self.refdr_drug.refmic_val,
+                           'refmic_val_pot':self.refdr_pot.refmic_val,
                           }
-            print(dictSynData)
-            if conc_pot > 0:
-        #         _synMat = self.syndf[(self.syndf['conc_pot'] == conc_pot) & (self.syndf['conc_drug'] != 0)]
-        #         #_synMat = self.syndf[self.syndf['conc_pot'] == conc_pot][self.syndf['conc_drug'] != 0]
-                # for idx,row in SngData.iterrows():
-                #     SngData.at[idx,'conc_drug'] = [row.conc_drug]
-                #     SngData.at[idx,'conc_unit_drug'] = [str(row.conc_unit_drug)]
-                #     #SngData.at[idx,'conc_unit_drug'] = 'xxx'
-                #     print(row.conc_unit_drug,[row.conc_unit_drug],type(row.conc_unit_drug))
-                                        
-                djSynDR = DoseResponse().init_data(self.drug,SngData,self.djtp,
+            #print(dictSynData)
+            if conc_pot > 0:                                        
+                djSynDR = DoseResponse().init_data(self.drug_id,SngData,self.djtp,
                                                   renameCol={'conc_lst_drug':'conc_lst', 'conc_unit_lst_drug':'conc_unit_lst'})
                 if djSynDR:
                     djSynDR.calc_doseresponse()
+                    djSynDR.doseresponse_to_assaydata()
+                    
                     djISO = self._copy_mic_to_isobol(djSynDR,'SynDrug',dictSynData)
-                    Isobol_lst.append(djISO)
                     
-                    
-                    print(repr(djSynDR))
-                
-                    #                     if djDR:
-                    #                         djDR.calc_doseresponse()
-                    # drug_pot_mic  = calc_MIC_opt(_synF,valCol=abCol)
-                    # _ab_pot_synmic = get_synMIC(_ab_pot_mic['MIC'],_ab_pot_mic['DMAX'])
-                    # _ab_pot_ic50 = calc_IC50(_synF,valCol=abCol)
-                    # _fici, _syn = calc_FICI(micAB['SYN_MIC'],micPOT['SYN_MIC'],_ab_pot_synmic,concP,nCorrect=2)
-                
-        #         if (len(_synF)>0):
-
-        if self.mic_pot:
-            Isobol_lst.append(self._copy_mic_to_isobol(self.mic_pot,'Pot'))
-
-           
-                
-    #--------------------------------------------------------------
-    def calc_Synergy_orig(self):
-    #--------------------------------------------------------------
-
-        IsoB_lst = []
-
-        _concPOT_lst = list(set(synDf[valCol['ConcPOT']]))
-        _concPOT_lst.sort()
-
-        minFICI_Value = 999
-        minFICI = {}
-        # Add AB Data - for Synergy_Plot ---------------------------------------------------------------
-        if self.micDrug:
-            IsoB = AssayData_SynergyIsobol()
-            
-            IsoB['WELL_ID']      = micAB['WELL_ID']
-
-            IsoB['N_CONC_AB']    = micAB['N_CONC']
-            IsoB['N_CONC_POT']   = 0
-            IsoB['CHECKERBOARD'] = f"{IsoB['N_CONC_AB']}x{IsoB['N_CONC_POT']}"
-
-            IsoB['DMAX']         = micAB['DMAX']
-            IsoB['DMIN']         = micAB['DMIN']
-            IsoB['CMAX']         = micAB['CMAX']
-            IsoB['CMIN']         = micAB['CMIN']
-            
-            IsoB['COMPOUNDS_AB']    = cAB
-            IsoB['N_COMPOUNDS_AB']  = len(IsoB['COMPOUNDS_AB'].split(CmpdSep)) 
-            IsoB['COMPOUNDS_POT']   = '-'
-            IsoB['N_COMPOUNDS_POT'] = 0
-            IsoB['COMPOUNDS']       = IsoB['COMPOUNDS_AB']
-            IsoB['N_COMPOUNDS']     = IsoB['N_COMPOUNDS_AB'] + IsoB['N_COMPOUNDS_POT']
-
-            IsoB['SYN_MIC_AB']       = micAB['SYN_MIC']
-            IsoB['SYN_UNIT_AB']      = micAB['MIC_UNIT']
-            IsoB['SYN_MIC_POT']      = '-'
-            IsoB['SYN_UNIT_POT']     = '-'
-            
-            # IsoB['SYN_MIC']      = zData.merge_lst([IsoB['SYN_AB_MIC'],IsoB['SYN_POT_MIC']],sep=CmpdSep)
-            IsoB['SYN_MIC']        = IsoB['SYN_MIC_AB']
-            # IsoB['SYN_UNIT']      = zData.merge_lst([IsoB['SYN_UNIT_AB'],IsoB['SYN_UNIT_POT']],sep=CmpdSep)
-            IsoB['SYN_UNIT']      = IsoB['SYN_UNIT_AB'] 
-            IsoB['SYN_PREFIX'], IsoB['SYN_VALUE'],_ = split_XC50(micAB['MIC'])
-            IsoB['SYN_SKIPS']    = micAB['N_SKIPS']
-            IsoB['SYN_N_Conc']   = micAB['N_CONC']
-            IsoB['DATA_QUALITY']  = 'Valid'
-            IsoB['VALID']        = 1
-        
-            IsoB['PSCORE']       = micAB['PMIC']
-            IsoB['ACTSCORE']     = micAB['MIC_ACT_SCORE']
-            IsoB['ACTIVE']       = micAB['MIC_ACT']
-            IsoB['SYN_IC50']      = micAB['IC50']
-
-            IsoB['FICI_VALUE'] = 1
-            IsoB['FICI_SYN'] = 0
-            IsoB['ANALYSIS'] = 'pyBioDR'
-                    
-            self.IsoB_Lst.append(IsoB)
+                    if djISO.valid > 0:
+                        if djISO.synmic[0] == '>':
+                            djISO.fici_value = 1
+                            djISO.fici_syn = 0
                         
-        # For each POT conc ---------------------------------------------------------------
-        abCol = {'Conc':valCol['ConcAB'],'Inhib':'INHIBITION','Unit':valCol['UnitAB'],'WellAct':'WELLACT' }
-
-        for concP in _concPOT_lst:
-            if concP > 0:
-                _synF = synDf[synDf[valCol['ConcPOT']] == concP][synDf[valCol['ConcAB']] != 0]
-                #print(_synF)
-                
-                if (len(_synF)>0):
-                    _ab_pot_mic  = calc_MIC_opt(_synF,valCol=abCol)
-                    _ab_pot_synmic = get_synMIC(_ab_pot_mic['MIC'],_ab_pot_mic['DMAX'])
-                    _ab_pot_ic50 = calc_IC50(_synF,valCol=abCol)
-                    _fici, _syn = calc_FICI(micAB['SYN_MIC'],micPOT['SYN_MIC'],_ab_pot_synmic,concP,nCorrect=2)
-                    #print(f" {_ab_pot_mic['MIC']} | {concP} - {_ab_pot_mic['DMAX']}")
-                    # Collect Isobolagram Data - MIC of AB at different POT conc    
-                    IsoB = AssayData_SynergyIsobol()
-
-
-                    IsoB['WELL_ID']      = _ab_pot_mic['WELL_ID']
-                    IsoB['N_CONC_AB']    = len(_synF)
-                    IsoB['N_CONC_POT']   = 1
-                    IsoB['CHECKERBOARD'] = f"{IsoB['N_CONC_AB']}x{IsoB['N_CONC_POT']}"
-
-                    IsoB['DMAX']         = _ab_pot_mic['DMAX']
-                    IsoB['DMIN']         = _ab_pot_mic['DMIN']
-                    IsoB['CMAX']         = _ab_pot_mic['CMAX']
-                    IsoB['CMIN']         = _ab_pot_mic['CMIN']
-                    
-                    IsoB['COMPOUNDS_AB']    = cAB
-                    IsoB['N_COMPOUNDS_AB']  = len(IsoB['COMPOUNDS_AB'].split(CmpdSep)) 
-                    IsoB['COMPOUNDS_POT']   = cPOT
-                    IsoB['N_COMPOUNDS_POT'] = len(IsoB['COMPOUNDS_POT'].split(CmpdSep)) 
-                    IsoB['COMPOUNDS']       = zData.merge_lst([IsoB['COMPOUNDS_AB'],IsoB['COMPOUNDS_POT']],sep=CmpdSep)
-                    IsoB['N_COMPOUNDS']     = IsoB['N_COMPOUNDS_AB'] + IsoB['N_COMPOUNDS_POT']
-                    IsoB['SYN_MIC_AB']       = _ab_pot_mic['MIC']
-                    IsoB['SYN_UNIT_AB']      = _ab_pot_mic['MIC_UNIT']
-                    IsoB['SYN_MIC_POT']      = concP
-                    IsoB['SYN_UNIT_POT']     = _ab_pot_mic[valCol['UnitPOT']]
-                    
-                    IsoB['SYN_MIC']      = zData.merge_lst([IsoB['SYN_MIC_AB'],IsoB['SYN_MIC_POT']],sep=CmpdSep)
-                    IsoB['SYN_UNIT']     = zData.merge_lst([IsoB['SYN_UNIT_AB'],IsoB['SYN_UNIT_POT']],sep=CmpdSep)
-                    IsoB['SYN_PREFIX'], IsoB['SYN_VALUE'],_ = split_XC50(_ab_pot_mic['MIC'])
-                    IsoB['SYN_SKIPS']    = _ab_pot_mic['N_SKIPS']
-                    IsoB['SYN_N_Conc']   = _ab_pot_mic['N_CONC']
-                    IsoB['DATA_QUALITY']  = _ab_pot_mic['MIC_QUALITY']
-                    IsoB['VALID']    = _ab_pot_mic['MIC_VALID']
-                
-                    IsoB['PSCORE']       = _ab_pot_mic['PMIC']
-                    IsoB['ACTSCORE']     = _ab_pot_mic['MIC_ACT_SCORE']
-                    IsoB['ACTIVE']       = _ab_pot_mic['MIC_ACT']
-                    IsoB['SYN_IC50']      = _ab_pot_ic50['IC50']
-
-                    IsoB['FICI_VALUE'] = 1
-                    IsoB['FICI_SYN'] = 0
-                    IsoB['ANALYSIS'] = 'pyBioDR'
-
-
-                    # IsoB['N_AB']         = 
-                    
-                    # IsoB['SYN_AB']       = _ab_pot_mic[valCol['CmpdAB']]
-                    # IsoB['SYN_AB_MIC']   = _ab_pot_mic['MIC']
-                    # IsoB['AB_UNIT']      = _ab_pot_mic['MIC_UNIT']
-                    # IsoB['SYN_POT']      = _ab_pot_mic[valCol['CmpdPOT']]
-                    # IsoB['SYN_POT_MIC']  = cP
-                    # IsoB['POT_UNIT']     = _ab_pot_mic[valCol['UnitPOT']]
-                    
-                    #print(IsoB)
-                    #print(IsoB['FICI_VALUE'],minFICI_Value,_ab_pot_mic['MIC_QUALITY'])
-
-                    if _ab_pot_mic['MIC_VALID'] > 0:
-                        if IsoB['SYN_PREFIX'] in ['=','<=','<']:
-                            IsoB['FICI_SYN'] = _syn
-                            IsoB['FICI_VALUE'] = round(_fici,3)
-                        else:
-                            IsoB['FICI_SYN'] = 0
-                            IsoB['FICI_VALUE'] = 1.0
-                        
-                        if IsoB['FICI_VALUE'] < minFICI_Value:
-                            minFICI_Value = IsoB['FICI_VALUE']
-                            minFICI = IsoB
-
-                        if '<=' in micAB['MIC']  or '<=' in micPOT['MIC'] :
-                            IsoB['FICI_SYN'] = -1
-                    else:
-                        IsoB['FICI_VALUE'] = -9
-                        IsoB['FICI_SYN'] = -9
-                        
-                    self.IsoB_lst.append(IsoB)
-
-        # Add POT Data - for Synergy_Plot ---------------------------------------------------------------
-        if self.micPot:
-            IsoB = AssayData_SynergyIsobol()
-            IsoB['WELL_ID']      = micPOT['WELL_ID']
-
-            IsoB['N_CONC_AB']    = 0
-            IsoB['N_CONC_POT']   = micPOT['N_CONC']
-            IsoB['CHECKERBOARD'] = f"{IsoB['N_CONC_AB']}x{IsoB['N_CONC_POT']}"
-            IsoB['DMAX']         = micPOT['DMAX']
-            IsoB['DMIN']         = micPOT['DMIN']
-            IsoB['CMAX']         = micPOT['CMAX']
-            IsoB['CMIN']         = micPOT['CMIN']
-            
-            IsoB['COMPOUNDS_AB']    = '-'
-            IsoB['N_COMPOUNDS_AB']  = 0
-            IsoB['COMPOUNDS_POT']   = cPOT
-            IsoB['N_COMPOUNDS_POT'] = len(IsoB['COMPOUNDS_POT'].split(CmpdSep)) 
-            IsoB['COMPOUNDS']       = IsoB['COMPOUNDS_POT']
-            IsoB['N_COMPOUNDS']     = IsoB['N_COMPOUNDS_AB'] + IsoB['N_COMPOUNDS_POT']
-
-            IsoB['SYN_MIC_AB']       = '-'
-            IsoB['SYN_UNIT_AB']      = '-'
-            IsoB['SYN_MIC_POT']      = micPOT['SYN_MIC']
-            IsoB['SYN_UNIT_POT']     = micPOT['MIC_UNIT']
-            
-            # IsoB['SYN_MIC']      = zData.merge_lst([IsoB['SYN_AB_MIC'],IsoB['SYN_POT_MIC']],sep=CmpdSep)
-            IsoB['SYN_MIC']        = IsoB['SYN_MIC_POT']
-            # IsoB['SYN_UNIT']      = zData.merge_lst([IsoB['SYN_UNIT_AB'],IsoB['SYN_UNIT_POT']],sep=CmpdSep)
-            IsoB['SYN_UNIT']      = IsoB['SYN_UNIT_POT'] 
-            IsoB['SYN_PREFIX'], IsoB['SYN_VALUE'],_ = split_XC50(micPOT['MIC'])
-            IsoB['SYN_SKIPS']    = micPOT['N_SKIPS']
-            IsoB['SYN_N_Conc']   = micPOT['N_CONC']
-            IsoB['DATA_QUALITY']  = 'Valid'
-            IsoB['VALID']    = 1
-        
-            IsoB['PSCORE']       = micPOT['PMIC']
-            IsoB['ACTSCORE']     = micPOT['MIC_ACT_SCORE']
-            IsoB['ACTIVE']       = micPOT['MIC_ACT']
-            IsoB['SYN_IC50']      = micPOT['IC50']
-
-            IsoB['FICI_VALUE'] = 1
-            IsoB['FICI_SYN'] = 0
-            IsoB['ANALYSIS'] = 'pyBioDR'
-
-            IsoB_lst.append(IsoB)
-
-                    
-        # Summary based on min(FICI) -----------------------------------------------------------
-        sumSyn = minFICI.copy()
-        sumSyn['ANALYSIS'] = 'pyCastDB'
-        sumSyn['WELL_ID'] = min(synDf[synDf[valCol['ConcPOT']] != 0][synDf[valCol['ConcAB']] != 0]['WELL_ID'])
+    #                     if '<=' in micAB['MIC']  or '<=' in micPOT['MIC'] :
+    #                         IsoB['FICI_SYN'] = -1
     
-        sumSyn['CONC_POT_LST'] =synDf[synDf[valCol['ConcPOT']] != 0][valCol['ConcPOT']].unique()
-        sumSyn['CONC_AB_LST']  =synDf[synDf[valCol['ConcAB']] != 0][valCol['ConcAB']].unique()
-        sumSyn['N_CONC_POT'] = len(sumSyn['CONC_POT_LST'])
-        sumSyn['CHECKERBOARD'] = f"{sumSyn['N_CONC_AB']}x{sumSyn['N_CONC_POT']}"
-        
-        sumSyn['MIC_AB'] = micAB['MIC']
-        sumSyn['MIC_POT'] = micPOT['MIC']
+                        if djISO.fici_value < minFICI_Value:
+                            minFICI_Value = djISO.fici_value
+                            if minFICI:
+                                minFICI_WellID = min(djISO.testwell_id,minFICI.testwell_id)
+                            minFICI = djISO
+                    else:
+                        djISO.fici_value = -9
+                        djISO.fici_syn = -9
+                    
+                    self.Isobol_lst.append(djISO)
+                    
+        if self.refdr_pot:
+            djISO = self._copy_mic_to_isobol(self.refdr_pot,'Pot')
+            #print(repr(djISO))
+            self.Isobol_lst.append(djISO)
 
-        sumSyn['CONC_AB_MAX'] = synDf[synDf[valCol['ConcAB']]>0][valCol['ConcAB']].max()
-        sumSyn['CONC_AB_MIN'] = synDf[synDf[valCol['ConcAB']]>0][valCol['ConcAB']].min()
-        sumSyn['CONC_POT_MAX'] = synDf[synDf[valCol['ConcPOT']]>0][valCol['ConcPOT']].max()
-        sumSyn['CONC_POT_MIN'] = synDf[synDf[valCol['ConcPOT']]>0][valCol['ConcPOT']].min()
-
-        if sumSyn['N_CONC_AB'] > 6 and sumSyn['N_CONC_POT'] > 6:
-            sumSyn['DATA_QUALITY'] = 'Valid'
-        elif sumSyn['N_CONC_AB'] > 3 and sumSyn['N_CONC_POT'] > 3:
-            sumSyn['DATA_QUALITY'] = 'Retest'
+        # minFICI -> sumSyn
+        self.sumSyn = AssayData_SynergyMIC.get(minFICI.testplate_id,minFICI.testwell_id)
+        if self.sumSyn is None:
+            self.sumSyn = AssayData_SynergyMIC()                        
+            self.sumSyn.testplate_id = minFICI.testplate_id
+            self.sumSyn.testwell_id = minFICI.testwell_id
+            self.sumSyn.save_status = 'New'
         else:
-            sumSyn['DATA_QUALITY'] = f"Invalid ({sumSyn['CHECKERBOARD']})"
+            self.sumSyn.save_status = 'Exists'
             
-        if sumSyn['FICI_SYN'] < 0:
-            sumSyn['DATA_QUALITY'] = 'Invalid (OutOfRange)'
+        self.sumSyn.run_id = minFICI.run_id
+        self.sumSyn.assay_id = minFICI.assay_id
+        
+        # Copy values from minFICI        
+        for f in [field.name for field in AssayData_SynergyIsobol._meta.get_fields()]:
+            if hasattr(self.sumSyn,f) and f not in ['id']+AUDITMODEL_FIELDS:
+                setattr(self.sumSyn,f,getattr(minFICI,f))
+                
+        # Set SynMIC values
+        self.sumSyn.checkerboard = f"{len(self.conc_lst_drug)}x{len(self.conc_lst_pot)}"
+        self.testwell_id = minFICI_WellID 
 
-        # Calculate Syngery based on MuSyc model ------------------------------------------
-        if MuSyC:
-            if sumSyn['FICI_VALUE'] < 0.6: 
-                sMuSyC = calc_Syn_MuSyC(synDf, valCol=valCol, tol=0.5, variant="no_gamma")
-                sumSyn['MySyC'] = sMuSyC['MuSyC']
-                sumSyn['MySyC_Syn'] = sMuSyC['Synergy']
-                sumSyn['MySyC_Ant'] = sMuSyC['Antagonism']
-                sumSyn['MySyC_beta'] = sMuSyC['beta']
-                sumSyn['MySyC_alpha12'] = sMuSyC['alpha12']
-                sumSyn['MySyC_alpha21'] = sMuSyC['alpha21']
+    #--------------------------------------------------------------
+    def save_isobols(self,overwrite=False):
+        # Save self.Isobol_lst
+        if len(self.Isobol_lst) > 0:
+            for _iso in self.Isobol_lst:
+                if _iso.save_status == 'New' or overwrite:
+                    _iso.save()
 
-        return(sumSyn,IsoB_lst)    
+    #--------------------------------------------------------------
+    def save_synsum(self,overwrite=False):
+        if self.sumSyn:
+            if self.sumSyn.save_status == 'New' or overwrite:
+                self.sumSyn.save()
 
-
+    #--------------------------------------------------------------
+                        
 
 #====================================================================
 class Synergy_TestPlate():
@@ -535,9 +358,9 @@ class Synergy_TestPlate():
                 if len(self.djtp.synergy_cmpbatches) > 2 and self.djtp.synergy_cmpbatches[2]:
                     self.syn_controls = self.djtp.synergy_cmpbatches[2].split(';')
                     
-                print(f"Synergy Drugs       : {self.syn_drugs}")
-                print(f"Synergy Potentiators: {self.syn_pots}")
-                print(f"Synergy Controls    : {self.syn_controls}")
+                #print(f"Synergy Drugs       : {self.syn_drugs}")
+                #print(f"Synergy Potentiators: {self.syn_pots}")
+                #print(f"Synergy Controls    : {self.syn_controls}")
 
                 # Complete Synergy Drugs and Potentiators from TestPlate Wells
                 #unq_cmpbatches = list(self.djtp.wells_df['cmpbatches'].unique())
@@ -627,19 +450,21 @@ class Synergy_TestPlate():
         else:
             return()            
 
-# Process TestPlate for Synergies ------------------------------------------------
-# 
+#================================================================================================
 def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
+#================================================================================================
     DR_Dict = {}
+    ISO_lst = []
+    SYN_lst = []
     #djTP = TestPlate.get(PlateID,WellData=True)
     if djTP:
         djSynTP = Synergy_TestPlate().init_data(djTP,verbose=verbose)
         if djSynTP:
-            print('Synergy TestPlate:',djSynTP.djtp.plate_id, djSynTP.djtp.result_type, djSynTP.djtp.assay_id)
+            #print('Synergy TestPlate:',djSynTP.djtp.plate_id, djSynTP.djtp.result_type, djSynTP.djtp.assay_id)
 
             # Single MIC for Drug and Potentiator
             #--------------------------------------
-            print(" ----- Single MIC -------------------------------------")
+            #print(" ----- Single MIC -------------------------------------")
 
             grpData = djSynTP.djtp.wells_df.groupby('cmpbatch_sets')            
             for CmpBatchSets,SynData in grpData:
@@ -649,7 +474,7 @@ def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
                         djDR = DoseResponse().init_data(CmpBatchs,SynData[['well_id','conc_lst','inhibition','conc_unit_lst']],djSynTP.djtp)
                         if djDR:
                             djDR.calc_doseresponse()
-                            
+
                             # Get Ref_MIC_Values
                             if djDR.mic_prefix == '>' or djDR.mic_quality in ['Retest','Invalid']:
                                 _ref_ass = djDR.testplate.assay_id
@@ -658,139 +483,60 @@ def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
                                                                                  cmpbatch_lst=_ref_cmp,
                                                                                  data_quality='Valid').values_list('mic',flat=True)
                                 )
+                                if _ref_range['Median'][0] in ['<']:
+                                    _ref_cmp = djDR.testplate.wells[djDR.testwell_id].cmpbatch_lst
+                                    _ref_range = DR_Range(AssayData_MIC.objects.filter(assay_id=_ref_ass,
+                                                                                    cmpbatch_lst=_ref_cmp,
+                                                                                    data_quality='Valid').values_list('mic',flat=True),
+                                                          ValuesOnly=True
+                                    )
+                                    
                                 # Take Median as refmic
+                                print(_ref_range)
                                 if '>' in _ref_range['Median']:
                                     # If '>' use 2 x Median
-                                    djDR.refmic_val = 2 * float(_ref_range['Median'].replace('>',''))
+                                    djDR.refmic_val = 2 * Decimal(_ref_range['Median'].replace('>',''))
                                 else:    
-                                    djDR.refmic_val = float(_ref_range['Median'])
+                                    djDR.refmic_val = Decimal(_ref_range['Median'])
                             else:
-                                djDR.refmic_val = float(djDR.mic.split(COMPOUND_SEP)[0])    
+                                djDR.refmic_val = Decimal(djDR.mic.split(COMPOUND_SEP)[0])    
                                                                 
                             djSynTP.djtp.n_doseresponses += 1
                             
+                            # Prepare AssayData_MIC
                             djDR.doseresponse_to_assaydata() 
-                            #print(f" {djDR.assaydata.data_quality} ({djDR.assaydata.data_comment}) ")
+                            #print(repr(djDR.assaydata))
+
                             if upload:
                                 djDR.save_assaydata(overwrite=overwrite)
+                                
                             DR_Dict[CmpBatchs] = djDR
                             
+            # for _dr in DR_Dict:
+            #     print(f" [MIC] {DR_Dict[_dr].mic_dmax} - Cmp: {DR_Dict[_dr].cmpbatch_lst} - Ref {DR_Dict[_dr].refmic_val} [nConc: {DR_Dict[_dr].n_conc}]")        
+
             # Synergy MIC for Drug|Potentiator
             #--------------------------------------
-            for _cDrug in djSynTP.syn_drugs:
-                for _cPot in djSynTP.syn_pots:
+            for _Drug_ID in djSynTP.syn_drugs:
+                for _Pot_ID in djSynTP.syn_pots:
                     
-                    _cDrug = djSynTP.syn_drugs[0]
-                    _cPot = djSynTP.syn_pots[0]
+                    # _Drug_ID = djSynTP.syn_drugs[0]
+                    # _Pot_ID = djSynTP.syn_pots[0]
                     
-                    print(" ----- SynMIC -------------------------------------")
-                    dfSynDF = djSynTP.get_synergy_data(_cDrug,_cPot)
+                    #print(f" ----- SynMIC ------------------ {_Drug_ID} {_Pot_ID}")
+                    dfSynDF = djSynTP.get_synergy_data(_Drug_ID,_Pot_ID)
                     
                     # print(dfSynDF)
-                    djSyn = Synergy().init_data(dfSynDF,_cDrug,_cPot,djSynTP.djtp,
-                                                RefMicDrug=DR_Dict[_cDrug].refmic_val,
-                                                RefMicPot=DR_Dict[_cPot].refmic_val, 
+                    djSyn = Synergy().init_data(dfSynDF,_Drug_ID,_Pot_ID,djSynTP.djtp,
+                                                RefDRDrug=DR_Dict[_Drug_ID],
+                                                RefDRPot=DR_Dict[_Pot_ID], 
                                                 CutOff=80, MuSyC=False, Method='min.FICI')
-                    # if djSyn:
-                    #     djSyn.calc_synergy_mic() 
-                    
-            #print(dfSynDF)
-            # for pot in djSynTP.syn_pots:
-            #     for ab in djSynTP.syn_drugs:
-            #         dfSynDF = djSynTP.get_synergy_data(ab,pot)
-            #         logger.warning(f" [{djSynTP.djtp.plate_id}] CmpBatchs {CmpBatchs} not in Synergy Drugs, Potentiators or Controls")
-        
-        # if str(djTP.result_type) in SYN_CLASSES:
-        #     if djTP.n_samples > 0 and djTP.n_inhibitions > 0 :
-        #         djTP.n_synergy = 0
-        #         if verbose > 0:
-        #             logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id} ")
-        #         djTP.conv_list_to_string()
-        #         djTP.make_wells_df(ListToString=True)
+                    if djSyn:
+                        djSyn.calc_synergy_mic() 
 
-        #         _synDrugs = []
-        #         _synPots = []
-        #         if djTP.synergy_cmpbatches[0]:
-        #             _synDrugs = djTP.synergy_cmpbatches[0].split(';')
-        #         if djTP.synergy_cmpbatches[1]:
-        #             _synPots = djTP.synergy_cmpbatches[1].split(';')
-        #         logger.debug(f" [{djTP.plate_id}] --1-- Drugs: {_synDrugs} - Potentiators: {_synPots}")
-                
-        #         print(djTP.wells_df)
-        #         grpData = djTP.wells_df.groupby('cmpbatch_sets')
-                
-        #         for CmpBatchSet,SynData in grpData:
-        #             if CmpBatchSet:
-        #                 # Single MIC for Drug and Potentiator
-        #                 #--------------------------------------
-        #                 _cmpdsets = CmpBatchSet.split(COMPOUND_SEP)
-        #                 if len(_cmpdsets) == 1:
-        #                     _cmpbatch = TestWell.split_cmpbatch_sets(_cmpdsets[0])[0]
-        #                     djDR = DoseResponse().init_data(_cmpbatch,SynData[['well_id','conc_lst','inhibition','mscore','conc_unit_lst']],djTP)
-        #                     if djDR:
-        #                         djDR.calc_doseresponse()
-        #                         print(repr(djDR))
-        #                         djTP.n_doseresponses += 1
-                                
-        #                         djDR.doseresponse_to_assaydata() 
-        #                         #print(f" {djDR.assaydata.data_quality} ({djDR.assaydata.data_comment}) ")
-        #                         if upload:
-        #                             djDR.save_assaydata(overwrite=overwrite)
-        #                         DR_Lst.append(djDR)
+                        if upload:
+                            djSyn.save_isobols(overwrite=overwrite)
+                            djSyn.save_synsum(overwrite=overwrite)
 
-        #         for CmpBatchSet,SynData in grpData:
-        #             if CmpBatchSet:
-        #                 # Synergy MIC for Drug|Potentiator
-        #                 #--------------------------------------
-        #                 _cmpdsets = CmpBatchSet.split(COMPOUND_SEP)
-        #                 if len(_cmpdsets) > 1:
-        #                     print(_cmpdsets, _synDrugs, _synPots)
-                            
-                        #     _drug, _pot = _cmpdsets
-                        #     #
-                        # else:
-                        #     _cmpd = TestWell.split_cmpbatch_sets(_cmpdsets[0])[0]
-                        #     print(_cmpd, _synDrugs, _synPots)
-                        #     if _cmpd in _synDrugs:
-                        #         _drug, _pot = (_cmpd, None)
-                        #     elif _cmpd in _synPots:
-                        #         _drug, _pot = (None, _cmpd)
-                        #     else:
-                        #         _drug, _pot = (None, None)
-                        # print(CmpBatchSet, _drug, _pot)
-                    #print(SynData)
-                #
-                # 
-                #
-                
-                # grpData = djTP.wells_df.groupby('cmpbatch_sets') 
-                # logger.debug(f" [{djTP.plate_id}] --2-- {djTP.result_type} {djTP.assay_id} {djTP.n_samples} Samples, {djTP.n_inhibitions} Inhibitions")
-                # for CmpBatchSet,DRData in grpData:
-                #     if CmpBatchSet:
-                #         logger.debug(f" [{djTP.plate_id}] --2-- {CmpBatchSet} {len(DRData)}")
-                #         # Use CmpBatch w/o SetID
-                #         CmpBatch = DRData['cmpbatches'].unique()[0]
-                #         logger.debug(f" [{djTP.plate_id}] --3-- {CmpBatch}")
-                #         djDR = Synergy().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','mscore','conc_unit_lst']],djTP)
-                        
-                        # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
-                        # if djDR:
-                        #     djDR.calc_doseresponse()
-                        #     djTP.n_doseresponses += 1
-                        #     #print(f" [{djDR.testwell_id}] {str(djDR)}")
-                        #     djDR.doseresponse_to_assaydata()
-                        #     #print(f" {djDR.assaydata.data_quality} ({djDR.assaydata.data_comment}) ")
-                        #     if upload:
-                        #         djDR.save_assaydata(overwrite=overwrite)
-                        #     #print(repr(djDR))
-                        #     DR_Lst.append(djDR)
+    return(DR_Dict,ISO_lst,SYN_lst)
 
-            #     if upload:
-            #         djTP.save()
-                
-            #     if verbose>0:
-            #         logger.info(f" [{djTP.plate_id}] {djTP.result_type} -> {djTP.n_synergy}")
-            # else:
-            #     logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
-
-    return(DR_Dict)
