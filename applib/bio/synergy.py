@@ -496,6 +496,9 @@ def get_refmic(djDR):
         if _ref_median[0] in ['>']:
             _ref_median = _ref_median.replace('>','')
             _multi = 2
+        elif _ref_median[0] in ['<']:
+            _ref_median = _ref_median.replace('<=','')
+
         ref_val = _multi*Decimal(_ref_median)
 
     return(ref_val)                                 
