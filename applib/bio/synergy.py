@@ -11,7 +11,7 @@ from applib.bio.doseresponse import DoseResponse
 from dsample.models import Compound_Batch
 from dplate.models import TestPlate, TestWell
 from dscreen.models import AssayData_MIC, AssayData_SynergyMIC, AssayData_SynergyIsobol 
-from adjcoadd.constants import SYN_CLASSES, COMPOUND_SEP, COMPOUNDSET_SEP, AUDITMODEL_FIELDS
+from adjcoadd.constants import LIST_SEP, SYN_CLASSES, COMPOUND_SEP, COMPOUNDSET_SEP, AUDITMODEL_FIELDS
 
 import logging
 logger = logging.getLogger(__name__)
@@ -41,6 +41,7 @@ class Synergy():
         
         self.Isobol_lst = []
         self.sumSyn = None
+        
 
 
     #--------------------------------------------------------------
@@ -326,6 +327,10 @@ class Synergy_TestPlate():
         self.inhib_correct = inhib_correction 
         self.inhib_correct_limit = inhib_correct_limit
         self.ic50_dmax_cutoff = ic50_dmax_cutoff
+        
+        self.n_sumsyn = 0
+        self.n_isobol = 0
+
 
     #--------------------------------------------------------------
     def init_data(self,synPlate, verbose=0):
@@ -339,7 +344,7 @@ class Synergy_TestPlate():
             if self.djtp.n_samples > 0 and self.djtp.n_inhibitions > 0 :
                 self.is_syn = True
                 self.djtp.n_synergy = 0
-                if verbose > 0:
+                if verbose > 1:
                     logger.info(f" [{self.djtp.plate_id}] {self.djtp.result_type} {self.djtp.assay_id} ")
                 self.djtp.conv_list_to_string()
                 self.djtp.make_wells_df(ListToString=True)
@@ -352,11 +357,13 @@ class Synergy_TestPlate():
                 
                 # Get recorded Synergy Drugs and Potentiators from TestPlate
                 if self.djtp.synergy_cmpbatches[0]:
-                    self.syn_drugs = self.djtp.synergy_cmpbatches[0].split(';')
+                    self.syn_drugs = self.djtp.synergy_cmpbatches[0].split(LIST_SEP)
                 if self.djtp.synergy_cmpbatches[1]:
-                    self.syn_pots = self.djtp.synergy_cmpbatches[1].split(';')
+                    self.syn_pots = self.djtp.synergy_cmpbatches[1].split(LIST_SEP)
                 if len(self.djtp.synergy_cmpbatches) > 2 and self.djtp.synergy_cmpbatches[2]:
-                    self.syn_controls = self.djtp.synergy_cmpbatches[2].split(';')
+                    self.syn_controls = self.djtp.synergy_cmpbatches[2].split(LIST_SEP)
+                else:
+                    self.djtp.synergy_cmpbatches.append('')
                     
                 #print(f"Synergy Drugs       : {self.syn_drugs}")
                 #print(f"Synergy Potentiators: {self.syn_pots}")
@@ -395,9 +402,9 @@ class Synergy_TestPlate():
                         if _c and _c not in self.syn_controls:
                             self.syn_controls.append(_c)
                                               
-                logger.debug(f" [{self.djtp.plate_id}] --1-- Drugs       : {self.syn_drugs} ")
-                logger.debug(f" [{self.djtp.plate_id}] --1-- Potentiators: {self.syn_pots}")
-                logger.debug(f" [{self.djtp.plate_id}] --1-- Controls    : {self.syn_controls}")
+                #logger.debug(f" [{self.djtp.plate_id}] --1-- Drugs       : {self.syn_drugs} ")
+                #logger.debug(f" [{self.djtp.plate_id}] --1-- Potentiators: {self.syn_pots}")
+                #logger.debug(f" [{self.djtp.plate_id}] --1-- Controls    : {self.syn_controls}")
                 return(self)
             
         return(None)
@@ -556,10 +563,27 @@ def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
                                                 CutOff=80, MuSyC=False, Method='min.FICI')
                     if djSyn:
                         djSyn.calc_synergy_mic() 
-
+                        if djSyn.sumSyn:
+                            djSynTP.n_sumsyn += 1
+                        if djSyn.Isobol_lst:
+                            djSynTP.n_isobol += len(djSyn.Isobol_lst)
+                            
                         if upload:
                             djSyn.save_isobols(overwrite=overwrite)
                             djSyn.save_synsum(overwrite=overwrite)
+                            
+            # Set TestPlate Metadata
+            #--------------------------------------
+            djTP.synergy_cmpbatches[0] = LIST_SEP.join(djSynTP.syn_drugs)
+            djTP.synergy_cmpbatches[1] = LIST_SEP.join(djSynTP.syn_pots)
+            djTP.synergy_cmpbatches[2] = LIST_SEP.join(djSynTP.syn_controls)
+            djTP.n_synergies = djSynTP.n_sumsyn
+            
+            if verbose > 0:
+                logger.info(f" [{djSynTP.djtp.plate_id}] {djSynTP.djtp.result_type} {djSynTP.djtp.assay_id} - Syn: {djSynTP.n_sumsyn} - Iso: {djSynTP.n_isobol}")
+
+            if upload:
+                djTP.save()
 
     return(DR_Dict,ISO_lst,SYN_lst)
 

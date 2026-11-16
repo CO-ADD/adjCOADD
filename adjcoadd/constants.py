@@ -16,6 +16,7 @@ from django.core.validators import RegexValidator
 # Concentrations:  models.DecimalField(max_digits=12, decimal_places=4)
 #
 
+LIST_SEP = ';'
 ID_SEP = '_'
 BATCH_SEP = '.'
 

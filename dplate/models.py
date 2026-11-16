@@ -494,7 +494,7 @@ class TestPlate(Plate):
 
     control_layout = models.CharField(max_length=35, blank=True, verbose_name = "Layout")
     synergy_cmpbatches =ArrayField(models.CharField(max_length=100, null=True, blank=True), 
-                                   size=2, verbose_name = "Synergy CmpBatches", null=True, blank=True)
+                                   size=3, verbose_name = "Synergy CmpBatches", null=True, blank=True)
 
     # Control_Count = models.PositiveIntegerField()
     # Layout_Dilution = models.CharField(max_length=25)
