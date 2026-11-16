@@ -69,11 +69,14 @@ class Command(BaseCommand):
             if djRun:
                 qryTP = TestPlate.objects.filter(run_id=djRun).values_list('plate_id')
                 nTP = qryTP.count()
+                _iTP = 0
                 logger.info(f" [{self.command_process}] Processing RunID {djRun} with {nTP} testplates ...")
                 for _tp_id in qryTP:
+                    _iTP += 1
                     djTP = TestPlate.get(_tp_id[0])
+                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id} {_iTP}/{nTP}")
                     if str(djTP.result_type) in DR_CLASSES:
-                        _dr_list = process_testplate_doseresponse(djTP,verbose=2)
+                        _dr_list = process_testplate_doseresponse(djTP,verbose=0)
                     elif str(djTP.result_type) in SYN_CLASSES:
                         _dr_dict, _iso_lst, _syn_lst = process_testplate_synergy(djTP,upload=options['upload'], overwrite=options['overwrite'], verbose=2)
             

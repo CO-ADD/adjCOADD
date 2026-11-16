@@ -450,6 +450,57 @@ class Synergy_TestPlate():
         else:
             return()            
 
+def get_refmic(djDR):
+    #print("----------------------------")
+    ref_val = None
+    _multi = 1
+    
+    # Check if there is a RefMIC from the database
+    #-------------------------------------------------
+    if djDR.mic_prefix == '>' or djDR.mic_quality in ['Retest','Invalid']:
+
+        _ref_ass = djDR.testplate.assay_id
+        _ref_cmp = djDR.testplate.wells[djDR.testwell_id].cmpbatch_lst
+        
+        _ref_mics = AssayData_MIC.objects.filter(assay_id=_ref_ass,cmpbatch_lst=_ref_cmp,
+                                                data_quality='Valid').values_list('mic',flat=True)        
+        _ref_range = DR_Range(_ref_mics)
+    
+        # If there are _ref_mics 
+        if _ref_range['nValues'] > 0 :
+            _ref_median = _ref_range['Median'].split(COMPOUND_SEP)[0]
+            
+            # If Median is '<=' try Median with only Values
+            if _ref_range['Median'][0] in ['<']:
+                _ref_range_valOnly = DR_Range(_ref_mics,ValuesOnly=True)
+                if _ref_range_valOnly['nValues'] > 0:
+                    _ref_median = _ref_range_valOnly['Median'].split(COMPOUND_SEP)[0]
+                    _ref_range = _ref_range_valOnly
+                else:
+                    _ref_median = _ref_median.replace('<=','')
+                
+            # If Median is '>' set Muliplier to 2 
+            if _ref_median[0] in ['>']:
+                _ref_median = _ref_median.replace('>','')
+                _multi = 2
+            
+            # If Median is combination '|' 
+            # if COMPOUND_SEP in _ref_median:
+            #     _ref_median = _ref_median
+
+            ref_val = _multi*Decimal(_ref_median)
+
+    # Use on Plate MIC
+    if ref_val is None:
+        _ref_median = djDR.mic.split(COMPOUND_SEP)[0] 
+        if _ref_median[0] in ['>']:
+            _ref_median = _ref_median.replace('>','')
+            _multi = 2
+        ref_val = _multi*Decimal(_ref_median)
+
+    return(ref_val)                                 
+    
+
 #================================================================================================
 def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
 #================================================================================================
@@ -475,31 +526,21 @@ def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
                         if djDR:
                             djDR.calc_doseresponse()
 
+
                             # Get Ref_MIC_Values
-                            if djDR.mic_prefix == '>' or djDR.mic_quality in ['Retest','Invalid']:
-                                _ref_ass = djDR.testplate.assay_id
-                                _ref_cmp = djDR.testplate.wells[djDR.testwell_id].cmpbatch_lst
-                                _ref_range = DR_Range(AssayData_MIC.objects.filter(assay_id=_ref_ass,
-                                                                                 cmpbatch_lst=_ref_cmp,
-                                                                                 data_quality='Valid').values_list('mic',flat=True)
-                                )
-                                if _ref_range['Median'][0] in ['<']:
-                                    _ref_cmp = djDR.testplate.wells[djDR.testwell_id].cmpbatch_lst
-                                    _ref_range = DR_Range(AssayData_MIC.objects.filter(assay_id=_ref_ass,
-                                                                                    cmpbatch_lst=_ref_cmp,
-                                                                                    data_quality='Valid').values_list('mic',flat=True),
-                                                          ValuesOnly=True
-                                    )
-                                    
-                                # Take Median as refmic
-                                print(_ref_range)
-                                if '>' in _ref_range['Median']:
-                                    # If '>' use 2 x Median
-                                    djDR.refmic_val = 2 * Decimal(_ref_range['Median'].replace('>',''))
-                                else:    
-                                    djDR.refmic_val = Decimal(_ref_range['Median'])
-                            else:
-                                djDR.refmic_val = Decimal(djDR.mic.split(COMPOUND_SEP)[0])    
+                            #-------------------------------------------------------------------------------------
+                            djDR.refmic_val = get_refmic(djDR)
+                            
+                            # djDR.refmic_val = None
+                            
+                            # if djDR.mic_prefix == '>' or djDR.mic_quality in ['Retest','Invalid']:
+                            #     _ref_ass = djDR.testplate.assay_id
+                            #     _ref_cmp = djDR.testplate.wells[djDR.testwell_id].cmpbatch_lst
+                            
+                                
+                            # if djDR.refmic_val is None:
+                            #     print(djDR.mic)
+                            #     djDR.refmic_val = Decimal(djDR.mic.split(COMPOUND_SEP)[0])    
                                                                 
                             djSynTP.djtp.n_doseresponses += 1
                             
