@@ -450,7 +450,9 @@ class Synergy_TestPlate():
         else:
             return()            
 
+#-------------------------------------------------------------
 def get_refmic(djDR):
+#--------------------------------------------------------------
     #print("----------------------------")
     ref_val = None
     _multi = 1
@@ -529,48 +531,25 @@ def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
                         if djDR:
                             djDR.calc_doseresponse()
 
-
                             # Get Ref_MIC_Values
-                            #-------------------------------------------------------------------------------------
                             djDR.refmic_val = get_refmic(djDR)
-                            
-                            # djDR.refmic_val = None
-                            
-                            # if djDR.mic_prefix == '>' or djDR.mic_quality in ['Retest','Invalid']:
-                            #     _ref_ass = djDR.testplate.assay_id
-                            #     _ref_cmp = djDR.testplate.wells[djDR.testwell_id].cmpbatch_lst
-                            
-                                
-                            # if djDR.refmic_val is None:
-                            #     print(djDR.mic)
-                            #     djDR.refmic_val = Decimal(djDR.mic.split(COMPOUND_SEP)[0])    
-                                                                
-                            djSynTP.djtp.n_doseresponses += 1
-                            
+                                                                                                                    
                             # Prepare AssayData_MIC
                             djDR.doseresponse_to_assaydata() 
-                            #print(repr(djDR.assaydata))
+                            djSynTP.djtp.n_doseresponses += 1
 
                             if upload:
                                 djDR.save_assaydata(overwrite=overwrite)
                                 
                             DR_Dict[CmpBatchs] = djDR
                             
-            # for _dr in DR_Dict:
-            #     print(f" [MIC] {DR_Dict[_dr].mic_dmax} - Cmp: {DR_Dict[_dr].cmpbatch_lst} - Ref {DR_Dict[_dr].refmic_val} [nConc: {DR_Dict[_dr].n_conc}]")        
 
             # Synergy MIC for Drug|Potentiator
             #--------------------------------------
             for _Drug_ID in djSynTP.syn_drugs:
                 for _Pot_ID in djSynTP.syn_pots:
-                    
-                    # _Drug_ID = djSynTP.syn_drugs[0]
-                    # _Pot_ID = djSynTP.syn_pots[0]
-                    
-                    #print(f" ----- SynMIC ------------------ {_Drug_ID} {_Pot_ID}")
                     dfSynDF = djSynTP.get_synergy_data(_Drug_ID,_Pot_ID)
                     
-                    # print(dfSynDF)
                     djSyn = Synergy().init_data(dfSynDF,_Drug_ID,_Pot_ID,djSynTP.djtp,
                                                 RefDRDrug=DR_Dict[_Drug_ID],
                                                 RefDRPot=DR_Dict[_Pot_ID], 
