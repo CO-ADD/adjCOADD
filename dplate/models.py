@@ -1081,7 +1081,14 @@ class TestWell(Sample_Base):
     @staticmethod
     def split_cmpbatch_sets(CmpBatchSet:str) -> tuple:
         if CmpBatchSet:
-            _cmpbatch, _set = CmpBatchSet.split(COMPOUNDSET_SEP)
+            _s = CmpBatchSet.split(COMPOUNDSET_SEP)
+            if len(_s) > 1:
+                _cmpbatch= _s[0]
+                _set = _s[1]
+            else:
+                _cmpbatch = _s[0]
+                _set = ''
+            
         else:
             _cmpbatch = ''
             _set = ''

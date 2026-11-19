@@ -455,6 +455,7 @@ class Synergy_TestPlate():
             mf.sort_values(by=['cmpbatch_drug','cmpbatch_pot','conc_drug','conc_pot'], inplace=True)
             return(mf)
         else:
+            logger.warning(f"No Synergy Data for [{cDrug} x {cPot}] in Testplate: {self.djtp}")
             return()            
 
 #-------------------------------------------------------------
@@ -557,20 +558,21 @@ def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
                 for _Pot_ID in djSynTP.syn_pots:
                     dfSynDF = djSynTP.get_synergy_data(_Drug_ID,_Pot_ID)
                     
-                    djSyn = Synergy().init_data(dfSynDF,_Drug_ID,_Pot_ID,djSynTP.djtp,
-                                                RefDRDrug=DR_Dict[_Drug_ID],
-                                                RefDRPot=DR_Dict[_Pot_ID], 
-                                                CutOff=80, MuSyC=False, Method='min.FICI')
-                    if djSyn:
-                        djSyn.calc_synergy_mic() 
-                        if djSyn.sumSyn:
-                            djSynTP.n_sumsyn += 1
-                        if djSyn.Isobol_lst:
-                            djSynTP.n_isobol += len(djSyn.Isobol_lst)
-                            
-                        if upload:
-                            djSyn.save_isobols(overwrite=overwrite)
-                            djSyn.save_synsum(overwrite=overwrite)
+                    if len(dfSynDF) > 0:                    
+                        djSyn = Synergy().init_data(dfSynDF,_Drug_ID,_Pot_ID,djSynTP.djtp,
+                                                    RefDRDrug=DR_Dict[_Drug_ID],
+                                                    RefDRPot=DR_Dict[_Pot_ID], 
+                                                    CutOff=80, MuSyC=False, Method='min.FICI')
+                        if djSyn:
+                            djSyn.calc_synergy_mic() 
+                            if djSyn.sumSyn:
+                                djSynTP.n_sumsyn += 1
+                            if djSyn.Isobol_lst:
+                                djSynTP.n_isobol += len(djSyn.Isobol_lst)
+                                
+                            if upload:
+                                djSyn.save_isobols(overwrite=overwrite)
+                                djSyn.save_synsum(overwrite=overwrite)
                             
             # Set TestPlate Metadata
             #--------------------------------------
