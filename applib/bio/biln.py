@@ -12,6 +12,11 @@ module without the package being installed.
 """
 import logging
 import re
+from io import StringIO
+
+from Bio import SeqIO
+from pyPept.converter import Converter
+from pyPept.biln.parser import BILNParser
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +28,9 @@ def _converter():
     return Converter
 
 
-def _parser():
-    from pyPept.biln.parser import BILNParser
-    return BILNParser
+# def _parser():
+#     from pyPept.biln.parser import BILNParser
+#     return BILNParser
 
 
 def biln_to_helm(biln):
@@ -49,20 +54,48 @@ def helm_to_biln(helm):
     except Exception as err:
         raise ValueError(f'Invalid HELM sequence: {err}') from err
 
-
+#--------------------------------------------------------------------------------
 def fasta_to_biln(fasta):
-    """Convert a FASTA one-letter sequence to BILN (natural amino acids only).
-
-    Raises ValueError if the sequence contains non-standard residues.
+    """Convert a FASTA one-letter sequence to BILN (using Biopython.SeqIO) 
     """
-    fasta = ''.join(str(fasta or '').split()).upper()
-    if not fasta:
-        return ''
-    invalid = [ch for ch in fasta if ch not in _STANDARD_AA]
-    if invalid:
-        raise ValueError(f'FASTA contains non-standard residues: {"".join(invalid)}')
-    return '-'.join(fasta)
+#--------------------------------------------------------------------------------
 
+    biln = ""
+    biln_seq_list = []
+    with StringIO(fasta) as handle:
+        
+        first_line = handle.readline()
+        if not first_line.startswith(">"):
+            # Fasta without '>'
+            handle.seek(0)
+            fasta_seq = handle.getvalue()
+            biln_seq = "-".join(str(fasta_seq).strip())
+            biln_seq_list.append(biln_seq)
+        else:
+            # Fasta with '>' header
+            handle.seek(0)    
+            records = SeqIO.parse(handle, "fasta")    
+            for record in records:
+                
+                biln_seq = "-".join(str(record.seq).strip())
+                biln_seq_list.append(biln_seq)
+                
+        biln = ".".join(biln_seq_list)
+        is_valid = BILNParser.IsValidSequence(biln)
+    return(biln)
+
+# def fasta_to_biln(fasta):
+#     """Convert a FASTA one-letter sequence to BILN (natural amino acids only).
+
+#     Raises ValueError if the sequence contains non-standard residues.
+#     """
+#     fasta = ''.join(str(fasta or '').split()).upper()
+#     if not fasta:
+#         return ''
+#     invalid = [ch for ch in fasta if ch not in _STANDARD_AA]
+#     if invalid:
+#         raise ValueError(f'FASTA contains non-standard residues: {"".join(invalid)}')
+#     return '-'.join(fasta)
 
 def biln_to_fasta(biln):
     """Convert a BILN sequence to a FASTA one-letter sequence.
@@ -92,7 +125,7 @@ def is_valid_biln(biln):
     if not biln:
         return False
     try:
-        return bool(_parser().IsValidSequence(biln))
+        return bool(BILNParser.IsValidSequence(biln))
     except Exception:
         return False
 

@@ -345,7 +345,7 @@ class Synergy_TestPlate():
                 self.is_syn = True
                 self.djtp.n_synergy = 0
                 if verbose > 1:
-                    logger.info(f" [{self.djtp.plate_id}] {self.djtp.result_type} {self.djtp.assay_id} ")
+                    logger.debug(f" [{self.djtp.plate_id}] {self.djtp.result_type} {self.djtp.assay_id} ")
                 self.djtp.conv_list_to_string()
                 self.djtp.make_wells_df(ListToString=True)
 
@@ -579,8 +579,8 @@ def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
             djTP.synergy_cmpbatches[2] = LIST_SEP.join(djSynTP.syn_controls)
             djTP.n_synergies = djSynTP.n_sumsyn
             
-            if verbose > 0:
-                logger.info(f" [{djSynTP.djtp.plate_id}] {djSynTP.djtp.result_type} {djSynTP.djtp.assay_id} - Syn: {djSynTP.n_sumsyn} - Iso: {djSynTP.n_isobol}")
+            if verbose > 1:
+                logger.debug(f" [{djSynTP.djtp.plate_id}] {djSynTP.djtp.result_type} {djSynTP.djtp.assay_id} - Syn: {djSynTP.n_sumsyn} - Iso: {djSynTP.n_isobol}")
 
             if upload:
                 djTP.save()

@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 from tqdm import tqdm
+
+from adjcoadd import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from applib.logging.validation_log import Validation_Log
@@ -21,19 +23,32 @@ class Command(BaseCommand):
         parser.add_argument("--09_reg",action="store_true",default=False)
         parser.add_argument("--upload",action="store_true",default=False)
         parser.add_argument("--overwrite",action="store_true",default=False)
+        parser.add_argument("--debug",action="store_true",default=False)
 
     def handle(self, *args, **options):
         
+        if options['debug']:
+            settings.DEBUG = True
+            settings.LOGGING['loggers'][''] = {'handlers': ['console'],'level': 'DEBUG', }
+        else:
+            settings.DEBUG = False
+            settings.LOGGING['loggers'][''] = {'handlers': ['console'],'level': 'INFO', }
+
         valLog = Validation_Log("Upload_Project")
 
         #----------------------------------------
         # reg_smiles -> std_smiles
         #----------------------------------------
         if options["01_std"]:
-            qryCmpd = COADD_Compound.objects.all().exclude(std_status='Valid')
+            validCmpd = COADD_Compound.objects.filter(std_status='Valid')
+            print(f" [RegCompounds] 01Std [{validCmpd.count()} already Valid Structures] ")
             
+            emptyCmpd = COADD_Compound.objects.filter(reg_smiles='')
+            print(f" [RegCompounds] 01Std [{emptyCmpd.count()} no SMILES] ")
+
+            qryCmpd = COADD_Compound.objects.all().exclude(std_status='Valid').exclude(reg_smiles='')
             nCmpd = qryCmpd.count()
-            print(f" [RegCompounds] 01Std [{nCmpd} not Valid] [Upload: {options['upload']} | Overwrite: {options['overwrite']}")
+            print(f" [RegCompounds] 01Std [{nCmpd} not Validated SMILES] [Upload: {options['upload']} | Overwrite: {options['overwrite']}")
             
             # Declare MolStandardizer with Salt/Ion/Solvent definition from Database
             MolStd = SmiStandardizer_DB(chemdb=Chem_Salt) 

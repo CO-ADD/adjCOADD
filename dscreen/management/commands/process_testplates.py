@@ -1,9 +1,10 @@
 import os, sys
 import pandas as pd
 import logging
-
+from tqdm import tqdm
 from decimal import Decimal
 
+from adjcoadd import settings
 from django.core.management.base import BaseCommand, CommandError
 from applib.logging.validation_log import Validation_Log
 
@@ -35,21 +36,19 @@ class Command(BaseCommand):
         parser.add_argument("--plateid",action="store",default=None,help='PlateID')
         parser.add_argument("--upload",action="store_true",default=False)
         parser.add_argument("--overwrite",action="store_true",default=False)
+        parser.add_argument("--debug",action="store_true",default=False)
+        
         
     #------------------------------------------------------------------  
     def handle(self, *args, **options):
     #------------------------------------------------------------------  
 
-        # Set Loggers and Validation_Log        
-        valLog = Validation_Log("Process_TestPlates")
-        # if hasattr(logging, 'getHandlerByName'):
-        #     console_handler = logging.getHandlerByName('console')
-        # else:
-        #     console_handler = logging.StreamHandler(sys.stdout)
-        # if console_handler not in logger.handlers:
-        #     logger.addHandler(console_handler)
-        # logger.setLevel(logging.DEBUG)
-        #------------------------------------------------
+        if options['debug']:
+            settings.DEBUG = True
+        else:
+            settings.DEBUG = False
+            
+        #valLog = Validation_Log("Process_TestPlates")
         
         _dr_list = []
         if options['plateid']:
@@ -70,16 +69,17 @@ class Command(BaseCommand):
                 qryTP = TestPlate.objects.filter(run_id=djRun).values_list('plate_id')
                 nTP = qryTP.count()
                 _iTP = 0
-                logger.info(f" [{self.command_process}] Processing RunID {djRun} with {nTP} testplates ...")
-                for _tp_id in qryTP:
+                print(f" [{self.command_process}] Processing RunID {djRun} with {nTP} testplates ...")
+                for _tp_id in tqdm(qryTP, total=nTP, desc='TestPlates'):
                     _iTP += 1
                     djTP = TestPlate.get(_tp_id[0])
-                    logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id} {_iTP}/{nTP}")
+                    #logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id} {_iTP}/{nTP}")
                     if str(djTP.result_type) in DR_CLASSES:
                         _dr_list = process_testplate_doseresponse(djTP,verbose=0)
                     elif str(djTP.result_type) in SYN_CLASSES:
                         _dr_dict, _iso_lst, _syn_lst = process_testplate_synergy(djTP,upload=options['upload'], overwrite=options['overwrite'], verbose=1)
-            
+            else:
+                print(f" [{self.command_process}] RunID {options['runid']} NOT Found")
         else:
             print(f" [{self.command_process}] --plateid <PlateID> or --runid <RunID> ")
             print(self.help)

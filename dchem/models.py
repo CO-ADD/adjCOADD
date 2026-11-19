@@ -614,3 +614,38 @@ class AminoAcid(AuditModel):
         else:
             #self.save_batch()
             super(AminoAcid, self).save(*args, **kwargs) 
+            
+#=================================================================================================
+class Chem_Conformer(AuditModel):
+    
+    class SourceType(models.TextChoices):
+        RDKIT_ETKDG = "rdkit", "RDKit Generated"
+        UPLOAD_SDF = "sdf", "Uploaded SDF"
+        UPLOAD_PDB = "pdb", "Uploaded PDB"
+        UPLOAD_XYZ = "xyz", "Uploaded XYZ"
+
+
+    structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure", on_delete=models.DO_NOTHING,
+        db_column="structure_id", related_name="%(class)s_structure_id")
+
+    source = models.CharField(max_length=20, choices=SourceType.choices)
+    
+    # Stores the exact 3D atomic coordinates (V3000 Molblock recommended for fidelity)
+    molblock_3d = models.TextField()
+    
+    # Optional: Preserve the exact uploaded file text (especially useful for PDB headers or XYZ metadata)
+    raw_input = models.TextField(blank=True)
+    
+    # Optional metadata for ranking/filtering conformers
+    energy = models.FloatField(null=True, blank=True)
+    is_default = models.BooleanField(default=False)
+
+   #------------------------------------------------
+    class Meta:
+        app_label = 'dchem'
+        db_table = 'conformer'
+        ordering=['structure_id']
+        # indexes = [
+        #     models.Index(name="aa_id_idx",fields=['aa_id']),
+        #     models.Index(name="aa_code_idx",fields=['aa_code']),
+        # ]
