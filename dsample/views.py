@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required, per
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import FieldDoesNotExist, ValidationError
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
 from django.db.models import Count
@@ -182,7 +182,7 @@ def Project_DetailView(req, pk):
     context={}
     _object=get_object_or_404(Project, project_id=pk)
     context["object"]=_object
-    context["display_groups"] = _display_groups(_object, Project.DETAIL_VIEW_GROUPS)
+    context["display_groups"] = _object.get_display_groups()
 
     # Paginated and filtered list
     _view = req.GET.get('view', 'table')
@@ -214,31 +214,6 @@ def Project_DetailView(req, pk):
     # context["org_id_fields"] = list(id_data_df.columns)
 
     return render(req, "dsample/project/project_detail.html", context)
-
-# -----------------------------------------------------------------
-def _display_groups(instance, group_defs):
-    """
-    Build read-only label/value row groups for a detail view, grouped
-    according to the model's DETAIL_VIEW_GROUPS.
-    """
-    groups = []
-    for field_names in group_defs:
-        rows = []
-        for name in field_names:
-            try:
-                field = instance._meta.get_field(name)
-            except FieldDoesNotExist:
-                continue
-            value = getattr(instance, name, None)
-            if value is None or value == '':
-                value = ''
-            elif isinstance(value, (list, tuple)):
-                value = ', '.join(str(v) for v in value)
-            else:
-                value = str(value)
-            rows.append({'label': field.verbose_name, 'value': value})
-        groups.append(rows)
-    return groups
 
 # -----------------------------------------------------------------
 @login_required
@@ -504,7 +479,7 @@ def ABase_DetailView(req, pk):
 
     context = {
         'object': _object,
-        'display_groups': _display_groups(_object, ABase_Compound.DETAIL_VIEW_GROUPS),
+        'display_groups': _object.get_display_groups(),
         'batch_objs': _batches,
         'batch_count': _batches.count(),
         'batch_fields': ABase_Compound_Batch.get_fields(),
@@ -591,7 +566,7 @@ def COADD_DetailView(req, pk):
 
     context = {
         'object': _object,
-        'display_groups': _display_groups(_object, COADD_Compound.DETAIL_VIEW_GROUPS),
+        'display_groups': _object.get_display_groups(),
         'storage_wells': _storage_wells,
         'storage_objects': '',
         'storage_fields': ['Plate ID','Well ID','Barcode','Well Type','Labware'],

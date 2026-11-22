@@ -6,7 +6,7 @@ from sequences import Sequence
 from asgiref.sync import sync_to_async
 
 from django.db import models
-from django.core.exceptions import ValidationError
+from django.core.exceptions import FieldDoesNotExist, ValidationError
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.contrib.sessions.models import Session
 from django.contrib.postgres.fields import ArrayField
@@ -502,6 +502,31 @@ class AuditModel(models.Model):
             select_fields=None   
         return select_fields
  
+    #------------------------------------------------
+    # Get read-only label/value row groups for a detail view, grouped according
+    # to the model's DETAIL_VIEW_GROUPS (or the given group_defs).
+    def get_display_groups(self, group_defs=None):
+        if group_defs is None:
+            group_defs = self.DETAIL_VIEW_GROUPS
+        groups = []
+        for field_names in group_defs:
+            rows = []
+            for name in field_names:
+                try:
+                    field = self._meta.get_field(name)
+                except FieldDoesNotExist:
+                    continue
+                value = getattr(self, name, None)
+                if value is None or value == '':
+                    value = ''
+                elif isinstance(value, (list, tuple)):
+                    value = ', '.join(str(v) for v in value)
+                else:
+                    value = str(value)
+                rows.append({'label': field.verbose_name, 'value': value})
+            groups.append(rows)
+        return groups
+
     #------------------------------------------------
     # recurse func to get foreign key related table col value
     def iter_foreignkey(self, nameArray=None, n=None):

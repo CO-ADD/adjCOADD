@@ -437,6 +437,13 @@ class TestPlate(Plate):
         'plate_type':'Plate_Type',
     }
     
+    DETAIL_VIEW_GROUPS = [
+        ['plate_id','plate_type','labware_id','n_rows','n_cols','n_wells','plating'],
+        ['run_id','assay_id','result_type','test_date','control_layout','synergy_cmpbatches'],
+        ['reader','n_readouts','readout_type','zfactor','plate_qc','plate_quality','plate_comment'],
+    ]
+   
+    
     # plate_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Plate ID")
     # labware_id = models.ForeignKey(Labware, null=True, blank=True, verbose_name = "Labware ID", on_delete=models.DO_NOTHING,
     #     db_column="labware_id", related_name="%(class)s_labwareid")
@@ -1172,6 +1179,12 @@ class MasterPlate(Plate):
         'n_layout': 'nL',
         'process_status': 'Process',
     }
+
+    DETAIL_VIEW_GROUPS = [
+        ['plate_id','plate_type','labware_id','n_rows','n_cols','n_wells','plating'],
+        ['run_id','prep_date','dilution_layout','plate_quality'],
+    ]
+   
 
     plating = models.CharField(max_length=10, blank=True, verbose_name = "Plating by")
     cpoz_id = models.CharField(max_length=15, blank=True, verbose_name = "CpOz ID")

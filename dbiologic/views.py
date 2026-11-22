@@ -5,7 +5,7 @@ from rdkit import Chem
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.core.exceptions import FieldDoesNotExist, ValidationError
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db import transaction, IntegrityError
 from django.http import HttpResponse
@@ -27,28 +27,6 @@ from dbiologic.forms import (Biologic_Filter, Biologic_CreateForm, Biologic_Upda
 #=================================================================================================
 # Helpers
 #=================================================================================================
-def _display_groups(instance, group_defs):
-    """Build read-only label/value row groups for a detail view."""
-    groups = []
-    for field_names in group_defs:
-        rows = []
-        for name in field_names:
-            try:
-                field = instance._meta.get_field(name)
-            except FieldDoesNotExist:
-                continue
-            value = getattr(instance, name, None)
-            if value is None or value == '':
-                value = ''
-            elif isinstance(value, (list, tuple)):
-                value = ', '.join(str(v) for v in value)
-            else:
-                value = str(value)
-            rows.append({'label': field.verbose_name, 'value': value})
-        groups.append(rows)
-    return groups
-
-
 def _error_svg(message):
     """Minimal SVG showing an error message, for <img> previews."""
     text = message.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
@@ -112,7 +90,7 @@ def Biologic_DetailView(req, pk):
     _object = get_object_or_404(Biologic, biologic_id=pk)
     context = {
         'object': _object,
-        'display_groups': _display_groups(_object, Biologic.DETAIL_VIEW_GROUPS),
+        'display_groups': _object.get_display_groups(),
         'doc_form': Document_Form,
     }
     return render(req, 'dbiologic/biologic/biologic_detail.html', context)
@@ -201,7 +179,7 @@ def Isoform_DetailView(req, pk):
 
     context = {
         'object': _object,
-        'display_groups': _display_groups(_object, Biologic_Isoform.DETAIL_VIEW_GROUPS),
+        'display_groups': _object.get_display_groups(),
         'doc_form': Document_Form,
     }
 

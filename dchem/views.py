@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotFound
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import FieldDoesNotExist
 from django.db import transaction, IntegrityError
 
 from rest_framework import viewsets, filters
@@ -135,27 +134,6 @@ def _cfg(key):
     return CHEM_VIEWS[key]
 
 
-def _display_groups(instance, group_defs):
-    groups = []
-    for field_names in group_defs:
-        rows = []
-        for name in field_names:
-            try:
-                field = instance._meta.get_field(name)
-            except FieldDoesNotExist:
-                continue
-            value = getattr(instance, name, None)
-            if value is None or value == '':
-                value = ''
-            elif isinstance(value, (list, tuple)):
-                value = ', '.join(str(v) for v in value)
-            else:
-                value = str(value)
-            rows.append({'label': field.verbose_name, 'value': value})
-        groups.append(rows)
-    return groups
-
-
 #-------------------------------------------------------------------------------------------------
 class Chem_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
@@ -217,7 +195,7 @@ def Chem_DetailView(req, key, pk):
     _object = get_object_or_404(cfg['model'], **{cfg['pk']: pk})
     context = {
         'object': _object,
-        'display_groups': _display_groups(_object, cfg['model'].DETAIL_VIEW_GROUPS),
+        'display_groups': _object.get_display_groups(),
         'title': cfg['title'],
         'list_url': cfg['list_name'],
         'update_url': cfg.get('update_name'),

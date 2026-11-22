@@ -8,7 +8,6 @@ import matplotlib.colors as mcolors
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.core.exceptions import FieldDoesNotExist
 from django.db import transaction, IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
@@ -25,12 +24,6 @@ from dplate.forms import (TestPlate_Filter, MasterPlate_Filter, Labware_Filter,
 #=================================================================================================
 # TestPlate
 #=================================================================================================
-
-TESTPLATE_DETAIL_FIELDS = ['plate_id', 'plate_type', 'labware_id', 'n_rows', 'n_cols', 'n_wells',
-                           'run_id', 'assay_id', 'result_type', 'plate_quality', 'test_date',
-                           'control_layout', 'zfactor', 'plate_qc', 'process_status',
-                           'n_reads', 'n_samples', 'n_layout', 'n_inhibitions',
-                           'n_doseresponses', 'n_synergies']
 
 
 #----------------------------------------------------------------------------------
@@ -190,26 +183,6 @@ def _quality_class(value):
     return ''
 
 
-# -----------------------------------------------------------------
-def _build_display_groups(instance, field_names, chunk=6):
-    groups = []
-    rows = []
-    for name in field_names:
-        try:
-            field = instance._meta.get_field(name)
-        except FieldDoesNotExist:
-            continue
-        value = getattr(instance, name, None)
-        if value is None or value == '':
-            value = ''
-        else:
-            value = str(value)
-        rows.append({'label': field.verbose_name, 'value': value})
-    for i in range(0, len(rows), chunk):
-        groups.append(rows[i:i + chunk])
-    return groups
-
-
 @login_required
 def TestPlate_DetailView(req, pk):
     _object = get_object_or_404(TestPlate, plate_id=pk)
@@ -248,7 +221,7 @@ def TestPlate_DetailView(req, pk):
     }
     context = {
         'object': _object,
-        'display_groups': _build_display_groups(_object, TESTPLATE_DETAIL_FIELDS),
+        'display_groups': _object.get_display_groups(),
         'list_url': 'testplate_list',
         'update_url': 'testplate_update',
         'plate_map_data': _plate_map_data(_object),
@@ -391,11 +364,6 @@ def TestPlate_HeatmapView(req, pk):
 # MasterPlate
 #=================================================================================================
 
-MasterPlate_DETAIL_FIELDS = ['plate_id', 'plate_type', 'labware_id', 'n_rows', 'n_cols', 'n_wells',
-                             'run_id', 'prep_date', 'plate_quality', 'plating', 'cpoz_id', 'well_type',
-                             'dilution_layout', 'master_solvent', 'master_conc', 'master_conc_unit',
-                             'master_volume', 'master_volume_unit', 'n_samples', 'n_layout', 'process_status']
-
 
 @login_required
 def MasterPlate_HeatmapView(req, pk):
@@ -508,7 +476,7 @@ def MasterPlate_DetailView(req, pk):
     _object = get_object_or_404(MasterPlate, plate_id=pk)
     context = {
         'object': _object,
-        'display_groups': _build_display_groups(_object, MasterPlate_DETAIL_FIELDS),
+        'display_groups': _object.get_display_groups(),
         'list_url': 'masterplate_list',
         'update_url': 'masterplate_update',
         'plate_map_data': _plate_map_data(_object),
