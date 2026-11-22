@@ -1181,8 +1181,8 @@ class MasterPlate(Plate):
     }
 
     DETAIL_VIEW_GROUPS = [
-        ['plate_id','plate_type','labware_id','n_rows','n_cols','n_wells','plating'],
-        ['run_id','prep_date','dilution_layout','plate_quality'],
+        ['plate_id','plate_type','well_type','labware_id','n_rows','n_cols','n_wells','plating'],
+        ['run_id','prep_date','dilution_layout','plate_quality','plate_comment'],
     ]
    
 
