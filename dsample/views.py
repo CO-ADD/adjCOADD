@@ -4,6 +4,7 @@ import datetime
 from io import BytesIO as IO
 
 from rdkit import Chem
+from rdkit.Chem import rdDepictor
 from django_filters.views import FilterView
 
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
@@ -553,6 +554,34 @@ def COADD_DetailView(req, pk):
     """
     _object = get_object_or_404(COADD_Compound, compound_id=pk)
 
+    # Structure source priority for the rendered molecule:
+    #   (3) registered structure from the compound batch (cmpbatch_id.structure_id)
+    #       -> rendered as a MOL block (richer than SMILES)
+    #   (2) curated standardized structure (std_smiles)
+    #   (1) original recorded structure (reg_smiles)
+    structure_smiles = ''
+    structure_molblock = ''
+    structure_source = ''
+    structure_format = ''
+    _batch = _object.cmpbatch_id if _object.cmpbatch_id_id else None
+    if _batch and _batch.structure_id and _batch.structure_id.smol:
+        _mol = Chem.Mol(_batch.structure_id.smol)
+        try:
+            rdDepictor.Compute2DCoords(_mol)
+        except Exception:
+            pass
+        structure_molblock = Chem.MolToMolBlock(_mol)
+        structure_source = 'Reg'
+        structure_format = 'molblock'
+    elif _object.std_smiles:
+        structure_smiles = _object.std_smiles
+        structure_source = 'Std'
+        structure_format = 'smiles'
+    elif _object.reg_smiles:
+        structure_smiles = _object.reg_smiles
+        structure_source = 'Orig'
+        structure_format = 'smiles'
+
     # Storage Locations: MasterWells holding this compound's batch in Storage
     # plates. MasterWell lives in the dplate database, so use the raw FK id
     # (no cross-database JOIN is needed for the lookup itself).
@@ -569,6 +598,10 @@ def COADD_DetailView(req, pk):
         'object': _object,
         'display_groups': _object.get_display_groups(),
         'structure_template': 'dsample/coadd/coadd_structure.html',
+        'structure_smiles': structure_smiles,
+        'structure_molblock': structure_molblock,
+        'structure_source': structure_source,
+        'structure_format': structure_format,
         'storage_wells': _storage_wells,
         'storage_fields': MasterWell.get_fields(),
     }

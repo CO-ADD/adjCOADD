@@ -1,6 +1,20 @@
-{% if object.std_smiles %}
+{% if structure_source %}
+  <div class="d-flex justify-content-center mb-1">
+    <span class="badge bg-secondary text-light" title="Structure source: {{ structure_source }}">
+      {{ structure_source }}
+    </span>
+  </div>
+{% endif %}
+
+{% if structure_format == 'molblock' %}
+  {% with molblock_id="coadd-molblock-"|add:object.pk %}
+    {{ structure_molblock|json_script:molblock_id }}
+    <div id="structure{{ object.pk }}" class="molecule-structure-molblock d-flex justify-content-center"
+         data-molblock-id="{{ molblock_id }}"></div>
+  {% endwith %}
+{% elif structure_smiles %}
   <div id="structure{{ object.pk }}" class="molecule-structure-svg d-flex justify-content-center"
-       data-smiles="{{ object.std_smiles }}"></div>
+       data-smiles="{{ structure_smiles }}"></div>
 {% else %}
   <div class="text-muted small text-center py-3">No structure</div>
 {% endif %}

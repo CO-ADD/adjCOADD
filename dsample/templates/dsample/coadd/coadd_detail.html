@@ -66,7 +66,11 @@
   </div>
 </div>
 
-{% include 'utils/molecule_structure.html' %}
+{% if structure_format == 'molblock' %}
+  {% include 'utils/molecule_structure_molblock.html' %}
+{% else %}
+  {% include 'utils/molecule_structure.html' %}
+{% endif %}
 
 <!-- Ketcher structure editor modal -->
 <div id="structureModal" class="modal fade" tabindex="-1" aria-hidden="true"></div>
