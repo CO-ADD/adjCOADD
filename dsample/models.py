@@ -184,10 +184,10 @@ class Project(AuditModel):
                          'n_sc_hits','n_mic_hits','n_tox_hits',
                          'screen_date']
 
-    CALC_VIEW_GROUPS = [
-        ['n_compounds','n_mcc_compounds','n_structures','n_barcodes','n_motherplates','n_testplates','n_runids','n_assays'],
-        ['n_ps_compounds','n_dr_compounds','n_syn_compounds','n_sc_hits','n_mic_hits','n_tox_hits','screen_date'],
-    ]
+    # CALC_VIEW_GROUPS = [
+    #     ['n_compounds','n_mcc_compounds','n_structures','n_barcodes','n_motherplates','n_testplates','n_runids','n_assays'],
+    #     ['n_ps_compounds','n_dr_compounds','n_syn_compounds','n_sc_hits','n_mic_hits','n_tox_hits','screen_date'],
+    # ]
 
     n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cpmds")
     n_mcc_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#MCC")
