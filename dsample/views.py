@@ -566,12 +566,12 @@ def COADD_DetailView(req, pk):
     _batch = _object.cmpbatch_id if _object.cmpbatch_id_id else None
     if _batch and _batch.structure_id and _batch.structure_id.smol:
         _mol = Chem.Mol(_batch.structure_id.smol)
-        try:
-            rdDepictor.Compute2DCoords(_mol)
-        except Exception:
-            pass
+        # try:
+        #     rdDepictor.Compute2DCoords(_mol)
+        # except Exception:
+        #     pass
         structure_molblock = Chem.MolToMolBlock(_mol)
-        structure_source = 'Reg'
+        structure_source = 'Val'
         structure_format = 'molblock'
     elif _object.std_smiles:
         structure_smiles = _object.std_smiles
@@ -579,7 +579,7 @@ def COADD_DetailView(req, pk):
         structure_format = 'smiles'
     elif _object.reg_smiles:
         structure_smiles = _object.reg_smiles
-        structure_source = 'Orig'
+        structure_source = 'Reg'
         structure_format = 'smiles'
 
     # Storage Locations: MasterWells holding this compound's batch in Storage
