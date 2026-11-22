@@ -549,10 +549,10 @@ class COADD_Compound(AuditModel):
     DETAIL_VIEW_GROUPS   = [
         ['compound_id','compound_code','compound_name','compound_desc','project_id','compound_type','compound_source',
          'cpoz_sn','cpoz_id','pub_status','pub_date',
-         'reg_smiles','std_smiles'],
+         'reg_smiles',],
         ['reg_mf','reg_mw','reg_amount','reg_amount_unit','reg_volume','reg_volume_unit','reg_conc', 'reg_conc_unit','reg_solvent'],
-        ['std_status','std_process','std_issues','std_nfrag',
-         'std_salt','std_ion','std_solvent','std_metal','std_structure_type','std_mw','std_mf','structure_id'],
+        ['std_mf','std_mw','std_status','std_process','std_issues','std_nfrag',
+         'std_salt','std_ion','std_solvent','std_metal','std_structure_type','std_smiles','structure_id'],
         ['coadd_id','chembl_id','spark_id',]
     ]
     
@@ -687,11 +687,11 @@ class COADD_Compound(AuditModel):
    #------------------------------------------------
     @property
     def structure_id(self):
-        _sid = Compound_Batch.objects.filter(cmpbatch_id = str(self.cmpbatch_id)).values('structure_id')
-        if _sid[0]['structure_id'] is None:
-            return None
-        else:
-            return(str(_sid[0]['structure_id']))
+        _batch = self.cmpbatch_id
+        if _batch and _batch.structure_id:
+            return _batch.structure_id.structure_id
+        return None
+    structure_id.fget.short_description = "Structure ID"
 
     #------------------------------------------------
     def save_batch(self, *args, **kwargs):

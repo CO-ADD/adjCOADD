@@ -516,9 +516,8 @@ class AuditModel(models.Model):
         for field_names in group_defs:
             rows = []
             for name in field_names:
-                try:
-                    field = self._meta.get_field(name)
-                except FieldDoesNotExist:
+                label = self._display_field_label(name)
+                if label is None:
                     continue
                 value = getattr(self, name, None)
                 if value is None or value == '':
@@ -527,9 +526,35 @@ class AuditModel(models.Model):
                     value = ', '.join(str(v) for v in value)
                 else:
                     value = str(value)
-                rows.append({'label': field.verbose_name, 'value': value})
+                rows.append({'label': label, 'value': value})
             groups.append(rows)
         return groups
+
+    #------------------------------------------------
+    @classmethod
+    def _display_field_label(cls, name):
+        """Return the display label for a model field or property/callable.
+
+        Model fields use their ``verbose_name``. Properties can carry a
+        ``short_description`` (Django's convention for callables) or a
+        ``verbose_name`` on the getter function; otherwise the name is
+        humanised. Returns None when the name is not a known attribute.
+        """
+        try:
+            return cls._meta.get_field(name).verbose_name
+        except FieldDoesNotExist:
+            pass
+        attr = getattr(cls, name, None)
+        if isinstance(attr, property):
+            fget = getattr(attr, 'fget', None)
+            if fget is not None:
+                for attr_name in ('short_description', 'verbose_name'):
+                    label = getattr(fget, attr_name, None)
+                    if label:
+                        return label
+        if hasattr(cls, name):
+            return name.replace('_', ' ').title()
+        return None
 
     #------------------------------------------------
     # Get read-only label/value rows for calculated fields, grouped according to
@@ -542,9 +567,8 @@ class AuditModel(models.Model):
         for field_names in groups:
             row = []
             for name in field_names:
-                try:
-                    field = self._meta.get_field(name)
-                except FieldDoesNotExist:
+                label = self._display_field_label(name)
+                if label is None:
                     continue
                 value = getattr(self, name, None)
                 if value is None or value == '':
@@ -553,7 +577,7 @@ class AuditModel(models.Model):
                     value = ', '.join(str(v) for v in value)
                 else:
                     value = str(value)
-                row.append({'label': field.verbose_name, 'value': value})
+                row.append({'label': label, 'value': value})
             rows.append(row)
         return rows
 
