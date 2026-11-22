@@ -529,6 +529,7 @@ class COADD_Compound(AuditModel):
         'compound_name':'Name',
         'reg_mw':'MW', 
         'reg_smiles':'Smiles',
+        'structure_id':'StructureID',
     }
 
     DICTIONARY_FIELDS = {
@@ -539,6 +540,17 @@ class COADD_Compound(AuditModel):
         'reg_conc_unit':'Unit_Concentration',
     #    'stock_volume_unit':'Unit_Volume',
     }
+
+    DETAIL_VIEW_GROUPS   = [
+        ['compound_id','compound_code','compound_name','compound_desc','project_id','compound_type','compound_source','cpoz_sn','cpoz_id','coadd_id','chembl_id','spark_id'],
+        ['reg_mf','reg_mw','reg_smiles','reg_amount','reg_amount_unit','reg_volume','reg_volume_unit','reg_conc', 'reg_conc_unit','reg_solvent'],
+        ['std_status','std_process','std_smiles','std_issues','std_nfrag','std_salt','std_ion','std_solvent','std_metal','std_structure_type','std_mw','std_mf'],
+        ['pub_status','pub_date'],
+    ]
+    
+    STATUS_VIEW_FIELDS = []
+    CARDS_FIELDS   = {}
+    CALCULATED_FIELDS = []
 
     ID_SEQUENCE = 'COADD_Compound'
     ID_PREFIX = 'C'
@@ -559,7 +571,7 @@ class COADD_Compound(AuditModel):
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
 
-    compound_source = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+    compound_source = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Source", on_delete=models.DO_NOTHING,
         db_column="compound_source", related_name="%(class)s_compound_source")
 
     # compound_subtypes = ArrayField(models.CharField(max_length=50, null=True, blank=True), 
@@ -664,6 +676,11 @@ class COADD_Compound(AuditModel):
         retValue = cls.objects.filter(compound_id=CompoundID).exists()
         return(retValue)
 
+   #------------------------------------------------
+    @property
+    def structure_id(self):
+        return Compound_Batch.objects.filter(cmpbatch_id = str(self.cmpbatch_id)).values('structure_id')
+
     #------------------------------------------------
     def save_batch(self, *args, **kwargs):
         if not self.cmpbatch_id:
@@ -706,10 +723,21 @@ class ABase_Compound(AuditModel):
         'reg_mf':'MF',
         'structure_type':'Type',
         'structure_metal':'Metal',
+        'structure_id':'StructureID',
     }
 
     DICTIONARY_FIELDS = {
     }
+
+    DETAIL_VIEW_GROUPS   = [
+        ['compound_id','compound_code','compound_name','compound_desc',],
+        ['reg_mf','reg_mw','reg_smiles',],
+        ['structure_id','structure_type','structure_metal'],
+    ]
+    
+    STATUS_VIEW_FIELDS = []
+    CARDS_FIELDS   = {}
+    CALCULATED_FIELDS = []
 
     ID_SEQUENCE = 'ABase_Compound'
     ID_PREFIX = 'MCC'

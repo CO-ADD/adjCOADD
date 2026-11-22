@@ -29,7 +29,7 @@ print(f"Project: adjCOADD ")
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
 
-VERSION = '2.0.4'
+VERSION = '2.0.5'
 #======================================================================
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

@@ -182,7 +182,7 @@ def Project_DetailView(req, pk):
     context={}
     _object=get_object_or_404(Project, project_id=pk)
     context["object"]=_object
-    context["display_groups"] = _project_display_groups(_object)
+    context["display_groups"] = _display_groups(_object, Project.DETAIL_VIEW_GROUPS)
 
     # Paginated and filtered list
     _view = req.GET.get('view', 'table')
@@ -216,17 +216,17 @@ def Project_DetailView(req, pk):
     return render(req, "dsample/project/project_detail.html", context)
 
 # -----------------------------------------------------------------
-def _project_display_groups(instance):
+def _display_groups(instance, group_defs):
     """
-    Build read-only label/value rows for the Project detail view,
-    grouped according to Project.DETAIL_VIEW_GROUPS.
+    Build read-only label/value row groups for a detail view, grouped
+    according to the model's DETAIL_VIEW_GROUPS.
     """
     groups = []
-    for field_names in Project.DETAIL_VIEW_GROUPS:
+    for field_names in group_defs:
         rows = []
         for name in field_names:
             try:
-                field = Project._meta.get_field(name)
+                field = instance._meta.get_field(name)
             except FieldDoesNotExist:
                 continue
             value = getattr(instance, name, None)
@@ -429,9 +429,6 @@ def Project_StockPrepView(req, pk):
 # ABase Compound
 #=================================================================================================
 
-ABase_DETAIL_FIELDS = ['compound_id','compound_code','compound_name','compound_desc',
-                       'reg_mw','reg_mf','structure_type','structure_metal','structure_id']
-
 
 class ABase_ListView(LoginRequiredMixin, Filtered_ListView):
     login_url = '/'
@@ -493,25 +490,6 @@ def ABase_DetailView(req, pk):
     """
     _object = get_object_or_404(ABase_Compound, compound_id=pk)
 
-    _rows = []
-    for name in ABase_DETAIL_FIELDS:
-        try:
-            field = ABase_Compound._meta.get_field(name)
-        except FieldDoesNotExist:
-            continue
-        value = getattr(_object, name, None)
-        if value is None or value == '':
-            value = ''
-        else:
-            value = str(value)
-        _rows.append({'label': field.verbose_name, 'value': value})
-
-    # Split rows into column groups for the display template
-    _groups = []
-    _chunk = 7
-    for i in range(0, len(_rows), _chunk):
-        _groups.append(_rows[i:i+_chunk])
-
     _batches = ABase_Compound_Batch.objects.filter(compound_id=_object)
 
     # Storage Locations: combined list of MasterWells holding any batch of
@@ -526,7 +504,7 @@ def ABase_DetailView(req, pk):
 
     context = {
         'object': _object,
-        'display_groups': _groups,
+        'display_groups': _display_groups(_object, ABase_Compound.DETAIL_VIEW_GROUPS),
         'batch_objs': _batches,
         'batch_count': _batches.count(),
         'batch_fields': ABase_Compound_Batch.get_fields(),
@@ -538,12 +516,6 @@ def ABase_DetailView(req, pk):
 #=================================================================================================
 # COADD Compound
 #=================================================================================================
-
-COADD_DETAIL_FIELDS = ['compound_id','compound_code','compound_name','compound_desc',
-                       'project_id','compound_type','compound_source',
-                       'std_status','std_process','std_issues','std_nfrag',
-                       'std_salt','std_ion','std_solvent','std_metal','std_structure_type',
-                       'std_mw','std_mf','pub_status','pub_date']
 
 
 class COADD_ListView(LoginRequiredMixin, Filtered_ListView):
@@ -605,28 +577,10 @@ def COADD_DetailView(req, pk):
     """
     _object = get_object_or_404(COADD_Compound, compound_id=pk)
 
-    _rows = []
-    for name in COADD_DETAIL_FIELDS:
-        try:
-            field = COADD_Compound._meta.get_field(name)
-        except FieldDoesNotExist:
-            continue
-        value = getattr(_object, name, None)
-        if value is None or value == '':
-            value = ''
-        else:
-            value = str(value)
-        _rows.append({'label': field.verbose_name, 'value': value})
-
-    # Split rows into column groups for the display template
-    _groups = []
-    _chunk = 7
-    for i in range(0, len(_rows), _chunk):
-        _groups.append(_rows[i:i+_chunk])
-
     # Storage Locations: MasterWells holding this compound's batch in Storage
     # plates. MasterWell lives in the dplate database, so use the raw FK id
     # (no cross-database JOIN is needed for the lookup itself).
+
     if _object.cmpbatch_id_id:
         _storage_wells = MasterWell.objects.filter(
             cmpbatch_id=_object.cmpbatch_id_id,
@@ -637,9 +591,13 @@ def COADD_DetailView(req, pk):
 
     context = {
         'object': _object,
-        'display_groups': _groups,
+        'display_groups': _display_groups(_object, COADD_Compound.DETAIL_VIEW_GROUPS),
         'storage_wells': _storage_wells,
+        'storage_objects': '',
+        'storage_fields': ['Plate ID','Well ID','Barcode','Well Type','Labware'],
     }
+
+
     return render(req, "dsample/coadd/coadd_detail.html", context)
 
 
