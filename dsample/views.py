@@ -480,6 +480,7 @@ def ABase_DetailView(req, pk):
     context = {
         'object': _object,
         'display_groups': _object.get_display_groups(),
+        'structure_template': 'dsample/abase/abase_structure.html',
         'batch_objs': _batches,
         'batch_count': _batches.count(),
         'batch_fields': ABase_Compound_Batch.get_fields(),
@@ -567,6 +568,7 @@ def COADD_DetailView(req, pk):
     context = {
         'object': _object,
         'display_groups': _object.get_display_groups(),
+        'structure_template': 'dsample/coadd/coadd_structure.html',
         'storage_wells': _storage_wells,
         'storage_objects': '',
         'storage_fields': ['Plate ID','Well ID','Barcode','Well Type','Labware'],

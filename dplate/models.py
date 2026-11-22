@@ -516,8 +516,8 @@ class TestPlate(Plate):
                             size=2, null=True, blank=True, verbose_name = "Edge")
     
     analysis = models.CharField(max_length=100, blank=True, verbose_name = "Analysis")
-    zfactor = models.DecimalField(max_digits=12, decimal_places=3, default=-1,)
-    plate_qc = models.DecimalField(max_digits=12, decimal_places=3, default=-1)
+    zfactor = models.DecimalField(max_digits=12, decimal_places=3, default=-1,verbose_name = "Z'Factor")
+    plate_qc = models.DecimalField(max_digits=12, decimal_places=3, default=-1,verbose_name = "Plate QC")
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
         db_column="plate_quality", related_name="%(class)s_platequality")
     plate_comment = models.CharField(max_length=50, blank=True, verbose_name = "Plate Comment")

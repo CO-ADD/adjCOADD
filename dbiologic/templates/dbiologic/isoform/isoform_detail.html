@@ -34,22 +34,7 @@
              data-bs-parent="#isoform-detail">
           <div class="accordion-body bg-transparent">
             <b> {% include 'utils/message.html' %} </b>
-            <div class="row">
-              {% for group in display_groups %}
-                <div class="col-md-3">
-                  <table class="table table-hover table-sm align-middle table-bordered">
-                    <tbody>
-                      {% for row in group %}
-                        <tr>
-                          <th scope="row" class="table-label-col">{{ row.label }}</th>
-                          <td>{{ row.value }}</td>
-                        </tr>
-                      {% endfor %}
-                    </tbody>
-                  </table>
-                </div>
-              {% endfor %}
-            </div>
+            {% include 'detailview/group_display.html' %}
 
             {% if object.biln %}
             <div class="mt-3">
