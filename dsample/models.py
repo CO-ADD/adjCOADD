@@ -548,11 +548,12 @@ class COADD_Compound(AuditModel):
 
     DETAIL_VIEW_GROUPS   = [
         ['compound_id','compound_code','compound_name','compound_desc','project_id','compound_type','compound_source',
-         'cpoz_sn','cpoz_id','coadd_id','chembl_id','spark_id','pub_status','pub_date','',
+         'cpoz_sn','cpoz_id','pub_status','pub_date',
          'reg_smiles','std_smiles'],
         ['reg_mf','reg_mw','reg_amount','reg_amount_unit','reg_volume','reg_volume_unit','reg_conc', 'reg_conc_unit','reg_solvent'],
         ['std_status','std_process','std_issues','std_nfrag',
          'std_salt','std_ion','std_solvent','std_metal','std_structure_type','std_mw','std_mf','structure_id'],
+        ['coadd_id','chembl_id','spark_id',]
     ]
     
     STATUS_VIEW_FIELDS = []
