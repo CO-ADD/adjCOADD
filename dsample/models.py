@@ -551,7 +551,8 @@ class COADD_Compound(AuditModel):
          'cpoz_sn','cpoz_id','coadd_id','chembl_id','spark_id','pub_status','pub_date','',
          'reg_smiles','std_smiles'],
         ['reg_mf','reg_mw','reg_amount','reg_amount_unit','reg_volume','reg_volume_unit','reg_conc', 'reg_conc_unit','reg_solvent'],
-        ['std_status','std_process','std_issues','std_nfrag','std_salt','std_ion','std_solvent','std_metal','std_structure_type','std_mw','std_mf'],
+        ['std_status','std_process','std_issues','std_nfrag',
+         'std_salt','std_ion','std_solvent','std_metal','std_structure_type','std_mw','std_mf','structure_id'],
     ]
     
     STATUS_VIEW_FIELDS = []
@@ -689,7 +690,7 @@ class COADD_Compound(AuditModel):
         if _sid is None:
             return None
         else:
-            return(_sid[0])
+            return(str(_sid[0]))
 
     #------------------------------------------------
     def save_batch(self, *args, **kwargs):
