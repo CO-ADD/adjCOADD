@@ -314,6 +314,14 @@ span {
   font-size: 16px;
 }
 
+/* Calculated-fields row in DetailViews: allow the wrapper's font-size to
+   cascade to its labels/values. The global `span` rule above would otherwise
+   pin these at 16px, ignoring the inline font-size on the container. */
+.calculated-fields span,
+.calculated-fields i {
+  font-size: inherit;
+}
+
 /* bootstrap override */
 
 .dropdown-menu {
