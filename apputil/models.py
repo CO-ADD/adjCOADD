@@ -165,6 +165,10 @@ class AuditModel(models.Model):
     STATUS_VIEW_FIELDS = []
     CARDS_FIELDS   = {}
     CALCULATED_FIELDS = []
+    # Optional explicit grouping of calculated fields for the detail view;
+    # when empty, CALCULATED_FIELDS is auto-chunked into CALC_VIEW_PER_ROW rows.
+    CALC_VIEW_GROUPS = []
+    CALC_VIEW_PER_ROW = 8
 
     # Helpers for defining foreign key relationships to the DICTIONARY table for choices and lookups
     DICTIONARY_FIELDS = {}
@@ -526,6 +530,38 @@ class AuditModel(models.Model):
                 rows.append({'label': field.verbose_name, 'value': value})
             groups.append(rows)
         return groups
+
+    #------------------------------------------------
+    # Get read-only label/value rows for calculated fields, grouped according to
+    # CALC_VIEW_GROUPS, or auto-chunked from CALCULATED_FIELDS when no
+    # explicit grouping is defined.
+    def get_calculated_display(self):
+        groups = self.CALC_VIEW_GROUPS or self._chunk(
+            self.CALCULATED_FIELDS, self.CALC_VIEW_PER_ROW)
+        rows = []
+        for field_names in groups:
+            row = []
+            for name in field_names:
+                try:
+                    field = self._meta.get_field(name)
+                except FieldDoesNotExist:
+                    continue
+                value = getattr(self, name, None)
+                if value is None or value == '':
+                    value = ''
+                elif isinstance(value, (list, tuple)):
+                    value = ', '.join(str(v) for v in value)
+                else:
+                    value = str(value)
+                row.append({'label': field.verbose_name, 'value': value})
+            rows.append(row)
+        return rows
+
+    #------------------------------------------------
+    @staticmethod
+    def _chunk(seq, size):
+        size = size or 1
+        return [seq[i:i + size] for i in range(0, len(seq), size)]
 
     #------------------------------------------------
     # recurse func to get foreign key related table col value

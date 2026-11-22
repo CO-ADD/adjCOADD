@@ -1,0 +1,13 @@
+{% if object.CALCULATED_FIELDS %}
+<div class="calculated-fields mt-3">
+  <div class="small fw-semibold text-muted mb-1">Calculated</div>
+  {% for row in object.get_calculated_display %}
+    <div class="d-flex flex-wrap small">
+      {% for item in row %}
+        <span class="me-2"><span class="fw-semibold">{{ item.label }}:</span> {{ item.value|default:'—' }}</span>
+        {% if not forloop.last %}<span class="me-2 text-muted">|</span>{% endif %}
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}

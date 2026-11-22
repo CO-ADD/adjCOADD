@@ -485,6 +485,7 @@ def ABase_DetailView(req, pk):
         'batch_count': _batches.count(),
         'batch_fields': ABase_Compound_Batch.get_fields(),
         'storage_wells': _storage_wells,
+        'storage_fields': MasterWell.get_fields(),
     }
     return render(req, "dsample/abase/abase_detail.html", context)
 
