@@ -571,7 +571,7 @@ def COADD_DetailView(req, pk):
         # except Exception:
         #     pass
         structure_molblock = Chem.MolToMolBlock(_mol)
-        structure_source = 'Val'
+        structure_source = _object.structure_id
         structure_format = 'molblock'
     elif _object.std_smiles:
         structure_smiles = _object.std_smiles
