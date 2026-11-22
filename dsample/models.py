@@ -687,10 +687,10 @@ class COADD_Compound(AuditModel):
     @property
     def structure_id(self):
         _sid = Compound_Batch.objects.filter(cmpbatch_id = str(self.cmpbatch_id)).values('structure_id')
-        if _sid is None:
+        if _sid[0]['structure_id'] is None:
             return None
         else:
-            return(str(_sid[0]))
+            return(str(_sid[0]['structure_id']))
 
     #------------------------------------------------
     def save_batch(self, *args, **kwargs):
