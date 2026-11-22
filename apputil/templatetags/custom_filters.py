@@ -41,6 +41,19 @@ def basename(value):
 
 
 @register.filter
+def group_col_class(groups):
+    """Return a Bootstrap column class based on the number of display groups."""
+    n = len(groups) if groups else 0
+    if n <= 1:
+        return "col-md-12"
+    if n == 2:
+        return "col-md-6"
+    if n == 3:
+        return "col-md-4"
+    return "col-md-3"
+
+
+@register.filter
 def get_linkname(value, arg1=None, arg2=None):
     if value in URL_LINKS.keys():        
         arg1_str = str(arg1) if arg1 else ''
