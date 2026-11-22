@@ -51,31 +51,8 @@
           <div class="accordion-body">
             {% if storage_wells %}
               <div class="table-responsive">
-                <table class="table table-hover table-bg" style="width: 100%">
-                  <thead>
-                    <tr>
-                      {% comment %} {% for field in storage_fields %}
-                        <th>{{field}}</th>
-                      {% endfor %} {% endcomment %}
-                      <th>Plate ID</th>
-                      <th>Well ID</th>
-                      <th>Barcode</th>
-                      <th>Well Type</th>
-                      <th>Labware ID</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for w in storage_wells %}
-                      <tr>
-                        <td>{{ w.plate_id }}</td>
-                        <td>{{ w.well_id }}</td>
-                        <td>{{ w.barcode|default:'-' }}</td>
-                        <td>{{ w.plate_id.well_type }}</td>
-                        <td>{{ w.plate_id.labware_id }}</td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+                <!--prettier-ignore-->
+                {% include 'datatable/subtable_onepage.html' with table_id='datatable_storage' objects=storage_wells data_fields=storage_fields %}
               </div>
             {% else %}
               <p class="text-muted m-0">No storage locations for this compound.</p>

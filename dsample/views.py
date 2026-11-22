@@ -541,7 +541,6 @@ class COADD_ListView(LoginRequiredMixin, Filtered_ListView):
         context['list_url'] = 'coadd_list'
         return context
 
-
 # -----------------------------------------------------------------
 @login_required
 def COADD_DetailView(req, pk):
@@ -570,8 +569,7 @@ def COADD_DetailView(req, pk):
         'display_groups': _object.get_display_groups(),
         'structure_template': 'dsample/coadd/coadd_structure.html',
         'storage_wells': _storage_wells,
-        'storage_objects': '',
-        'storage_fields': ['Plate ID','Well ID','Barcode','Well Type','Labware'],
+        'storage_fields': MasterWell.get_fields(),
     }
 
 

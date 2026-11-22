@@ -1415,6 +1415,16 @@ class MasterWell(Sample_Base):
     #STRING_FIELDS =['concs','conc_units','conc_types','sets']
     STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets','test_concs','test_conc_units','test_conc_types']
 
+    LIST_VIEW_FIELDS = {
+        'plate_id':'Plate ID',
+        'well_id': 'Well ID',
+        'barcode': 'Barcode',
+        'plate_id.well_type':'Well Type',
+        'plate_id.labware_id': 'Labware',
+    }
+        
+    
+
     DICTIONARY_FIELDS = {
         'conc_unit_lst':'Unit_Concentration',
         'conc_type_lst':'Concentration_Type',
