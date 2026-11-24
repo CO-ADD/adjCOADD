@@ -16,11 +16,11 @@ from applib.process.process_forms import Process_DownloadView
 urlpatterns = [
     # ScreenRun 
     # path('screenrun_card', ScreenRun_CardView.as_view(), name="screenrun_card"),
-    path('screenrun_list', ScreenRun_ListView.as_view(), name="screenrun_list"),
+    path('screenrun/list', ScreenRun_ListView.as_view(), name="screenrun_list"),
     path('screenrun/<str:pk>', ScreenRun_DetailView, name="screenrun_detail"),
-    path('createScreenrun/', ScreenRun_CreateView, name="screenrun_create"),
-    path('updateScreenrun/<str:pk>', ScreenRun_UpdateView, name="screenrun_update"),
-    path('deleteScreenrun/<str:pk>', ScreenRun_RemoveView.as_view(), name="screenrun_delete"),
+    path('screenrun/create', ScreenRun_CreateView, name="screenrun_create"),
+    path('screenrun/update/<str:pk>', ScreenRun_UpdateView, name="screenrun_update"),
+    path('screenrun/delete/<str:pk>', ScreenRun_RemoveView.as_view(), name="screenrun_delete"),
 
     path('screenrun/load_readouts/<str:pk>', Load_Readouts_ProcessView.as_view(), name='load_readouts'),
     path('screenrun/load_sequences/<str:pk>', Load_Sequences_ProcessView.as_view(), name='load_sequences'),

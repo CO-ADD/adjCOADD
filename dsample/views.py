@@ -342,12 +342,14 @@ def Project_ReportView(req, pk):
     return render(req, 'dsample/project/project_report_modal.html', {'message': message, 'options': options, 'object': _object})
 
 
+# -----------------------------------------------------------------
 def _generate_project_report(pk, options):
     """
     Generate the Project screening report xlsx using the selected options.
     Saves the report under MEDIA_ROOT/reports/ and returns (report_name, report_url).
     Returns (None, None) when there is no screening data to report.
     """
+# -----------------------------------------------------------------
     _object = get_object_or_404(Project, project_id=pk)
     _now = datetime.datetime.now()
     report_name = f'Project_{pk}_Summary_{_now:%Y%m%d%H%M%S}.xlsx'
@@ -384,6 +386,7 @@ def _generate_project_report(pk, options):
 
 @login_required
 def Project_StockPrepView(req, pk):
+# -----------------------------------------------------------------
 
     if req.method=='GET':
 

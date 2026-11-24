@@ -9,6 +9,7 @@ import datetime
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
@@ -228,31 +229,79 @@ class ScreenRun_RemoveView(Base_RemoveView):
 # -----------------------------------------------------------------
 @login_required
 def ScreenRun_ReportView(req, pk):
+    _object = get_object_or_404(Screen_Run, run_id=pk)
 
-    if req.method=='GET':
+    if req.method == 'POST':
+        # Collect the selected report options from the modal form
+        options = {
+            'Storage_Info':   'Storage_Info' in req.POST,
+            'Structure_Info': 'Structure_Info' in req.POST,
+            'WithStats':      'WithStats' in req.POST,
+            'WithHCRSel':     'WithHCRSel' in req.POST,
+        }
+        report_name, report_url = _generate_screenrun_report(pk, options)
 
-        _object=get_object_or_404(Screen_Run, run_id=pk)
-        _now = datetime.datetime.now()
-        _xls_name = f'ScreenRun_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+        if report_url:
+            message = {
+                'status': 'generated',
+                'report_name': report_name,
+                'report_url': report_url,
+            }
+        else:
+            message = {
+                'status': 'error',
+                'text': 'No screening data available for this screen run.',
+            }
+        return render(req, 'dscreen/screenrun/screenrun_report_modal.html', {'message': message, 'object': _object})
 
-        cReport = Report_Screening()
-        cReport.qry_by_RunID([pk])
-        cReport.get_dataframe()
-        cReport.get_sample_info(Storage_Info=True,Structure_Info=True)
-        cReport.get_assay_info()
-        cReport.get_testplate_info()
+    # GET - render the report options for the modal
+    options = {
+        'Storage_Info':   False,
+        'Structure_Info': True,
+        'WithStats':      False,
+        'WithHCRSel':     True,
+    }
+    message = {'status': 'options'}
+    return render(req, 'dscreen/screenrun/screenrun_report_modal.html', {'message': message, 'options': options, 'object': _object})
+
+
+# -----------------------------------------------------------------
+def _generate_screenrun_report(pk, options):
+    """
+    Generate the ScreenRun screening report xlsx using the selected options.
+    Saves the report under MEDIA_ROOT/reports/ and returns (report_name, report_url).
+    Returns (None, None) when there is no screening data to report.
+    """
+    _now = datetime.datetime.now()
+    report_name = f'ScreenRun_{pk}_Summary_{_now:%Y%m%d%H%M%S}.xlsx'
+
+    cReport = Report_Screening()
+    cReport.qry_by_RunID([pk])
+    cReport.get_dataframe()
+
+    if cReport.n_samples == 0:
+        return None, None
+
+    cReport.get_sample_info(Storage_Info=options['Storage_Info'],
+                            Structure_Info=options['Structure_Info'])
+    cReport.get_assay_info()
+    cReport.get_testplate_info(WithStats=options['WithStats'])
+
+    if options['WithHCRSel']:
         cReport.add_hcr_selection()
 
-        #cReport.add_vitek_ast()
-        #cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
+    cReport.gen_pivot_tables(PivTables=['Values', 'AssayID', 'Act'],
+                             PivRows=['project_id', 'sample_class', 'sample_code', 'sample_id'])
 
-        cReport.gen_pivot_tables(PivTables = ['Values','AssayID','Act'], PivRows=['project_id','sample_class','sample_code','sample_id'])
+    print(f" [Report] ScreenRun: {pk} [{cReport.n_samples} {cReport.n_assays} {cReport.n_testplates} {cReport.n_sc} {cReport.n_dr}]")
 
-        if cReport.n_samples>0:
-            req = HttpResponse(content_type='application/vnd.ms-excel')
-            req['Content-Disposition'] = f'attachment; filename={_xls_name}'
-            cReport.to_excel(req)
-        return req
+    report_dir = os.path.join(settings.MEDIA_ROOT, 'reports')
+    os.makedirs(report_dir, exist_ok=True)
+    report_path = os.path.join(report_dir, report_name)
+    cReport.to_excel(report_path)
+
+    report_url = f"/{settings.MEDIA_URL.strip('/')}/reports/{report_name}"
+    return report_name, report_url
 
 #=================================================================================================
 # Assay
