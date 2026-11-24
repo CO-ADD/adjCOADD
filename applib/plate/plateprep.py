@@ -325,8 +325,6 @@ def read_Motherplates_Prepsheet_XLS(xlFile, overwrite=False, process=None, **kwa
         _done_plates = 0
         for mpid,mpwells in grpMP:
             _done_plates += 1
-            # if process is not None:
-            #     process.report_progress(_done_plates, len(lstMP), mpid, 'Preparing MotherPlate')
                 
             dictPl = {}
             dictPl['plate_id'] = xDF['motherplate_id']
