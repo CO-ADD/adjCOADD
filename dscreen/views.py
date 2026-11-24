@@ -280,9 +280,6 @@ def _generate_screenrun_report(pk, options):
 
     cReport.get_dataframe()
 
-    # if cReport.n_samples == 0:
-    #     return None, None
-
     cReport.get_sample_info(Storage_Info=options['Storage_Info'],
                             Structure_Info=options['Structure_Info'])
     cReport.get_assay_info()

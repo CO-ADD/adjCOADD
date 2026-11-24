@@ -168,7 +168,7 @@ class AuditModel(models.Model):
     # Optional explicit grouping of calculated fields for the detail view;
     # when empty, CALCULATED_FIELDS is auto-chunked into CALC_VIEW_PER_ROW rows.
     CALC_VIEW_GROUPS = []
-    CALC_VIEW_PER_ROW = 12
+    CALC_VIEW_PER_ROW = 16
 
     # Helpers for defining foreign key relationships to the DICTIONARY table for choices and lookups
     DICTIONARY_FIELDS = {}

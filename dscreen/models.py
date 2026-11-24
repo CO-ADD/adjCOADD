@@ -103,10 +103,10 @@ class Screen_Run(AuditModel):
                          'screen_date',
                          'process_status']
 
-    CALC_VIEW_GROUPS = [
-        ['n_compounds','n_qc','n_structure','n_motherplates','n_testplates','n_testplates_valid','n_assays','n_inhibitions'],
-        ['n_mic','n_cc50','n_hc50','n_synmic','n_seq','screen_date','process_status'],
-    ]
+    # CALC_VIEW_GROUPS = [
+    #     ['n_compounds','n_qc','n_structure','n_motherplates','n_testplates','n_testplates_valid','n_assays','n_inhibitions'],
+    #     ['n_mic','n_cc50','n_hc50','n_synmic','n_seq','screen_date','process_status'],
+    # ]
 
     n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cpmds")
     #n_projects = models.SmallIntegerField(default=0, verbose_name = "#Projects")
