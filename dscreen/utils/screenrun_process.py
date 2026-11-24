@@ -171,8 +171,9 @@ class Upload_Motherplates_Process(Process_Progress):
                 nPlates = len(lstMP)
                 _done_plates = 0
                 for _mp in lstMP:
+                    _done_plates += 1
                      
-                    self.report_progress(_done_plates, len(lstMP), str(_mp['plate']), 'Validating/Saving Motherplate')
+                    self.report_progress(_done_plates, len(lstMP)+1, str(_mp['plate']), 'Validating/Saving Motherplate')
                     print(f" [Upload_Motherplates] Validating: {_mp['plate']} ")
                     validStatus = True
                     validDict = {}
@@ -191,7 +192,6 @@ class Upload_Motherplates_Process(Process_Progress):
                             _mp['plate'].save(verbose=0)
                             print(f" [Upload_MotherPlates] Saving: {_mp['plate']} [Overwrite: {self.overwrite}]")
                             nUploads += 1
-                    _done_plates += 1
             if self.upload:
                 if len(lstMP)-nUploads > 0:
                     valLog.add_warning("Partial Upload",
