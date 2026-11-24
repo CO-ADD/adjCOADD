@@ -371,6 +371,14 @@ class Plate(AuditModel):
                             self.wells[w].init_field(f, Reset=True)
 
     #--------------------------------------------------------------
+    def clear_cmpbatch_data(self):  
+        #
+        # Resets CmpBatch Data for each Test/Master-Well
+        if hasattr(self,'wells'):
+            for w in self.wells:
+                self.wells[w].clear_cmpbatch_data()
+
+    #--------------------------------------------------------------
     def get_well_fielddata(self, Field, Selection = None):
     #
     # Get fielddata from the Wells, by Selection
@@ -701,12 +709,12 @@ class TestPlate(Plate):
             self.n_samples = n_sample
 
     #--------------------------------------------------------------
-    def clear_cmpbatch_data(self):  
-        #
-        # resets cmpbatch data (incl conc, conc_unit, conc_type)
-        if hasattr(self,'wells'):
-            for w in self.wells:
-                self.wells[w].clear_cmpbatch_data()
+    # def clear_cmpbatch_data(self):  
+    #     #
+    #     # resets cmpbatch data (incl conc, conc_unit, conc_type)
+    #     if hasattr(self,'wells'):
+    #         for w in self.wells:
+    #             self.wells[w].clear_cmpbatch_data()
 
     #--------------------------------------------------------------
     def conv_list_to_string(self):
@@ -1120,6 +1128,8 @@ class TestWell(Sample_Base):
     
     #------------------------------------------------
     def clear_cmpbatch_data(self):
+        # Clear CmpBatch data for TestWell
+        #---------------------------------------
         super().clear_cmpbatch_data()
         self.set_lst = []
     
@@ -1330,7 +1340,7 @@ class MasterPlate(Plate):
             logger.warning(f"[MasterPlate] SAVE has no PlateID ")
 
     #------------------------------------------------
-    def add_dilutions(self, **kwargs):
+    def add_dilutions(self, overwrite=False, **kwargs):
         DILUTION_DICT = {
             'Col8':     ( 8, 2, True, False),
             'Col16':    (16, 2, True, False),
@@ -1348,7 +1358,7 @@ class MasterPlate(Plate):
             for w in self.wells:
                 if self.wells[w].dilution_lst:
                     if verbose > 0:
-                        logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w}] {self.wells[w].dilution_lst} {self.wells[w].test_conc_lst}")
+                        logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w}] {self.wells[w].dilution_lst} {self.wells[w].test_conc_lst} [{overwrite}]")
 
                     for i_dil in range(len(self.wells[w].dilution_lst)):
 
@@ -1371,7 +1381,7 @@ class MasterPlate(Plate):
                                 w_d = self.well_id((w_R,w_C))
                                 
                                 # Set Dilution Well if empty
-                                if self.wells[w_d].n_cmpbatches == 0:
+                                if self.wells[w_d].n_cmpbatches == 0 or overwrite:
                                     #print(f"{self.plate_id} - {w_d} {i_dil} Reset")
                                     self.wells[w_d].cmpbatch_lst = self.wells[w].cmpbatch_lst
                                     self.wells[w_d].n_cmpbatches = self.wells[w].n_cmpbatches
@@ -1587,6 +1597,8 @@ class MasterWell(Sample_Base):
 
     #------------------------------------------------
     def clear_cmpbatch_data(self):
+        # Clear CmpBatch data for MasterWell
+        #---------------------------------------
         super().clear_cmpbatch_data()
         self.set_lst = []
         self.test_concs = ""
@@ -1595,6 +1607,7 @@ class MasterWell(Sample_Base):
         self.test_conc_unit_lst = []
         self.test_conc_types = ""
         self.test_conc_type_lst = []
+        self.dilution_lst = []
 
     @staticmethod
     #------------------------------------------------

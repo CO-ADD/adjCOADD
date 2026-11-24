@@ -305,6 +305,71 @@ class SmiStandardizer_DB(MolStandardizer):
             _moldict['mol'] = None
         return(_moldict,_saltdict,_iondict,_solvdict)
 
+    #------------------------------------------------------------------    
+    def standardize_metal_complex(self,smiles: str, bidentate_carboxylates: bool = True) -> str:
+    #------------------------------------------------------------------    
+        # 1. Parse without sanitization to allow hypervalent donor atoms like [OH2]-M
+        mol = Chem.MolFromSmiles(smiles, sanitize=False)
+        if mol is None:
+            raise ValueError(f"Invalid SMILES: {smiles}")
+
+        rw_mol = Chem.RWMol(mol)
+
+        # 2. Convert neutral coordinated water/ammine single bonds to dative bonds (Donor -> Metal)
+        for bond in list(rw_mol.GetBonds()):
+            a1, a2 = bond.GetBeginAtom(), bond.GetEndAtom()
+            if is_metal(a1) ^ is_metal(a2):
+                metal = a1 if is_metal(a1) else a2
+                donor = a2 if is_metal(a1) else a1
+
+                # Check for neutral O with 2 Hs (water) or neutral N with 3 Hs (ammine)
+                if donor.GetFormalCharge() == 0:
+                    is_water = donor.GetAtomicNum() == 8 and donor.GetTotalNumHs() == 2
+                    is_ammine = donor.GetAtomicNum() == 7 and donor.GetTotalNumHs() == 3
+
+                    if is_water or is_ammine:
+                        idx_d, idx_m = donor.GetIdx(), metal.GetIdx()
+                        rw_mol.RemoveBond(idx_d, idx_m)
+                        rw_mol.AddBond(idx_d, idx_m, Chem.BondType.DATIVE)
+
+        # Update ring/valence info partially before substructure matching
+        rw_mol.UpdatePropertyCache(strict=False)
+
+        # 3. Convert monodentate carboxylates to bidentate chelating carboxylates
+        BIDENTATE_RULES = [
+            # 1. 5-membered N,O-chelates first (e.g., picolinates, alpha-amino acidates)
+            ("picolinate", "[OX2:1]([*:2])[CX3](=[OX1])c1[nX2:3]cccc1"),
+            ("amino_acidate", "[OX2:1]([*:2])[CX3](=[OX1])[CX4][NX3H2:3]"),
+            # 2. 6-membered O,O-chelates (e.g., beta-diketonates, salicylaldehydes)
+            ("beta_diketonate", "[OX2:1]([*:2])[CX3]=[CX3][CX3]=[OX1:3]"),
+            ("salicylaldehyde", "[OX2:1]([*:2])c1ccccc1[CX3]=[OX1:3]"),
+            # 3. 5-membered N,N-chelates (e.g., bipyridine, ethylenediamine)
+            ("bipyridine", "[nX3:1]([*:2])1ccccc1-c2[nX2:3]cccc2"),
+            ("ethylenediamine", "[NX4:1]([*:2])[CX4][CX4][NX3H2:3]"),
+            # 4. 4-membered O,O-chelates last (carboxylates, nitrates)
+            ("carboxylate", "[OX2:1]([*:2])[CX3]=[OX1:3]"),
+            ("nitrate", "[OX2:1]([*:2])[NX3](=[OX1])=[OX1:3]"),
+        ]
+        if bidentate_carboxylates:
+            # SMARTS: carbonyl O (=O) attached to C, which has a single-bonded O attached to a metal
+            # Using explicit atom query or post-filtering for metal identity
+            carb_patt = Chem.MolFromSmarts("[CX3](=[OX1])[OX2]-[*]")
+            matches = rw_mol.GetSubstructMatches(carb_patt)
+
+            for c_idx, o_carb_idx, o_single_idx, metal_idx in matches:
+                metal_atom = rw_mol.GetAtomWithIdx(metal_idx)
+                if not is_metal(metal_atom):
+                    continue
+
+                # Only add the dative bond if it doesn't already exist
+                if rw_mol.GetBondBetweenAtoms(o_carb_idx, metal_idx) is None:
+                    rw_mol.AddBond(o_carb_idx, metal_idx, Chem.BondType.DATIVE)
+
+        # 4. Full sanitization & canonical SMILES output
+        fixed_mol = rw_mol.GetMol()
+        Chem.SanitizeMol(fixed_mol)
+        return Chem.MolToSmiles(fixed_mol)
+
 
     #------------------------------------------------------------------    
     def run_single(self, smi: Sequence[str]) -> str:

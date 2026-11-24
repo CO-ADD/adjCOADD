@@ -618,18 +618,16 @@ class AminoAcid(AuditModel):
 #=================================================================================================
 class Chem_Conformer(AuditModel):
     
-    class SourceType(models.TextChoices):
-        RDKIT_ETKDG = "rdkit", "RDKit Generated"
-        UPLOAD_SDF = "sdf", "Uploaded SDF"
-        UPLOAD_PDB = "pdb", "Uploaded PDB"
-        UPLOAD_XYZ = "xyz", "Uploaded XYZ"
-
+    DICTIONARY_FIELDS = {
+        'conformer_type':'Conformer_Type',
+    }
 
     structure_id = models.ForeignKey(Chem_Structure, null=True, blank=True, verbose_name = "Structure", on_delete=models.DO_NOTHING,
         db_column="structure_id", related_name="%(class)s_structure_id")
 
-    source = models.CharField(max_length=20, choices=SourceType.choices)
-    
+    conformer_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+        db_column="conformer_type", related_name="%(class)s_conformertype")
+
     # Stores the exact 3D atomic coordinates (V3000 Molblock recommended for fidelity)
     molblock_3d = models.TextField()
     
@@ -645,7 +643,7 @@ class Chem_Conformer(AuditModel):
         app_label = 'dchem'
         db_table = 'conformer'
         ordering=['structure_id']
-        # indexes = [
-        #     models.Index(name="aa_id_idx",fields=['aa_id']),
-        #     models.Index(name="aa_code_idx",fields=['aa_code']),
-        # ]
+        indexes = [
+            models.Index(name="cc_ctype_idx",fields=['conformer_type']),
+            models.Index(name="cc_isd_idx",fields=['is_default']),
+        ]

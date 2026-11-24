@@ -163,16 +163,17 @@ class Upload_Motherplates_Process(Process_Progress):
         if nFiles > 0:
             for i in range(nFiles):
                 valLog.add_info('Read PlatePrep File', self.file_list[i],"[MotherPlates]")
-                self.report_progress(i + 1, nFiles, self.file_list[i], 'Reading PlatePrep file')
+                #self.report_progress(i + 1, nFiles, self.file_list[i], 'Reading PlatePrep File')
 
                 print(f" [Upload_Motherplates] {i+1:3d}/{nFiles:3d} - {self.file_list[i]}  [{djRun}]  [{self.appuser}] ")
-                lstMP = read_Motherplates_Prepsheet_XLS(os.path.join(self.dirname,self.file_list[i]),valLog=valLog)
+                lstMP = read_Motherplates_Prepsheet_XLS(os.path.join(self.dirname,self.file_list[i]), overwrite=self.overwrite, valLog=valLog, process=self)
 
                 nPlates = len(lstMP)
                 _done_plates = 0
                 for _mp in lstMP:
                     _done_plates += 1
-                    self.report_progress(_done_plates, nPlates, str(_mp['plate']), 'Validating motherplate')
+                     
+                    self.report_progress(_done_plates, len(lstMP), str(_mp['plate']), 'Validating/Saving Motherplate')
                     print(f" [Upload_Motherplates] Validating: {_mp['plate']} ")
                     validStatus = True
                     validDict = {}
@@ -205,8 +206,9 @@ class Upload_Motherplates_Process(Process_Progress):
         else:
             print(f"[Upload_Motherplates] No Xlsx to process in {self.dirname}  ")
 
-        self.finish()
         valLog.select_unique()
+
+        self.finish()
         return valLog
 #-----------------------------------------------------------------------------------
 class Upload_TestplateList_Process(Process_Progress):

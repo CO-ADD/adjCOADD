@@ -14,7 +14,7 @@ from dscreen.models import Assay
 from dplate.models import Labware, TestPlate, TestWell, MasterPlate, MasterWell
 from dorganism.models import Organism, Organism_Batch
 from dcell.models import Cell, Cell_Batch
-from dsample.models import COADD_Compound, ABase_Compound_Batch
+from dsample.models import COADD_Compound, ABase_Compound_Batch, Compound_Batch
 
 from applib.data.set_fielddata import (set_model_arrayfields, set_model_fields, 
                                        set_model_dicts, set_model_dictarrayfields, 
@@ -301,7 +301,7 @@ def gen_Motherplates_HCPrep(DirName, xlFile, Barcodes, prefix=None, **kwargs):
 
 
 # --------------------------------------------------------------------------------
-def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
+def read_Motherplates_Prepsheet_XLS(xlFile, overwrite=False, process=None, **kwargs):
 # --------------------------------------------------------------------------------
     PREP_SHEET = 'MotherPlates'
 
@@ -322,8 +322,12 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
         lstMP = xDF['motherplate_id'].unique()
 
         grpMP = xDF.groupby(by='motherplate_id')
+        _done_plates = 0
         for mpid,mpwells in grpMP:
-            
+            _done_plates += 1
+            # if process is not None:
+            #     process.report_progress(_done_plates, len(lstMP), mpid, 'Preparing MotherPlate')
+                
             dictPl = {}
             dictPl['plate_id'] = xDF['motherplate_id']
             dictPl['valid_status'] = True
@@ -333,12 +337,16 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
             _status = "Exists"
             djMP = MasterPlate.get(mpid, WellData=True, verbose=0)
             if djMP is None:
-                #logger.info(f" New Plate {mpid}")
+                #logger.debug(f" New Plate {mpid}")
                 nWells=384
                 djMP = MasterPlate.new(mpid, nWells, PlateType='Mother', WellData=True)
                 _status = "New"
             else:
                 djMP.load_wells(WellModel=MasterWell)
+                #logger.debug(f" Existing Plate {mpid}")
+                if overwrite:
+                    #logger.debug(f" Clearing Plate {mpid}")
+                    djMP.clear_cmpbatch_data() 
 
             djMP.plating = mpwells['plating'].unique()[0]
             djMP.dilution_layout = 'Dilution'
@@ -355,7 +363,7 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                                         f"{djMP.plating}  {djMP.n_wells}w ",
                                         "Select Overwrite")
 
-
+            #logger.debug(f" Setting PlateWells {mpid}")
             for idx,row in mpwells.iterrows():
                 #print(row['compound_id'])
                 if not pd.isna(row['compound_id']) and not pd.isna(row['motherwell_id']):
@@ -366,12 +374,15 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                     set_model_dicts(djWell,row,list(djWell.DICTIONARY_FIELDS.keys()),valLog=valLog)
                     set_model_dictarrayfields(djWell,row,djWell.ARRAYDICTIONARY_FIELDS,valLog=valLog)
                     djWell.n_cmpbatches = len(djWell.cmpbatch_lst)
+                    if djWell.n_cmpbatches > 0:
+                        djWell.cmpbatch_id = Compound_Batch.get(djWell.cmpbatch_lst[0])
                     
                     validDict = djWell.check_cmpbatch_id()
                     if validDict:
                         validStatus = False
-                        dictPl['valid_status'] = False    
-                        logger.warning(validDict)
+                        dictPl['valid_status'] = False
+                        if verbose>0:    
+                            logger.warning(validDict)
                         row.update(validDict)
                         if valLog:
                             for k in validDict:
@@ -379,16 +390,19 @@ def read_Motherplates_Prepsheet_XLS(xlFile, prefix=None, **kwargs):
                                                "Correct PlatePrep or Register Compound")
     
             if dictPl['valid_status']:
-                dictPl['valid_status'] = djMP.add_dilutions(valLog=valLog)
+                #logger.debug(f" Applying Dilutions {mpid}")
+                dictPl['valid_status'] = djMP.add_dilutions(overwrite=overwrite, verbose=0, valLog=valLog)
                 
             if dictPl['valid_status']:
+                #logger.debug(f" Set Defaults {mpid}")
                 djMP.set_defaults_model()
 
             dictPl['new'] = _status == 'New'
             dictPl['plate'] = djMP
             
             lstPl.append(dictPl)
-            logger.info(f"[{djMP.plate_id:25s}] - {djMP.plate_type}  {djMP.n_wells}w  [{_status}]")
+            if verbose>0:
+                logger.info(f"[{djMP.plate_id:25s}] - {djMP.plate_type}  {djMP.n_wells}w  [{_status}] [{overwrite}]")
     else:
         if verbose>0:
             logger.error(f"{PREP_SHEET} not found in {xlFile}")
