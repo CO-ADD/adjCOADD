@@ -87,6 +87,24 @@ class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
             return Response(updated_data, status=status.HTTP_200_OK)
         Response(serializer.errors, status=400)
 
+class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
+    queryset = Genome_Sequence.objects.all()
+    serializer_class = GenomeSeq_Serializer
+
+    permission_classes = [IsAuthenticated]
+    
+    def update(self, request, *args, **kwargs):
+        obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
+        user = self.request.user
+        serializer = self.serializer_class(obj,data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            print(f" [update] Genome_Sequence {obj} <- {request.data} {serializer.is_valid()}")
+            updated_data = serializer.data
+            updated_data['custom_message'] = f"{str(obj)} updated successfully!"
+            return Response(updated_data, status=status.HTTP_200_OK)
+        Response(serializer.errors, status=400)
+
 #=================================================================================================
 # ID Sequence 
 #=================================================================================================
