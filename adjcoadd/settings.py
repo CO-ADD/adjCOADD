@@ -26,8 +26,8 @@ print(f"Project: adjCOADD ")
 #               Work - Devlopment using imb-co-add-work PostgrSQL database
 #               Local - Devlopment using local PostgrSQL database  
 #               Meran - Devlopment using Schlern PostgrSQL database  
-#DEVELOPMENT=None
-DEVELOPMENT='Test'
+DEVELOPMENT=None
+#DEVELOPMENT='Test'
 
 VERSION = '2.0.5'
 #======================================================================
