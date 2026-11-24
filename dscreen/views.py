@@ -277,11 +277,11 @@ def _generate_screenrun_report(pk, options):
 
     cReport = Report_Screening()
     cReport.qry_by_RunID([pk])
-    print(f" [Report] ScreenRun: {pk} [{cReport.n_samples}]")
+
     cReport.get_dataframe()
 
-    if cReport.n_samples == 0:
-        return None, None
+    # if cReport.n_samples == 0:
+    #     return None, None
 
     cReport.get_sample_info(Storage_Info=options['Storage_Info'],
                             Structure_Info=options['Structure_Info'])
