@@ -160,7 +160,7 @@ class DoseResponse():
                     'CC50': [
                         'cmpbatch_lst','n_cmpbatches','cmpbatch_id',
                         ['cc50','ic50'],['cc50_unit','ic50_unit'],['pscore','pic50'], 
-                        ['cc50_quality','ic50_quality'], ['cc50_r2','fit_r2'], ['cc50_slope','fit_slope'],
+                        ['cc50_quality','ic50_quality'], ['cc50_r2','ic50_fit_r2'], ['cc50_slope','ic50_fit_slope'],
                         ['act_type','ic50_act'], ['act_score','ic50_act_score'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
@@ -261,7 +261,7 @@ class DoseResponse():
             _rstr.append(f"MIC: {self.mic_dmax}")
         if hasattr(self,'ic50_dmax'):
             _s  = f"IC50: {COMPOUND_SEP.join(self.cmpbatch_lst)} : {self.ic50_dmax} "
-            _s += f"[slope: {self.fit_slope} r2: {self.fit_r2} nconc: {self.n_conc}] "
+            _s += f"[slope: {self.ic50_fit_slope} r2: {self.ic50_fit_r2} nconc: {self.n_conc}] "
             _s += f"[{self.ic50_quality} - {self.ic50_comment}]"
             _rstr.append(_s)
         return("; ".join(_rstr))
@@ -481,8 +481,8 @@ class DoseResponse():
         if self.dmax < self.ic50_dmax_cutoff:
             self.ic50_prefix = '>'
             self.ic50_value = self.cmax
-            self.fit_r2 = 0
-            self.fit_slope = 0
+            self.ic50_fit_r2 = 0
+            self.ic50_fit_slope = 0
             self.ic50_quality = 'Valid'
             self.ic50_comment = 'No Activity'
             self.ic50_valid = 1
@@ -491,8 +491,8 @@ class DoseResponse():
         elif self.dmin > (100-self.ic50_dmax_cutoff):
             self.ic50_prefix = '<='
             self.ic50_value = self.cmin
-            self.fit_r2 = 0
-            self.fit_slope = 0
+            self.ic50_fit_r2 = 0
+            self.ic50_fit_slope = 0
             self.ic50_quality = 'Valid'
             self.ic50_comment = 'All Active'
             self.ic50_valid = 1
@@ -509,11 +509,11 @@ class DoseResponse():
                 ss_res = np.sum(res**2)
                 ss_tot = np.sum((npInhib-np.mean(npInhib))**2)
 
-                self.fit_r2 = round(1 - (ss_res/ss_tot),2)
-                self.fit_ic50 = round(fit_Coefs[0],3)
-                self.fit_slope = round(fit_Coefs[1],3)
-                self.fit_ic10 = round(fit_Coefs[0] * pow(10/90,1/fit_Coefs[1]),3)
-                self.fit_ic90 = round(fit_Coefs[0] * pow(90/10,1/fit_Coefs[1]),3)
+                self.ic50_fit_r2 = round(1 - (ss_res/ss_tot),2)
+                self.ic50_fit_ic50 = round(fit_Coefs[0],3)
+                self.ic50_fit_slope = round(fit_Coefs[1],3)
+                self.ic50_fit_ic10 = round(fit_Coefs[0] * pow(10/90,1/fit_Coefs[1]),3)
+                self.ic50_fit_ic90 = round(fit_Coefs[0] * pow(90/10,1/fit_Coefs[1]),3)
 
                 self.ic50_quality = 'Valid'
                 self.ic50_comment= ''
@@ -521,44 +521,44 @@ class DoseResponse():
 
                 # No accurate Fit
                 
-                #print(f" [IC50] Fit {self.fit_ic50} r2: {self.fit_r2} ") 
-                if self.fit_r2 <= R2_Cutoff:
-                    #print(f" [IC50] NoFit {self.fit_ic50} {self.fit_r2}") 
-                    self.fit_r2 = 0
-                    self.fit_slope = 0
+                #print(f" [IC50] Fit {self.ic50_fit_ic50} r2: {self.ic50_fit_r2} ") 
+                if self.ic50_fit_r2 <= R2_Cutoff:
+                    #print(f" [IC50] NoFit {self.ic50_fit_ic50} {self.ic50_fit_r2}") 
+                    self.ic50_fit_r2 = 0
+                    self.ic50_fit_slope = 0
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
                     self.ic50_comment = 'NoFit'
                 
                 # Inactive: IC50 > Max Tested Concentration    
-                elif self.fit_ic50 > self.cmax:
+                elif self.ic50_fit_ic50 > self.cmax:
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
                     if self.dmax > self.ic50_dmax_cutoff:
                         self.ic50_prefix = '='
                         self.ic50_value = self.cmax
-                        self.fit_r2 = 0
+                        self.ic50_fit_r2 = 0
                         
                 # Active: IC50 < Min Tested Concentration
-                elif self.fit_ic50 < self.cmin:
+                elif self.ic50_fit_ic50 < self.cmin:
                     self.ic50_prefix = '<='
                     self.ic50_value = self.cmin
                     #retIC50['XC10'] = format_DR('<=',CMin)
                     if self.dmax > self.ic50_dmax_cutoff:
                         self.ic50_prefix = '='
                         self.ic50_value = self.cmin
-                        self.fit_r2 = 0
+                        self.ic50_fit_r2 = 0
                 # IC50
                 else:
                     self.ic50_prefix = '='
-                    self.ic50_value = self.fit_ic50
+                    self.ic50_value = self.ic50_fit_ic50
 
                 
             # --- No Fit 
             except RuntimeError:
                 
-                self.fit_r2 = -1
-                self.fit_slope = -1
+                self.ic50_fit_r2 = -1
+                self.ic50_fit_slope = -1
                 if self.dave <= self.ic50_dmax_cutoff:
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
@@ -629,7 +629,7 @@ class DoseResponse_Plot():
         
 # Process TestPlate for Doseresponse ------------------------------------------------
 # 
-def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
+def calc_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
     DR_Lst = []
     #djTP = TestPlate.get(PlateID,WellData=True)
     if djTP:
@@ -672,3 +672,19 @@ def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
                 logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
 
     return(DR_Lst)
+
+# Reset Doseresponse AssayData for Testplate ------------------------------------------------
+# 
+def reset_testplate_assaydata(djTP,upload=False,overwrite=False,verbose=0):
+    if djTP and upload and overwrite:
+        if str(djTP.result_type) == 'MIC' :
+            qryData = AssayData_MIC.objects.filter(testplate_id=djTP)
+        elif str(djTP.result_type) == 'CC50' :
+            qryData = AssayData_CC50.objects.filter(testplate_id=djTP)
+        elif str(djTP.result_type) == 'HC50' :
+            qryData = AssayData_HC50.objects.filter(testplate_id=djTP)
+        else:
+            qryData = []
+        for q in qryData:
+            q.delete()
+            

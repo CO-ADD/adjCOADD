@@ -515,7 +515,7 @@ def get_refmic(djDR):
     
 
 #================================================================================================
-def process_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
+def calc_testplate_synergy(djTP,upload=False,overwrite=False,verbose=0):
 #================================================================================================
     DR_Dict = {}
     ISO_lst = []

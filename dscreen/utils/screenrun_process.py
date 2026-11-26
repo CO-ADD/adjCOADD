@@ -12,7 +12,7 @@ from applib.plate.multimode_reader import multimodereader_xls
 #from applib.plate.masterplates import read_motherplate_prepsheet_xls
 from applib.plate.plateprep import read_Motherplates_Prepsheet_XLS, read_TestPlateList_Prepsheet_XLS, get_BarcodeScans, gen_Motherplates_PSPrep, gen_Motherplates_HCPrep
 from applib.plate.testplates import add_mother_to_testplate
-from applib.bio.doseresponse import process_testplate_doseresponse
+from applib.bio.doseresponse import calc_testplate_doseresponse, reset_testplate_assaydata
 from applib.data.dfutils import get_Xlxs_Sheets
 from applib.data.set_fielddata import set_model_from_dict
 from dscreen.utils.summary import update_screenrun_summary
@@ -351,7 +351,7 @@ class Upload_TestplateList_Process(Process_Progress):
                             if settings.DEBUG:
                                 print(f" [Upload_TestPlateList] {_tp.plate_id} ApplyDoseReponse  ")
 
-                            _dr_list = process_testplate_doseresponse(_tp)
+                            _dr_list = calc_testplate_doseresponse(_tp)
 
                             if settings.DEBUG:
                                 print(f" [Upload_TestplateList] {key} DR: {_tp.result_type} {len(_dr_list)}")
