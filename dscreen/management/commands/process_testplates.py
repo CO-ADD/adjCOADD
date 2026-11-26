@@ -24,7 +24,9 @@ class Command(BaseCommand):
     
     command_process = "Process TestPlates"
 
+    #------------------------------------------------------------------  
     def add_arguments(self, parser):
+    #------------------------------------------------------------------  
         # parser.add_argument("--projectid")
         # parser.add_argument("--xlsx_file")
         parser.add_argument("--runid",action="store",default=None,help='RunID')
