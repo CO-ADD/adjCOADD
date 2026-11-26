@@ -122,9 +122,6 @@ class DoseResponse():
 
         return(None)
 
-    #--------------------------------------------------------------
-    def __repr__(self):
-        return(f"{COMPOUND_SEP.join(self.cmpbatch_lst)} {self.n_wells} {self.n_conc} {self.mic_dmax} ")
 
     #--------------------------------------------------------------
     def load_data(self,Plate_ID, Well_ID, Assay_ID):
@@ -163,7 +160,7 @@ class DoseResponse():
                     'CC50': [
                         'cmpbatch_lst','n_cmpbatches','cmpbatch_id',
                         ['cc50','ic50'],['cc50_unit','ic50_unit'],['pscore','pic50'], 
-                        ['cc50_quality','ic50_quality'], ['cc50_r2','ic50_fit_r2'], ['cc50_slope','ic50_fit_slope'],
+                        ['cc50_quality','ic50_quality'], ['cc50_r2','fit_r2'], ['cc50_slope','fit_slope'],
                         ['act_type','ic50_act'], ['act_score','ic50_act_score'],
                         'analysis','n_conc',
                         ['inhibit_max','dmax'], ['inhibit_min','dmin'], ['conc_max','cmax'], ['conc_min','cmin'], 
@@ -233,8 +230,9 @@ class DoseResponse():
             else:
                 if hasattr(self,f):
                     setattr(self.assaydata,f,getattr(self,f))
-                       
-        return(self.assaydata)
+                    
+        print(f" [DR] {self.assaydata}")               
+        #return(self.assaydata)
 
     #--------------------------------------------------------------
     def save_assaydata(self, overwrite=False):
@@ -255,6 +253,19 @@ class DoseResponse():
         if hasattr(self,'ic50_dmax'):
             _rstr.append(f"IC50: {self.ic50_dmax}")
         return("; ".join(_rstr))
+
+    #--------------------------------------------------------------
+    def __repr__(self):
+        _rstr = []
+        if hasattr(self,'mic_dmax'):
+            _rstr.append(f"MIC: {self.mic_dmax}")
+        if hasattr(self,'ic50_dmax'):
+            _s  = f"IC50: {COMPOUND_SEP.join(self.cmpbatch_lst)} : {self.ic50_dmax} "
+            _s += f"[slope: {self.fit_slope} r2: {self.fit_r2} nconc: {self.n_conc}] "
+            _s += f"[{self.ic50_quality} - {self.ic50_comment}]"
+            _rstr.append(_s)
+        return("; ".join(_rstr))
+
 
     # -- Apply function for Well Activity
     #--------------------------------------------------------------
@@ -453,7 +464,7 @@ class DoseResponse():
 
 
     #===================================================================        
-    def IC50(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
+    def IC50(self, Inhibition_Cutoff=80, R2_Cutoff=0.3 , MScore_Cutoff=None):     
     #===================================================================
 
         npConc = np.array(self.df['conc'].to_list(), dtype=float)
@@ -471,22 +482,28 @@ class DoseResponse():
             self.ic50_prefix = '>'
             self.ic50_value = self.cmax
             self.fit_r2 = 0
+            self.fit_slope = 0
             self.ic50_quality = 'Valid'
             self.ic50_comment = 'No Activity'
             self.ic50_valid = 1
+
         # All Active : DMin > 60%
         elif self.dmin > (100-self.ic50_dmax_cutoff):
             self.ic50_prefix = '<='
             self.ic50_value = self.cmin
             self.fit_r2 = 0
+            self.fit_slope = 0
             self.ic50_quality = 'Valid'
             self.ic50_comment = 'All Active'
             self.ic50_valid = 1
+
         else:
             try:
                 # Func_IC50(x, IC50, slope)
                 fit_bounds = ([10**-9, -np.inf],[np.inf, np.inf])
                 fit_Coefs, covMat = opt.curve_fit(self.Func_IC50, npConc, npInhib, bounds=fit_bounds)
+                fit_err = np.sqrt(np.diag(covMat))
+                
                 res = npInhib - self.Func_IC50(npConc,*fit_Coefs)
 
                 ss_res = np.sum(res**2)
@@ -498,7 +515,23 @@ class DoseResponse():
                 self.fit_ic10 = round(fit_Coefs[0] * pow(10/90,1/fit_Coefs[1]),3)
                 self.fit_ic90 = round(fit_Coefs[0] * pow(90/10,1/fit_Coefs[1]),3)
 
-                if fit_Coefs[0] > self.cmax:
+                self.ic50_quality = 'Valid'
+                self.ic50_comment= ''
+                self.ic50_valid = 1
+
+                # No accurate Fit
+                
+                print(f" [IC50] Fit {self.fit_ic50} r2: {self.fit_r2} ") 
+                if self.fit_r2 <= 0:
+                    print(f" [IC50] NoFit {self.fit_r2}") 
+                    self.fit_r2 = 0
+                    self.fit_slope = 0
+                    self.ic50_prefix = '>'
+                    self.ic50_value = self.cmax
+                    self.ic50_comment = 'NoFit'
+                
+                # Inactive: IC50 > Max Tested Concentration    
+                elif self.fit_ic50 > self.cmax:
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
                     if self.dmax > self.ic50_dmax_cutoff:
@@ -506,8 +539,8 @@ class DoseResponse():
                         self.ic50_value = self.cmax
                         self.fit_r2 = 0
                         
-                # Active: fxC50 < Min Tested Concentration
-                elif fit_Coefs[0] < self.cmin:
+                # Active: IC50 < Min Tested Concentration
+                elif self.fit_ic50 < self.cmin:
                     self.ic50_prefix = '<='
                     self.ic50_value = self.cmin
                     #retIC50['XC10'] = format_DR('<=',CMin)
@@ -515,17 +548,17 @@ class DoseResponse():
                         self.ic50_prefix = '='
                         self.ic50_value = self.cmin
                         self.fit_r2 = 0
+                # IC50
                 else:
                     self.ic50_prefix = '='
                     self.ic50_value = self.fit_ic50
 
-                self.ic50_quality = 'Valid'
-                self.ic50_comment= ''
-                self.ic50_valid = 1
                 
             # --- No Fit 
             except RuntimeError:
-                self.fir_r2 = -1
+                
+                self.fit_r2 = -1
+                self.fit_slope = -1
                 if self.dave <= self.ic50_dmax_cutoff:
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
@@ -582,6 +615,8 @@ class DoseResponse():
             self.pic50 = -1
             
         self.ic50_dmax = dr_max_quality(self.ic50,self.dmax,self.ic50_quality)
+        
+        print(f" [IC50] {repr(self)}") 
 
 #====================================================================
 class DoseResponse_Plot():

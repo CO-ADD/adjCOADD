@@ -59,7 +59,7 @@ class Command(BaseCommand):
             
             #logger.info(f" [{self.command_process}] Processing PlateID {djTP} [{djTP.result_type}] ...")
             if str(djTP.result_type) in DR_CLASSES:
-                _dr_list = process_testplate_doseresponse(djTP,verbose=2)
+                _dr_list = process_testplate_doseresponse(djTP,upload=options['upload'], overwrite=options['overwrite'],verbose=2)
             elif str(djTP.result_type) in SYN_CLASSES:
                 _dr_dict, _iso_lst, _syn_lst = process_testplate_synergy(djTP,upload=options['upload'], overwrite=options['overwrite'], verbose=1)
                             
@@ -75,7 +75,7 @@ class Command(BaseCommand):
                     djTP = TestPlate.get(_tp_id[0])
                     #logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id} {_iTP}/{nTP}")
                     if str(djTP.result_type) in DR_CLASSES:
-                        _dr_list = process_testplate_doseresponse(djTP,verbose=0)
+                        _dr_list = process_testplate_doseresponse(djTP,upload=options['upload'], overwrite=options['overwrite'],verbose=0)
                     elif str(djTP.result_type) in SYN_CLASSES:
                         _dr_dict, _iso_lst, _syn_lst = process_testplate_synergy(djTP,upload=options['upload'], overwrite=options['overwrite'], verbose=1)
             else:
