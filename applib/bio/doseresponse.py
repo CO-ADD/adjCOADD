@@ -231,7 +231,7 @@ class DoseResponse():
                 if hasattr(self,f):
                     setattr(self.assaydata,f,getattr(self,f))
                     
-        print(f" [DR] {self.assaydata}")               
+        #print(f" [DR] {self.assaydata}")               
         #return(self.assaydata)
 
     #--------------------------------------------------------------
@@ -464,7 +464,7 @@ class DoseResponse():
 
 
     #===================================================================        
-    def IC50(self, Inhibition_Cutoff=80, R2_Cutoff=0.3 , MScore_Cutoff=None):     
+    def IC50(self, Inhibition_Cutoff=80, R2_Cutoff=0.35 , MScore_Cutoff=None):     
     #===================================================================
 
         npConc = np.array(self.df['conc'].to_list(), dtype=float)
@@ -521,9 +521,9 @@ class DoseResponse():
 
                 # No accurate Fit
                 
-                print(f" [IC50] Fit {self.fit_ic50} r2: {self.fit_r2} ") 
-                if self.fit_r2 <= 0:
-                    print(f" [IC50] NoFit {self.fit_r2}") 
+                #print(f" [IC50] Fit {self.fit_ic50} r2: {self.fit_r2} ") 
+                if self.fit_r2 <= R2_Cutoff:
+                    #print(f" [IC50] NoFit {self.fit_ic50} {self.fit_r2}") 
                     self.fit_r2 = 0
                     self.fit_slope = 0
                     self.ic50_prefix = '>'
@@ -616,7 +616,7 @@ class DoseResponse():
             
         self.ic50_dmax = dr_max_quality(self.ic50,self.dmax,self.ic50_quality)
         
-        print(f" [IC50] {repr(self)}") 
+        #print(f" [IC50] {repr(self)}") 
 
 #====================================================================
 class DoseResponse_Plot():

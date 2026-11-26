@@ -91,7 +91,7 @@ class GenomeSeq_DetailAPI(viewsets.ModelViewSet):
     queryset = Genome_Sequence.objects.all()
     serializer_class = GenomeSeq_Serializer
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAppUser]
     
     def update(self, request, *args, **kwargs):
         obj= Genome_Sequence.objects.get(seq_id=self.kwargs['pk'])
