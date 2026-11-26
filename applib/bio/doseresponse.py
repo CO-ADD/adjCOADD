@@ -641,23 +641,24 @@ def calc_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
                 djTP.conv_list_to_string()
                 djTP.make_wells_df(ListToString=True)
 
-                grpData = djTP.wells_df.groupby('cmpbatch_sets') 
-                logger.debug(f" [{djTP.plate_id}] --1-- {djTP.result_type} {djTP.assay_id} {djTP.n_samples} Samples, {djTP.n_inhibitions} Inhibitions")
+                grpData = djTP.wells_df.groupby('cmpbatch_sets')
+                if verbose>0: 
+                    logger.debug(f" [{djTP.plate_id}] --1-- {djTP.result_type} {djTP.assay_id} {djTP.n_samples} Samples, {djTP.n_inhibitions} Inhibitions")
                 for CmpBatchSet,DRData in grpData:
                     if CmpBatchSet:
-                        logger.debug(f" [{djTP.plate_id}] --2-- {CmpBatchSet} {len(DRData)}")
+                        # if verbose>0: 
+                        #     logger.debug(f" [{djTP.plate_id}] --2-- {CmpBatchSet} {len(DRData)}")
                         # Use CmpBatch w/o SetID
                         CmpBatch = DRData['cmpbatches'].unique()[0]
-                        logger.debug(f" [{djTP.plate_id}] --3-- {CmpBatch}")
+                        # if verbose>0:  
+                        #     logger.debug(f" [{djTP.plate_id}] --3-- {CmpBatch}")
                         djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','mscore','conc_unit_lst']],djTP)
                         
                         # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
                         if djDR:
                             djDR.calc_doseresponse()
                             djTP.n_doseresponses += 1
-                            #print(f" [{djDR.testwell_id}] {str(djDR)}")
                             djDR.doseresponse_to_assaydata()
-                            #print(f" {djDR.assaydata.data_quality} ({djDR.assaydata.data_comment}) ")
                             if upload:
                                 djDR.save_assaydata(overwrite=overwrite)
                             #print(repr(djDR))
@@ -685,6 +686,7 @@ def reset_testplate_assaydata(djTP,upload=False,overwrite=False,verbose=0):
             qryData = AssayData_HC50.objects.filter(testplate_id=djTP)
         else:
             qryData = []
+            
         for q in qryData:
             q.delete()
             
