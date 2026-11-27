@@ -1,0 +1,19 @@
+{% load custom_filters %}
+<div class="row g-3">
+  {% with col_class=display_groups|group_col_class %}
+  {% for group in display_groups %}
+    <div class="{{ col_class }}">
+      <table class="table table-hover table-sm align-middle table-bordered mb-0">
+        <tbody>
+          {% for row in group %}
+            <tr>
+              <th scope="row" class="table-label-col">{{ row.label }}</th>
+              <td>{{ row.value }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endfor %}
+  {% endwith %}
+</div>

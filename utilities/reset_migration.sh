@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_LIST01=("dcollab" "dchem" "dorganism" "dcell" "dpeptide" "ddrug" "dgene" "dsample" ) 
+APP_LIST01=("dcollab" "dchem" "dorganism" "dcell" "dbiologic" "ddrug" "dgene" "dsample" ) 
 APP_LIST02=("dscreen" "dplate" "dsummary")
 
 if [[ "${1}" == "RESET" ]]

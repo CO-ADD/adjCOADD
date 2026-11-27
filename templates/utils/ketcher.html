@@ -1,14 +1,38 @@
 <div id="root" class="w-100"></div>
 
-{%load static%}
-<script src="{% static 'js/ketcher/index-bundle.js' %}"></script>
-<script>
+<style>
+  /* Ketcher 3's Editor is height:100%; #root needs a definite height. */
+  #root {
+    height: 70vh;
+    width: 100%;
+  }
 
-  $(document).ready(function () {
-    $("#root button").click((e) => {
-      e.preventDefault();
-      console.log("clickt");
-     
-    });
-  });
+  /* Center Ketcher's portaled MUI dialogs and keep them within the viewport. */
+  .MuiPaper-root.ketcher-dialog {
+    align-self: center;
+    z-index: 2000;
+    max-height: calc(100vh - 4rem);
+    max-width: calc(100vw - 4rem);
+  }
+</style>
+
+{%load static%}
+<link rel="stylesheet" type="text/css" href="{% static 'js/ketcher3/style.css' %}" />
+<script type="module" src="{% static 'js/ketcher3/ketcher.bundle.js' %}"></script>
+<script>
+  (function () {
+    function mount() {
+      if (window.initKetcher) {
+        window.initKetcher();
+      }
+    }
+
+    // The bundle is an ES module, so it executes asynchronously (deferred).
+    // Mount immediately if it is already loaded, otherwise wait for `load`.
+    if (window.initKetcher) {
+      mount();
+    } else {
+      window.addEventListener('load', mount);
+    }
+  })();
 </script>

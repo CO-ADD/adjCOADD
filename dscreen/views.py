@@ -9,6 +9,7 @@ import datetime
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction, IntegrityError
@@ -25,10 +26,11 @@ from applib.django.base.views import Base_CreateView, Base_UpdateView, Base_Remo
 
 # from adjcoadd.constants import *
 
-from dscreen.models import Screen_Run, Assay
+from dscreen.models import Screen_Run, Assay, AssayData_MIC, AssayData_CC50, AssayData_HC50
 #from dsummary.models import Summary_ScreenRun 
 from dscreen.forms import (ScreenRun_Filter, ScreenRun_CreateForm, ScreenRun_UpdateForm,
-                           Assay_Filter, Assay_CreateForm, Assay_UpdateForm)
+                           Assay_Filter, Assay_CreateForm, Assay_UpdateForm,
+                           AssayData_MIC_Filter, AssayData_CC50_Filter, AssayData_HC50_Filter)
 
 from dscreen.utils.screenrun_process import Upload_ReadOuts_Process
 from dscreen.utils.summary import update_screenrun_summary, get_projects_screenrun
@@ -130,15 +132,28 @@ def ScreenRun_DetailView(req, pk):
         context["process"] = {"type":"Screening"}
         context["process_status"] = _object.process_status
         
-        # Paginated and filtered list
-        paginate_by = 50
-        _testplates = TestPlate.objects.filter(run_id=_object, )
-        context["testplate_objs"] = _testplates
+        # TestPlates - Paginated 
+        _view = req.GET.get('view', 'table')
+        _per_page = 15 if _view == 'card' else 50
+        _testplates = TestPlate.objects.filter(run_id=_object, astatus__gt=-1)
+        _testplate_paginator = Paginator(_testplates, _per_page)
+        _testplate_page = _testplate_paginator.get_page(req.GET.get('page'))
+        context["view"] = _view
+        context["testplate_objs"] = _testplate_page
+        context["testplate_page_obj"] = _testplate_page
         context["testplate_count"] = _testplates.count()
-        context["testplate_fields"]=TestPlate.get_fields()
+        context["testplate_fields"] = TestPlate.get_fields()
+
+
+        # MotherPlates - Single page list 
+        _motherplates = MasterPlate.objects.filter(run_id=_object, astatus__gt=-1)
+        context["motherplate_objs"] = _motherplates
+        context["motherplate_count"] = _motherplates.count()
+        context["motherplate_fields"] = MasterPlate.get_fields()
         
-        # Single page list
+        # Project - Single page list
         _prj_dict = get_projects_screenrun(_object)
+        print(f"DEBUG: {_prj_dict}")
         _projects = [p['project_id'] for p in _prj_dict]
         _projects = Project.objects.filter(project_id__in=_projects, )
         context["project_objs"] = _projects
@@ -214,31 +229,77 @@ class ScreenRun_RemoveView(Base_RemoveView):
 # -----------------------------------------------------------------
 @login_required
 def ScreenRun_ReportView(req, pk):
+    _object = get_object_or_404(Screen_Run, run_id=pk)
 
-    if req.method=='GET':
+    if req.method == 'POST':
+        # Collect the selected report options from the modal form
+        options = {
+            'Storage_Info':   'Storage_Info' in req.POST,
+            'Structure_Info': 'Structure_Info' in req.POST,
+            'WithStats':      'WithStats' in req.POST,
+            'WithHCRSel':     'WithHCRSel' in req.POST,
+        }
+        report_name, report_url = _generate_screenrun_report(pk, options)
 
-        _object=get_object_or_404(Screen_Run, run_id=pk)
-        _now = datetime.datetime.now()
-        _xls_name = f'ScreenRun_{pk}_Summary_{_now:%Y%m%d}.xlsx'
+        if report_url:
+            message = {
+                'status': 'generated',
+                'report_name': report_name,
+                'report_url': report_url,
+            }
+        else:
+            message = {
+                'status': 'error',
+                'text': 'No screening data available for this screen run.',
+            }
+        return render(req, 'dscreen/screenrun/screenrun_report_modal.html', {'message': message, 'object': _object})
 
-        cReport = Report_Screening()
-        cReport.qry_by_RunID([pk])
-        cReport.get_dataframe()
-        cReport.get_sample_info(Storage_Info=True,Structure_Info=True)
-        cReport.get_assay_info()
-        cReport.get_testplate_info()
+    # GET - render the report options for the modal
+    options = {
+        'Storage_Info':   False,
+        'Structure_Info': True,
+        'WithStats':      False,
+        'WithHCRSel':     True,
+    }
+    message = {'status': 'options'}
+    return render(req, 'dscreen/screenrun/screenrun_report_modal.html', {'message': message, 'options': options, 'object': _object})
+
+
+# -----------------------------------------------------------------
+def _generate_screenrun_report(pk, options):
+    """
+    Generate the ScreenRun screening report xlsx using the selected options.
+    Saves the report under MEDIA_ROOT/reports/ and returns (report_name, report_url).
+    Returns (None, None) when there is no screening data to report.
+    """
+    _now = datetime.datetime.now()
+    report_name = f'ScreenRun_{pk}_Summary_{_now:%Y%m%d%H%M%S}.xlsx'
+
+    cReport = Report_Screening()
+    cReport.qry_by_RunID([pk])
+
+    cReport.get_dataframe()
+
+    cReport.get_sample_info(Storage_Info=options['Storage_Info'],
+                            Structure_Info=options['Structure_Info'])
+    cReport.get_assay_info()
+    cReport.get_testplate_info(WithStats=options['WithStats'])
+
+    if options['WithHCRSel']:
         cReport.add_hcr_selection()
 
-        #cReport.add_vitek_ast()
-        #cReport.add_antibiogram_data(cReport.ORGANISMS['COADD'])
+    cReport.gen_pivot_tables(PivTables=['Values', 'AssayID', 'Act'],
+                             PivRows=['project_id', 'sample_class', 'sample_code', 'sample_id'])
 
-        cReport.gen_pivot_tables(PivTables = ['Values','AssayID','Act'], PivRows=['project_id','sample_class','sample_code','sample_id'])
+    print(f" [Report] ScreenRun: {pk} [{cReport.n_samples} {cReport.n_assays} {cReport.n_testplates} {cReport.n_sc} {cReport.n_dr}]")
 
-        if cReport.n_samples>0:
-            req = HttpResponse(content_type='application/vnd.ms-excel')
-            req['Content-Disposition'] = f'attachment; filename={_xls_name}'
-            cReport.to_excel(req)
-        return req
+    report_dir = os.path.join(settings.MEDIA_ROOT, 'reports')
+    os.makedirs(report_dir, exist_ok=True)
+    report_path = os.path.join(report_dir, report_name)
+    cReport.to_excel(report_path)
+
+    report_url = f"/{settings.MEDIA_URL.strip('/')}/reports/{report_name}"
+    return report_name, report_url
 
 #=================================================================================================
 # Assay
@@ -336,3 +397,81 @@ def Assay_UpdateView(req, pk):
     
     return render(req, 'modal/updateModel_partial_modal.html', {'form':form, 'message':message, 'update_url':'assay_update', 'update_pk':pk}) 
     #return render(req, "dscreen/assay/assay_update.html", context)
+
+
+#=================================================================================================
+# AssayData (MIC / CC50 / HC50)
+#=================================================================================================
+class AssayData_ListView(LoginRequiredMixin, Filtered_ListView):
+    """
+    Filter-first ListView for the (very large) AssayData result tables.
+
+    Uses the default `datatable/datatable_list_page.html` wrapper, which
+    renders a search prompt until at least one filter/search term is applied.
+    """
+    login_url = '/'
+    app_name = 'dscreen'
+    model_name = None
+    list_url = None
+    model_fields = None
+    filterset_class = None
+    ordering = ['testplate_id', 'testwell_id']
+    paginate_by = 50
+    # Ask the default list wrapper to only render the table once filters exist.
+    filter_first = True
+
+    def get_queryset(self):
+        # Filter-first: do not evaluate the (very large) queryset until
+        # at least one filter/search term has been supplied.
+        if not self.get_filter_record():
+            self.filterset = self.filterset_class(self.request.GET,
+                                                  queryset=self.model.objects.none(),
+                                                  filterset_dict={}, deep=False)
+            self.filter_count = 0
+            return self.model.objects.none()
+        return super().get_queryset()
+
+    def get_context_data(self, **kwargs):
+        # Replicate Filtered_ListView.get_context_data() but avoid the
+        # full-table COUNT() (expensive for very large tables).
+        context = super(Filtered_ListView, self).get_context_data(**kwargs)
+
+        filter_record_dict = self.get_filter_record()
+        filter_record = "Selected: " + str(filter_record_dict).replace("{", "").replace("}", "") if str(filter_record_dict).replace("{", "").replace("}", "") else None
+
+        context['filter'] = self.filterset
+        context['paginate_by'] = self.get_paginate_by(self.object_list)
+        context['fields'] = self.model.get_fields(fields=self.model_fields)
+        context['filterset'] = filter_record
+        context['querycount'] = self.filter_count
+        context['Count'] = None
+        context['has_filters'] = bool(filter_record_dict)
+        context['model_name'] = self.model_name
+        context['view'] = self.request.GET.get('view', 'table')
+        context['list_url'] = self.list_url
+        context['filter_first'] = True
+        return context
+
+
+class AssayData_MIC_ListView(AssayData_ListView):
+    model = AssayData_MIC
+    filterset_class = AssayData_MIC_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'AssayData_MIC'
+    list_url = 'assaydata_mic_list'
+
+
+class AssayData_CC50_ListView(AssayData_ListView):
+    model = AssayData_CC50
+    filterset_class = AssayData_CC50_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'AssayData_CC50'
+    list_url = 'assaydata_cc50_list'
+
+
+class AssayData_HC50_ListView(AssayData_ListView):
+    model = AssayData_HC50
+    filterset_class = AssayData_HC50_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'AssayData_HC50'
+    list_url = 'assaydata_hc50_list'

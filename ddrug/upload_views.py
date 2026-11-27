@@ -6,7 +6,7 @@ import pandas as pd
 from django import forms
 from apputil.utils.form_wizard_tools import ImportHandler_View, SelectMultipleFiles_StepForm, Upload_StepForm, Finalize_StepForm
 from dorganism.models import Organism_Batch
-from ddrug.utils.vitek import upload_VitekPDF_Process
+from ddrug.utils.vitek import Upload_VitekPDF_Process
 
 #=================================================================================================
 # Vitek Import Wizard
@@ -39,7 +39,7 @@ class Import_VitekView(ImportHandler_View):
         self.orgbatch_id=None
     
     # customize util functions to validate files:
-    # vitek -- upload_VitekPDF_Process
+    # vitek -- Upload_VitekPDF_Process
     def file_process_handler(self, request, *args, **kwargs):
         try:
             form_data=kwargs.get('form_data', None)
@@ -49,7 +49,9 @@ class Import_VitekView(ImportHandler_View):
         if 'upload-orgbatch_id' in form_data.keys():
             self.organism_batch=form_data['upload-orgbatch_id'] #get organism_batch  
             print(self.organism_batch)   
-        valLog=upload_VitekPDF_Process(request, self.dirname, self.filelist, OrgBatchID=self.orgbatch_id, upload=self.upload, appuser=request.user) 
+        valLog=Upload_VitekPDF_Process.execute(request, self.dirname, self.filelist,
+                                                orgbatch_id=self.orgbatch_id, upload=self.upload,
+                                                appuser=request.user, progress_key=self.progress_key)
         return(valLog)
 # 
 

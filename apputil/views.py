@@ -23,11 +23,13 @@ from dorganism.models import Organism, Taxonomy
 from ddrug.models import Drug, VITEK_Card, VITEK_AST, VITEK_ID, MIC_COADD, MIC_Pub, Breakpoint
 from dgene.models import Genome_Sequence,Gene, WGS_CheckM, WGS_FastQC, ID_Pub, ID_Sequence
 from dscreen.models import Screen_Run
-from dsample.models import Project
+from dsample.models import Project, ABase_Compound, COADD_Compound
 from dcell.models import Cell
+from dbiologic.models import Biologic_Isoform
 
-from apputil.forms import Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Document_Form 
-from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document
+from apputil.forms import (Login_Form, AppUser_Form, AppUser_Filter, AppLog_Filter, Dictionary_Filter, Dictionary_Form, Dictionary_UpdateForm, Document_Form,
+                           Menu_Filter, Menu_Form, Menu_UpdateForm, Menu_Item_Filter, Menu_Item_Form, Menu_Item_UpdateForm)
+from apputil.models import ApplicationUser, Dictionary, ApplicationLog, Document, Menu, Menu_Item
 from applib.django.base.views import (SuperUserRequiredMixin, permission_not_granted, 
                                       Base_CreateView, Base_UpdateView, Base_RemoveView,
                                       Filtered_ListView, 
@@ -63,14 +65,12 @@ def index(req):
         'nDrug':   str(Drug.objects.count()) + ' Drugs',
         # CastDB
         'nRun':    str(Screen_Run.objects.count()) + ' Runs',
-        'nProject':    str(Project.objects.count()) + ' Projects'
+        'nProject':    str(Project.objects.count()) + ' Projects',
+        'nABase':      str(ABase_Compound.objects.count()) + ' MCC Compounds',
+        'nCOADD':      str(COADD_Compound.objects.count()) + ' Compounds',
+        'nIsoform':    str(Biologic_Isoform.objects.count()) + ' Isoforms',
     }
     return render(req, 'home.html', nDict)
-
-#-------------------------------------------------------------------------------------------------
-# Handler 403
-def custom_page_not_found_view(request, exception):
-    return render(request, 'registration/error404.html')
 
 #-------------------------------------------------------------------------------------------------
 # Handler 404
@@ -128,6 +128,14 @@ class AppUser_ListView(LoginRequiredMixin, Filtered_ListView):
     model_fields=model.LIST_VIEW_FIELDS
     ordering =['-is_active','-is_appuser','first_name','last_name']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = 'AppUser'
+        context['list_url'] = 'userslist'
+        context['create_url'] = 'createAppUser'
+        context['update_url'] = 'updateAppUser'
+        return context
+
 
 #-------------------------------------------------------------------------------------------------
 class AppUser_DetailView(DetailView):
@@ -149,7 +157,7 @@ def userprofile(req, id):
 class AppUser_CreateView(SuperUserRequiredMixin, Base_CreateView):
     
     form_class = AppUser_Form
-    template_name = 'apputil/appUsersCreate.html'
+    template_name = 'apputil/appuser_form_modal.html'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -176,6 +184,8 @@ class AppUser_UpdateView(Htmx_UpdateView):
         "form":form,
         "object":object_,
     }
+        if request.GET.get('_value') == 'cancel':
+            return render(request, self.template_htmx, context)
         if form.is_valid():           
             form.save()                
             return render(request, self.template_htmx, context)
@@ -191,7 +201,7 @@ class AppUser_RemoveView(SuperUserRequiredMixin, UpdateView):
     fields=['is_appuser']
 
     def form_valid(self, form):
-        form.instance.is_appuser==False
+        form.instance.is_appuser=False
         return super().form_valid(form)
 
 #=================================================================================================
@@ -216,11 +226,28 @@ class Dictionary_ListView(LoginRequiredMixin, Filtered_ListView):
     filterset_class = Dictionary_Filter
     model_fields = model.LIST_VIEW_FIELDS
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = 'Dictionary'
+        context['list_url'] = 'dict_view'
+        context['create_url'] = 'dict_create'
+        context['update_url'] = 'dict_update'
+        context['row_template'] = 'apputil/dictionary_htmx.html'
+        return context
+
     
 #-------------------------------------------------------------------------------------------------
 class Dictionary_CreateView(SuperUserRequiredMixin, Base_CreateView):
     form_class = Dictionary_Form
-    template_name = 'apputil/dictCreate.html'
+    template_name = 'apputil/dictionary_form_modal.html'
+
+
+#-------------------------------------------------------------------------------------------------
+class Dictionary_UpdateView(Htmx_UpdateView):
+    form_class = Dictionary_UpdateForm
+    template_name = 'apputil/dictionary_update.html'
+    template_htmx = 'apputil/dictionary_htmx.html'
+    model = Dictionary
 
 
 #-------------------------------------------------------------------------------------------------
@@ -369,4 +396,103 @@ def deleteImage(req, pk):
 #     file_field = 'image_file'
 #     related_name = 'assoc_images'
 #     transaction_use_manytomany = 'dorganism'
+
+#=================================================================================================
+# Navigation Menu
+#=================================================================================================
+class Menu_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Menu
+    template_name = 'apputil/menu_list.html'
+    filterset_class = Menu_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Menu'
+    app_name = 'apputil'
+    ordering = ['order', 'menu_name']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['create_url'] = 'menu_create'
+        context['update_url'] = 'menu_update'
+        context['list_url'] = 'menu_list'
+        context['row_template'] = 'apputil/menu_htmx.html'
+        return context
+
+
+@login_required(login_url='/')
+def Menu_CreateView(req):
+    form = Menu_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='default'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Menu', 'Completed')
+                return redirect('menu_list')
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+        else:
+            messages.warning(req, f'Create failed due to {form.errors} error')
+        return redirect('menu_list')
+
+    context = {'form': form, 'modal_title': 'Create Menu'}
+    return render(req, 'apputil/menu_form_modal.html', context)
+
+
+class Menu_UpdateView(Htmx_UpdateView):
+    form_class = Menu_UpdateForm
+    template_name = 'apputil/menu_update.html'
+    template_htmx = 'apputil/menu_htmx.html'
+    model = Menu
+
+
+# -----------------------------------------------------------------
+class Menu_Item_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Menu_Item
+    template_name = 'apputil/menu_list.html'
+    filterset_class = Menu_Item_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Menu Item'
+    app_name = 'apputil'
+    ordering = ['menu_id', 'order', 'label']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['create_url'] = 'menuitem_create'
+        context['update_url'] = 'menuitem_update'
+        context['list_url'] = 'menuitem_list'
+        context['row_template'] = 'apputil/menuitem_htmx.html'
+        return context
+
+
+@login_required(login_url='/')
+def Menu_Item_CreateView(req):
+    form = Menu_Item_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='default'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Menu Item', 'Completed')
+                return redirect('menuitem_list')
+            except IntegrityError as err:
+                messages.error(req, f'IntegrityError {err} happens, record may be existed!')
+        else:
+            messages.warning(req, f'Create failed due to {form.errors} error')
+        return redirect('menuitem_list')
+
+    context = {'form': form, 'modal_title': 'Create Menu Item'}
+    return render(req, 'apputil/menu_form_modal.html', context)
+
+
+class Menu_Item_UpdateView(Htmx_UpdateView):
+    form_class = Menu_Item_UpdateForm
+    template_name = 'apputil/menuitem_update.html'
+    template_htmx = 'apputil/menuitem_htmx.html'
+    model = Menu_Item
 

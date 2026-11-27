@@ -1,75 +1,37 @@
 {% extends 'base.html'%}
-<!--prettier-ignore-->
-{% block title%} COADD{% endblock %}
+{% block title %}COADD{% endblock %}
 {% block content %}
 
-<!-- Include -->
 <div class="d-flex flex-row vh-100">
-  <!-- prettier-ignore -->
-  {% url 'excel-import' process_name='Dictionary' as urlname %}
-  {% include 'grid/base/left_navbar.html' with import_module=urlname list_url='dict_view' create_object='createDict' create_objectModal='createDictModal' model_name='Dictionary' %}
-  <!-- Sidebar View -->
+  <!-- Sidebar View/Buttons -->
+  <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+    <div class="d-flex flex-column p-0">
+      <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
+        <i class="bi bi-funnel fs-5"></i>
+      </a>
+
+      <a href="{% url list_url %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+
+      {% if create_url and user.permission == 'Admin' %}
+      <a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#infoModal"
+         hx-get="{% url create_url %}" hx-target="#info-body" hx-swap="innerHTML"
+         data-bs-toggle="tooltip" data-bs-placement="right" title="New Dictionary">
+        <i class="bi bi-file-earmark-plus fs-5 text-success"></i>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Filterbar View/Filter -->
   {% include "utils/sidebar.html" %}
+
   <!-- Main View -->
   <div class="d-flex flex-column w-100">
-    <!-- prettier-ignore -->
-    {% include 'datatable/base/datatable_top.html' with model_name='Dictionary' application='apputil' title='Dictionary' %}
-    <!-- prettier-ignore -->
-
-    <div class="fixTableHead">
-      <table class="table table-small sorting_table" id="id_dictionary_table">
-        <thead>
-          <tr>
-            <th class="text-danger" style="width: 5px"></th>
-            {%for field in fields%}
-            <th class="order_field" style="width: fit-content" data-name="{{field}}">{{field}}</th>
-            {%endfor%}
-          </tr>
-        </thead>
-        <tbody>
-          {% for object in page_obj %}
-          <!--  -->
-            {% include './dictionary_tr.html' %}
-          <!--  -->
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="contain-fluid data-contain">
+      {% include 'datatable/datatable_pag_action_inrow.html' with model_name=model_name update_url=update_url row_template=row_template %}
     </div>
   </div>
 </div>
-<!--prettier-ignore-->
-
-<script>
-  $(document).ready(function () { });
-  $('[data-type="deleteDict"] [data-type="deleteDictButton"]').click(function () {
-    console.log("click");
-    var td = $(this).parent();
-    var dict_value = td.data("name");
-    var data = { dict_value: dict_value };
-    sendToServerdelete(data, td);
-  });
-  const csrftoken = getCookie("csrftoken");
-  const sendToServerdelete = (data, td) => {
-    console.log(data);
-    $.ajax({
-      url: "{%url 'dict_delete'%}",
-      type: "POST",
-      headers: { "X-CSRFToken": csrftoken },
-      data: data,
-    })
-      .done((response) => {
-        console.log(response);
-        if (response.error) {
-          td.append(
-            `<p class="text-danger"> Error: ${response.result} click here <button class="btn btn-small" onClick="window.location.reload();"> <i class="fa-solid fa-arrows-rotate"></i></button></p>`
-          ); 
-        }
-      })
-      .fail(() => {
-        console.log("Error occured");
-      });
-  };
-</script>
-{%load static%}
-<script type="text/javascript" src="{%static 'js/editablerow.js'%}"></script>
-{%endblock%}
+{% endblock %}

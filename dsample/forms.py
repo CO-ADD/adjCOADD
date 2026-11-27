@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -16,7 +17,8 @@ from adjcoadd.constants import PROJECT_COMPOUND_STATUS, PROJECT_SCREEN_STATUS, P
 from applib.django.base.filters import BaseStatus_Filter, TrigramFilter
  
 #dSample
-from dsample.models import  Project
+from dsample.models import  Project, ABase_Compound, COADD_Compound, ABase_Compound_Batch
+from dplate.models import MasterWell
 
 #=================================================================================================
 # Project
@@ -50,7 +52,7 @@ class Project_Filter(BaseStatus_Filter):
 
 
 # -----------------------------------------------------------------
-class Project_CreateForm(forms.ModelForm):
+class Project_CreateForm(Base_ModelForm):
 
     # PK to add help text
     project_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next Pnnnnn number")
@@ -105,13 +107,13 @@ class Project_CreateForm(forms.ModelForm):
         exclude=Project.ORACLE_FIELDS
 
     def create_field_groups(self):
-        if len(Project.VIEW_GROUPS) > 0:
+        if len(Project.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Project.VIEW_GROUPS:
+            for grp in Project.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
-class Project_CreateMinimalForm(forms.ModelForm):
+class Project_CreateMinimalForm(Base_ModelForm):
 
     # PK to add help text
     project_id= forms.CharField(widget=forms.TextInput(attrs={'class': 'input-group'}),required=False,help_text="Leave empty to use next Pnnnnn number")
@@ -144,3 +146,88 @@ class Project_UpdateForm(Project_CreateForm):
     class Meta:
         model=Project
         exclude=['project_id','project_members'] + Project.ORACLE_FIELDS 
+
+#=================================================================================================
+# ABase Compound
+#=================================================================================================
+class ABase_Filter(BaseStatus_Filter):
+
+    compound_id = CharFilter(field_name='compound_id', lookup_expr='icontains')
+    compound_code = CharFilter(field_name='compound_code', lookup_expr='icontains')
+    compound_name = CharFilter(field_name='compound_name', lookup_expr='icontains')
+    reg_mf = CharFilter(field_name='reg_mf', lookup_expr='icontains')
+    structure_type = CharFilter(field_name='structure_type', lookup_expr='icontains')
+    structure_metal = CharFilter(field_name='structure_metal', lookup_expr='icontains')
+
+    # Filter ABase_Compounds where any related ABase_Compound_Batch matches.
+    chemist = ChoiceFilter(method='filter_batch_chemist', choices=[], label='Chemist')
+    supplier = CharFilter(method='filter_batch_supplier', label='Supplier')
+    labbook_no = CharFilter(method='filter_batch_labbook', label='LabBook No')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['chemist'].extra['choices'] = [
+            (u.name, f"{u.name}") for u in ApplicationUser.objects.all().order_by('name')
+        ]
+        # Set Filter label to the Fields VerboseName or Filter Name
+        for i in self.filters:
+            try:
+                self.filters[i].label = self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+            except Exception:
+                self.filters[i].label = self.filters[i].label or i
+
+    def filter_batch_chemist(self, queryset, name, value):
+        compound_ids = ABase_Compound_Batch.objects.filter(chemist_id=value).values('compound_id')
+        return queryset.filter(compound_id__in=compound_ids)
+
+    def filter_batch_supplier(self, queryset, name, value):
+        compound_ids = ABase_Compound_Batch.objects.filter(supplier__icontains=value).values('compound_id')
+        return queryset.filter(compound_id__in=compound_ids)
+
+    def filter_batch_labbook(self, queryset, name, value):
+        compound_ids = ABase_Compound_Batch.objects.filter(labbook_no__icontains=value).values('compound_id')
+        return queryset.filter(compound_id__in=compound_ids)
+
+    class Meta:
+        model = ABase_Compound
+        fields = ['compound_id', 'compound_code', 'compound_name',
+                  'reg_mf', 'structure_type', 'structure_metal']
+
+#=================================================================================================
+# COADD Compound
+#=================================================================================================
+class COADD_Filter(BaseStatus_Filter):
+
+    compound_id = CharFilter(field_name='compound_id', lookup_expr='icontains')
+    compound_code = CharFilter(field_name='compound_code', lookup_expr='icontains')
+    compound_name = CharFilter(field_name='compound_name', lookup_expr='icontains')
+    std_mf = CharFilter(field_name='std_mf', lookup_expr='icontains')
+    std_structure_type = CharFilter(field_name='std_structure_type', lookup_expr='icontains')
+    std_metal = CharFilter(field_name='std_metal', lookup_expr='icontains')
+    std_status = CharFilter(field_name='std_status', lookup_expr='icontains')
+    pub_status = CharFilter(field_name='pub_status', lookup_expr='icontains')
+    barcode = CharFilter(method='filter_barcode', label='Barcode')
+
+    def filter_barcode(self, queryset, name, value):
+        # Match compounds via their Compound_Batch, using the barcodes
+        # assigned to MasterWells that hold that batch.
+        # MasterWell lives in the dplate database, so evaluate the IDs in
+        # Python (list()) rather than as a subquery - PostgreSQL cannot JOIN
+        # across the dsample/dplate databases.
+        cmpbatch_ids = list(MasterWell.objects.filter(barcode__icontains=value).values_list('cmpbatch_id', flat=True))
+        return queryset.filter(cmpbatch_id__in=cmpbatch_ids)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set Filter label to the Fields VerboseName or Filter Name
+        for i in self.filters:
+            try:
+                self.filters[i].label = self.Meta.model._meta.get_field(self.filters[i].field_name).verbose_name
+            except Exception:
+                self.filters[i].label = self.filters[i].label or i
+
+    class Meta:
+        model = COADD_Compound
+        fields = ['compound_id', 'compound_code', 'compound_name',
+                  'std_mf', 'std_structure_type', 'std_metal',
+                  'std_status', 'pub_status', 'barcode']

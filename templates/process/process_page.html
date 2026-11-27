@@ -23,9 +23,15 @@
         <div class="step {% if wizard.steps.current == 'upload' %}active{% endif %}">
           Upload Files
         </div>
-        <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">
-          Finalise Data
-        </div>
+        {% if wizard.steps.current == 'download' or 'download' in wizard.steps.all %}
+          <div class="step {% if wizard.steps.current == 'download' %}active{% endif %}">
+            Download
+          </div>
+        {% else %}
+          <div class="step {% if wizard.steps.current == 'finalize' %}active{% endif %}">
+            Finalise Data
+          </div>
+        {% endif %}
       </div>
 
       <!-- Process Steps -->
@@ -75,48 +81,45 @@
         <!-- Step 2 Download -->
         {% elif wizard.steps.current == 'download' %}
           <div class="p-3 m-auto">
-            Download Generate Files:
-            <table>
-              <tbody>
-              </tbody>
-            </table>
+            {% if download_url %}
+              <p>Generated file is ready for download:</p>
+              <a class="btn-active-small" href="{{ download_url }}" target="_blank" rel="noopener">
+                <i class="bi bi-download me-1"></i> {{ download_file }}
+              </a>
+            {% else %}
+              <p class="text-muted">No file was generated. Go back and check for errors.</p>
+            {% endif %}
           </div>
-          <div> {{minstructions|safe}} </div>
+          <div> {{instructions|safe}} </div>
         {% endif %}
 
       </div>
 
       <!-- Button Actions --> 
+        <a class="btn-active"
+           href="{{ request.path }}?reset=1{% if cancel_url %}&next={{ cancel_url|urlencode }}{% endif %}">
+          <i class="bi bi-x-lg me-1"></i> Cancel
+        </a>
+
         {% if wizard.steps.prev %}
-          <button class="btn-active" href="{{reset_url}}?reset">Cancel</button> 
           <button class="btn-active" name="wizard_goto_step" type="submit"
-            value="{{ wizard.steps.prev }}"> Previous</button>
+            value="{{ wizard.steps.prev }}"> <i class="bi bi-arrow-left me-1"></i> Previous</button>
         {% else %}
-          <button class="btn-active" href="{{reset_url}}?reset">Cancel</button>  
-          <button class="btn-disabled" disabled> Previous</button>
+          <button class="btn-disabled" disabled> <i class="bi bi-arrow-left me-1"></i> Previous</button>
         {% endif %}
 
         {% if wizard.steps.prev and wizard.steps.next %}
           {% if confirm_to_upload %}
-            <button class="btn-active" type="submit" value="Next">Next</button>
+            <button class="btn-active" type="submit" value="Next"><i class="bi bi-arrow-right me-1"></i> Next</button>
           {% else %}
-            <button class="btn-disabled" disabled> Next</button>
+            <button class="btn-disabled" disabled> <i class="bi bi-arrow-right me-1"></i> Next</button>
           {% endif %}
         {% elif wizard.steps.next %}
-          <button class="btn-active" 
-            type="submit" 
-            value="Click to start"
-        {% comment %}
-            -- "Works but does not submit"              
-            hx-get="{% url 'start_progress' %}"
-            hx-target="#progress-content"
-            hx-swap="innerHTML"
-            data-bs-toggle="modal" 
-            data-bs-target="#progress-modal"
-        {% endcomment %}
-          >Next</button>
+          <button class="btn-active" type="submit" value="Next"><i class="bi bi-arrow-right me-1"></i> Next</button>
         {% else %}
-          <button class="btn-active" type="submit" value="Finalize">Finalize</button>
+          <button class="btn-active" type="submit" value="Finish">
+            <i class="bi bi-check-lg me-1"></i> {% if wizard.steps.current == 'download' %}Finish{% else %}Finalize{% endif %}
+          </button>
         {% endif %}
       
     </div>
@@ -150,24 +153,117 @@
     </div>
   </form>
 
-  <!-- Progress -->
-  {% comment %}  
-  {% include 'modal/progress_base_modal.html' %}
-  <div id="progress-div"
-      hx-get="{% url 'start_progress' %}"
-      hx-trigger="startProgress"
-      hx-swap="innerHTML"
-      hx-target="#progress-content"
-      data-bs-toggle="modal" 
-      data-bs-target="#progress-modal"
-    >
-    <!-- 
-    <div class="progress">
-      <div class="progress-bar" style="width:0%">0%</div>
+  <!-- Processing progress modal (shown while a step submits/processes) -->
+  <div class="modal fade" id="process-spinner" tabindex="-1"
+       data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center py-4">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Processing…</span>
+          </div>
+          <p class="mt-3 mb-2" id="process-progress-message">Processing, please wait…</p>
+          <div class="progress mt-2" style="height: 1.25rem; position: relative;">
+            <div id="process-progress-bar" class="progress-bar" role="progressbar"
+                 style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <span id="process-progress-label" class="progress-label">0%</span>
+          </div>
+        </div>
+      </div>
     </div>
-    -->
   </div>
-  {% endcomment %}
+
+  <script>
+    (function () {
+      var form = document.getElementById('processForm');
+      if (!form) return;
+      var progressUrl = '{{ progress_url|default:"" }}';
+      var progressKey = '{{ progress_key|default:"" }}';
+      var finished = false;
+      var submitting = false;
+
+      function showProgress() {
+        var modalEl = document.getElementById('process-spinner');
+        if (modalEl) { bootstrap.Modal.getOrCreateInstance(modalEl).show(); }
+        var bar = document.getElementById('process-progress-bar');
+        if (bar) { bar.style.width = '0%'; }
+        var label = document.getElementById('process-progress-label');
+        if (label) { label.textContent = '0%'; }
+        var msg = document.getElementById('process-progress-message');
+        if (msg) { msg.textContent = 'Processing, please wait…'; }
+      }
+
+      function poll() {
+        if (finished || !progressUrl || !progressKey) return;
+        fetch(progressUrl + '?key=' + encodeURIComponent(progressKey), {cache: 'no-store'})
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (finished) return;
+            var bar = document.getElementById('process-progress-bar');
+            var label = document.getElementById('process-progress-label');
+            var msg = document.getElementById('process-progress-message');
+            var pct = d.percent || 0;
+            if (bar) { bar.style.width = pct + '%'; }
+            if (label) { label.textContent = pct + '%'; }
+            if (msg && d.message) {
+              msg.textContent = d.item ? (d.message + ' — ' + d.item) : d.message;
+            }
+            if (pct >= 100) {
+              // Done — close the popup instead of leaving it on "Finished".
+              setTimeout(function () {
+                var modalEl = document.getElementById('process-spinner');
+                if (modalEl) { bootstrap.Modal.getOrCreateInstance(modalEl).hide(); }
+              }, 400);
+            } else {
+              setTimeout(poll, 500);
+            }
+          })
+          .catch(function () {
+            // Transient error — retry a little later while the request is in flight.
+            if (!finished) { setTimeout(poll, 1000); }
+          });
+      }
+
+      // Submit the wizard via fetch so the current page (and the polling loop)
+      // stay alive while the server runs the long step. On completion we
+      // navigate to the response URL: either the wizard's next step, or the
+      // detail/list view that done() redirects to.
+      function submitStep() {
+        var action = form.getAttribute('action') || window.location.href;
+        fetch(action, {
+          method: 'POST',
+          body: new FormData(form),
+          credentials: 'same-origin',
+          redirect: 'follow'
+        }).then(function (response) {
+          finished = true;
+          if (!response.ok) {
+            window.location.reload();
+            return;
+          }
+          window.location.assign(response.url || action);
+        }).catch(function () {
+          finished = true;
+          window.location.reload();
+        });
+      }
+
+      form.addEventListener('submit', function (e) {
+        var submitter = e.submitter;
+        var isPrevious = submitter && submitter.name === 'wizard_goto_step';
+        if (isPrevious) {
+          // No processing: keep the normal synchronous submit.
+          return;
+        }
+        if (submitting) { e.preventDefault(); return; }
+        e.preventDefault();
+        submitting = true;
+        showProgress();
+        poll();
+        submitStep();
+      });
+    })();
+  </script>
 
 </div>
 

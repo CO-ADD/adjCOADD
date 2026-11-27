@@ -1,0 +1,564 @@
+import os
+import json
+from rdkit import Chem
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator
+from django.db import transaction, IntegrityError
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+
+from applib.django.base.views import Base_RemoveView, Filtered_ListView
+from applib.bio.biln import render_biln_svg, render_helm_svg
+from apputil.models import ApplicationLog
+from apputil.forms import Document_Form
+
+from dbiologic.models import Biologic, Biologic_Isoform, Isoform_Batch, Modification_Dictionary, Biologic_Modification, Monomer
+from dbiologic.forms import (Biologic_Filter, Biologic_CreateForm, Biologic_UpdateForm,
+                            Isoform_Filter, Isoform_CreateForm, Isoform_UpdateForm,
+                            IsoBatch_CreateForm, IsoBatch_UpdateForm,
+                            Modification_Filter, Modification_Form, Modification_UpdateForm,
+                            BiologicModification_Form,
+                            Monomer_Filter, Monomer_Form, Monomer_UpdateForm)
+
+#=================================================================================================
+# Helpers
+#=================================================================================================
+def _error_svg(message):
+    """Minimal SVG showing an error message, for <img> previews."""
+    text = message.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="500" height="80">'
+        f'<rect width="100%" height="100%" fill="#fff3cd" stroke="#ffc107"/>'
+        f'<text x="10" y="25" font-family="sans-serif" font-size="12" fill="#664d03">{text}</text>'
+        f'</svg>'
+    )
+
+
+#=================================================================================================
+# Biologic
+#=================================================================================================
+class Biologic_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Biologic
+    template_name = 'datatable/datatable_list_page.html'
+    filterset_class = Biologic_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Biologic'
+    app_name = 'dbiologic'
+    ordering = ['-acreated_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['list_url'] = 'biologic_list'
+        context['create_url'] = 'biologic_create'
+        context['update_url'] = 'biologic_update'
+        return context
+
+
+# -----------------------------------------------------------------
+@login_required
+def Biologic_CreateView(req):
+    form = Biologic_CreateForm()
+
+    if req.method == 'POST':
+        form = Biologic_CreateForm(req.POST)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create a new Biologic', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Biologic {instance.pk} created.'})
+            except IntegrityError as err:
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Biologic', 'form_action': 'biologic_create'})
+
+    context = {'form': form, 'modal_title': 'Create Biologic', 'form_action': 'biologic_create'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+# -----------------------------------------------------------------
+@login_required
+def Biologic_DetailView(req, pk):
+    _object = get_object_or_404(Biologic, biologic_id=pk)
+    context = {
+        'object': _object,
+        'display_groups': _object.get_display_groups(),
+        'doc_form': Document_Form,
+    }
+    return render(req, 'dbiologic/biologic/biologic_detail.html', context)
+
+
+# -----------------------------------------------------------------
+@login_required
+def Biologic_UpdateView(req, pk):
+    _object = get_object_or_404(Biologic, biologic_id=pk)
+
+    if req.method == 'POST':
+        form = Biologic_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Biologic', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Biologic {instance.pk} updated.'})
+            except Exception as err:
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Biologic',
+                       'modal_subtitle': pk, 'form_action': 'biologic_update'})
+
+    form = Biologic_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Biologic', 'modal_subtitle': pk, 'form_action': 'biologic_update'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+# -----------------------------------------------------------------
+class Biologic_RemoveView(Base_RemoveView):
+    model = Biologic
+    transaction_use = 'dbiologic'
+
+
+#=================================================================================================
+# Biologic Isoform
+#=================================================================================================
+class Isoform_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Biologic_Isoform
+    template_name = 'datatable/datatable_list_page.html'
+    filterset_class = Isoform_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Biologic_Isoform'
+    app_name = 'dbiologic'
+    ordering = ['isoform_id']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_name'] = self.model_name
+        context['list_url'] = 'isoform_list'
+        context['create_url'] = 'isoform_create'
+        context['update_url'] = 'isoform_update'
+        return context
+
+
+# -----------------------------------------------------------------
+@login_required
+def Isoform_CreateView(req):
+    form = Isoform_CreateForm(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create a new Isoform', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Isoform {instance.pk} created.'})
+            except IntegrityError as err:
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Isoform', 'form_action': 'isoform_create'})
+
+    context = {'form': form, 'modal_title': 'Create Isoform', 'form_action': 'isoform_create'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+# -----------------------------------------------------------------
+@login_required
+def Isoform_DetailView(req, pk):
+    _object = get_object_or_404(Biologic_Isoform, isoform_id=pk)
+
+    context = {
+        'object': _object,
+        'display_groups': _object.get_display_groups(),
+        'doc_form': Document_Form,
+    }
+
+    # Isoform batches - paginated
+    _batches = Isoform_Batch.objects.filter(isoform_id=_object, astatus__gte=0)
+    _paginator = Paginator(_batches, 25)
+    _batch_page = _paginator.get_page(req.GET.get('page'))
+
+    context['batch_objs'] = _batch_page
+    context['batch_page_obj'] = _batch_page
+    context['batch_count'] = _batches.count()
+    context['batch_fields'] = Isoform_Batch.get_fields()
+
+    # Isoform modifications - grouped by position, ordered by mod_order
+    _mods = _object.modification_links.select_related('biomod_id').order_by('mod_position', 'mod_order')
+    _mod_groups = []
+    for pos_value, pos_label in Biologic_Modification.MOD_POSITION_CHOICES:
+        _group_links = [link for link in _mods if link.mod_position == pos_value]
+        if _group_links:
+            _mod_groups.append({'position': pos_label, 'links': _group_links})
+    context['modification_groups'] = _mod_groups
+    context['modification_count'] = _mods.count()
+
+    return render(req, 'dbiologic/isoform/isoform_detail.html', context)
+
+
+# -----------------------------------------------------------------
+@login_required
+def Isoform_UpdateView(req, pk):
+    _object = get_object_or_404(Biologic_Isoform, isoform_id=pk)
+
+    if req.method == 'POST':
+        form = Isoform_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Isoform', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Isoform {instance.pk} updated.'})
+            except Exception as err:
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Isoform',
+                       'modal_subtitle': pk, 'form_action': 'isoform_update'})
+
+    form = Isoform_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Isoform', 'modal_subtitle': pk, 'form_action': 'isoform_update'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+# -----------------------------------------------------------------
+class Isoform_RemoveView(Base_RemoveView):
+    model = Biologic_Isoform
+    transaction_use = 'dbiologic'
+
+
+#=================================================================================================
+# Isoform Modifications (through-model links)
+#=================================================================================================
+
+@login_required
+def BiologicModification_CreateView(req, pk):
+    _isoform = get_object_or_404(Biologic_Isoform, isoform_id=pk)
+    form = BiologicModification_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    link = form.save(commit=False)
+                    link.isoform_id = _isoform
+                    link.save()
+                    ApplicationLog.add('Create', f"{_isoform.pk}:{link.biomod_id}",
+                                       'Info', req.user, str(_isoform.pk),
+                                       f'Add modification {link.biomod_id} ({link.mod_position}:{link.mod_order})', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Modification {link.biomod_id} added.'})
+            except IntegrityError as err:
+                form.add_error(None, f'Modification with same position/order may already exist ({err}).')
+        return render(req, 'dbiologic/isoform/biologic_modification_form_modal.html',
+                      {'form': form, 'modal_title': 'Add Modification', 'modal_subtitle': pk})
+
+    context = {'form': form, 'modal_title': 'Add Modification', 'modal_subtitle': pk}
+    return render(req, 'dbiologic/isoform/biologic_modification_form_modal.html', context)
+
+
+@login_required
+def BiologicModification_UpdateView(req, pk):
+    _link = get_object_or_404(Biologic_Modification, pk=pk)
+    if req.method == 'POST':
+        form = BiologicModification_Form(req.POST, instance=_link)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    form.save()
+                    ApplicationLog.add('Update', f"{_link.isoform_id_id}:{_link.biomod_id}",
+                                       'Info', req.user, str(_link.isoform_id_id),
+                                       'Update isoform modification', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Modification {_link.biomod_id} updated.'})
+            except IntegrityError as err:
+                form.add_error(None, f'Modification with same position/order may already exist ({err}).')
+        return render(req, 'dbiologic/isoform/biologic_modification_form_modal.html',
+                      {'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': _link.isoform_id_id})
+
+    form = BiologicModification_Form(instance=_link)
+    context = {'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': _link.isoform_id_id}
+    return render(req, 'dbiologic/isoform/biologic_modification_form_modal.html', context)
+
+
+@login_required
+def BiologicModification_RemoveView(req, pk):
+    _link = get_object_or_404(Biologic_Modification, pk=pk)
+    _isoform_pk = _link.isoform_id_id
+    if req.method == 'POST':
+        with transaction.atomic(using='dbiologic'):
+            ApplicationLog.add('Remove', f"{_isoform_pk}:{_link.biomod_id}",
+                               'Warning', req.user, str(_isoform_pk),
+                               f'Remove modification {_link.biomod_id} ({_link.mod_position}:{_link.mod_order})', 'Completed')
+            _link.delete()
+        messages.success(req, f'Removed modification {_link.biomod_id}')
+    return redirect('isoform_detail', pk=_isoform_pk)
+
+
+@login_required
+def BiologicModification_ReorderView(req, pk, direction):
+    _link = get_object_or_404(Biologic_Modification, pk=pk)
+    _isoform_pk = _link.isoform_id_id
+    if req.method == 'POST':
+        _siblings = Biologic_Modification.objects.filter(
+            isoform_id=_link.isoform_id, mod_position=_link.mod_position).order_by('mod_order')
+        if direction == 'up':
+            _other = _siblings.filter(mod_order__lt=_link.mod_order).order_by('-mod_order').first()
+        else:
+            _other = _siblings.filter(mod_order__gt=_link.mod_order).order_by('mod_order').first()
+
+        if _other is not None:
+            # mod_order is PositiveSmallIntegerField; pick a free temp value <= 32767
+            _tmp = 32767
+            while Biologic_Modification.objects.filter(
+                isoform_id=_link.isoform_id, mod_position=_link.mod_position, mod_order=_tmp).exists():
+                _tmp -= 1
+
+            with transaction.atomic(using='dbiologic'):
+                _link_order = _link.mod_order
+                _other_order = _other.mod_order
+                _link.mod_order = _tmp
+                _link.save()
+                _other.mod_order = _link_order
+                _other.save()
+                _link.mod_order = _other_order
+                _link.save()
+    return redirect('isoform_detail', pk=_isoform_pk)
+
+
+#=================================================================================================
+# Isoform Batch
+#=================================================================================================
+@login_required
+def IsoBatch_CreateView(req, isoform_id):
+    _isoform = get_object_or_404(Biologic_Isoform, isoform_id=isoform_id)
+    form = IsoBatch_CreateForm(req.POST or None)
+
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.isoform_id = _isoform
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create a new Isoform Batch', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Batch {instance.pk} created.'})
+            except IntegrityError as err:
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'form': form, 'object': _isoform, 'modal_title': 'New Isoform Batch',
+                       'modal_subtitle': isoform_id, 'form_action': 'isobatch_create'})
+
+    context = {
+        'form': form, 'object': _isoform,
+        'modal_title': 'New Isoform Batch', 'modal_subtitle': isoform_id,
+        'form_action': 'isobatch_create',
+    }
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+# -----------------------------------------------------------------
+@login_required
+def IsoBatch_UpdateView(req, pk):
+    _object = get_object_or_404(Isoform_Batch, isoformbatch_id=pk)
+
+    if req.method == 'POST':
+        form = IsoBatch_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Isoform Batch', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Batch {instance.pk} updated.'})
+            except Exception as err:
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Isoform Batch',
+                       'modal_subtitle': pk, 'form_action': 'isobatch_update'})
+
+    form = IsoBatch_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Isoform Batch', 'modal_subtitle': pk, 'form_action': 'isobatch_update'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+# -----------------------------------------------------------------
+class IsoBatch_RemoveView(Base_RemoveView):
+    model = Isoform_Batch
+    transaction_use = 'dbiologic'
+
+
+#=================================================================================================
+# Modification Dictionary
+#=================================================================================================
+class Modification_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Modification_Dictionary
+    template_name = 'datatable/datatable_list_page.html'
+    filterset_class = Modification_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Modification_Dictionary'
+    app_name = 'dbiologic'
+    ordering = ['biomod_code']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Modifications'
+        context['model_name'] = self.model_name
+        context['list_url'] = 'modification_list'
+        context['create_url'] = 'modification_create'
+        context['update_url'] = 'modification_update'
+        return context
+
+
+@login_required
+def Modification_CreateView(req):
+    form = Modification_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Modification', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Modification {instance.pk} created.'})
+            except IntegrityError as err:
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Modification', 'form_action': 'modification_create'})
+
+    context = {'form': form, 'modal_title': 'Create Modification', 'form_action': 'modification_create'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+@login_required
+def Modification_UpdateView(req, pk):
+    _object = get_object_or_404(Modification_Dictionary, biomod_id=pk)
+    if req.method == 'POST':
+        form = Modification_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Modification', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Modification {instance.pk} updated.'})
+            except Exception as err:
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Modification',
+                       'modal_subtitle': pk, 'form_action': 'modification_update'})
+
+    form = Modification_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Modification', 'modal_subtitle': pk, 'form_action': 'modification_update'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+#=================================================================================================
+# Monomer
+#=================================================================================================
+class Monomer_ListView(LoginRequiredMixin, Filtered_ListView):
+    login_url = '/'
+    model = Monomer
+    template_name = 'dbiologic/monomer/monomer_list.html'
+    filterset_class = Monomer_Filter
+    model_fields = model.LIST_VIEW_FIELDS
+    model_name = 'Monomer'
+    app_name = 'dbiologic'
+    ordering = ['symbol']
+    paginate_by = 50
+
+    def get_paginate_by(self, queryset):
+        if self.request.GET.get('view') == 'card':
+            return 15
+        return super().get_paginate_by(queryset)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Monomers'
+        context['model_name'] = self.model_name
+        context['view'] = self.request.GET.get('view', 'table')
+        context['list_url'] = 'monomer_list'
+        context['create_url'] = 'monomer_create'
+        context['update_url'] = 'monomer_update'
+        return context
+
+
+@login_required
+def Monomer_CreateView(req):
+    form = Monomer_Form(req.POST or None)
+    if req.method == 'POST':
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Create', str(instance.pk), 'Info', req.user, str(instance.pk), 'Create Monomer', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Monomer {instance.symbol} created.'})
+            except IntegrityError as err:
+                form.add_error(None, f'IntegrityError {err} - record may already exist.')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'form': form, 'modal_title': 'Create Monomer', 'form_action': 'monomer_create'})
+
+    context = {'form': form, 'modal_title': 'Create Monomer', 'form_action': 'monomer_create'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+@login_required
+def Monomer_UpdateView(req, pk):
+    _object = get_object_or_404(Monomer, monomer_id=pk)
+    if req.method == 'POST':
+        form = Monomer_UpdateForm(req.POST, instance=_object)
+        if form.is_valid():
+            try:
+                with transaction.atomic(using='dbiologic'):
+                    instance = form.save(commit=False)
+                    instance.save(user=req.user)
+                    ApplicationLog.add('Update', str(instance.pk), 'Info', req.user, str(instance.pk), 'Update Monomer', 'Completed')
+                return render(req, 'dbiologic/saved_modal.html',
+                              {'save_message': f'Monomer {instance.symbol} updated.'})
+            except Exception as err:
+                form.add_error(None, f'Update failed: {err}')
+        return render(req, 'dbiologic/dbiologic_form_modal.html',
+                      {'object': _object, 'form': form, 'modal_title': 'Update Monomer',
+                       'modal_subtitle': pk, 'form_action': 'monomer_update'})
+
+    form = Monomer_UpdateForm(instance=_object)
+    context = {'object': _object, 'form': form, 'modal_title': 'Update Monomer', 'modal_subtitle': pk, 'form_action': 'monomer_update'}
+    return render(req, 'dbiologic/dbiologic_form_modal.html', context)
+
+
+#=================================================================================================
+# Sequence structure preview (BILN / HELM -> 2D)
+#=================================================================================================
+@login_required
+def Sequence_StructureView(req):
+    """Render a 2D structure SVG from a BILN or HELM string (via ?biln= / ?helm=)."""
+    biln = req.GET.get('biln') or ''
+    helm = req.GET.get('helm') or ''
+
+    try:
+        if biln:
+            svg = render_biln_svg(biln)
+        elif helm:
+            svg = render_helm_svg(helm)
+        else:
+            svg = _error_svg('No BILN or HELM sequence provided')
+        return HttpResponse(svg, content_type='image/svg+xml')
+    except Exception as err:
+        return HttpResponse(_error_svg(str(err)), content_type='image/svg+xml')

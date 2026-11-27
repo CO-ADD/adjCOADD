@@ -28,6 +28,20 @@ logger = logging.getLogger(__name__)
 
 
 #=================================================================================================
+class Project_Member:
+    """
+    Lightweight collaborator representation returned by Project.get_members().
+    Provides a get_values() method so it renders in the generic datatable templates.
+    """
+    def __init__(self, full_name, role, status):
+        self.full_name = full_name
+        self.role = role
+        self.status = status
+
+    def get_values(self):
+        return [self.full_name, self.role, self.status]
+
+#=================================================================================================
 class Project(AuditModel):
     """
     List of Projects
@@ -62,7 +76,7 @@ class Project(AuditModel):
     ID_PREFIX = 'P'
     ID_PAD = 5
 
-    VIEW_GROUPS = [
+    DETAIL_VIEW_GROUPS = [
         ['project_type','project_name','process_status','project_status','project_comment','received','completed','group_id',],
         ['provided_container','provided_comment','stock_status','stock_comment','stock_container','stock_conc','stock_conc_unit', ],
         ['compound_status','compound_comment','screen_status','screen_comment','data_status','data_comment',],
@@ -132,7 +146,7 @@ class Project(AuditModel):
     project_users =  ArrayField(models.CharField(max_length=25, null=True, blank=True), size=10, 
                              verbose_name = "Project Contacts", null=True, blank=True)
     project_members = models.ManyToManyField(Collab_User, through='Project_Membership',through_fields=('project_id', 'user_id'),
-                                             blank=True, null=True, related_name="project_members")
+                                             blank=True, related_name="project_members")
     
     #owner_users = models.ManyToManyField(Collab_User)
          
@@ -170,6 +184,11 @@ class Project(AuditModel):
                          'n_sc_hits','n_mic_hits','n_tox_hits',
                          'screen_date']
 
+    # CALC_VIEW_GROUPS = [
+    #     ['n_compounds','n_mcc_compounds','n_structures','n_barcodes','n_motherplates','n_testplates','n_runids','n_assays'],
+    #     ['n_ps_compounds','n_dr_compounds','n_syn_compounds','n_sc_hits','n_mic_hits','n_tox_hits','screen_date'],
+    # ]
+
     n_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#Cpmds")
     n_mcc_compounds = models.IntegerField(default=0, blank=True, verbose_name = "#MCC")
     n_structures = models.IntegerField(default=0, blank=True, verbose_name = "#Struc")
@@ -191,17 +210,13 @@ class Project(AuditModel):
     def collaborator(self):
         _retList = []
         _pc = self.get_members(role='PC')
-        _li = self.group_id.li_user_id
-        #_li = self.get_members(role='LI')
+        _li = self.get_members(role='LI')
         
         if _pc:
-            _retList.append(_pc[0]['full_name'])
-        if _li :
-            if _li.full_name not in _retList:
-                _retList.append(_li.full_name)
-        # if _li:
-        #     if _li[0]['full_name'] not in _retList:
-        #         _retList.append(_li[0]['full_name'])
+            _retList.append(_pc[0].full_name)
+        if _li:
+            if _li[0].full_name not in _retList:
+                _retList.append(_li[0].full_name)
         
         return(f"{'\n'.join(_retList)}")
     
@@ -225,22 +240,36 @@ class Project(AuditModel):
         return f"{self.project_id}  {self.source}"
 
     #------------------------------------------------
-    def get_members(self,role=None):
-        if role:
+    def get_members(self, role=None):
+    #
+    # Returns Project_Member objects. The Lead Investigator (LI) is derived
+    # on the fly from self.group_id.li_user_id (not stored in project_member).
+    #
+        _members = []
+
+        # Lead Investigator (derived)
+        if role in (None, 'LI'):
+            _li_user = self.group_id.li_user_id if self.group_id else None
+            if _li_user:
+                _members.append(Project_Member(_li_user.full_name, 'LI', 'C'))
+
+        # Stored memberships (PC, AC, VC)
+        if role == 'LI':
+            _qry_members = Project_Membership.objects.none()
+        elif role:
             _qry_members = self.project_memberships.filter(role=role)
         else:
             _qry_members = self.project_memberships.all()
-        
-        _members = []   
+
         for member in _qry_members:
-            _members.append({"full_name":member.user_id.full_name, "role" :member.role, "status":member.status})
-            
+            _members.append(Project_Member(member.user_id.full_name, member.role, member.status))
+
         return(_members)
 
     #------------------------------------------------
     @classmethod
     def get(cls,ProjectID,verbose=0):
-    # Returns an instance by structure_id or structure_name
+    # Returns an instance by project_id
         try:
             retInstance = cls.objects.get(project_id=ProjectID)
         except:
@@ -281,8 +310,9 @@ class Project_Membership(models.Model):
     """
     List of Project Membership
     """
+    # NOTE: The Lead Investigator (LI) is derived from Project.group_id.li_user_id
+    # and is not stored in project_member - see Project.get_members().
     MEMBERSHIP_CHOICES = [ 
-    #        ("LI","Lead Investigator"),
             ("PC","Primary Contact"),
             ("AC","Alternative Contact"),
             ("VC","Virtual Contact")
@@ -372,7 +402,7 @@ class Library(AuditModel):
     #------------------------------------------------
     @classmethod
     def get(cls,LibraryID=None,LibraryName=None,verbose=0):
-    # Returns an instance by structure_id or structure_name
+    # Returns an instance by library_id or library_name
         try:
             if LibraryID:
                 retInstance = cls.objects.get(library_id=LibraryID)
@@ -499,11 +529,12 @@ class COADD_Compound(AuditModel):
     """
 #-------------------------------------------------------------------------------------------------
     LIST_VIEW_FIELDS ={
-        'compound_id':'ID',
+        'compound_id': {'ID': {'compound_id': URL_LINKS['coadd_compound_id']}},
         'compound_code':'Code',
         'compound_name':'Name',
         'reg_mw':'MW', 
         'reg_smiles':'Smiles',
+        'structure_id':'StructureID',
     }
 
     DICTIONARY_FIELDS = {
@@ -514,6 +545,20 @@ class COADD_Compound(AuditModel):
         'reg_conc_unit':'Unit_Concentration',
     #    'stock_volume_unit':'Unit_Volume',
     }
+
+    DETAIL_VIEW_GROUPS   = [
+        ['compound_id','compound_code','compound_name','compound_desc','project_id','compound_type','compound_source',
+         'cpoz_sn','cpoz_id','pub_status','pub_date',
+         'reg_smiles',],
+        ['reg_mf','reg_mw','reg_amount','reg_amount_unit','reg_volume','reg_volume_unit','reg_conc', 'reg_conc_unit','reg_solvent'],
+        ['std_mf','std_mw','std_status','std_process','std_issues','std_nfrag',
+         'std_salt','std_ion','std_solvent','std_metal','std_structure_type','std_smiles','structure_id'],
+        ['coadd_id','chembl_id','spark_id',]
+    ]
+    
+    STATUS_VIEW_FIELDS = []
+    CARDS_FIELDS   = {}
+    CALCULATED_FIELDS = []
 
     ID_SEQUENCE = 'COADD_Compound'
     ID_PREFIX = 'C'
@@ -534,7 +579,7 @@ class COADD_Compound(AuditModel):
     compound_type = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
         db_column="compound_type", related_name="%(class)s_compound_type")
 
-    compound_source = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Type", on_delete=models.DO_NOTHING,
+    compound_source = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Source", on_delete=models.DO_NOTHING,
         db_column="compound_source", related_name="%(class)s_compound_source")
 
     # compound_subtypes = ArrayField(models.CharField(max_length=50, null=True, blank=True), 
@@ -639,6 +684,15 @@ class COADD_Compound(AuditModel):
         retValue = cls.objects.filter(compound_id=CompoundID).exists()
         return(retValue)
 
+   #------------------------------------------------
+    @property
+    def structure_id(self):
+        _batch = self.cmpbatch_id
+        if _batch and _batch.structure_id:
+            return _batch.structure_id.structure_id
+        return None
+    structure_id.fget.short_description = "Structure ID"
+
     #------------------------------------------------
     def save_batch(self, *args, **kwargs):
         if not self.cmpbatch_id:
@@ -673,8 +727,29 @@ class ABase_Compound(AuditModel):
     List of Abase Compounds as per Registration
     """
 #-------------------------------------------------------------------------------------------------
+    LIST_VIEW_FIELDS = {
+        'compound_id': {'ID': {'compound_id': URL_LINKS['abase_compound_id']}},
+        'compound_code':'Code',
+        'compound_name':'Name',
+        'reg_mw':'MW',
+        'reg_mf':'MF',
+        'structure_type':'Type',
+        'structure_metal':'Metal',
+        'structure_id':'StructureID',
+    }
+
     DICTIONARY_FIELDS = {
     }
+
+    DETAIL_VIEW_GROUPS   = [
+        ['compound_id','compound_code','compound_name','compound_desc',],
+        ['reg_mf','reg_mw','reg_smiles',],
+        ['structure_id','structure_type','structure_metal'],
+    ]
+    
+    STATUS_VIEW_FIELDS = []
+    CARDS_FIELDS   = {}
+    CALCULATED_FIELDS = []
 
     ID_SEQUENCE = 'ABase_Compound'
     ID_PREFIX = 'MCC'
@@ -716,6 +791,22 @@ class ABase_Compound(AuditModel):
     """
 class ABase_Compound_Batch(AuditModel):
 
+    LIST_VIEW_FIELDS = {
+        'cmpbatch_id':'CmpBatch ID',
+        'library_id':'Library',
+        'project_id':'Project',
+        'full_mw':'Full MW',
+        'full_mf':'Full MF',
+        'salt_equivalents':'Salt Eq',
+        'salt_code':'Salt Code',
+        'chemist':'Chemist',
+        'labbook': 'Labbook',
+        'supplier':'Supplier',
+        'supplier_code':'Supplier Code',
+        'date_recieved':'Received',
+        'init_amount':'Amount [mg]',
+    }
+
     DICTIONARY_FIELDS = {
         'init_amount_unit':'Unit_Amount',
     }
@@ -756,7 +847,7 @@ class ABase_Compound_Batch(AuditModel):
     class Meta:
         app_label = 'dsample'
         db_table = 'abase_cmpbatch'
-        ordering=['compound_id']
+        ordering=['cmpbatch_id']
         indexes = [
             models.Index(name="abcmpb_cmpb_idx", fields=['cmpbatch_id']),
             models.Index(name="abcmpb_salt_idx", fields=['salt_code']),
@@ -784,6 +875,35 @@ class ABase_Compound_Batch(AuditModel):
     # Returns if an instance exists by compound_id
         retValue = cls.objects.filter(cmpbatch_id=CompoundBatch).exists()
         return(retValue)
+
+    #------------------------------------------------
+    @staticmethod
+    def str_BatchID(CompoundID, CompoundBatchRef):
+        return(f'{CompoundID}{COMPOUNDBATCH_SEP}{CompoundBatchRef}')
+
+    #------------------------------------------------
+    @staticmethod
+    def split_BatchID(CompoundBatchID):
+        if COMPOUNDBATCH_SEP in CompoundBatchID:
+            _parts = CompoundBatchID.split(COMPOUNDBATCH_SEP)
+            CompoundID = _parts[0]
+            CompoundBatchRef = _parts[1]
+        else:
+            CompoundID = CompoundBatchID
+            CompoundBatchRef = ''
+        return(CompoundID, CompoundBatchRef)
+        
+    # -- Generated Fields - Property ------------------------------------------
+    @property
+    def labbook(self):
+        retStr = ''
+        if self.labbook_no:
+            retStr += f"{self.labbook_no}"
+            if self.labbook_page:
+                retStr += f"-{self.labbook_page}"
+                if self.labbook_page_line:        
+                    retStr += f"-{self.labbook_page_line}"
+        return(retStr)
 
 
 #-------------------------------------------------------------------------------------------------
@@ -965,233 +1085,4 @@ class Convert_CompoundID(AuditModel):
             newEntry.save()
             return(newEntry)
         
-#-------------------------------------------------------------------------------------------------
-class CmpBatchList_Base(AuditModel):    
-#-------------------------------------------------------------------------------------------------
-
-    STRING_FIELDS = ['cmpbatches']
-    MAX_CMPBATCHES = 4
-
-    cmpbatches = ""
-    cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
-                                 size=MAX_CMPBATCHES, null=True, blank=True, db_index=True, verbose_name = "CmpBatch List")
-    n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
-
-    cmpbatch_id = models.ForeignKey(Compound_Batch, null=True, blank=True, verbose_name = "CmpBatch ID", on_delete=models.DO_NOTHING,
-        db_column="cmpbatch_id", related_name="%(class)s_cmpbatch_id")
-
-    class Meta:
-        abstract = True
-        ordering=['cmpbatch_lst']
-        # To include in Child Models
-        indexes = [
-            GinIndex(name="cmp_idx",fields=['cmpbatch_lst']),
-            models.Index(name="ncmpb_idx", fields=['n_cmpbatches']),
-            models.Index(name="cmpbatch_idx", fields=['cmpbatch_lst']),
-        ]
-
-    #------------------------------------------------  
-    def conv_list_to_string(self):
-        if self.cmpbatch_lst:
-            _CmpLst = [str(x) for x in self.cmpbatch_lst if x != ""]
-            self.cmpbatches   = COMPOUND_SEP.join(_CmpLst)
-            self.n_cmpbatches = len(_CmpLst)
-        else:
-            self.cmpbatches   = ''
-            self.n_cmpbatches = 0
-
-    #------------------------------------------------  
-    def conv_string_to_list(self):
-        self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
-
-    #------------------------------------------------  
-    def check_cmpbatch_id(self):
-        _missing =[]
-        for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
-            if not Compound_Batch.exists(cmpbatch_id):
-                _missing.append(cmpbatch_id)
-        if len(_missing) > 0:
-            return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
-        else:
-            return(None)
-
-    #------------------------------------------------  
-    def set_cmpbatch_id(self,CmpBatchLst=None):
-        if CmpBatchLst:
-            _CmpLst = [str(x) for x in CmpBatchLst if x != ""]
-            setattr(self,'cmpbatch_lst',_CmpLst)
-        else:
-           _CmpLst = getattr(self,'cmpbatch_lst')
-        if _CmpLst: 
-            setattr(self,'n_cmpbatches',len(_CmpLst))
-            if self.n_cmpbatches == 1:
-                self.cmpbatch_id = Compound_Batch.get(_CmpLst[0])
-        else:
-            setattr(self,'n_cmpbatches',0)
-            self.cmpbatch_id = None 
-
-    #------------------------------------------------  
-    def __str__(self) -> str:
-        return f"{self.cmpbatches}" 
-
-    #------------------------------------------------  
-    def __repr__(self) -> str:
-        return f"{self.cmpbatches} " 
-
-    #------------------------------------------------
-    # Returns an User instance if found by name
-    # @classmethod
-    # def exists(cls,CmpBatchLst):
-    #     if isinstance(CmpBatchLst,str):
-    #         CmpBatchLst = [CmpBatchLst]
-    #     return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
-
-    #------------------------------------------------
-    # Returns an User instance if found by name
-    @classmethod
-    def get(cls,CmpBatchLst,verbose=0):
-        if isinstance(CmpBatchLst,str):
-            CmpBatchLst = [CmpBatchLst]
-        _qry = cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst))
-        _cnt = _qry.count()
-        if _cnt == 1:
-            return(_qry[0])
-        elif _cnt == 0:
-            if verbose:
-                logger.warning(f"[CmpBatchList Not Found] {CmpBatchLst} ")
-            return(None)
-        elif _cnt > 1:
-            if verbose:
-                logger.warning(f"[CmpBatchList Multiple Exist] {CmpBatchLst} : {_cnt}")
-            return(None)
-        return(None)
-
-    #------------------------------------------------
-    # Returns an User instance if found by name
-    @classmethod
-    def exists(cls,CmpBatchLst):
-        if isinstance(CmpBatchLst,str):
-            CmpBatchLst = [CmpBatchLst]
-        return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst, n_cmpbatches = len(CmpBatchLst)).exists()
-    
-    #------------------------------------------------
-    # Clear/Reset cmpbatch data
-    def clear_cmpbatch_data(self):
-        self.cmpbatches = ""
-        self.cmpbatch_lst = []
-        self.n_cmpbatches=0
-        self.cmpbatch_id = None
-        
-#-------------------------------------------------------------------------------------------------
-class Sample_Base(CmpBatchList_Base):    
-#-------------------------------------------------------------------------------------------------
-
-    STRING_FIELDS = CmpBatchList_Base.STRING_FIELDS + ['concs','conc_units','conc_types'] 
-
-    DICTIONARY_FIELDS = {
-        'conc_unit_lst':'Unit_Concentration',
-        'conc_type_lst':'Concentration_Type',
-    }
-
-    # MAX_CMPBATCHES = 4
-
-    # cmpbatches = ""
-    # cmpbatch_lst = ArrayField(models.CharField(max_length=15, default=""), 
-    #                              size=MAX_CMPBATCHES, null=True, blank=True, db_index = True, verbose_name = "CmpBatch List")
-    # n_cmpbatches=models.SmallIntegerField(default=0, db_index = True,verbose_name = "N CmpBatches")
-
-    concs = ""
-    conc_lst = ArrayField(models.DecimalField(max_digits=9, decimal_places=4, default=0), 
-                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "Conc List", null=True, blank=True)
-    conc_units = ""
-    conc_unit_lst = ArrayField(models.CharField(max_length=10, default=""), 
-                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcUnit List", null=True, blank=True)
-    conc_types = ""
-    conc_type_lst = ArrayField(models.CharField(max_length=5, default=""), 
-                                 size=CmpBatchList_Base.MAX_CMPBATCHES, verbose_name = "ConcType List", null=True, blank=True)
-
-    class Meta:
-        abstract = True
-        # ordering=['cmpbatch_lst']
-        # # To include in Child Models
-        # indexes = [
-            # models.Index(name="conc_idx", fields=['conc_lst']),
-            # models.Index(name="concuni_idx", fields=['conc_unit_lst']),
-        # ]
-
-    #------------------------------------------------  
-    def conv_list_to_string(self):
-        super().conv_list_to_string()
-        self.concs        = ''
-        self.conc_units   = ''
-        self.conc_types   = ''
-        
-        if self.conc_lst:
-            self.concs        = COMPOUND_SEP.join([str(x) for x in self.conc_lst if x > 0])
-        if self.conc_unit_lst:
-            self.conc_units   = COMPOUND_SEP.join([str(x) for x in self.conc_unit_lst if x != ""])
-        if self.conc_type_lst:
-            self.conc_types   = COMPOUND_SEP.join([str(x) for x in self.conc_type_lst if x != ""])
-
-    #------------------------------------------------  
-    def conv_string_to_list(self):
-        super().conv_string_to_list()
-        #self.cmpbatch_lst  = strList_to_List(self.cmpbatches,sep=COMPOUND_SEP,size=4,fill="")
-        self.conc_lst      = strList_to_List(self.concs,sep=COMPOUND_SEP,size=4,fill=0)
-        self.conc_unit_lst = strList_to_List(self.conc_units,sep=COMPOUND_SEP,size=4,fill="")
-        self.conc_type_lst = strList_to_List(self.conc_types,sep=COMPOUND_SEP,size=4,fill="")
-
-    #------------------------------------------------  
-    def check_conc_unit_dictionary(self):
-        _missing = []
-        if self.conc_unit_lst:
-            for conc_unit in [x for x in self.conc_unit_lst if x != ""]:
-                if not Dictionary.exists(self.DICTIONARY_FIELDS['conc_unit_lst'],conc_unit):
-                    _missing.append(conc_unit)
-        if len(_missing) > 0:
-            return({'Error': f"Conc_Unit not found {', '.join(_missing)}"})
-        else:
-            return(None)
-
-    # #------------------------------------------------  
-    # def check_cmpbatch_id(self):
-    #     _missing =[]
-    #     for cmpbatch_id in [x for x in self.cmpbatch_lst if x != ""]:
-    #         if not Compound_Batch.exists(cmpbatch_id):
-    #             _missing.append(cmpbatch_id)
-    #     if len(_missing) > 0:
-    #         return({'Error': f"Compound_Batch not found {', '.join(_missing)}"})
-    #     else:
-    #         return(None)
-
-    # #------------------------------------------------  
-    # def __str__(self) -> str:
-    #     return f"{self.cmpbatches}" 
-
-    #------------------------------------------------  
-    def __repr__(self) -> str:
-        return f"{self.cmpbatches} {self.concs} {self.conc_units}" 
-
-    #------------------------------------------------
-    # Clear/Reset cmpbatch data
-    def clear_cmpbatch_data(self):
-        super().clear_cmpbatch_data()
-        self.concs = ""
-        self.conc_lst = []
-        self.conc_units = ""
-        self.conc_unit_lst = []
-        self.conc_types = ""
-        self.conc_type_lst = []
-
-    # #------------------------------------------------
-    # # Returns an User instance if found by name
-    # @classmethod
-    # def get(cls,CmpBatchLst):
-    #     pass
-
-    # #------------------------------------------------
-    # # Returns an User instance if found by name
-    # @classmethod
-    # def exists(cls,CmpBatchLst):
-    #     return cls.objects.filter(cmpbatch_lst__contains=CmpBatchLst).exists()
 

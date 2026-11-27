@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from dorganism.models import Organism, Taxonomy
+from adjcoadd.constants import *
 
 
 #-----------------------------------------------------------------------------------
@@ -17,7 +18,7 @@ def reformat_OrgBatchID(OrgBatchID):
     """
     xStr = OrgBatchID.split(":")
     #print(xStr)
-    return(f"{reformat_OrganismID(xStr[0])}_{int(xStr[1]):02d}")
+    return(f"{reformat_OrganismID(xStr[0])}{ORGBATCH_SEP}{int(xStr[1]):02d}")
 
 #-----------------------------------------------------------------------------------
 def get_subdir(OrgBatchID,binsize=100):

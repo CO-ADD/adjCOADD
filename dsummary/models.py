@@ -16,7 +16,8 @@ from django.utils.text import slugify
 from apputil.models import AuditModel, Dictionary, ApplicationUser, Document
 from applib.data.str_lists import strList_to_List
 #from dchem.models import Chem_Structure
-from dsample.models import CmpBatchList_Base, Project, COADD_Compound, ABase_Compound_Batch
+from dsample.models_base import CmpBatchList_Base
+from dsample.models import Project, COADD_Compound, ABase_Compound_Batch
 from dplate.models import MasterPlate, TestPlate, TestWell
 from dchem.models import Chem_Structure
 from dscreen.models import Screen_Run, AssayData_MIC, AssayData_CC50, AssayData_HC50

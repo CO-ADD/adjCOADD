@@ -1,15 +1,22 @@
 <tr class="editing">
   <td>
     <button class="border border-0 bg-transparent"
-      type="submit"
+      type="button"
       value="update"
-      hx-put="{%url 'updateAppUser' pk=object.name%}"
+      hx-put="{% url 'updateAppUser' pk=object.name %}"
       hx-include="closest tr"
       hx-trigger="click"
-    ><i class="fa-regular fa-floppy-disk text-success m-auto"></i></button>
-    {%include 'utils/miscellaneous/cancel_btn_reloc.html'%}
+      title="Save">
+      <i class="fa-solid fa-check text-success"></i>
+    </button>
+    <button type="button" class="border border-0 bg-transparent"
+      hx-put="{% url 'updateAppUser' pk=object.name %}?_value=cancel"
+      hx-trigger="click"
+      title="Cancel">
+      <i class="fa-solid fa-xmark text-danger"></i>
+    </button>
   </td>
-  {%for field in form%}
-  <td>{{field}}</td>
-  {%endfor%}
+  {% for field in form %}
+  <td>{{ field }}</td>
+  {% endfor %}
 </tr>

@@ -1,0 +1,8 @@
+var pH = typeof window < "u" ? require("raphael") : void 0;
+function dpF() {
+  if (pH)
+    return typeof pH == "function" ? pH : pH.default;
+}
+var PM = dpF();
+PM && (PM.el.translateAbs = function(Q, U) {
+

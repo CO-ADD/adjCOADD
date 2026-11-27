@@ -123,6 +123,12 @@ class Validation_Log():
     #-----------------------------------------------------
     def if_noerrors(self):
         return(self.n_logs[self.LOG_ERROR] == 0)
+
+    #-----------------------------------------------------
+    @property
+    def nLogs(self):
+        """Backward-compatible alias for ``n_logs`` (legacy apputil code)."""
+        return self.n_logs
     #-----------------------------------------------------
     # Show log entries in logger.info
     #-----------------------------------------------------
@@ -134,7 +140,7 @@ class Validation_Log():
                     _help = l['Help'] if l['Help'] else ""
                     _repr = f"[{t:7s}] {l['Process']} : {l['Action']} {l['Item']} {_note} {_help}"
                     logger.info(_repr)
-                    print(_repr)
+                    #print(_repr)
             else:
                 print(f"{self.log_process}: No {t} ")    
     #-----------------------------------------------------

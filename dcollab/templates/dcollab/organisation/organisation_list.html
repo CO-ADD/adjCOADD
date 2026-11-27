@@ -19,8 +19,7 @@
 
     <!-- list View Content -->
    <div class="contain-fluid data-contain">
-      {% include 'modal/updateModel_base_modal.html' with model_name='Organisation' %}
-      {% include 'datatable/datatable_pag_action.html' with model_name='Organisation' update_url='organisation_update' %}
+      {% include 'datatable/datatable_pag_action.html' with model_name='Organisation' update_url='organisation_update' modal_id='infoModal' modal_body_id='info-body' %}
     </div>
     </div>
 

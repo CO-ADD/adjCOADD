@@ -1,0 +1,28 @@
+<span hx-swap-oob="innerHTML:#info-title"><i class="bi bi-journal-plus me-2"></i>Create Dictionary</span>
+
+<form method="POST" action="{{ request.path }}">
+  {% csrf_token %}
+
+  <div style="max-height: 55vh; overflow-y: auto; padding-right: .25rem;">
+    <table class="table table-hover table-sm align-middle table-bordered mb-0">
+      <tbody>
+        {% for field in form.visible_fields %}
+          <tr>
+            <th scope="row" class="align-middle table-label-col">{{ field.label }}</th>
+            <td class="align-middle">
+              {{ field }}
+              {% for error in field.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-center gap-2 pt-3 mt-3 border-top">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+  </div>
+</form>

@@ -1,6 +1,7 @@
 import os
 from django import forms
 from django.shortcuts import HttpResponse, render, redirect
+from django.urls import reverse
 from formtools.wizard.views import SessionWizardView
 from django.core.files.storage import FileSystemStorage
 from django.core.exceptions import ValidationError
@@ -164,7 +165,41 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
         self.dirname=None
         self.valLog=None
         self.upload=False
+        self.progress_key = None
         self.html_columns = ['Type','Note','Item','Filename','Help']
+
+    def get(self, request, *args, **kwargs):
+        """Render the current step without resetting the wizard.
+
+        formtools' WizardView.get() resets storage on every GET; the AJAX
+        wizard submission re-navigates to the wizard URL after the POST, which
+        would otherwise bounce back to step 1. Only reset on a fresh session
+        or an explicit ``?reset`` request (used by Cancel to fully reset).
+        """
+        if 'reset' in request.GET:
+            self.storage.reset()
+            self.storage.current_step = self.steps.first
+            _next = request.GET.get('next')
+            if _next:
+                return redirect(_next)
+            if getattr(self, 'redirect_url', None):
+                return redirect(reverse(self.redirect_url))
+        elif self.storage.current_step is None:
+            self.storage.current_step = self.steps.first
+        return self.render(self.get_form())
+
+    def ensure_progress_key(self, renew=False):
+        """Return (and persist) the cache key used for progress polling.
+
+        The key is renewed each time the page is rendered (``renew=True`` in
+        ``get_context_data``) so every step starts with a fresh progress bar.
+        During ``process_step`` the current page's key is read back unchanged.
+        """
+        if renew or not self.storage.extra_data.get('progress_key'):
+            import uuid
+            self.storage.extra_data['progress_key'] = f"{self.__class__.__name__}:{uuid.uuid4().hex}"
+        self.progress_key = self.storage.extra_data['progress_key']
+        return self.progress_key
     
     def file_process_handler(self, request, *args, **kwargs):
         pass
@@ -173,6 +208,8 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
     def process_step(self, form):
         current_step = self.steps.current
         request = self.request
+
+        self.ensure_progress_key()
 
         if current_step == 'select_file':
             context={}
@@ -252,6 +289,15 @@ class ImportHandler_View(WriteUserRequiredMixin,SessionWizardView):
         context['step1']=self.name_step1
         current_step = self.steps.current
         context['validation_message'] = self.storage.extra_data.get('validation_message', None)
+        # Cancel target: a configured URL name takes precedence, otherwise
+        # fall back to the referring page (matching done()'s redirect).
+        if getattr(self, 'redirect_url', None):
+            context['cancel_url'] = reverse(self.redirect_url)
+        else:
+            context['cancel_url'] = self.request.META.get('HTTP_REFERER')
+        # Progress polling (Option B)
+        context['progress_key'] = self.ensure_progress_key(renew=True)
+        context['progress_url'] = reverse('process_progress')
         if current_step == 'upload_file':
             context['validation_result']="Select VITEK PDF files"
         else:

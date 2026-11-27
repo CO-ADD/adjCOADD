@@ -3,6 +3,8 @@ import math
 from pathlib import Path
 import numpy as np
 from statistics import geometric_mean
+from decimal import Decimal
+
 from django_rdkit.models import *
 from django_rdkit.config import config
 from django.conf import settings
@@ -259,14 +261,16 @@ def Value_Range(lstValue,aggType='Mean',floatPrec=2,maxLst=10):
 #-----------------------------------------------------------------------------
 # Summary Functions for Dose Response values - MIC CC50
 #-----------------------------------------------------------------------------
-def DR_Range(lstDR,maxLst=10):
+def DR_Range(lstDR, maxLst=10, ValuesOnly=False):
     df = {}
-    sortLst = DR2Sort_lst(lstDR)
+    sortLst = DR2Sort_lst(lstDR, ValuesOnly=ValuesOnly)
     n_sortLst = len(sortLst)
     if n_sortLst > 0:
         sortLst.sort()
 
         sortDR = Sort2DR_lst(sortLst)
+        #print("--------------------------------------------")
+        #print(sortDR)
 
         df['Min'] = sortDR[0]
         df['Max'] = sortDR[-1]
@@ -313,7 +317,7 @@ def DR_GeoMean(lstDR):
 #-----------------------------------------------------------------------------
 # Doseresponse Sorting Functions 
 #-----------------------------------------------------------------------------
-def DR2Sort(strDR,zLength=4):
+def DR2Sort(strDR,zLength=4, ValuesOnly=False):
     if strDR[0] == '>':
         s3 = 'Z'
         s2 = strDR[1:]
@@ -339,7 +343,7 @@ def Sort2DR(strSort,zLength=4):
     return(d1+s1)
 
 # --------------------------------------------------------------------
-def DR2Sort_lst(lstDR,zLength=4):
+def DR2Sort_lst(lstDR,zLength=4,ValuesOnly=False):
     lstSort = []
     for i in lstDR:
         try:
@@ -353,6 +357,11 @@ def DR2Sort_lst(lstDR,zLength=4):
         except Exception as err:
             print(f"drerror: {err} with {i}")
 
+    if ValuesOnly:
+        _rm_lst = [r for r in lstSort if r[-1] != 'A']
+        for _r in _rm_lst:
+            lstSort.remove(_r)
+        
     return(lstSort)
 
 # --------------------------------------------------------------------
@@ -370,6 +379,28 @@ def Sort2DR_lst(lstSort,zLength=4):
         except Exception as err:
             print(f"sortrerror: {err} with {i}")
     return(lstDR)
+
+
+# --------------------------------------------------------------------
+# Extract a float value for the string(MIC)
+#  >    .. 2*MIC
+#  <=   .. MIC
+def DR2Value(strDR, MaxInhib=None):
+    if isinstance(strDR,str):
+        if strDR[0] == '>':
+            v = 2 *Decimal(strDR[1:])  
+            if MaxInhib:
+                if MaxInhib > 50:
+                    v = 2 * v
+                    
+        elif strDR[:2] == '<=':
+            v =  Decimal(strDR[2:])
+            
+        else:
+            v =  Decimal(strDR)
+    else: 
+        v = strDR
+    return(v)
 
 #-----------------------------------------------------------------------------
 # Doseresponse Formating Functions

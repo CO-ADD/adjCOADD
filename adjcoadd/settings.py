@@ -17,18 +17,7 @@ import ldap
 import django
 from django_auth_ldap.config import LDAPSearch, GroupOfNamesType, LDAPGroupQuery, PosixGroupType
 
-
 print(f"Project: adjCOADD ")
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-#--------------------------------------------------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Collect Versions
-#--------------------------------------------------------------------
-DJANGO_VER = django.__version__
-PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
-
 
 #======================================================================
 # Define Version 
@@ -40,7 +29,12 @@ PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
 #DEVELOPMENT=None
 DEVELOPMENT='Test'
 
-VERSION = '1.8.3'
+VERSION = '2.0.7'
+#======================================================================
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+#--------------------------------------------------------------------
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 #........................................................................
 if DEVELOPMENT:
@@ -112,11 +106,17 @@ else:
 # MEDIA_URL = ('uploads/')
 # MEDIA_ROOT= UPLOAD_DIR
 
+# Collect Versions
+#--------------------------------------------------------------------
+DJANGO_VER = django.__version__
+PYTHON_VER = '.'.join([str(s) for s in sys.version_info[:3]])
+
 print(f"Django : {DJANGO_VER}" )
 print(f"Python : {PYTHON_VER}" )
 print(f"BaseDir: {BASE_DIR}")
 print(f"Version: {VERSION}")
-
+print(f"Debug  : {DEBUG}")
+    
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 #--------------------------------------------------------------------
@@ -164,13 +164,36 @@ INSTALLED_APPS = [
     'dcell.apps.dCellConfig',
     'dchem.apps.dChemConfig',
     'dplate.apps.dPlateConfig',
-    'dpeptide.apps.dPeptideConfig',
+    'dbiologic.apps.dBiologicConfig',
     'dsummary.apps.dSummaryConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'formtools',
     'pgtrigger',
 ]
+
+#--------------------------------------------------------------------
+# Background tasks (django.tasks, Django 6.1+)
+#--------------------------------------------------------------------
+# Django core only ships development/test backends (Immediate/Dummy).
+# For a durable queue + worker use the third-party ORM backend:
+#   pip install django-tasks-db
+#   python manage.py migrate              # creates django_tasks_db tables
+#   python manage.py db_worker            # run the worker process
+# Until django-tasks-db is installed, tasks run immediately (synchronously).
+try:
+    import django_tasks_db  # noqa: F401
+    INSTALLED_APPS.append("django_tasks_db")
+    _TASKS_BACKEND = "django_tasks_db.DatabaseBackend"
+except ImportError:
+    _TASKS_BACKEND = "django.tasks.backends.immediate.ImmediateBackend"
+
+TASKS = {
+    "default": {
+        "BACKEND": _TASKS_BACKEND,
+        "QUEUES": ["default"],
+    }
+}
 
 #--------------------------------------------------------------------
 REST_FRAMEWORK = {
@@ -226,7 +249,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'apputil.context_processors.global_settings'
+                'apputil.context_processors.global_settings',
+                'apputil.context_processors.navbar_menus'
             ],
         },
     },
@@ -347,9 +371,9 @@ DATABASES = {
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
     },
-    'dpeptide': {
+    'dbiologic': {
         "ENGINE": PG_ENGINE,
-        'OPTIONS':{'options': '-c search_path=dpeptide,dscreen,dsample,dcell,dorganism,apputil,public', 
+        'OPTIONS':{'options': '-c search_path=dbiologic,dscreen,dsample,dcell,dorganism,apputil,public', 
                    'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,},
         'NAME': DB_NAME,'USER': DB_USER, 'PASSWORD':DB_PASSWD,
         'HOST': HOST_NAME, 'PORT': '5432',
@@ -369,7 +393,7 @@ DATABASE_ROUTERS = ['adjcoadd.routers.DatabaseRouter',]
 #--------------------------------------------------------------------
 # Requires django-dbbackup django-crontab and pg_dump/restore
 DBBACKUP_DATABASES = ['default'
-                    #   'dorganism','dcell','ddrug','dgene','dpeptide',
+                    #   'dorganism','dcell','ddrug','dgene','dbiologic',
                     #   'dplate','dcollab','dsample','dscreen',
                     #   'dchem','dsummary',
                     ]
@@ -424,16 +448,37 @@ AUTH_USER_MODEL = 'apputil.ApplicationUser'
 LOGOUT_REDIRECT_URL="/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#LDAP Autherntications
+#LDAP Authentication Settings - OLD
 #--------------------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
     "django_auth_ldap.backend.LDAPBackend", 
     "django.contrib.auth.backends.ModelBackend",
     ]
-AUTH_LDAP_SERVER_URI = "ldap://ldap.uq.edu.au"
-AUTH_LDAP_BIND_DN = ""
-AUTH_LDAP_BIND_PASSWORD = ""
-AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+
+# Old UQ LDAP server settings
+# AUTH_LDAP_SERVER_URI = "ldap://ldap.uq.edu.au"
+# AUTH_LDAP_BIND_DN = ""
+# AUTH_LDAP_BIND_PASSWORD = ""
+# AUTH_LDAP_USER_SEARCH = LDAPSearch("ou=people,o=The University of Queensland,c=au", ldap.SCOPE_SUBTREE, "(uid=%(user)s)")
+
+# UQ AD server settings
+#>ldapsearch -x -ZZ -H 'ldap://ad.cc.uq.edu.au:389' -D 'uqcoadd@uq.edu.au' -W -b 'DC=uq,DC=edu,DC=au' '(sAMAccountName=uqjzuegg)' dn sAMAccountName userPrincipalName
+#
+AUTH_LDAP_SERVER_URI = "ldap://ad.cc.uq.edu.au"
+AUTH_LDAP_START_TLS = True
+AUTH_LDAP_BASE_DN = "DC=uq,DC=edu,DC=au"
+AUTH_LDAP_BIND_DN = "uqcoadd@uq.edu.au"
+AUTH_LDAP_BIND_PASSWORD = os.environ.get('AD_BIND_PASSWORD') or "Bri$myc1n@2009"
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    AUTH_LDAP_BASE_DN,
+    ldap.SCOPE_SUBTREE, 
+    "(sAMAccountName=%(user)s)")
+
+AUTH_LDAP_CONNECTION_OPTIONS = {
+    ldap.OPT_PROTOCOL_VERSION: 3,
+    ldap.OPT_REFERRALS: 0,          # important for AD
+    #ldap.OPT_X_TLS_NEWCTX: 0,   # keep this last
+}
 
 # Security Setting
 #--------------------------------------------------------------------
@@ -488,6 +533,10 @@ LOGGING = {
             'filename': os.path.join(str(LOG_PATH), 'django_server.log'),
             'formatter': 'verbose',
         },
+       'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },        
         'user': {
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(str(LOG_PATH), 'user.log'),
@@ -497,28 +546,34 @@ LOGGING = {
         },    
     },
     'loggers': {
+        ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
+
         'django': {
             'handlers': ['file'],
-            'level': 20, ## python logging levels: 10-'DEBUG', 40-'ERROR', 50-'CRITICAL', 30-'WARNING', 20-'INFO', 0-'Notset'
+            'level': 'INFO', 
             'propagate': False,
         },
-    
         'user_log': {
             'handlers': ['user'],
             'level': 'INFO',
         },
+        'django_auth_ldap': {
+            'handlers': ['user'],
+            'level': 'INFO',
+            "propagate": True,
+        },
+        # '': {
+        #     'handlers': ['console'],
+        #     'level': 'DEBUG', 
+        # },
     },
 }
+
+if DEVELOPMENT:
+    LOGGING['loggers'][''] = {'handlers': ['console'],'level': 'DEBUG', }
+
 
 X_FRAME_OPTIONS = 'ALLOWALL'
 XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
 
-# -------------------------------------------
-# print('Development:',DEVELOPMENT)
-# print('Debug:',DEBUG)
-# print('Base_Dir:',BASE_DIR)
-# print('Upload_Dir:',UPLOAD_DIR)
-# print('Media_Root:',MEDIA_ROOT)
-# print('Structure_files_dir:',MOL_IMG_DIR)
-# print('DbBackup:',DBBACKUP_STORAGE_OPTIONS)
-
+#====================================================================================

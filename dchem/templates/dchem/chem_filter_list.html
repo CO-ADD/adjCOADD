@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}COADD{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-row vh-100">
+  <!-- Sidebar View/Buttons -->
+  <div class="leftbar d-flex flex-column p-0 mb-3 h-25">
+    <div class="d-flex flex-column p-0">
+      <a class="btn-sm" id="hidefilter" data-bs-toggle="tooltip" data-bs-placement="right" title="C/O FilterSwitcher">
+        <i class="bi bi-funnel fs-5"></i>
+      </a>
+      <a href="{% url list_url %}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="right" title="Table View">
+        <i class="fa-solid fa-table-list fs-5"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Filterbar View/Filter -->
+  {% include 'utils/sidebar.html' %}
+
+  <!-- Main View -->
+  <div class="d-flex flex-column w-100">
+    {% include 'datatable/base/datatable_top.html' with title=title model_name=model_name application='dchem' %}
+    <div class="contain-fluid data-contain">
+      {% if has_filters %}
+        <div class="row d-flex flex-wrap mx-2 fixTableHead">
+          {% include 'datatable/base/datatable_base.html' with modelname=model_name %}
+        </div>
+      {% else %}
+        <div class="m-4 p-5 text-center card-bg rounded-3">
+          <i class="bi bi-search fs-2"></i>
+          <p class="h5 mt-3">Search or filter to list structures</p>
+          <p class="text-muted">
+            This table is large. Enter search criteria (minimum 3 characters) or apply a filter
+            in the side panel to view the results.
+          </p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

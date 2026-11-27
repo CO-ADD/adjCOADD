@@ -3,6 +3,7 @@ import datetime
 import numpy as np
 import pandas as pd
 import scipy.optimize as opt
+from decimal import Decimal
 
 from adjcoadd.constants import COMPOUND_SEP
 from apputil.models import Dictionary
@@ -55,22 +56,37 @@ class DoseResponse():
             logger.warning(" [DoseResponse] No concentration unit ")
         return(s)
 
-    def init_data(self,CmpBatches, dfDR, djTestPlate):
+    #---------------------------------------------------------------------
+    def init_data(self,CmpBatches, dfDR, djTestPlate, renameCol=None):
         dfValid = True
+        
+        self.df = dfDR.copy()
+        if renameCol:
+            self.df.rename(columns=renameCol, inplace=True)
+        
+        #print(self.df)
+            
         self.required_columns = ['well_id','conc_lst', 'inhibition','conc_unit_lst']
         # Prepare Data DF
-        if set(self.required_columns).issubset(dfDR.columns) :
+        if set(self.required_columns).issubset(self.df.columns) :
             dfValid = True
-            self.df = dfDR.sort_values(by='conc_lst',ascending=True).reset_index(drop=True)
+            self.df = self.df.sort_values(by='conc_lst',ascending=True).reset_index(drop=True)
 
             #self.df = self.df.apply(self.apply_conc,axis=1)
+            #
+            # Generate conc/conc_unit from first value in conc_lst/conc_unit_lst
+            #
+            #print(self.df)
             for index, row in self.df.iterrows():
                 if row.conc_lst:
                     self.df.at[index,'conc'] = row.conc_lst[0]
                 else:
                     dfValid = False
                 if row.conc_unit_lst:
-                    self.df.at[index,'conc_unit'] = row.conc_unit_lst[0]
+                    if isinstance(row.conc_unit_lst,list):
+                        self.df.at[index,'conc_unit'] = row.conc_unit_lst[0]
+                    else:
+                        self.df.at[index,'conc_unit'] = row.conc_unit_lst
                 else:
                     dfValid = False
 
@@ -80,9 +96,9 @@ class DoseResponse():
                 self.dmin = self.df['inhibition'].min(axis=0)
                 self.dave = self.df['inhibition'].mean(axis=0)
 
-                self.cmax = self.df['conc_lst'].max(axis=0)
-                self.cmin = self.df['conc_lst'].min(axis=0)
-                
+                self.cmax = self.df['conc'].max(axis=0)
+                self.cmin = self.df['conc'].min(axis=0)
+
                 self.n_wells = len(self.df)
                 self.n_conc = len(self.df['conc'].unique())
                 
@@ -106,9 +122,6 @@ class DoseResponse():
 
         return(None)
 
-    #--------------------------------------------------------------
-    def __repr__(self):
-        return(f"{self.cmpbatch_lst} {self.n_wells} {self.n_conc}")
 
     #--------------------------------------------------------------
     def load_data(self,Plate_ID, Well_ID, Assay_ID):
@@ -119,6 +132,8 @@ class DoseResponse():
         if 'MIC' in str(self.testplate.result_type): 
             self.MIC()
             self.IC50()
+        elif 'synMIC'in str(self.testplate.result_type):
+            self.synMIC()
         elif 'CC50' in str(self.testplate.result_type):
             self.IC50() 
         elif 'HC50' in str(self.testplate.result_type):
@@ -171,7 +186,8 @@ class DoseResponse():
                     }
         
         ass_key = str(self.testplate.result_type)
-        if 'MIC' == ass_key:
+        if 'MIC' in ass_key:
+            ass_key = 'MIC'
             self.dr_type = ass_key
             self.assaydata_status = 'Exists'
             self.assaydata = AssayData_MIC.get(self.testplate.plate_id,self.testwell_id)
@@ -214,8 +230,9 @@ class DoseResponse():
             else:
                 if hasattr(self,f):
                     setattr(self.assaydata,f,getattr(self,f))
-                       
-        return(self.assaydata)
+                    
+        #print(f" [DR] {self.assaydata}")               
+        #return(self.assaydata)
 
     #--------------------------------------------------------------
     def save_assaydata(self, overwrite=False):
@@ -237,10 +254,30 @@ class DoseResponse():
             _rstr.append(f"IC50: {self.ic50_dmax}")
         return("; ".join(_rstr))
 
+    #--------------------------------------------------------------
+    def __repr__(self):
+        _rstr = []
+        if hasattr(self,'mic_dmax'):
+            _rstr.append(f"MIC: {self.mic_dmax}")
+        if hasattr(self,'ic50_dmax'):
+            _s  = f"IC50: {COMPOUND_SEP.join(self.cmpbatch_lst)} : {self.ic50_dmax} "
+            _s += f"[slope: {self.ic50_fit_slope} r2: {self.ic50_fit_r2} nconc: {self.n_conc}] "
+            _s += f"[{self.ic50_quality} - {self.ic50_comment}]"
+            _rstr.append(_s)
+        return("; ".join(_rstr))
+
+
     # -- Apply function for Well Activity
     #--------------------------------------------------------------
     
     #--------------------------------------------------------------
+    @staticmethod
+    def split_MIC(MIC):
+        mic_value_lst = []
+        _mic = MIC.split(COMPOUND_SEP)
+        for _m in _mic:
+            mic_value_lst.append(Decimal(_m))
+        return(mic_value_lst)
 
     #--------------------------------------------------------------
     @staticmethod
@@ -304,7 +341,8 @@ class DoseResponse():
             xa1 = xa0
             idx += 1
             
-        # Record Total Single or Multiple Skips             
+        # Record Total Single or Multiple Skips
+        # ----------------------------------------             
         self.skips[0] += _skips
         if _skips == 1:
             self.skips[1] += 1
@@ -315,6 +353,7 @@ class DoseResponse():
         # print(f" {v['active']} - {act_Well} {act_Flag} - {self.skips_active} {self.skips_total} - {self.skips} ")
 
         # -- Assign correct MIC Value from actWell
+        # ----------------------------------------             
         if (act_Well == 0):
             #retMIC = _mic_df.to_dict('records')[nWells-1]
             self.mic_prefix = '>'
@@ -339,7 +378,7 @@ class DoseResponse():
         self.mic_quality = 'Valid'
         _mic_Comment = []
 
-        # In case n/aSkips  
+        # In case n/aSkips          # ----------------------------------------             
 #        if (self.skips_active > 0) and (self.skips_active < 2):
         if (self.skips[1] > 0) and (self.skips[2] < 1):
             self.mic_valid = 1
@@ -392,6 +431,16 @@ class DoseResponse():
         # print(f" [MIC] MIC  : {self.mic_dmax} {self.mic_act} {self.mic_act_score} {self.pmic}")  
         # print(f" [MIC]      Skips: {self.skips_active} {self.skips_total}")
 
+    # #===================================================================        
+    # def synMIC(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
+    # #===================================================================
+    #     if self.df is None:
+    #         logger.warning(" [DoseResponse] synMIC no data")
+    #         return(None)   
+             
+    #     self.df = self.df.apply(self.apply_active,args=(Inhibition_Cutoff,MScore_Cutoff,),axis=1)
+
+
     #-----------------------------------------------------------------------------
     @staticmethod
     def Func_EC50(x, a, b, c, d):
@@ -415,7 +464,7 @@ class DoseResponse():
 
 
     #===================================================================        
-    def IC50(self, Inhibition_Cutoff=80, MScore_Cutoff=None):     
+    def IC50(self, Inhibition_Cutoff=80, R2_Cutoff=0.35 , MScore_Cutoff=None):     
     #===================================================================
 
         npConc = np.array(self.df['conc'].to_list(), dtype=float)
@@ -432,62 +481,84 @@ class DoseResponse():
         if self.dmax < self.ic50_dmax_cutoff:
             self.ic50_prefix = '>'
             self.ic50_value = self.cmax
-            self.fit_r2 = 0
+            self.ic50_fit_r2 = 0
+            self.ic50_fit_slope = 0
             self.ic50_quality = 'Valid'
             self.ic50_comment = 'No Activity'
             self.ic50_valid = 1
+
         # All Active : DMin > 60%
         elif self.dmin > (100-self.ic50_dmax_cutoff):
             self.ic50_prefix = '<='
             self.ic50_value = self.cmin
-            self.fit_r2 = 0
+            self.ic50_fit_r2 = 0
+            self.ic50_fit_slope = 0
             self.ic50_quality = 'Valid'
             self.ic50_comment = 'All Active'
             self.ic50_valid = 1
+
         else:
             try:
                 # Func_IC50(x, IC50, slope)
                 fit_bounds = ([10**-9, -np.inf],[np.inf, np.inf])
                 fit_Coefs, covMat = opt.curve_fit(self.Func_IC50, npConc, npInhib, bounds=fit_bounds)
+                fit_err = np.sqrt(np.diag(covMat))
+                
                 res = npInhib - self.Func_IC50(npConc,*fit_Coefs)
 
                 ss_res = np.sum(res**2)
                 ss_tot = np.sum((npInhib-np.mean(npInhib))**2)
 
-                self.fit_r2 = round(1 - (ss_res/ss_tot),2)
-                self.fit_ic50 = round(fit_Coefs[0],3)
-                self.fit_slope = round(fit_Coefs[1],3)
-                self.fit_ic10 = round(fit_Coefs[0] * pow(10/90,1/fit_Coefs[1]),3)
-                self.fit_ic90 = round(fit_Coefs[0] * pow(90/10,1/fit_Coefs[1]),3)
+                self.ic50_fit_r2 = round(1 - (ss_res/ss_tot),2)
+                self.ic50_fit_ic50 = round(fit_Coefs[0],3)
+                self.ic50_fit_slope = round(fit_Coefs[1],3)
+                self.ic50_fit_ic10 = round(fit_Coefs[0] * pow(10/90,1/fit_Coefs[1]),3)
+                self.ic50_fit_ic90 = round(fit_Coefs[0] * pow(90/10,1/fit_Coefs[1]),3)
 
-                if fit_Coefs[0] > self.cmax:
+                self.ic50_quality = 'Valid'
+                self.ic50_comment= ''
+                self.ic50_valid = 1
+
+                # No accurate Fit
+                
+                #print(f" [IC50] Fit {self.ic50_fit_ic50} r2: {self.ic50_fit_r2} ") 
+                if self.ic50_fit_r2 <= R2_Cutoff:
+                    #print(f" [IC50] NoFit {self.ic50_fit_ic50} {self.ic50_fit_r2}") 
+                    self.ic50_fit_r2 = 0
+                    self.ic50_fit_slope = 0
+                    self.ic50_prefix = '>'
+                    self.ic50_value = self.cmax
+                    self.ic50_comment = 'NoFit'
+                
+                # Inactive: IC50 > Max Tested Concentration    
+                elif self.ic50_fit_ic50 > self.cmax:
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
                     if self.dmax > self.ic50_dmax_cutoff:
                         self.ic50_prefix = '='
                         self.ic50_value = self.cmax
-                        self.fit_r2 = 0
+                        self.ic50_fit_r2 = 0
                         
-                # Active: fxC50 < Min Tested Concentration
-                elif fit_Coefs[0] < self.cmin:
+                # Active: IC50 < Min Tested Concentration
+                elif self.ic50_fit_ic50 < self.cmin:
                     self.ic50_prefix = '<='
                     self.ic50_value = self.cmin
                     #retIC50['XC10'] = format_DR('<=',CMin)
                     if self.dmax > self.ic50_dmax_cutoff:
                         self.ic50_prefix = '='
                         self.ic50_value = self.cmin
-                        self.fit_r2 = 0
+                        self.ic50_fit_r2 = 0
+                # IC50
                 else:
                     self.ic50_prefix = '='
-                    self.ic50_value = self.fit_ic50
+                    self.ic50_value = self.ic50_fit_ic50
 
-                self.ic50_quality = 'Valid'
-                self.ic50_comment= ''
-                self.ic50_valid = 1
                 
             # --- No Fit 
             except RuntimeError:
-                self.fir_r2 = -1
+                
+                self.ic50_fit_r2 = -1
+                self.ic50_fit_slope = -1
                 if self.dave <= self.ic50_dmax_cutoff:
                     self.ic50_prefix = '>'
                     self.ic50_value = self.cmax
@@ -544,6 +615,8 @@ class DoseResponse():
             self.pic50 = -1
             
         self.ic50_dmax = dr_max_quality(self.ic50,self.dmax,self.ic50_quality)
+        
+        #print(f" [IC50] {repr(self)}") 
 
 #====================================================================
 class DoseResponse_Plot():
@@ -554,8 +627,9 @@ class DoseResponse_Plot():
         self.data_per_plot = 6
 
         
-# Process TestPlate -------------------------------------------------------------
-def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
+# Process TestPlate for Doseresponse ------------------------------------------------
+# 
+def calc_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
     DR_Lst = []
     #djTP = TestPlate.get(PlateID,WellData=True)
     if djTP:
@@ -564,24 +638,27 @@ def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
                 djTP.n_doseresponses = 0
                 if verbose > 0:
                     logger.info(f" [{djTP.plate_id}] {djTP.result_type} {djTP.assay_id}")
-                
                 djTP.conv_list_to_string()
                 djTP.make_wells_df(ListToString=True)
 
-                grpData = djTP.wells_df.groupby('cmpbatch_sets') 
+                grpData = djTP.wells_df.groupby('cmpbatch_sets')
+                if verbose>0: 
+                    logger.debug(f" [{djTP.plate_id}] --1-- {djTP.result_type} {djTP.assay_id} {djTP.n_samples} Samples, {djTP.n_inhibitions} Inhibitions")
                 for CmpBatchSet,DRData in grpData:
                     if CmpBatchSet:
+                        # if verbose>0: 
+                        #     logger.debug(f" [{djTP.plate_id}] --2-- {CmpBatchSet} {len(DRData)}")
                         # Use CmpBatch w/o SetID
                         CmpBatch = DRData['cmpbatches'].unique()[0]
+                        # if verbose>0:  
+                        #     logger.debug(f" [{djTP.plate_id}] --3-- {CmpBatch}")
                         djDR = DoseResponse().init_data(CmpBatch,DRData[['well_id','conc_lst','inhibition','mscore','conc_unit_lst']],djTP)
                         
                         # _dr.init_data(grpid,grpdf[['well_id','conc_lst','inhibition','conc_unit_lst']],djTP)
                         if djDR:
                             djDR.calc_doseresponse()
                             djTP.n_doseresponses += 1
-                            #print(f" [{djDR.testwell_id}] {str(djDR)}")
                             djDR.doseresponse_to_assaydata()
-                            #print(f" {djDR.assaydata.data_quality} ({djDR.assaydata.data_comment}) ")
                             if upload:
                                 djDR.save_assaydata(overwrite=overwrite)
                             #print(repr(djDR))
@@ -596,3 +673,20 @@ def process_testplate_doseresponse(djTP,upload=False,overwrite=False,verbose=0):
                 logger.info(f" [{djTP.plate_id}] {djTP.result_type} Either no Samples ({djTP.n_samples}) or no Inhibitions ({djTP.n_inhibitions})")
 
     return(DR_Lst)
+
+# Reset Doseresponse AssayData for Testplate ------------------------------------------------
+# 
+def reset_testplate_assaydata(djTP,upload=False,overwrite=False,verbose=0):
+    if djTP and upload and overwrite:
+        if str(djTP.result_type) == 'MIC' :
+            qryData = AssayData_MIC.objects.filter(testplate_id=djTP)
+        elif str(djTP.result_type) == 'CC50' :
+            qryData = AssayData_CC50.objects.filter(testplate_id=djTP)
+        elif str(djTP.result_type) == 'HC50' :
+            qryData = AssayData_HC50.objects.filter(testplate_id=djTP)
+        else:
+            qryData = []
+            
+        for q in qryData:
+            q.delete()
+            

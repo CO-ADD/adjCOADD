@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm
@@ -28,7 +29,7 @@ class DateField(forms.Field):
 #=================================================================================================
 # Taxonomy
 #=================================================================================================
-class Taxonomy_Form(forms.ModelForm):
+class Taxonomy_Form(Base_ModelForm):
     org_class = forms.ModelChoiceField(widget=forms.Select(attrs={'class':''}), queryset=Dictionary.objects.all(), )
     division = forms.ModelChoiceField(queryset=Dictionary.objects.all())
     
@@ -93,7 +94,7 @@ class Organism_Filter(BaseStatus_Filter):
         fields=[ 'Class', 'ID', 'Name','Strain',  'Notes', 'Type', 'MTA', 'Panel', ]
 
 # -----------------------------------------------------------------
-class CreateOrganism_form(forms.ModelForm):
+class CreateOrganism_form(Base_ModelForm):
 
     strain_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}),required=False,)
     # prep_notes= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
@@ -171,7 +172,7 @@ class UpdateOrganism_form(CreateOrganism_form):
 #=================================================================================================
 # Organism Batch
 #=================================================================================================
-class OrgBatch_Form(forms.ModelForm):
+class OrgBatch_Form(Base_ModelForm):
 
     #alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
@@ -195,7 +196,7 @@ class OrgBatch_Form(forms.ModelForm):
         exclude=['orgbatch_id', 'stock_level', 'organism_id']
         
 
-class OrgBatch_UpdateForm(forms.ModelForm):
+class OrgBatch_UpdateForm(Base_ModelForm):
 
     batch_quality = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     qc_status = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
@@ -236,7 +237,7 @@ class OrgBatch_Filter(BaseStatus_Filter):
 #=================================================================================================
 
 # -----------------------------------------------------------------------------------    
-class OrgBatchStock_CreateForm(forms.ModelForm):
+class OrgBatchStock_CreateForm(Base_ModelForm):
 
     field_order = ['orgbatch_id','stock_type', 'n_created', 'n_left', 'stock_date', 'stock_note', 'location_freezer', 'location_rack', 'location_column', 'location_slot', 'biologist']
 
@@ -283,7 +284,7 @@ class OrgBatchStock_Filter(BaseStatus_Filter):
 #=================================================================================================
 # Organism Culture
 #=================================================================================================
-class OrgCulture_Form(forms.ModelForm):
+class OrgCulture_Form(Base_ModelForm):
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type= forms.ModelChoiceField(widget=forms.Select(attrs={'readonly':False}), required=False,queryset=Dictionary.objects.all(),)
     culture_source= forms.ModelChoiceField(widget=forms.Select(attrs={'readonly':False}), required=False,queryset=Dictionary.objects.all(),)
@@ -300,7 +301,7 @@ class OrgCulture_Form(forms.ModelForm):
         fields=list(model.LIST_VIEW_FIELDS.keys())
 
 # -----------------------------------------------------------------------------------    
-class OrgCulture_UpdateForm(forms.ModelForm):
+class OrgCulture_UpdateForm(Base_ModelForm):
     culture_notes=forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '3'}), required=False,)
     culture_type = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
     culture_source = forms.ModelChoiceField(required=False,queryset=Dictionary.objects.all(),)
@@ -323,7 +324,7 @@ class OrgCulture_UpdateForm(forms.ModelForm):
 #=================================================================================================
 # OrganismBatch Image
 #=================================================================================================
-class OrgBatchImg_Form(forms.ModelForm):
+class OrgBatchImg_Form(Base_ModelForm):
     field_order = ['image_file','orgbatch_id','image_desc','image_source']
     image_file = forms.ImageField(label='Select an image file',required=True)
     image_type = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))

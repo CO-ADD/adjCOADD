@@ -28,6 +28,7 @@
                 <div class="accordion-body bg-transparent">
                     <b> {% include 'utils/message.html' %} </b>
                     {% include 'dscreen/screenrun/screenrun_update.html' %}
+                    {% include 'detailview/calculated_display.html' %}
                     <hr>
                     {% include 'detailview/audit_status.html' %}
                 </div>
@@ -77,10 +78,38 @@
                 <div id="collapseRunPlates" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
                     data-bs-parent="#screenrun-plates">
                     <div class="accordion-body">
+                    {% if view == 'card' %}
+                        <!-- prettier-ignore -->
+                        {% include 'dscreen/screenrun/testplate_card.html' with page_obj=testplate_page_obj querycount=testplate_count view=view view_switch=True %}
+                    {% else %}
                     <div class="table-responsive">
                         <!-- prettier-ignore -->
-                        {% include 'datatable/subtable_pag_action.html' with table_id='datatable_testplate' objects=testplate_objs data_fields=testplate_fields %}
+                        {% include 'datatable/subtable_pag_action.html' with table_id='datatable_testplate' objects=testplate_objs data_fields=testplate_fields page_obj=testplate_page_obj querycount=testplate_count view=view view_switch=True %}
                     </div>
+                    {% endif %}
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- MotherPlates -->
+            <div class="accordion bg-transparent w-100" id="screenrun-motherplates">
+                <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_04">
+                    <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                        data-bs-target="#collapseRunMotherPlates" aria-expanded="true" aria-controls="collapseRunMotherPlates">
+                    <h5 class="fs-6 my-0">
+                        MotherPlates
+                    </h5>
+                    {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=motherplate_count %}
+                    <!-- prettier-ignore -->
+                    </button>
+                </h2>
+                <div id="collapseRunMotherPlates" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_04"
+                    data-bs-parent="#screenrun-motherplates">
+                    <div class="accordion-body">
+                        <!-- prettier-ignore -->
+                        {% include 'dscreen/screenrun/masterplate_card.html' with objects=motherplate_objs %}
                     </div>
                 </div>
                 </div>

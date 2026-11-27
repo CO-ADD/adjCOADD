@@ -1,0 +1,7 @@
+menu_id,menu_name,menu_label,icon,order,permission
+MNU0001,OrgDB,OrgDB,,1,
+MNU0002,CastDB,CastDB,,2,
+MNU0003,Structures,Structures,,3,
+MNU0004,Import,Import,,4,
+MNU0005,Admin,Admin,,5,Superuser
+MNU0006,Tasks,Tasks,,6,Admin

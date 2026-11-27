@@ -13,7 +13,7 @@
                     action="{{addurl}}">
                     {% csrf_token %}
                     <!-- prettier-ignore -->
-                    <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3 ">
+                    <div class="row  row-cols-1 g-2 g-lg-3">
                         {%for field in form%}
                         <div class="col border-top border-2 django-form-table">
                             <label>{{field.label}}</label>

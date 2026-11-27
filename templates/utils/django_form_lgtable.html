@@ -1,13 +1,15 @@
-<div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3">
-  {%for field in form.visible_fields%}
-  <div class="col django-form-table">
-    <label>{{field.label}}</label>
-    <p>{{field | safe}}</p>
-    <span class="badge bg-info text-light">{{field.help_text}}</span>
-    <span class="badge bg-info text-danger">{{field.errors}}</span>
-  </div>
-  {%endfor%}
+<div style="max-height: 60vh; overflow-y: auto; padding-right: .25rem;">
+  <div class="row  row-cols-1 g-2 g-lg-3">
+    {%for field in form.visible_fields%}
+    <div class="col django-form-table">
+      <label>{{field.label}}</label>
+      <p>{{field | safe}}</p>
+      <span class="badge bg-info text-light">{{field.help_text}}</span>
+      <span class="badge bg-info text-danger">{{field.errors}}</span>
+    </div>
+    {%endfor%}
 
+  </div>
 </div>
 
 <script>

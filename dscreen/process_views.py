@@ -54,6 +54,7 @@ class XLSX_SelectForm(SelectSingleFile_StepForm):
 class Load_Readouts_ProcessView(Process_View):
     process_name = 'Upload_Readouts'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     #name_step1="Upload"
     form_list = [
@@ -87,19 +88,22 @@ class Load_Readouts_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Upload_ReadOuts_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
-                                       upload=self.upload, overwrite=self.overwrite,appuser=request.user)
-
+        valLog=Upload_ReadOuts_Process.execute(request, self.file_dir, self.file_list['single_file'],
+                                                run_id=self.pk, upload=self.upload,
+                                                overwrite=self.overwrite, appuser=request.user,
+                                                progress_key=self.progress_key)
+        
         return(valLog)
 
     # Customize Function to update after upload:
     def file_process_finalizer(self, request, pk):
-        Summary_ScreenRun_Process(request, pk)
+        Summary_ScreenRun_Process.execute(request, pk, progress_key=self.progress_key)
 
 # --------------------------------------------------------------------------------------------------
 class Load_Motherplates_ProcessView(Process_View):
     process_name = 'Upload_Motherplates'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_SelectForm),
@@ -122,14 +126,16 @@ class Load_Motherplates_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
        
-        valLog=Upload_Motherplates_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
-                                           upload=self.upload, overwrite=self.overwrite, appuser=request.user) 
+        valLog=Upload_Motherplates_Process.execute(request, self.file_dir, self.file_list['single_file'],
+                                                    run_id=self.pk, upload=self.upload,
+                                                    overwrite=self.overwrite, appuser=request.user,
+                                                    progress_key=self.progress_key)
  
         return(valLog)
 
     # Customize Function to update after upload:
     def file_process_finalizer(self, request, pk):
-        Summary_ScreenRun_Process(request, pk)
+        Summary_ScreenRun_Process.execute(request, pk, progress_key=self.progress_key)
 
 # --------------------------------------------------------------------------------------------------
 class TestPlate_UploadForm(forms.Form):
@@ -152,6 +158,7 @@ class Load_TestplateList_ProcessView(Process_View):
     process_name = 'Upload_TestplatesList'
     model = Screen_Run
     progress = [0,0]
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_SelectForm),
@@ -189,14 +196,15 @@ class Load_TestplateList_ProcessView(Process_View):
         # if 'only_dr' in form_data:
         #     self.only_dr = form_data['only_dr']
 
-        valLog=Upload_TestplateList_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
-                                           upload=self.upload, apply_mp=self.apply_mp, 
-                                           appuser=request.user) 
+        valLog=Upload_TestplateList_Process.execute(request, self.file_dir, self.file_list['single_file'],
+                                                     run_id=self.pk, upload=self.upload,
+                                                     apply_mp=self.apply_mp, appuser=request.user,
+                                                     progress_key=self.progress_key)
  
         return(valLog)
 
     def file_process_finalizer(self, request, pk):
-        Summary_ScreenRun_Process(request, pk)
+        Summary_ScreenRun_Process.execute(request, pk, progress_key=self.progress_key)
 
 
 # --------------------------------------------------------------------------------------------------
@@ -217,6 +225,7 @@ class PlatePrep_DownloadForm(Download_StepForm):
 class Gen_Motherplates_PSR_ProcessView(Process_View):
     process_name = 'Gen_Motherplates_PSR'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
@@ -225,6 +234,11 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
     ]
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_psr.html'
+
+    def get_generated_file(self):
+        if self.pk:
+            return f"{self.pk}_PSPrep_Motherplates.xlsx"
+        return None
 
     def file_process_handler(self, request, *args, **kwargs):    
         print(" [Gen_MotherPlates_PSR.file_process_handler]")
@@ -236,15 +250,16 @@ class Gen_Motherplates_PSR_ProcessView(Process_View):
         if 'generate' in form_data:
             self.generate = form_data['generate']
         
-        valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
-                                           generate=self.generate,
-                                           appuser=request.user)
+        valLog = Gen_Masterplates_Process.execute(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'],
+                                                  run_id=self.pk, generate=self.generate,
+                                                  appuser=request.user, progress_key=self.progress_key)
         return(valLog)
     
 # --------------------------------------------------------------------------------------------------
 class Gen_Motherplates_HCR_ProcessView(Process_View):
     process_name = 'Gen_Motherplates_HCR'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     form_list = [
         ('select_file', PlatePrep_Racks_SelectForm),
@@ -254,8 +269,13 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
 
     template_name = 'dscreen/screenrun_process/gen_motherplates_hcr.html'
 
+    def get_generated_file(self):
+        if self.pk:
+            return f"{self.pk}_HCPrep_Motherplates.xlsx"
+        return None
+
     def file_process_handler(self, request, *args, **kwargs):    
-        print(" [Gen_MotherPlates_HCR.file_process_handler]")
+        #print(" [Gen_MotherPlates_HCR.file_process_handler]")
         self.generate = False
 
         # Set Form Data        
@@ -263,14 +283,16 @@ class Gen_Motherplates_HCR_ProcessView(Process_View):
         if 'generate' in form_data:
             self.generate = form_data['generate']
 
-        valLog = Gen_Masterplates_Process(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'], RunID=self.pk, 
-                                           generate=self.generate,
-                                           appuser=request.user)
+        valLog = Gen_Masterplates_Process.execute(request, self.file_dir, self.file_list['single_file'], self.file_list['multi_files'],
+                                                  run_id=self.pk, generate=self.generate,
+                                                  appuser=request.user, progress_key=self.progress_key)
+        return(valLog)
 
 # --------------------------------------------------------------------------------------------------
 class Load_Sequences_ProcessView(Process_View):
     process_name = 'Upload_Sequences'
     model = Screen_Run
+    detail_url = 'screenrun_detail'
 
     #name_step1="Upload"
     form_list = [
@@ -307,11 +329,12 @@ class Load_Sequences_ProcessView(Process_View):
         if 'overwrite' in form_data:
             self.overwrite = form_data['overwrite']
 
-        valLog=Upload_Sequences_Process(request, self.file_dir, self.file_list['single_file'], RunID=self.pk, 
-                                       upload=self.upload, overwrite=self.overwrite,appuser=request.user)
+        valLog=Upload_Sequences_Process.execute(request, self.file_dir, self.file_list['single_file'],
+                                                run_id=self.pk, upload=self.upload, overwrite=self.overwrite,
+                                                appuser=request.user, progress_key=self.progress_key)
 
         return(valLog)
 
     # Customize Function to update after upload:
     def file_process_finalizer(self, request, pk):
-        Summary_ScreenRun_Process(request, pk)
+        Summary_ScreenRun_Process.execute(request, pk, progress_key=self.progress_key)

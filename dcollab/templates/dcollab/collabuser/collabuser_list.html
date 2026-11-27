@@ -18,8 +18,7 @@
 
     <!-- list View Content -->
    <div class="contain-fluid data-contain">
-      {% include 'modal/updateModel_base_modal.html' with model_name='Collab_User' %}
-      {% include 'datatable/datatable_pag_action.html' with model_name='Collab_User-User' update_url='collabuser_update' %}
+      {% include 'datatable/datatable_pag_action.html' with model_name='Collab_User' update_url='collabuser_update' modal_id='infoModal' modal_body_id='info-body' %}
     </div>
     </div>
 

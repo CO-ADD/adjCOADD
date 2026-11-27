@@ -6,7 +6,7 @@ from sequences import Sequence
 from asgiref.sync import sync_to_async
 
 from django.db import models
-from django.core.exceptions import ValidationError
+from django.core.exceptions import FieldDoesNotExist, ValidationError
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.contrib.sessions.models import Session
 from django.contrib.postgres.fields import ArrayField
@@ -158,8 +158,20 @@ class AuditModel(models.Model):
 
     VALID_STATUS    = False
     VALID_DICT      = {}
+
+    # Helpers for displaying model fields in list view, detail view and cards
     LIST_VIEW_FIELDS   = {}
+    DETAIL_VIEW_GROUPS   = []
+    STATUS_VIEW_FIELDS = []
     CARDS_FIELDS   = {}
+    CALCULATED_FIELDS = []
+    # Optional explicit grouping of calculated fields for the detail view;
+    # when empty, CALCULATED_FIELDS is auto-chunked into CALC_VIEW_PER_ROW rows.
+    CALC_VIEW_GROUPS = []
+    CALC_VIEW_PER_ROW = 16
+
+    # Helpers for defining foreign key relationships to the DICTIONARY table for choices and lookups
+    DICTIONARY_FIELDS = {}
 
     ID_SEQUENCE = "General"
     ID_PREFIX = "AAA"
@@ -494,6 +506,87 @@ class AuditModel(models.Model):
             select_fields=None   
         return select_fields
  
+    #------------------------------------------------
+    # Get read-only label/value row groups for a detail view, grouped according
+    # to the model's DETAIL_VIEW_GROUPS (or the given group_defs).
+    def get_display_groups(self, group_defs=None):
+        if group_defs is None:
+            group_defs = self.DETAIL_VIEW_GROUPS
+        groups = []
+        for field_names in group_defs:
+            rows = []
+            for name in field_names:
+                label = self._display_field_label(name)
+                if label is None:
+                    continue
+                value = getattr(self, name, None)
+                if value is None or value == '':
+                    value = ''
+                elif isinstance(value, (list, tuple)):
+                    value = ', '.join(str(v) for v in value)
+                else:
+                    value = str(value)
+                rows.append({'label': label, 'value': value})
+            groups.append(rows)
+        return groups
+
+    #------------------------------------------------
+    @classmethod
+    def _display_field_label(cls, name):
+        """Return the display label for a model field or property/callable.
+
+        Model fields use their ``verbose_name``. Properties can carry a
+        ``short_description`` (Django's convention for callables) or a
+        ``verbose_name`` on the getter function; otherwise the name is
+        humanised. Returns None when the name is not a known attribute.
+        """
+        try:
+            return cls._meta.get_field(name).verbose_name
+        except FieldDoesNotExist:
+            pass
+        attr = getattr(cls, name, None)
+        if isinstance(attr, property):
+            fget = getattr(attr, 'fget', None)
+            if fget is not None:
+                for attr_name in ('short_description', 'verbose_name'):
+                    label = getattr(fget, attr_name, None)
+                    if label:
+                        return label
+        if hasattr(cls, name):
+            return name.replace('_', ' ').title()
+        return None
+
+    #------------------------------------------------
+    # Get read-only label/value rows for calculated fields, grouped according to
+    # CALC_VIEW_GROUPS, or auto-chunked from CALCULATED_FIELDS when no
+    # explicit grouping is defined.
+    def get_calculated_display(self):
+        groups = self.CALC_VIEW_GROUPS or self._chunk(
+            self.CALCULATED_FIELDS, self.CALC_VIEW_PER_ROW)
+        rows = []
+        for field_names in groups:
+            row = []
+            for name in field_names:
+                label = self._display_field_label(name)
+                if label is None:
+                    continue
+                value = getattr(self, name, None)
+                if value is None or value == '':
+                    value = ''
+                elif isinstance(value, (list, tuple)):
+                    value = ', '.join(str(v) for v in value)
+                else:
+                    value = str(value)
+                row.append({'label': label, 'value': value})
+            rows.append(row)
+        return rows
+
+    #------------------------------------------------
+    @staticmethod
+    def _chunk(seq, size):
+        size = size or 1
+        return [seq[i:i + size] for i in range(0, len(seq), size)]
+
     #------------------------------------------------
     # recurse func to get foreign key related table col value
     def iter_foreignkey(self, nameArray=None, n=None):
@@ -1048,6 +1141,9 @@ class Document(AuditModel):
         'doc_desc':'Description',
         'doc_source':'Source',
     }
+    
+    DOCUMENT_FOLDER = ""
+    
     ID_SEQUENCE = 'Document'
     ID_PREFIC = 'DOC'
     ID_PAD = 5
@@ -1080,3 +1176,168 @@ class Document(AuditModel):
                 super(Document, self).save(*args, **kwargs)
         else:
             super(Document, self).save(*args, **kwargs) 
+
+
+#=================================================================================================
+class Menu(AuditModel):
+    """
+    Top-level navigation menu (dropdown) - e.g. OrgDB, CastDB, Structures.
+    """
+#=================================================================================================
+    LIST_VIEW_FIELDS = {
+        'menu_id': 'Menu ID',
+        'menu_name': 'Name',
+        'menu_label': 'Label',
+        'icon': 'Icon',
+        'order': 'Order',
+        'permission': 'Permission',
+    }
+
+    ID_SEQUENCE = 'Menu'
+    ID_PREFIX = 'MNU'
+    ID_PAD = 4
+
+    menu_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Menu ID")
+    menu_name = models.CharField(max_length=30, unique=True, verbose_name = "Menu Name")
+    menu_label = models.CharField(max_length=50, verbose_name = "Label")
+    icon = models.CharField(max_length=30, blank=True, verbose_name = "Icon")
+    order = models.PositiveSmallIntegerField(default=0, verbose_name = "Order")
+    # permission: '' (all users), 'Admin' (has_permission('Admin')), 'Superuser' (is_superuser)
+    permission = models.CharField(max_length=10, blank=True, verbose_name = "Permission")
+
+    class Meta:
+        app_label = 'apputil'
+        db_table = 'app_menu'
+        ordering = ['order', 'menu_name']
+        indexes = [
+            models.Index(name="menu_name_idx", fields=['menu_name']),
+            models.Index(name="menu_order_idx", fields=['order']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"[{self.menu_id}] {self.menu_name}"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.menu_name}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, MenuID, MenuName=None, verbose=0):
+        try:
+            if MenuID:
+                retInstance = cls.objects.get(menu_id=MenuID)
+            elif MenuName:
+                retInstance = cls.objects.get(menu_name=MenuName)
+            else:
+                retInstance = None
+        except:
+            retInstance = None
+            if verbose:
+                print(f"[Menu Not Found] {MenuID} {MenuName} ")
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls, MenuID=None, MenuName=None, verbose=0):
+        if MenuID:
+            return cls.objects.filter(menu_id=MenuID).exists()
+        elif MenuName:
+            return cls.objects.filter(menu_name=MenuName).exists()
+        return False
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.menu_id:
+            self.menu_id = self.next_id()
+            if self.menu_id:
+                super(Menu, self).save(*args, **kwargs)
+        else:
+            super(Menu, self).save(*args, **kwargs)
+
+
+#=================================================================================================
+class Menu_Item(AuditModel):
+    """
+    Navigation link inside a Menu, optionally nested one level (submenu).
+    """
+#=================================================================================================
+    LIST_VIEW_FIELDS = {
+        'item_id': 'Item ID',
+        'menu_id': 'Menu',
+        'parent': 'Parent',
+        'label': 'Label',
+        'url_name': 'URL Name',
+        #'url_path': 'URL Path',
+        #'icon': 'Icon',
+        'order': 'Order',
+        'separator': 'Separator',
+        'disabled': 'Disabled',
+        #'modal': 'Modal',
+        'permission': 'Permission',
+    }
+
+    ID_SEQUENCE = 'Menu_Item'
+    ID_PREFIX = 'MNI'
+    ID_PAD = 4
+
+    item_id = models.CharField(max_length=15, primary_key=True, verbose_name = "Item ID")
+    menu_id = models.ForeignKey(Menu, null=False, blank=False, verbose_name = "Menu ID", on_delete=models.DO_NOTHING,
+        db_column="menu_id", related_name="items")
+    parent = models.ForeignKey('self', null=True, blank=True, verbose_name = "Parent Item", on_delete=models.DO_NOTHING,
+        db_column="parent", related_name="children")
+
+    label = models.CharField(max_length=50, blank=True, verbose_name = "Label")
+    url_name = models.CharField(max_length=60, blank=True, verbose_name = "URL Name")
+    url_path = models.CharField(max_length=200, blank=True, verbose_name = "URL Path")
+    icon = models.CharField(max_length=30, blank=True, verbose_name = "Icon")
+    order = models.PositiveSmallIntegerField(default=0, verbose_name = "Order")
+    separator = models.BooleanField(default=False, verbose_name = "Separator")
+    disabled = models.BooleanField(default=False, verbose_name = "Disabled")
+    modal = models.BooleanField(default=False, verbose_name = "Modal")
+    # permission: '' (all users), 'Admin', 'Superuser'
+    permission = models.CharField(max_length=10, blank=True, verbose_name = "Permission")
+
+    class Meta:
+        app_label = 'apputil'
+        db_table = 'app_menu_item'
+        ordering = ['menu_id', 'order', 'label']
+        indexes = [
+            models.Index(name="mitem_menu_idx", fields=['menu_id']),
+            models.Index(name="mitem_parent_idx", fields=['parent']),
+            models.Index(name="mitem_order_idx", fields=['order']),
+        ]
+
+    #------------------------------------------------
+    def __repr__(self) -> str:
+        return f"[{self.item_id}] {self.label} ({self.menu_id})"
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.label}"
+
+    #------------------------------------------------
+    @classmethod
+    def get(cls, ItemID, verbose=0):
+        try:
+            retInstance = cls.objects.get(item_id=ItemID)
+        except:
+            if verbose:
+                print(f"[Menu Item Not Found] {ItemID} ")
+            retInstance = None
+        return(retInstance)
+
+    #------------------------------------------------
+    @classmethod
+    def exists(cls, ItemID, verbose=0):
+        return cls.objects.filter(item_id=ItemID).exists()
+
+    #------------------------------------------------
+    def save(self, *args, **kwargs):
+        if not self.item_id:
+            self.item_id = self.next_id()
+            if self.item_id:
+                super(Menu_Item, self).save(*args, **kwargs)
+        else:
+            super(Menu_Item, self).save(*args, **kwargs)

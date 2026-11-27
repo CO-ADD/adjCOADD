@@ -6,7 +6,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.authentication import SessionAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework import permissions
+
+from applib.django.restapi import IsAppUser
 
 
 class CustomPagination(PageNumberPagination):
@@ -22,7 +23,7 @@ class API_ListView(generics.ListAPIView):
     order_by = None
     pagination_class = CustomPagination
     authentication_classes = [JWTAuthentication, SessionAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAppUser]
 
    
 

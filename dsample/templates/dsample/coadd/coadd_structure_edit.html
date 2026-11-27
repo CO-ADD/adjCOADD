@@ -1,0 +1,191 @@
+{% load static %}
+<div class="modal-dialog modal-fullscreen">
+  <div class="modal-content">
+    <div class="modal-header py-2">
+      <h5 class="modal-title">
+        <i class="bi bi-pencil-square me-2"></i>Edit Structure — {{ object.compound_id }}
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body p-0 d-flex flex-column" style="overflow: hidden;">
+      <!-- Toolbar -->
+      <div class="d-flex align-items-center gap-2 px-3 py-2 border-bottom">
+        <label class="form-label mb-0 small text-nowrap" for="structure-smiles-type">Edit</label>
+        <select id="structure-smiles-type" class="form-select form-select-sm" style="width: auto;">
+          <option value="reg" {% if smiles_type == 'reg' %}selected{% endif %}>reg_smiles</option>
+          <option value="std" {% if smiles_type == 'std' %}selected{% endif %}>std_smiles</option>
+        </select>
+
+        <button id="get_new_mol" type="button" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-arrow-repeat me-1"></i>Update Smiles
+        </button>
+
+        <button id="structure-check" type="button" class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-check2-circle me-1"></i>Check
+        </button>
+        <span id="structure-check-result" class="small ms-2"></span>
+      </div>
+
+      <!-- Ketcher editor -->
+      <input type="text" id="mol" value="{{ mol_block }}" hidden />
+      <input type="text" id="id_smol" hidden />
+      <div id="root" class="flex-grow-1 w-100"></div>
+
+      <!-- Footer -->
+      <div class="d-flex justify-content-end gap-2 px-3 py-2 border-top">
+        <button id="structure-save" type="button" class="btn btn-sm btn-success">
+          <i class="fa-solid fa-check me-1"></i>Save
+        </button>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Ketcher 3's Editor fills its container; give #root a definite size so the
+     internal grid lays out correctly instead of collapsing/overflowing. */
+  #structureModal #root {
+    height: calc(100vh - 170px);
+    width: 100%;
+  }
+
+  /* Ketcher dialogs (Open/Settings) are MUI dialogs portaled to <body>.
+     Without this they top-align and can be clipped by the viewport. */
+  .MuiPaper-root.ketcher-dialog {
+    align-self: center;
+    z-index: 2000;
+    max-height: calc(100vh - 4rem);
+    max-width: calc(100vw - 4rem);
+  }
+</style>
+
+<script>
+  (function () {
+    var compoundId = "{{ object.pk|escapejs }}";
+    var modalUrl = "{% url 'coadd_structure_edit' object.pk %}";
+    var convertUrl = "{% url 'coadd_structure_convert' %}";
+    var checkUrl = "{% url 'coadd_structure_check' object.pk %}";
+    var saveUrl = "{% url 'coadd_structure_save' object.pk %}";
+    var model = "coadd";
+
+    // In-memory state for the two smiles fields (preserved across switching).
+    var state = {
+      reg: "{{ reg_smiles|escapejs }}",
+      std: "{{ std_smiles|escapejs }}"
+    };
+
+    function setStatus(text, ok) {
+      var el = document.getElementById('structure-check-result');
+      el.textContent = text || '';
+      el.className = 'small ms-2 ' + (ok === true ? 'text-success' : (ok === false ? 'text-danger' : 'text-muted'));
+    }
+
+    function getCurrentMolfile(cb) {
+      if (window.ketcher && window.ketcher.getMolfile) {
+        window.ketcher.getMolfile('v2000').then(cb);
+      } else {
+        cb('');
+      }
+    }
+
+    // "Update Smiles" (the renamed Ketcher button) - capture the current
+    // structure as canonical SMILES and store it in the selected field state.
+    $(document).off('click.structureUpdate').on('click.structureUpdate', '#get_new_mol', function () {
+      var type = document.getElementById('structure-smiles-type').value;
+      getCurrentMolfile(function (molfile) {
+        $.ajax({
+          url: convertUrl,
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ molfile: molfile }),
+          headers: { 'X-CSRFToken': getCookie('csrftoken') },
+          success: function (resp) {
+            if (resp.success && resp.smiles) {
+              state[type] = resp.smiles;
+              setStatus(type + '_smiles updated.', true);
+            } else {
+              setStatus((resp.errors || []).join('; '), false);
+            }
+          },
+          error: function () { setStatus('Conversion error.', false); }
+        });
+      });
+    });
+
+    // Switch between reg_smiles and std_smiles, keeping the in-memory state.
+    document.getElementById('structure-smiles-type').addEventListener('change', function () {
+      var type = this.value;
+      var url = modalUrl + '?smiles_type=' + encodeURIComponent(type)
+              + '&reg_smiles=' + encodeURIComponent(state.reg)
+              + '&std_smiles=' + encodeURIComponent(state.std);
+      $('#structureModal').load(url, function () {
+        $('#structureModal').modal('show');
+      });
+    });
+
+    // Check: standardize and look up an existing Chem_Structure.
+    document.getElementById('structure-check').addEventListener('click', function () {
+      getCurrentMolfile(function (molfile) {
+        $.ajax({
+          url: checkUrl,
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({ molfile: molfile, model: model, smiles_type: document.getElementById('structure-smiles-type').value }),
+          headers: { 'X-CSRFToken': getCookie('csrftoken') },
+          success: function (resp) {
+            if (!resp.success) {
+              setStatus((resp.errors || []).join('; '), false);
+              return;
+            }
+            var lines = [];
+            if (resp.changed) {
+              lines.push('Structure differs from current ' + document.getElementById('structure-smiles-type').value + '_smiles.');
+            }
+            if (resp.structure_exists) {
+              lines.push('Found Chem_Structure ' + resp.structure_id + '.');
+            } else {
+              lines.push('No matching Chem_Structure (new structure).');
+            }
+            if (resp.abase_matches && resp.abase_matches.length) {
+              lines.push('ABase matches: ' + resp.abase_matches.join(', '));
+            }
+            if (resp.errors && resp.errors.length) {
+              lines = lines.concat(resp.errors);
+            }
+            setStatus(lines.join(' '), resp.success);
+            console.log('Check result:', resp);
+          },
+          error: function () { setStatus('Check error.', false); }
+        });
+      });
+    });
+
+    // Save: persist both reg_smiles and std_smiles to the database.
+    document.getElementById('structure-save').addEventListener('click', function () {
+      $.ajax({
+        url: saveUrl,
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ reg_smiles: state.reg, std_smiles: state.std }),
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        success: function (resp) {
+          if (resp.success) {
+            $('#structureModal').modal('hide');
+            location.reload();
+          } else {
+            setStatus((resp.errors || []).join('; '), false);
+          }
+        },
+        error: function () { setStatus('Save error.', false); }
+      });
+    });
+
+    // Mount the editor. The bundle itself is loaded once on the detail page;
+    // this partial only (re)mounts React at the freshly inserted #root.
+    if (window.initKetcher) {
+      window.initKetcher();
+    }
+  })();
+</script>

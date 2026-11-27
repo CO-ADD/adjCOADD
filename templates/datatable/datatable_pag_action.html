@@ -48,17 +48,16 @@
           <tr>
             {% if update_url %}
               <td>
-                <a id="update{{model_name}}"
-                    class="btn btn-sm "
+                <a class="btn btn-sm "
                     hx-get="{% url update_url object.pk %}"
-                    hx-target="#update-body"
+                    hx-target="{% if modal_body_id %}#{{ modal_body_id }}{% else %}#update-body{% endif %}"
                     hx-swap="innerHTML"
                     data-bs-toggle="modal"
-                    data-bs-target="#update{{model_name}}_modal"
+                    data-bs-target="{% if modal_id %}#{{ modal_id }}{% else %}#update{{ model_name }}_modal{% endif %}"
                     data-bs-placement="right"
                     data-bs-backdrop="static"
-                    title="Update {{model_name}}">
-                  <i class="bi bi-record-circle-fill" ></i>
+                    title="Update {{ model_name }}">
+                  <i class="fa-regular fa-pen-to-square"></i>
                 </a>
               </td>
             {% else %}

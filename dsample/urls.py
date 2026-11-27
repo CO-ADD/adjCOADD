@@ -3,7 +3,9 @@ from django.conf.urls.static import static
 from django.urls import path, include, re_path
 
 from dsample.views import  (Project_ListView, Project_CreateView, Project_CreateMinimalView, Project_DetailView, Project_UpdateView, Project_ReportView,
-                            Project_StockPrepView,
+                            Project_StockPrepView, Project_MembersEditView,
+                            ABase_ListView, ABase_DetailView, COADD_ListView, COADD_DetailView, COADD_StructureEditView,
+                            COADD_StructureConvertView, COADD_StructureCheckView, COADD_StructureSaveView,
                             # Project_RemoveView,
                             # ScreenRun_CreateView, ScreenRun_UpdateView, 
                             # Assay_ListView,Assay_DetailView,Assay_CreateView, Assay_UpdateView, Assay_RemoveView,
@@ -16,13 +18,26 @@ urlpatterns = [
     path('project/list', Project_ListView.as_view(), name="project_list"),
     path('project/<str:pk>', Project_DetailView, name="project_detail"),
     #path('Project/create', Project_CreateMinimalView, name="project_create"),
-    path('Project/create', Project_CreateView, name="project_create"),
+    path('project/create', Project_CreateView, name="project_create"),
     path('project/update/<str:pk>', Project_UpdateView, name="project_update"),
     #path('deleteProject/<str:pk>', Project_RemoveView.as_view(), name="project_delete"),
     path('project/report/<str:pk>', Project_ReportView, name="project_report"),
+    path('project/members/<str:pk>', Project_MembersEditView, name="project_members_edit"),
 
-    path('Project/load_submission', Load_Project_ProcessView.as_view(), name='load_submission'),
+    path('project/load_submission', Load_Project_ProcessView.as_view(), name='load_submission'),
     path('project/add_projectinfo/<str:pk>', Add_ProjectInfo_ProcessView.as_view(), name="add_projectinfo"),
     path('project/generate_stockprep/<str:pk>', Project_StockPrepView, name="generate_stockprep"),
     path('project/load_stockprep/<str:pk>', Load_StockPrep_ProcessView.as_view(), name='load_stockprep'),
+
+    # ABase Compound
+    path('abase/list', ABase_ListView.as_view(), name="abase_list"),
+    path('abase/<str:pk>', ABase_DetailView, name="abase_detail"),
+
+    # COADD Compound
+    path('coadd/list', COADD_ListView.as_view(), name="coadd_list"),
+    path('coadd/<str:pk>', COADD_DetailView, name="coadd_detail"),
+    path('coadd/structure_edit/<str:pk>', COADD_StructureEditView, name="coadd_structure_edit"),
+    path('coadd/structure_convert/', COADD_StructureConvertView, name="coadd_structure_convert"),
+    path('coadd/structure_check/<str:pk>', COADD_StructureCheckView, name="coadd_structure_check"),
+    path('coadd/structure_save/<str:pk>', COADD_StructureSaveView, name="coadd_structure_save"),
 ]

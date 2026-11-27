@@ -8,10 +8,10 @@ import pandas as pd
 
 import pdfplumber
 import re
-from django.core.cache import cache
 
 from apputil.models import ApplicationUser, Dictionary, ApplicationLog
 from apputil.utils.validation_log import Validation_Log
+from applib.process.process_progress import Process_Progress
 from ddrug.utils.upload_vitek import VitekCard_fromDict, VitekAST_fromDict, VitekID_fromDict
 
 import logging
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 __version__ = "1.1"
 
 #-----------------------------------------------------------------------------------
-def upload_VitekPDF_Process(Request, DirName, FileList, OrgBatchID=None,upload=False,appuser=None):
+class Upload_VitekPDF_Process(Process_Progress):
 #-----------------------------------------------------------------------------------
     """
     Uploads (upload=True) the data from a single Vitek PDF, given by:
@@ -31,32 +31,40 @@ def upload_VitekPDF_Process(Request, DirName, FileList, OrgBatchID=None,upload=F
         appuser : User Instance of user uploading
 
     """
+    process_name = 'upload_VitekPDF_List'
 
-    if FileList:
+    def __init__(self, request, dirname, file_list, orgbatch_id=None, upload=False,
+                 appuser=None, progress_cb=None, progress_key=None):
+        super().__init__(request, dirname, file_list, appuser=appuser,
+                         progress_cb=progress_cb, progress_key=progress_key)
+        self.orgbatch_id = orgbatch_id
+        self.upload = upload
+
+    def run(self):
+        FileList = list(self.file_list or [])
         nFiles = len(FileList)
-    else:
-        nFiles = 0
 
-    # Get PDF Files in case none given
-    if nFiles == 0:
-        if DirName:
-            DirFiles = os.listdir(DirName)
-            FileList = [f for f in DirFiles if f.endswith(".pdf")]
-            nFiles = len(FileList)
+        # Get PDF Files in case none given
+        if nFiles == 0:
+            if self.dirname:
+                DirFiles = os.listdir(self.dirname)
+                FileList = [f for f in DirFiles if f.endswith(".pdf")]
+                nFiles = len(FileList)
 
-    valLog = Validation_Log("upload_VitekPDF_List")
+        valLog = self.valLog
 
-    if nFiles > 0:
-        for i in range(nFiles):
-            logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{appuser}] ")
-            upload_VitekPDF(DirName,FileList[i],OrgBatchID=OrgBatchID,upload=upload,appuser=appuser,valLog=valLog)
+        if nFiles > 0:
+            for i in range(nFiles):
+                self.report_progress(i + 1, nFiles, FileList[i], 'Processing Vitek PDF')
+                logger.info(f"[upload_VitekPDF_List] {i+1:3d}/{nFiles:3d} - {FileList[i]}   [{self.appuser}] ")
+                upload_VitekPDF(self.dirname,FileList[i],OrgBatchID=self.orgbatch_id,upload=self.upload,appuser=self.appuser,valLog=valLog)
 
-    else:
-        logger.info(f"[upload_VitekPDF_List] NO PDF to process in {DirName}  ")
+        else:
+            logger.info(f"[upload_VitekPDF_List] NO PDF to process in {self.dirname}  ")
 
-    valLog.select_unique()
-    
-    return(valLog)
+        self.finish()
+        valLog.select_unique()
+        return valLog
 
 #-----------------------------------------------------------------------------------
 def upload_VitekPDF_List(DirName, FileList, OrgBatchID=None,upload=False,appuser=None):

@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include, re_path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
 
 from ddrug.views import  (DrugListView, DrugCardView,detailDrug, DrugCreateView, DrugUpdateView,#createDrug, updateDrug, 
     VitekCard_ListView, VitekAST_ListView, VitekID_ListView, 
     smartsQuery, 
-    ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, API_Drug_Detail, MIC_COADDListView, MIC_COADDCardView, 
+    ketcher_test,iframe_url, API_VITEK_ASTList, API_Drug_List, API_Drug_Detail, AppUserTokenObtainPairView, MIC_COADDListView, MIC_COADDCardView, 
     MIC_PubListView, MIC_PubCardView, MIC_PubListView, MIC_PubCardView, BreakpointListView)
 from ddrug.utils.antibiogram import Export_Antibiogram_byOrgID
 from ddrug.upload_views import Import_VitekView, Import_DrugView
@@ -15,7 +15,7 @@ from ddrug.upload_views import Import_VitekView, Import_DrugView
 
 urlpatterns = [
     # API path
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', AppUserTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-vitek-ast/', API_VITEK_ASTList.as_view(), name="api_vitekast"),
     path('api-drug/', API_Drug_List.as_view(), name="api_drug"),

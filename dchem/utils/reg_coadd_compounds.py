@@ -12,7 +12,9 @@ logger = logging.getLogger('django')
 #------------------------------------------------------------------------------
 def standardize_coadd(djCmpd, MolStd=None, outdict={}, upload=False, overwrite=False):
 #------------------------------------------------------------------------------
-    
+    #
+    # Standardize djCmp using MolStd -> update numbers in outdict 
+    #
     if MolStd is not None:
         
         if not djCmpd.std_status or djCmpd.std_status == 'Invalid' or overwrite:

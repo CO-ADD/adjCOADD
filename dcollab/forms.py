@@ -1,4 +1,5 @@
 from django import forms
+from applib.django.base.forms import Base_ModelForm
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.forms import ModelForm, inlineformset_factory
@@ -44,13 +45,12 @@ class Organisation_Filter(BaseStatus_Filter):
         fields=[ 'organisation_id','organisation_name','organisation_type','organisation_code','Country',]
 
 # -----------------------------------------------------------------
-class Organisation_CreateForm(forms.ModelForm):
+class Organisation_CreateForm(Base_ModelForm):
 
     # PK to add help text
     organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
     organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
-    country = CountryField()
-    organisation_type=ChoiceFilter(field_name='organisation_type',choices=[], empty_label=None)
+    organisation_type = forms.ModelChoiceField(queryset=Dictionary.objects.all(), required=False)
 
     def __init__(self, *args, **kwargs): 
         super(Organisation_CreateForm, self).__init__(*args, **kwargs)
@@ -69,9 +69,9 @@ class Organisation_CreateForm(forms.ModelForm):
         exclude=['organisation_id']
 
     def create_field_groups(self):
-        if len(Organisation.VIEW_GROUPS) > 0:
+        if len(Organisation.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Organisation.VIEW_GROUPS:
+            for grp in Organisation.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
@@ -81,8 +81,7 @@ class Organisation_UpdateForm(Organisation_CreateForm):
     class Meta:
         model=Organisation
         exclude=[]
-
-    field_order = Organisation.LIST_VIEW_FIELDS
+        field_order = ['organisation_id', 'organisation_code', 'organisation_name', 'country', 'organisation_type', 'previous_names']
 
 #=================================================================================================
 # Collab User
@@ -132,7 +131,7 @@ class CollabUser_Filter(BaseStatus_Filter):
 
 
 # -----------------------------------------------------------------
-class CollabUser_CreateForm(forms.ModelForm):
+class CollabUser_CreateForm(Base_ModelForm):
 
     def __init__(self, *args, **kwargs): 
         super().__init__(*args, **kwargs)
@@ -158,17 +157,18 @@ class CollabUser_CreateForm(forms.ModelForm):
         
     class Meta:
         model=Collab_User
-        exclude=['assay_id']
-        #exclude=Screen_Run.CALCULATED_FIELDS
+        exclude=['portal_pw']
 
     def create_field_groups(self):
-        if len(Collab_User.VIEW_GROUPS) > 0:
+        if len(Collab_User.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Collab_User.VIEW_GROUPS:
+            for grp in Collab_User.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
 
 # -----------------------------------------------------------------
 class CollabUser_UpdateForm(CollabUser_CreateForm):
+
+    user_id = forms.CharField(disabled=True)
 
     def __init__(self, *args, **kwargs): 
         super(CollabUser_UpdateForm, self).__init__(*args, **kwargs)
@@ -178,7 +178,10 @@ class CollabUser_UpdateForm(CollabUser_CreateForm):
         #     self.fields[field].widget.attrs['readonly'] = True
     class Meta:
         model=Collab_User
-        exclude=['assay_id']
+        exclude=['portal_pw']
+        field_order = ['user_id', 'title', 'first_name', 'last_name', 'position', 'email', 'email2',
+                       'organisation_id', 'department', 'postal_address', 'city', 'country', 'phone',
+                       'subscribed', 'active_email', 'portal_userid', 'pi', 'ora_user_id', 'ora_group_id']
 
 #=================================================================================================
 # Collab Group
@@ -217,7 +220,7 @@ class CollabGroup_Filter(BaseStatus_Filter):
         fields=['group_code','Organisation','Country','mta_status']
 
 # -----------------------------------------------------------------
-class CollabGroup_Form(forms.ModelForm):
+class CollabGroup_Form(Base_ModelForm):
 
     class Meta:
         model=Collab_Group
@@ -235,7 +238,7 @@ class CollabGroup_Form(forms.ModelForm):
         }
 
 # -----------------------------------------------------------------
-class CollabMembership_Form(forms.ModelForm):
+class CollabMembership_Form(Base_ModelForm):
 
     def __init__(self, *args, **kwargs):
         user_queryset = kwargs.pop('user_queryset', None)
@@ -250,10 +253,11 @@ class CollabMembership_Form(forms.ModelForm):
             
     class Meta:
         model=Collab_Membership
-        fields = ['user_id', 'role']
+        fields = ['user_id', 'role', 'status']
         widgets = {
             'user_id': forms.Select(attrs={'class': 'form-select'}),
             'role': forms.Select(attrs={'class': 'form-select'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
         }
 
 
@@ -262,15 +266,13 @@ CollabMembership_FormSet = inlineformset_factory(
     Collab_Group,
     Collab_Membership,
     form=CollabMembership_Form,
-    fields=['user_id', 'role'],
+    fields=['user_id', 'role', 'status'],
     extra=1,
     can_delete=True,
 )
         
 # -----------------------------------------------------------------
-class CollabGroup_CreateForm(forms.ModelForm):
-
-    #organisation_name = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
+class CollabGroup_CreateForm(Base_ModelForm):
 
     def __init__(self, *args, **kwargs): 
         super().__init__(*args, **kwargs)
@@ -278,6 +280,8 @@ class CollabGroup_CreateForm(forms.ModelForm):
         for field_name in self.fields:
             self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
 
+        # Set Dictionary values
+        self.fields['mta_status'].choices=[(obj.dict_value, obj.strtml()) for obj in Dictionary.get_filterobj(Collab_Group.DICTIONARY_FIELDS['mta_status'])]
 
         # Create groups of fields for View 
         #self.create_field_groups()
@@ -288,49 +292,29 @@ class CollabGroup_CreateForm(forms.ModelForm):
                 attrs = field.widget.attrs
                 attrs['class'] = attrs.get('class', '') + 'input-group'
                 field.widget.attrs = attrs
-        
-        # Make Calculated fields ReadOnly
-        # for field in Collab_User.CALCULATED_FIELDS:
-        #     self.fields[field].widget.attrs['readonly'] = True
 
     class Meta:
         model=Collab_Group
-        exclude=['group_id']
-        #exclude=Screen_Run.CALCULATED_FIELDS
+        exclude=['group_id', 'group_members', 'ora_group_id', 'ora_pi_id']
 
     def create_field_groups(self):
-        if len(Collab_Group.VIEW_GROUPS) > 0:
+        if len(Collab_Group.DETAIL_VIEW_GROUPS) > 0:
             self.groups = []
-            for grp in Collab_Group.VIEW_GROUPS:
+            for grp in Collab_Group.DETAIL_VIEW_GROUPS:
                 self.groups.append([self[name] for name in grp])   
-
-# -----------------------------------------------------------------
-class CollabMembership_Form(forms.ModelForm):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # You can customize queryset for 'person' and 'group' if needed
-        self.fields['user_id'].queryset = Collab_User.objects.all()
-        self.fields['group_id'].queryset = Collab_Group.objects.all()
-        
-    class Meta:
-        model = Collab_Membership
-        fields = ['group_id', 'user_id', 'role'] # Include custom fields and related objects
 
 # -----------------------------------------------------------------
 class CollabGroup_UpdateForm(CollabGroup_CreateForm):
 
-    def __init__(self, *args, **kwargs): 
-        super(CollabGroup_UpdateForm, self).__init__(*args, **kwargs)
+    group_id = forms.CharField(disabled=True)
 
-        # Make Calculated fields ReadOnly
-        # for field in Collab_User.CALCULATED_FIELDS:
-        #     self.fields[field].widget.attrs['readonly'] = True
     class Meta:
         model=Collab_Group
-        exclude=['group_id']
+        exclude=['group_members', 'ora_group_id', 'ora_pi_id']
+        field_order = ['group_id', 'group_code', 'organisation_id', 'email', 'department',
+                       'postal_address', 'city', 'country', 'li_user_id', 'mta_status', 'mta_document']
                 
-# class CollabGroup_CreateForm(forms.ModelForm):
+# class CollabGroup_CreateForm(Base_ModelForm):
 
 #     # PK to add help text
 #     organisation_code= forms.CharField(widget=forms.Textarea(attrs={'class': 'input-group', 'rows': '2'}),required=False,)
@@ -355,9 +339,9 @@ class CollabGroup_UpdateForm(CollabGroup_CreateForm):
 #         exclude=['group_id']
 
 #     def create_field_groups(self):
-#         if len(Collab_Group.VIEW_GROUPS) > 0:
+#         if len(Collab_Group.DETAIL_VIEW_GROUPS) > 0:
 #             self.groups = []
-#             for grp in Collab_Group.VIEW_GROUPS:
+#             for grp in Collab_Group.DETAIL_VIEW_GROUPS:
 #                 self.groups.append([self[name] for name in grp])   
 
 

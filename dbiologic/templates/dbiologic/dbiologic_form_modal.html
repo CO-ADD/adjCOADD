@@ -1,0 +1,51 @@
+<span hx-swap-oob="innerHTML:#info-title"><i class="bi bi-pencil-square me-2"></i>{{ modal_title }}{% if modal_subtitle %} <small class="text-muted">/ {{ modal_subtitle }}</small>{% endif %}</span>
+
+<form hx-post="{{ request.path }}" hx-target="#info-body" hx-swap="innerHTML">
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger py-1 px-2 small">
+      {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+    </div>
+  {% endif %}
+
+  <div style="max-height: 55vh; overflow-y: auto; padding-right: .25rem;">
+    <table class="table table-hover table-sm align-middle table-bordered mb-0">
+      <tbody>
+        {% for field in form.visible_fields %}
+          <tr>
+            <th scope="row" class="align-middle table-label-col">{{ field.label }}</th>
+            <td class="align-middle">
+              {{ field }}
+              {% for error in field.errors %}
+                <div class="text-danger small">{{ error }}</div>
+              {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="d-flex justify-content-center gap-2 pt-3 mt-3 border-top">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+  </div>
+</form>
+
+<script>
+  (function () {
+    document.querySelectorAll('textarea.sequence-input').forEach(function (ta) {
+      var counter = document.createElement('div');
+      counter.className = 'sequence-counter small text-muted mt-1';
+      counter.style.fontSize = '11px';
+      function update() {
+        var n = ta.value.length;
+        counter.textContent = n + ' character' + (n === 1 ? '' : 's');
+      }
+      ta.parentNode.insertBefore(counter, ta.nextSibling);
+      ta.addEventListener('input', update);
+      update();
+    });
+  })();
+</script>

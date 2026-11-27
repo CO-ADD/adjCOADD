@@ -33,12 +33,14 @@ urlpatterns = [
     path('ddrug/', include('ddrug.urls')),
     path('dgene/', include('dgene.urls')),
     path('dcell/', include('dcell.urls')),
-    path('dpeptide/', include('dpeptide.urls')),
+    path('dbiologic/', include('dbiologic.urls')),
     #========================CastDB model views URL====View, Create, Updata, Delete================================
     path('dplate/',  include('dplate.urls')),
     path('dscreen/', include('dscreen.urls')),
     path('dsample/', include('dsample.urls')),
     path('dcollab/', include('dcollab.urls')),
+    #========================Chem/Structure model views URL====View, Create, Updata, Delete================================
+    path('dchem/', include('dchem.urls')),    
 ]
 
 if settings.DEBUG:

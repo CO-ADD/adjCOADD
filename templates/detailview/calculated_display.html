@@ -1,0 +1,18 @@
+{% if object.CALCULATED_FIELDS %}
+<div class="calculated-fields mt-2" style="font-size: 0.75rem;">
+  {% for row in object.get_calculated_display %}
+    <div class="d-flex flex-wrap">
+      {% for item in row %}
+        {% if forloop.parentloop.first and forloop.first %}
+          <i class="bi bi-calculator me-1 text-muted"></i>
+        {% endif %}
+        <span class="me-2">
+          <span class="fst-italic">{{ item.label }}:</span>
+          <span class="fw-bold">{{ item.value|default:'—' }}</span>
+        </span>
+        {% if not forloop.last %}<span class="me-2 text-muted">|</span>{% endif %}
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}

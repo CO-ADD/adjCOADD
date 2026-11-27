@@ -25,7 +25,7 @@ class Organisation(AuditModel):
         "organisation_id":"ID",
         "organisation_code":"Code",
         "organisation_name":"Name",
-        "country":"Country",
+        "country.name":"Country",
         "organisation_type":"Type",        
     }
     
@@ -33,7 +33,7 @@ class Organisation(AuditModel):
         'organisation_type':'Organisation_Type',
     }
 
-    VIEW_GROUPS = []
+    DETAIL_VIEW_GROUPS = []
     
     ID_SEQUENCE = 'Organisation'
     ID_PREFIX = 'CORG'
@@ -134,6 +134,8 @@ class Collab_User(AuditModel):
     }
     DICTIONARY_FIELDS = {
     }
+
+    DETAIL_VIEW_GROUPS = []
 
     ID_SEQUENCE = 'Collab_User'
     ID_PREFIX = 'CUSR'
@@ -243,7 +245,7 @@ class Collab_Group(AuditModel):
     """
 #=================================================================================================
     LIST_VIEW_FIELDS = {
-        'group_id':'ID',
+        'group_id': {'ID': {'group_id': URL_LINKS['group_id']}},
         'group_code':'Code',
         # 'first_name':'First Name',
         # 'last_name':'Last Name',
@@ -261,7 +263,7 @@ class Collab_Group(AuditModel):
     }
 
 
-    VIEW_GROUPS = []
+    DETAIL_VIEW_GROUPS = []
 
     ID_SEQUENCE = 'Collab_Group'
     ID_PREFIX = 'CGRP'

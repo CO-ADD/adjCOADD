@@ -9,23 +9,25 @@
   >
     {% csrf_token %}
     <!-- Default Create Model Form Template  -->
-    <div class="row  row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+    <div style="max-height: 60vh; overflow-y: auto; padding-right: .25rem;">
+      <div class="row  row-cols-1 g-2 g-lg-3">
 
-      {% for field in form.visible_fields%}
-        <div class="col">
-          <label>{{field.label}}</label> 
-          {% if field.field.widget.attrs.readonly %}
-            : {{field.value}}
-          {% else %}          
-            <p>{{field | safe}}</p>
-          {% endif %}
+        {% for field in form.visible_fields%}
+          <div class="col">
+            <label>{{field.label}}</label> 
+            {% if field.field.widget.attrs.readonly %}
+              : {{field.value}}
+            {% else %}          
+              <p>{{field | safe}}</p>
+            {% endif %}
 
-          <h3><span class="badge bg-danger text-light">{{field.help_text}}</span></h3>
-          {% for error in field.errors%} 
-            <span class="badge text-info text-warning">{{error}}</span>
-          {% endfor %}
-        </div>
-      {% endfor %}
+            <h3><span class="badge bg-danger text-light">{{field.help_text}}</span></h3>
+            {% for error in field.errors%} 
+              <span class="badge text-info text-warning">{{error}}</span>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
     </div>
     <hr>
     <div>

@@ -5,8 +5,17 @@
 <div class="d-flex vh-100">
 
     <div class="leftbar d-flex flex-column p-0 bg-light" style="width: 2em;">
-        <div class="d-flex flex-column p-0">          
-            {% include 'utils/miscellaneous/update_btn.html' with model_name=model_name %} 
+        <div class="d-flex flex-column p-0">
+            <a href="#"
+               class="border-0 text-success bg-transparent"
+               data-bs-toggle="modal"
+               data-bs-target="#infoModal"
+               hx-get="{% url 'project_update' object.pk %}"
+               hx-target="#info-body"
+               hx-swap="innerHTML"
+               title="Update Project">
+               <i class="fa-regular fa-pen-to-square"></i>
+            </a>
         </div>
     </div>
 
@@ -26,8 +35,9 @@
                 <div id="collapse_01" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_00"
                         data-bs-parent="#run-detail">
                 <div class="accordion-body bg-transparent">
-                    <!-- <b> {%include 'utils/message.html'%} </b> -->
-                    {% include 'dsample/project/project_update.html' %}
+                    <b> {%include 'utils/message.html'%} </b>
+                    {% include 'detailview/group_display.html' %}
+                    {% include 'detailview/calculated_display.html' %}
                     <hr>
                     {% include 'detailview/audit_status.html' %}
                 </div>
@@ -61,6 +71,42 @@
             </div>
         </div>
 
+       <!-- Project Contacts -->
+        <div class="accordion bg-transparent w-100" id="project-collabs">
+            <div class="accordion-item">
+            <h2 class="accordion-header" id="heading_03">
+                <button class="accordion-button" type="button" style="max-height: 20px" data-bs-toggle="collapse"
+                    data-bs-target="#collapsePrjCollabs" aria-expanded="true" aria-controls="collapse_03">
+                <h5 class="fs-6 my-0">
+                    Collaborators
+                </h5>
+                {% include 'utils/miscellaneous/showentries_badge.html' with obj_count=collab_count %}
+                <!-- prettier-ignore -->
+                </button>
+            </h2>
+            <div id="collapsePrjCollabs" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_03"
+                data-bs-parent="#project-collabs">
+                <div class="accordion-body">
+                <div class="d-flex justify-content-end mb-2">
+                    <a href="#"
+                       class="btn btn-sm btn-outline-primary"
+                       data-bs-toggle="modal"
+                       data-bs-target="#infoModal"
+                       hx-get="{% url 'project_members_edit' object.pk %}"
+                       hx-target="#info-body"
+                       hx-swap="innerHTML">
+                        <i class="bi bi-people me-1"></i>Edit Collaborators
+                    </a>
+                </div>
+                <div class="table-responsive">
+                    <!-- prettier-ignore -->
+                    {% include 'datatable/subtable_onepage_action.html' with table_id='datatable_collab' objects=collab_objs data_fields=collab_fields %}
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
         <!-- COADD Compounds -->
         <div class="accordion bg-transparent w-100" id="project-compounds">
             <div class="accordion-item">
@@ -77,10 +123,15 @@
             <div id="collapsePrjCompounds" class="accordion-collapse collapse show bg-transparent" aria-labelledby="heading_02"
                 data-bs-parent="#project-compounds">
                 <div class="accordion-body">
+                {% if view == 'card' %}
+                    <!-- prettier-ignore -->
+                    {% include 'dsample/project/compound_card.html' with page_obj=coadd_page_obj querycount=coadd_count view=view view_switch=True %}
+                {% else %}
                 <div class="table-responsive">
                     <!-- prettier-ignore -->
-                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields %}
+                    {% include 'datatable/subtable_pag_action.html' with table_id='datatable_coadd' objects=coadd_objs data_fields=coadd_fields page_obj=coadd_page_obj querycount=coadd_count view=view view_switch=True %}
                 </div>
+                {% endif %}
                 </div>
             </div>
             </div>
@@ -110,7 +161,6 @@
             </div>
             </div>
         </div>
-
 
 
     </div>

@@ -1,0 +1,51 @@
+{% comment %}
+  Reusable rdkit.js chemical-structure rendering.
+  Include this once per page, after any elements with class 'molecule-structure-svg'.
+  Each such element must carry a data-smiles attribute, e.g.:
+    <div class="molecule-structure-svg" data-smiles="CCO"></div>
+  The script loads the RDKit WASM module and renders the SVG into each element.
+{% endcomment %}
+
+<script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
+
+<style>
+  .molecule-structure-svg svg {
+    width: 100%;
+    height: auto;
+  }
+  .molecule-structure-svg svg rect:first-of-type {
+    fill: transparent !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var targets = document.querySelectorAll('.molecule-structure-svg');
+    if (!targets.length) return;
+
+    if (typeof initRDKitModule !== 'function') {
+      targets.forEach(function (el) {
+        el.innerHTML = '<span class="text-muted fst-italic small">Structure unavailable</span>';
+      });
+      return;
+    }
+
+    initRDKitModule().then(function (RDKit) {
+      targets.forEach(function (el) {
+        var smiles = el.getAttribute('data-smiles');
+        if (!smiles) return;
+        var mol = RDKit.get_mol(smiles);
+        if (mol) {
+          el.innerHTML = mol.get_svg();
+          mol.delete();
+        } else {
+          el.innerHTML = '<span class="text-muted fst-italic small">No structure</span>';
+        }
+      });
+    }).catch(function () {
+      targets.forEach(function (el) {
+        el.innerHTML = '<span class="text-muted fst-italic small">Structure unavailable</span>';
+      });
+    });
+  });
+</script>

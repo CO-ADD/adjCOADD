@@ -16,23 +16,25 @@ from django.core.validators import RegexValidator
 # Concentrations:  models.DecimalField(max_digits=12, decimal_places=4)
 #
 
+LIST_SEP = ';'
 ID_SEP = '_'
 BATCH_SEP = '.'
 
 # -dOrganism Settings ---------------------------------------------------
 ORGANISM_CLASSES = ['GN','GP','MB','FG']
 ORGID_SEP = "_"
-ORGBATCH_SEP = "_"
+ORGBATCH_SEP = "."
 
 # -dCell Settings 
 CELL_CLASSES = ['CL']
 CELLID_SEP = "_"
-CELLBATCH_SEP = "_"
+CELLBATCH_SEP = "."
 
-# -dPeptide Settings 
-PEPTIDE_CLASSES = ['NB','MAB','PEP']
-PEPID_SEP = "_"
-PEPBATCH_SEP = "."
+# -dbiologic Settings 
+BIOLOGIC_CLASSES = ['NB','MAB','PROT']
+BIOID_SEP = "_"
+BIOISO_SEP = "_"
+BIOBATCH_SEP = "."
 
 # -dGene Settings 
 SEQID_SEP = "_"
@@ -42,13 +44,15 @@ SEQRUN_SEP = "-"
 #SAMPLE_SEP = "_"
 #SAMPLEBATCH_SEP = "_"
 SAMPLEBATCH_SEP = "."
+COMPOUNDBATCH_SEP = "."
 COMPOUND_SEP = '|'
+COMPOUNDSET_SEP = ':'
 
 # -dScreen Settings ---------------------------------------------------
 RUN_CLASSES = ['PSR','HCR','QCR']
 RUN_SEP = ""
 DR_CLASSES = ['MIC','CC50','HC50']
-SYN_CLASSES = ['SYNMIC']
+SYN_CLASSES = ['synMIC']
 
 # -dSample Settings ---------------------------------------------------
 PROJECT_COMPOUND_STATUS = ['MissingStructureData','NoStructureData','ToImportStructureData',
@@ -59,8 +63,9 @@ PROJECT_REPORT_STATUS   = ['PS','HC','HV']
 
 AlphaNumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
 
-# column name can be edited here 
-# make a dictioinary  with Key and value, if value is none choose verbose name else choose the dictionary name.
+# -apputil Settings ---------------------------------------------------
+AUDITMODEL_FIELDS = ['astatus','acreated_at','acreated','aupdated_at','aupdated','adeleted_at','adeleted']
+
 
 # Documents:
 DOC_TEMPLATES={
@@ -81,14 +86,21 @@ URL_LINKS={
     
     'project_id':       '/dsample/project/{VALUE1}',
     
+    'abase_compound_id':'/dsample/abase/{VALUE1}',
+    'coadd_compound_id':'/dsample/coadd/{VALUE1}',
+    
     'testplate_id':     '/dplate/testplate/{VALUE1}',
     'masterplate_id':   '/dplate/masterplate/{VALUE1}',
     
-    'peptide_id':       '/dpeptide/peptide/{VALUE1}',
+    'biologic_id':       '/dbiologic/biologic/{VALUE1}',
+    'isoform_id':       '/dbiologic/isoform/{VALUE1}',
+
+    'structure_id':     '/dchem/structure/{VALUE1}',
+    'aa_id':            '/dchem/aminoacid/{VALUE1}',
     
     'organisation_id':  '/dcollab/organisation/{VALUE1}',
     'user_id':          '/dcollab/collaborator/{VALUE1}',
-    'group_id':         '/dcollab/organisation/{VALUE1}',
+    'group_id':         '/dcollab/collabgroup/{VALUE1}',
     
     'gene_id':          '/dgene/gene/',
     'seq_id':           '/dgene/seq/',

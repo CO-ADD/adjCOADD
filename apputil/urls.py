@@ -5,13 +5,17 @@ from django.urls import path, include, re_path
 from apputil.views import (index, userprofile, 
                            AppUser_ListView, AppUser_CreateView, AppUser_UpdateView,  AppUser_DetailView, AppUser_RemoveView, 
                            AppLog_ListView, 
-                           Dictionary_ListView, Dictionary_CreateView,updateDictionary, removeDictionary,
+                           Dictionary_ListView, Dictionary_CreateView, Dictionary_UpdateView, updateDictionary, removeDictionary,
                            DataExportView, Importhandler_apputils, CreatedocumentView, DocDeleteView,
-                           SystemInfoView)
+                           SystemInfoView,
+                           Menu_ListView, Menu_CreateView, Menu_UpdateView,
+                           Menu_Item_ListView, Menu_Item_CreateView, Menu_Item_UpdateView)
 
 from apputil.utils.flex_pivottable import flex_pivottable
 from apputil.test_app import Test_View
-from applib.process.process_forms import  Start_Progress
+from applib.process.process_forms import  Start_Progress, Process_ProgressView
+
+from apputil.task_views import Task_UpdateABaseView, TaskResult_ListView, Task_RemoveView
 
 urlpatterns = [
     path('index/', index, name="index"),
@@ -25,8 +29,16 @@ urlpatterns = [
     
     path('dict/', Dictionary_ListView.as_view(), name='dict_view' ),
     path('dict_create/', Dictionary_CreateView.as_view(), name='dict_create' ),
-    path('dict_update/', updateDictionary, name='dict_update' ),
+    path('dict_update/<str:pk>', Dictionary_UpdateView.as_view(), name='dict_update' ),
     path('dict_delete/', removeDictionary, name='dict_delete' ),
+
+    # Navigation Menu
+    path('menu_list/', Menu_ListView.as_view(), name='menu_list'),
+    path('menu_create/', Menu_CreateView, name='menu_create'),
+    path('menu_update/<str:pk>', Menu_UpdateView.as_view(), name='menu_update'),
+    path('menuitem_list/', Menu_Item_ListView.as_view(), name='menuitem_list'),
+    path('menuitem_create/', Menu_Item_CreateView, name='menuitem_create'),
+    path('menuitem_update/<str:pk>', Menu_Item_UpdateView.as_view(), name='menuitem_update'),
  
     # path('img/<str:pk>', CreateimageView.as_view(), name="addimg"),
     path('doc/<str:pk>', CreatedocumentView.as_view(), name="adddoc"),
@@ -35,7 +47,13 @@ urlpatterns = [
     # path('data-visual/<str:process_name>', Data_visualView.as_view(), name="data-visual"),
 
     path('progress/', Start_Progress, name='start_progress'),
+    path('process_progress/', Process_ProgressView, name='process_progress'),
     path('info/', SystemInfoView, name='system_info'),
+
+    # Background tasks (django.tasks)
+    path('tasks/update-abase/', Task_UpdateABaseView, name='task_update_abase'),
+    path('tasks/current/', TaskResult_ListView.as_view(), name='task_current'),
+    path('tasks/remove/<str:pk>', Task_RemoveView, name='task_remove'),
     
     path('exportData/', DataExportView.as_view(), name="dataexport"),
     path('import-excel/<str:process_name>', Importhandler_apputils.as_view(), name="excel-import"),

@@ -4,7 +4,8 @@
     <button
       type="button"
       class="btn btn-sm btn-outline-primary"
-      hx-get="{% url 'add-member' object.pk %}?form_count={{membership_formset.total_form_count}}"
+      hx-get="{% url 'add-member' object.pk %}"
+      hx-vals='js:{"form_count": Number(document.getElementById("id_memberships-TOTAL_FORMS").value || 0)}'
       hx-target="#membership-rows"
       hx-swap="beforeend">
       + Add Member

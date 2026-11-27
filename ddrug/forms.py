@@ -1,6 +1,7 @@
 import django_filters
 from rdkit import Chem
 from django_rdkit.models import *
+from applib.django.base.forms import Base_ModelForm
 
 from django import forms
 from django.core.exceptions import ValidationError
@@ -18,7 +19,7 @@ from adjcoadd.constants import *
 
 
 #========================================Drug Form================================================================
-class Drug_form(forms.ModelForm):
+class Drug_form(Base_ModelForm):
     drug_type = forms.ModelChoiceField(widget=forms.Select(attrs={'class':'form-select'}), required=False, queryset=Dictionary.objects.all())
     max_phase = forms.ChoiceField(widget=forms.Select(attrs={'class':'form-select'}), required=False, choices= [], )
     drug_codes= SimpleArrayField(forms.CharField(), required=False)

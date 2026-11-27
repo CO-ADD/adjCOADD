@@ -1,6 +1,7 @@
 #import django_filters
 from django import forms
-from .models import  ApplicationUser, ApplicationLog, Dictionary, Document
+from applib.django.base.forms import Base_ModelForm
+from .models import  ApplicationUser, ApplicationLog, Dictionary, Document, Menu, Menu_Item
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
@@ -17,6 +18,7 @@ class Login_Form(AuthenticationForm):
     password= forms.CharField(widget=forms.PasswordInput(
     attrs={'class':'form-control', 'id': 'password-input','type':'password', 'name': 'password', 'autocomplete':'new-password'}),
     label='password-input')
+    
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
@@ -38,7 +40,7 @@ class Login_Form(AuthenticationForm):
 					code='user is not appuser',
 					params={'username': self.username_field.verbose_name},
 				)
-
+        
         return self.cleaned_data
 
 
@@ -55,7 +57,7 @@ PERMISSION_CHOICES=[
                     ("No","No")
                     ]
 
-class AppUser_Form(forms.ModelForm):
+class AppUser_Form(Base_ModelForm):
 
     permission=forms.ChoiceField(choices=PERMISSION_CHOICES)
 
@@ -89,10 +91,18 @@ class AppUser_Filter(Base_Filter):
 # Application Dictionary
 #=================================================================================================
 
-class Dictionary_Form(forms.ModelForm):
+class Dictionary_Form(Base_ModelForm):
     class Meta:
         model=Dictionary
         fields='__all__'
+
+
+class Dictionary_UpdateForm(Base_ModelForm):
+    dict_value = forms.CharField(disabled=True)
+
+    class Meta:
+        model = Dictionary
+        fields = ['dict_value', 'dict_class', 'dict_desc', 'dict_sort', 'dict_app']
 
 #------------------------------------------------------------------------
 class Dictionary_Filter(BaseStatus_Filter):
@@ -112,7 +122,7 @@ class Dictionary_Filter(BaseStatus_Filter):
 
 #------------------------------------------------------------------------
 ## Document
-class Document_Form(forms.ModelForm):
+class Document_Form(Base_ModelForm):
     doc_file = forms.FileField(label='Select a file', 
                                 #   validators=[validate_file], 
                                   required=True)
@@ -138,5 +148,79 @@ class AppLog_Filter(Base_Filter):
     class Meta:
         model=ApplicationLog
         fields=list(model.LIST_VIEW_FIELDS.keys())
+
+
+#=================================================================================================
+# Navigation Menu
+#=================================================================================================
+class Menu_Filter(BaseStatus_Filter):
+    menu_name = CharFilter(field_name='menu_name', lookup_expr='icontains', label='Name')
+    menu_label = CharFilter(field_name='menu_label', lookup_expr='icontains', label='Label')
+    permission = CharFilter(field_name='permission', lookup_expr='icontains', label='Permission')
+
+    class Meta:
+        model = Menu
+        fields = ['menu_name', 'menu_label', 'permission']
+
+
+class Menu_Form(Base_ModelForm):
+    class Meta:
+        model = Menu
+        exclude = ['menu_id']
+        field_order = ['menu_name', 'menu_label', 'icon', 'order', 'permission']
+
+
+class Menu_UpdateForm(Menu_Form):
+    menu_id = forms.CharField(disabled=True)
+
+    class Meta:
+        model = Menu
+        exclude = []
+        field_order = ['menu_id', 'menu_name', 'menu_label', 'icon', 'order', 'permission']
+
+
+# -----------------------------------------------------------------
+class Menu_Item_Filter(BaseStatus_Filter):
+    label = CharFilter(field_name='label', lookup_expr='icontains', label='Label')
+    url_name = CharFilter(field_name='url_name', lookup_expr='icontains', label='URL Name')
+    permission = CharFilter(field_name='permission', lookup_expr='icontains', label='Permission')
+    menu_id = ChoiceFilter(field_name='menu_id', choices=[], label='Menu')
+    parent = ChoiceFilter(field_name='parent', choices=[], label='Parent')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.filters['menu_id'].extra['choices'] = [
+            (m.menu_id, f"[{m.menu_id}] {m.menu_name}") for m in Menu.objects.all().order_by('order', 'menu_name')
+        ]
+        self.filters['parent'].extra['choices'] = [
+            (i.item_id, f"[{i.item_id}] {i.label}") for i in Menu_Item.objects.select_related('menu_id').all().order_by('menu_id', 'order', 'label')
+        ]
+
+    class Meta:
+        model = Menu_Item
+        fields = ['label', 'url_name', 'permission', 'menu_id', 'parent']
+
+
+class Menu_Item_Form(Base_ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(Menu_Item_Form, self).__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].label = self.Meta.model._meta.get_field(field_name).verbose_name
+
+    class Meta:
+        model = Menu_Item
+        exclude = ['item_id']
+        field_order = ['menu_id', 'parent', 'label', 'url_name', 'url_path', 'icon', 'order',
+                       'separator', 'disabled', 'modal', 'permission']
+
+
+class Menu_Item_UpdateForm(Menu_Item_Form):
+    item_id = forms.CharField(disabled=True)
+
+    class Meta:
+        model = Menu_Item
+        exclude = []
+        field_order = ['item_id', 'menu_id', 'parent', 'label', 'url_name', 'url_path', 'icon', 'order',
+                       'separator', 'disabled', 'modal', 'permission']
 
     

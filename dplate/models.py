@@ -20,7 +20,7 @@ from applib.data.str_lists import addto_StrList, strList_to_List
 from dscreen.models import Screen_Run, Assay
 from dorganism.models import Organism_Batch
 from dcell.models import Cell_Batch
-from dsample.models import Sample_Base, CmpBatchList_Base
+from dsample.models_base import Sample_Base, CmpBatchList_Base
 from applib.bio.bio_data import ActScoreSC_Cutoff, ActType_SC
 from adjcoadd.constants import *
 
@@ -61,6 +61,23 @@ class Labware(AuditModel):
         'plate_material':'Plate_Material',
     }
 
+    LIST_VIEW_FIELDS = {
+        'labware_id': 'Labware ID',
+        'labware_name': 'Name',
+        'labware_type': 'Type',
+        'plate_size': 'Size',
+        'plate_type': 'Plate Type',
+        'plate_color': 'Color',
+        'plate_material': 'Material',
+        'well_shape': 'Shape',
+        'well_bottom': 'Bottom',
+        'well_type': 'Well Type',
+        'well_size': 'Well Size',
+        'working_volume': 'Volume (uL)',
+        'brand': 'Brand',
+        'model': 'Model',
+    }
+
     labware_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Labware ID") 
     labware_name= models.CharField(max_length=50, blank=True, verbose_name = "Labware Name") 
     labware_type= models.CharField(max_length=15, blank=True, verbose_name = "Labware Type") 
@@ -84,6 +101,10 @@ class Labware(AuditModel):
         app_label = 'dplate'
         db_table = 'labware'
         ordering=['labware_id']
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.labware_id}"
 
 #=================================================================================================
 
@@ -350,6 +371,14 @@ class Plate(AuditModel):
                             self.wells[w].init_field(f, Reset=True)
 
     #--------------------------------------------------------------
+    def clear_cmpbatch_data(self):  
+        #
+        # Resets CmpBatch Data for each Test/Master-Well
+        if hasattr(self,'wells'):
+            for w in self.wells:
+                self.wells[w].clear_cmpbatch_data()
+
+    #--------------------------------------------------------------
     def get_well_fielddata(self, Field, Selection = None):
     #
     # Get fielddata from the Wells, by Selection
@@ -382,8 +411,7 @@ class TestPlate(Plate):
 #=================================================================================================
 
     LIST_VIEW_FIELDS = {
-        #"plate_id":{'Plate ID': {'plate_id':URL_LINKS['testplate_id']}},
-        "plate_id":"Plate ID",
+        'plate_id': {'Plate ID': {'plate_id': URL_LINKS['testplate_id']}},
         "run_id":"Run ID",
         "assay_id":"Assay ID",
         "result_type":"Type",
@@ -416,6 +444,13 @@ class TestPlate(Plate):
         'plate_quality':'Data_Quality',
         'plate_type':'Plate_Type',
     }
+    
+    DETAIL_VIEW_GROUPS = [
+        ['plate_id','plate_type','labware_id','n_rows','n_cols','n_wells','plating'],
+        ['run_id','assay_id','result_type','test_date','control_layout','synergy_cmpbatches'],
+        ['reader','n_readouts','readout_type','zfactor','plate_qc','plate_quality','plate_comment'],
+    ]
+   
     
     # plate_id = models.CharField(primary_key=True, max_length=25, verbose_name = "Plate ID")
     # labware_id = models.ForeignKey(Labware, null=True, blank=True, verbose_name = "Labware ID", on_delete=models.DO_NOTHING,
@@ -474,7 +509,7 @@ class TestPlate(Plate):
 
     control_layout = models.CharField(max_length=35, blank=True, verbose_name = "Layout")
     synergy_cmpbatches =ArrayField(models.CharField(max_length=100, null=True, blank=True), 
-                                   size=2, verbose_name = "Synergy CmpBatches", null=True, blank=True)
+                                   size=3, verbose_name = "Synergy CmpBatches", null=True, blank=True)
 
     # Control_Count = models.PositiveIntegerField()
     # Layout_Dilution = models.CharField(max_length=25)
@@ -489,8 +524,8 @@ class TestPlate(Plate):
                             size=2, null=True, blank=True, verbose_name = "Edge")
     
     analysis = models.CharField(max_length=100, blank=True, verbose_name = "Analysis")
-    zfactor = models.DecimalField(max_digits=12, decimal_places=3, default=-1,)
-    plate_qc = models.DecimalField(max_digits=12, decimal_places=3, default=-1)
+    zfactor = models.DecimalField(max_digits=12, decimal_places=3, default=-1,verbose_name = "Z'Factor")
+    plate_qc = models.DecimalField(max_digits=12, decimal_places=3, default=-1,verbose_name = "Plate QC")
     plate_quality = models.ForeignKey(Dictionary, null=True, blank=True, verbose_name = "Plate Quality", on_delete=models.DO_NOTHING,
         db_column="plate_quality", related_name="%(class)s_platequality")
     plate_comment = models.CharField(max_length=50, blank=True, verbose_name = "Plate Comment")
@@ -674,12 +709,12 @@ class TestPlate(Plate):
             self.n_samples = n_sample
 
     #--------------------------------------------------------------
-    def clear_cmpbatch_data(self):  
-        #
-        # resets cmpbatch data (incl conc, conc_unit, conc_type)
-        if hasattr(self,'wells'):
-            for w in self.wells:
-                self.wells[w].clear_cmpbatch_data()
+    # def clear_cmpbatch_data(self):  
+    #     #
+    #     # resets cmpbatch data (incl conc, conc_unit, conc_type)
+    #     if hasattr(self,'wells'):
+    #         for w in self.wells:
+    #             self.wells[w].clear_cmpbatch_data()
 
     #--------------------------------------------------------------
     def conv_list_to_string(self):
@@ -1036,8 +1071,8 @@ class TestWell(Sample_Base):
             else:
                 logger.warning(f"[TestWell] SAVE has not PlateID and/or WellID") 
 
-
-    #------------------------------------------------  
+    #------------------------------------------------
+    # Converts the Lists (_lst) to StringsLists (_sets)  
     def conv_list_to_string(self):
         super().conv_list_to_string()
 
@@ -1046,15 +1081,34 @@ class TestWell(Sample_Base):
             self.sets = COMPOUND_SEP.join([str(x) for x in self.set_lst])
         self.cmpbatch_sets = ''
         if self.set_lst:
-            self.cmpbatch_sets = COMPOUND_SEP.join([f"{str(c)}_{str(s)}" for c,s in zip(self.cmpbatch_lst, self.set_lst) ])
+            self.cmpbatch_sets = COMPOUND_SEP.join([f"{str(c)}{COMPOUNDSET_SEP}{str(s)}" for c,s in zip(self.cmpbatch_lst, self.set_lst) ])
         else:
             self.cmpbatch_sets = self.cmpbatches
             
     #------------------------------------------------  
+    # Converts the StringsLists (_sets) back to Lists (_lst)   
     def conv_string_to_lst(self):
         super().conv_string_to_lst()
         self.set_lst = strList_to_List(self.sets,sep=COMPOUND_SEP,size=4,fill="")
 
+    #-----------------------------------------------
+    # Split cmpbatch_sets into cmpbatch_lst and set_lst
+    @staticmethod
+    def split_cmpbatch_sets(CmpBatchSet:str) -> tuple:
+        if CmpBatchSet:
+            _s = CmpBatchSet.split(COMPOUNDSET_SEP)
+            if len(_s) > 1:
+                _cmpbatch= _s[0]
+                _set = _s[1]
+            else:
+                _cmpbatch = _s[0]
+                _set = ''
+            
+        else:
+            _cmpbatch = ''
+            _set = ''
+        return(_cmpbatch, _set)
+        
     #------------------------------------------------  
     def fields_to_dict(self,AuditFields=False, ModelFields=[], ClassFields=[], ReadoutField=True):
         _dict = super().fields_to_dict(AuditFields=AuditFields, ModelFields=ModelFields, ClassFields=ClassFields)
@@ -1074,6 +1128,8 @@ class TestWell(Sample_Base):
     
     #------------------------------------------------
     def clear_cmpbatch_data(self):
+        # Clear CmpBatch data for TestWell
+        #---------------------------------------
         super().clear_cmpbatch_data()
         self.set_lst = []
     
@@ -1120,6 +1176,26 @@ class MasterPlate(Plate):
         'master_volume_unit':'Unit_Volume',
     }
 
+    LIST_VIEW_FIELDS = {
+        'plate_id': {'Plate ID': {'plate_id': URL_LINKS['masterplate_id']}},
+        'run_id': 'Run ID',
+        'prep_date': 'Prep Date',
+        'plate_quality': 'Quality',
+        'dilution_layout': 'Dilution Layout',
+        'master_solvent': 'Solvent',
+        'master_conc': 'Conc',
+        'master_volume': 'Volume (uL)',
+        'n_samples': 'nS',
+        'n_layout': 'nL',
+        'process_status': 'Process',
+    }
+
+    DETAIL_VIEW_GROUPS = [
+        ['plate_id','plate_type','well_type','labware_id','n_rows','n_cols','n_wells','plating'],
+        ['run_id','prep_date','dilution_layout','plate_quality','plate_comment'],
+    ]
+   
+
     plating = models.CharField(max_length=10, blank=True, verbose_name = "Plating by")
     cpoz_id = models.CharField(max_length=15, blank=True, verbose_name = "CpOz ID")
     well_type= models.CharField(max_length=20, blank=True, null=True, choices=Labware.WELL_TYPE, verbose_name = "Type")  
@@ -1154,6 +1230,10 @@ class MasterPlate(Plate):
         app_label = 'dplate'
         db_table = 'masterplate'
         ordering=['plate_id']
+
+    #------------------------------------------------
+    def __str__(self) -> str:
+        return f"{self.plate_id}"
         indexes = [
             models.Index(name="masterplate_labw_idx",fields=['labware_id']),
             models.Index(name="masterplate_wtyp_idx",fields=['well_type']),
@@ -1260,7 +1340,7 @@ class MasterPlate(Plate):
             logger.warning(f"[MasterPlate] SAVE has no PlateID ")
 
     #------------------------------------------------
-    def add_dilutions(self, **kwargs):
+    def add_dilutions(self, overwrite=False, **kwargs):
         DILUTION_DICT = {
             'Col8':     ( 8, 2, True, False),
             'Col16':    (16, 2, True, False),
@@ -1278,7 +1358,7 @@ class MasterPlate(Plate):
             for w in self.wells:
                 if self.wells[w].dilution_lst:
                     if verbose > 0:
-                        logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w}] {self.wells[w].dilution_lst} {self.wells[w].test_conc_lst}")
+                        logger.info(f"[MasterPlate] Dilution [{self.plate_id} {w}] {self.wells[w].dilution_lst} {self.wells[w].test_conc_lst} [{overwrite}]")
 
                     for i_dil in range(len(self.wells[w].dilution_lst)):
 
@@ -1301,7 +1381,7 @@ class MasterPlate(Plate):
                                 w_d = self.well_id((w_R,w_C))
                                 
                                 # Set Dilution Well if empty
-                                if self.wells[w_d].n_cmpbatches == 0:
+                                if self.wells[w_d].n_cmpbatches == 0 or overwrite:
                                     #print(f"{self.plate_id} - {w_d} {i_dil} Reset")
                                     self.wells[w_d].cmpbatch_lst = self.wells[w].cmpbatch_lst
                                     self.wells[w_d].n_cmpbatches = self.wells[w].n_cmpbatches
@@ -1344,6 +1424,16 @@ class MasterWell(Sample_Base):
 
     #STRING_FIELDS =['concs','conc_units','conc_types','sets']
     STRING_FIELDS = Sample_Base.STRING_FIELDS + ['sets','test_concs','test_conc_units','test_conc_types']
+
+    LIST_VIEW_FIELDS = {
+        'plate_id':'Plate ID',
+        'well_id': 'Well ID',
+        'barcode': 'Barcode',
+        'plate_id.well_type':'Well Type',
+        'plate_id.labware_id': 'Labware',
+    }
+        
+    
 
     DICTIONARY_FIELDS = {
         'conc_unit_lst':'Unit_Concentration',
@@ -1507,6 +1597,8 @@ class MasterWell(Sample_Base):
 
     #------------------------------------------------
     def clear_cmpbatch_data(self):
+        # Clear CmpBatch data for MasterWell
+        #---------------------------------------
         super().clear_cmpbatch_data()
         self.set_lst = []
         self.test_concs = ""
@@ -1515,6 +1607,7 @@ class MasterWell(Sample_Base):
         self.test_conc_unit_lst = []
         self.test_conc_types = ""
         self.test_conc_type_lst = []
+        self.dilution_lst = []
 
     @staticmethod
     #------------------------------------------------

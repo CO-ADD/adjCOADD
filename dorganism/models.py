@@ -363,6 +363,13 @@ class Organism_Batch(AuditModel):
         return(f"{OrganismID}{ORGBATCH_SEP}{BatchID}")
 
     #------------------------------------------------
+    @classmethod
+    # Formats OrganismID:str,BatchID:str -> OrgBatchID:str
+    def split_OrgBatchID(self,OrgBatchID:str) -> tuple:
+        parts = str(OrgBatchID).split(ORGBATCH_SEP)
+        return (parts[0], parts[1]) 
+
+    #------------------------------------------------
     def find_Next_BatchID(self, OrganismID:str, BatchID:str=None) -> str:
         # Check for given BatchID    
         if BatchID:

@@ -30,7 +30,7 @@ from dcell.forms import (Cell_Filter, Cell_CreateForm, Cell_UpdateForm,
                          CellBatch_Filter, CellBatch_Form, CellBatch_UpdateForm,  
                          CellBatchStock_Filter, CellBatchStock_Form, CellBatchStock_CreateForm)
 
-from dcell.utils.upload_cell import upload_Cells_Process
+from dcell.utils.upload_cell import Upload_Cells_Process
 
 #from ddrug.models import VITEK_AST, MIC_COADD
 #from dorganism.utils.data_visual import data_frame_style, pivottable_style
@@ -222,7 +222,9 @@ class Cell_Upload_HandlerView(UploadHandler_View):
         except Exception as err:
             print(f"[Import_CellView] {err}")
         
-        valLog=upload_Cells_Process(request, self.dirname, self.filelist, upload=self.upload, appuser=request.user) 
+        valLog=Upload_Cells_Process.execute(request, self.dirname, self.filelist,
+                                             upload=self.upload, appuser=request.user,
+                                             progress_key=self.progress_key)
         return(valLog)
 
 #=================================================================================================

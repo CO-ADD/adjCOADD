@@ -1,0 +1,39 @@
+<div class="d-flex flex-column w-100">
+
+  {% if page_obj %}
+  <div class="d-flex flex-wrap justify-content-between m-2 p-0 align-items-baseline">
+    {% include 'grid/base/pagination.html' %}
+  </div>
+  {% endif %}
+
+  <div class="row d-flex flex-wrap mx-2">
+    {% for object in page_obj %}
+      <div class="col-md-4 m-0 p-1">
+        <div class="card card-bg ms-3 px-1 rounded-3 h-100">
+
+          <!-- Header: plate_id | assay_id | result_type (values only) -->
+          <div class="d-flex justify-content-between align-items-center border-bottom border-dark px-1 py-1">
+            <a href="{% url 'testplate_detail' object.plate_id %}" class="fw-bold text-decoration-none">{{ object.plate_id }}</a>
+            <span class="small mx-auto">{{ object.assay_id }}</span>
+            <span class="small">{{ object.result_type }}</span>
+          </div>
+
+          <!-- Heatmap of readout[0] with readout_type as centred header -->
+          <a href="{% url 'testplate_detail' object.plate_id %}" class="d-block px-1 pt-1">
+            <img src="{% url 'testplate_heatmap' object.plate_id %}" class="img-fluid w-100" alt="{{ object.plate_id }} readout heatmap">
+          </a>
+
+          <!-- Footer: plate_quality | n-values | zfactor -->
+          <div class="d-flex justify-content-between align-items-center border-top border-dark mt-1 pt-1 px-1 pb-1">
+            <span class="small">{{ object.plate_quality }}</span>
+            <span class="small mx-auto">{{ object.n_reads }} {{ object.n_samples }} {{ object.n_layout }} {{ object.n_inhibitions }} {{ object.n_doseresponses }} {{ object.n_synergies }}</span>
+            <span class="small">{{ object.zfactor }}</span>
+          </div>
+
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted px-2">No plates found</p>
+    {% endfor %}
+  </div>
+</div>
